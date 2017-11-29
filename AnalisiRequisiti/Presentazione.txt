@@ -1,0 +1,29 @@
+Applicazione da lato utente
+Componenti domotici nell'ambiente, sensori che determinano la condizione dell'ambiente nell'edificio
+Tracciamento posizione delle persone nello spazio prima dell'evento, ad esempio gps del telefonino
+Elaborazione dei dati sugli ambienti e sulle persone per determinare le azioni migliori durante l'emergenza
+
+Obiettivo: aiutare le persone a compiere le giuste scelte nel processo di evacuazione
+Come: in base al tipo di emergenza individuare i dati da monitorare e le informazioni da comunicare all'utente
+
+Livelli di assistenza:
+1. Quali sono i punti di soccorso (luoghi di ritrovo)
+2. Guidare le persone in condizioni normali oppure determinare un piano di evacuazione in situazioni di emergenza
+3. Navigazione interattiva: possibilità di modificare il percorso durante l'esecuzione oppure segnalare anche situazioni di emergenza
+
+Localizzazione:
+1. Agganciamento della persona al beacon più vicino
+2. Elencare i punti di raccolta e visualizzazione della mappa sullo smartphone
+
+Stato dell'arte: tracciamento percorsi e posizionamento utente nello spazio
+
+Cosa manca: comunicazione dati tra server e utente, ricalcolo percorsi e segnalazione eventi
+
+Requisiti e vincoli:
+- App per Android
+- L'app deve funzionare anche quando è offline
+- I beacon sono i SensorTag della Texas Instruments
+- I dati inviati e ricevuti sono in formato JSON
+- Dati personali trattati in accordo con il Codice della Privacy
+- Il server deve avere servizi REST
+- Il server deve essere composto da un DB relazionale

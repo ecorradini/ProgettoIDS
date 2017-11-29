@@ -1,0 +1,64 @@
+Cosa è stato fatto:
+- Sviluppato il sistema di indivudazione della posizione delle persone tramite beacons. Agganciamento tramite bluetooth tra telefono e beacon, identificazione nodo più vicino a cui si è collegati.
+- Implementata procedura per identificazione lato server, interrogare tutte le persone vicine a un determinato beacon e varie informazioni raccolte dal beacon.
+- Visualizzazione lato smartphone della posizione su un'immagine (penso mappa).
+- Implementata procedura per ricerca percorso di fuga, con indicazioni: acquisizione dati posizione in maniera troppo semplificata, tramite input utente su smartphone, tutto l'algoritmo di ricerca percorso era sullo smartphone.
+
+- Dialogo online con il server necessario, in modo che tutti i calcoli vengano fatti dal server. L'algoritmo di instradamento deve essere sul server (anche se è necessaria ridondanza sullo smartphone nel caso di mancata connessione) perchè potrebbe essere utile inviare tali percorsi ad altri utilizzatori che vogliano visualizzare dove e quando si trovano le persone che stanno evacuando.
+- L'app deve mandare indietro solo la posizione della persone, se è presente connessione è inutile inviare al server il percorso.
+
+
+Sfruttare l'implementazione dell'algoritmo di ricerca percorso già fatto come libreria. 
+
+Implementazione algoritmo percorso su server, invio dati tra db server e smartphone, aggiornamento dati su db locale su smartphone.
+Interfacciamento dati input sulla posizione per utilizzare l'algoritmo di instradamento.
+L'algoritmo di instradamento deve anche essere implementato nell'app.
+Invio costante della posizione al server e aggiornamento del percorso migliore in tempo reale.
+E' importante ricavare il dato della posizione!!!
+
+Algoritmo di instradamento:
+grafo orientato, nodi posizioni e archi collegamenti tra posizioni.
+Nodi intermedi: posizione della persona nello spazio.
+La persona si trova in un determinato percorso se si ritrova all'interno di un'area definita sugli archi.
+Viene ricercato il percorso con il costo minore.
+Il costo di un percorso è la sommatoria in i di a*A. a è un valore di peso [0-1]. A è la grandezza fisica per un singolo tronco del percorso (un tronco è un arco del grafo espanso in un area)
+Il costo in generare è dato dalla somma di (p è peso):
+- Affollamento pLOS * LOS(i) [persone al mq] per il tronco i. Devo sapere le posizioni delle persone per ogni tronco
+- Vulnerabilità pV * V(i) probabilità di incendio per il tronco i
+- Rischio per la vita (c'è sicuro un incendio) pR * R(i) per il tronco i.
+- Presenza di fumo pK * K(i) densità di fumi per il tronco i.
+- TODO: Lunghezza del tratto: pL * L(i) lunghezza del tronco i (più è lungo più è pericoloso).
+Questa formula deve girare sia su smartphone che server, finchè online si scambiano i dati con il server.
+
+Lo scaricamento della mappa e le varie informazioni collegate vengono fatte una sola volta, al primo avvio (pesi compresi)
+Nel tempo, quello che si scambia sono solo i valori calcolati, non i pesi.
+
+I valori dei pesi vengono forniti.
+
+Per formula usare matrice (per prevedere aggiunta di pesi per il costo).
+
+LOS:
+- input: area del tronco (lunghezza e altezza date), persone presenti nel tronco (numero delle persone rilevate dal beacon)
+Tabella di conversione fornita per convertire il valore calcolato in un valore tra 0 e 1 (peso).
+Valore calcolato associando id beacon a posizione persona.
+
+Nel database ogni riga potrebbe essere un tronco: x partenza e fine + y partenza fine (coordinate dei nodi che lo descrivono) + id del beacon + la matrice generale dei percorsi riga per riga.
+
+La larghezza di un percorso è la media tra la larghezza di inizio e la larghezza di fine.
+
+IMPORTANTE: 
+Nel manuale utente spiegare bene come installare e configurare il server.
+Modularità server e database in modo da poter essere modificato in modo semplice. 
+L'utente si deve autenticare per usare i servizi (già fatto).
+I beacon fanno parte di un tronco, devo calcolare il costo di ciascun tronco.
+Se il telefono è offline lavora con le ultime informazioni che ha ricavato dal server.
+
+Differenza tra condizioni ordinare e di emergenza:
+Normale: 
+- Apertura app, presentazione pianta della struttura.
+- Identificazione del luogo in cui si vuole andare (ad esempio tramite menu a tendina), tutti i pesi saranno 0, tranne la lunghezza.
+Emergenza:
+- L'occorrenza dell'emergenza viene direttamente comunicata al server.
+- Viene inviata una notifica al telefono.
+- L'utente deve essere in grado di identificare la sua posizione e visualizzare il percorso per uscire ed essere guidato.
+- Quando il server identifica lo spostamento di una persona da un tronco ad un altro deve ricalcolare il percorso.
