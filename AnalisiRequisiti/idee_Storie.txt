@@ -1,13 +1,19 @@
+-aggiornamento formula con paramentro pp/mq(?)
+
 -aggiornamento formula con nuovo parametro lunghezza.
 
 -invio posizione dell'utente al server
 (dal beacon al server? o il beacon serve solo come tag)
 
--invio all'utente le condizioni dell'edificio e anche il percorso
+-invio all'utente le condizioni dell'edificio
 
--aggiornamento della posizione dell' utente mano mano che passa per i beacon
+-invio a utente il percorso
+
+-aggiornamento della posizione dell' utente (mano mano che passa per i beacon)
 
 -invio mappe e pesi all' avvio dell' app.
+
+-funzione di notifica dell' inizio dell' emergenza all' utente
 
 
 ***che fanno sti beacon che potenzialità hanno? 
