@@ -1,9 +1,10 @@
-Cosa è stato fatto:
+﻿Cosa è stato fatto:
 - Sviluppato il sistema di indivudazione della posizione delle persone tramite beacons. Agganciamento tramite bluetooth tra telefono e beacon, identificazione nodo più vicino a cui si è collegati.
 - Implementata procedura per identificazione lato server, interrogare tutte le persone vicine a un determinato beacon e varie informazioni raccolte dal beacon.
 - Visualizzazione lato smartphone della posizione su un'immagine (penso mappa).
 - Implementata procedura per ricerca percorso di fuga, con indicazioni: acquisizione dati posizione in maniera troppo semplificata, tramite input utente su smartphone, tutto l'algoritmo di ricerca percorso era sullo smartphone.
 
+cose da fare:
 - Dialogo online con il server necessario, in modo che tutti i calcoli vengano fatti dal server. L'algoritmo di instradamento deve essere sul server (anche se è necessaria ridondanza sullo smartphone nel caso di mancata connessione) perchè potrebbe essere utile inviare tali percorsi ad altri utilizzatori che vogliano visualizzare dove e quando si trovano le persone che stanno evacuando.
 - L'app deve mandare indietro solo la posizione della persone, se è presente connessione è inutile inviare al server il percorso.
 
