@@ -1,0 +1,13 @@
+- Accorpamento storie:
+1. Definizione funzionalità generali
+2. Categorizzazione di quelle già fatte
+
+- Matrice delle responsabilità
+- Diagramma di Gantt solo storie (pianificazione)
+- Task card di una storia utente (probabilmente mappa).
+
+Categorie:
+- Gestione mappa (mappa, percorso e parametri)
+- Gestione utenti (movimento e posizione)
+- Gestione emergenza (notifica, passaggio modalità emergenza)
+- Gestione ordinaria (selezione destinazione)
