@@ -2,6 +2,8 @@
 
 -aggiornamento formula con nuovo parametro lunghezza.
 
+-modularità formula percorso
+
 -invio posizione dell'utente al server
 (dal beacon al server? o il beacon serve solo come tag)
 
@@ -11,9 +13,11 @@
 
 -aggiornamento della posizione dell' utente (mano mano che passa per i beacon)
 
--invio mappe e pesi all' avvio dell' app.
+-download mappe e pesi all' avvio dell' app.
 
 -funzione di notifica dell' inizio dell' emergenza all' utente
+
+-Modalità ordinaria per ricerca percorso
 
 
 ***che fanno sti beacon che potenzialità hanno? 
