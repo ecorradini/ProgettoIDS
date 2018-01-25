@@ -1,0 +1,16 @@
+25/01. Diagramma delle classi
+
+Classe DBHelper:
+
+1) "initEdificio" vuole come parametro l'ID del beacon. Tramite il database ricava i tronchi, i piani dell'edificio del beacon. (I piani ed i tronchi di un edificio vengono tutti istanziati).
+
+2) "getPosizione": prende l'ID del beacon e restituisce le coordinate. Aggiorna il numero di utenti collegati a quel beacon, eventualmente sottrae l'utente al beacon precedente.
+
+
+Classe MappaView (per il disegno della mappa, della posizione e del percorso sulla mappa):
+
+1) Attributo "canvas" di tipo Canvas istanziato all' onDraw.
+2) Costruttore: richiama il super.
+3) "onDraw": override del metodo chiamato alla creazione della view. Deve disegnare la bitmap del piano.
+4) "disegnaPosizione": disegna sul canvas il punto.
+5) "disegnaPercorso": disegna tutte le linee, date le coordinate dell'array passato come parametro. 
