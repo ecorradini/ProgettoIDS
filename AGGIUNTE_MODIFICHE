@@ -11,3 +11,7 @@ AGGIUNTE:
 - getBeaconsDb: aggiungere 2 parametri string e un tronco
 - initTronchi manca il tipo di ritorno.
 - initBeacons: aggiungere due parametri stringhe.
+- Aggiungere parametro stringa a initAule.
+- Togliere costruttore da mappaView.
+- in Aula: piano deve essere privato.
+- Costruttore di aula: sostituire double,double con point.
