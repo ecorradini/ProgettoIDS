@@ -7,9 +7,13 @@ import android.graphics.Bitmap;
 import android.graphics.Point;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import it.getout.GestionePosizione.Aula;
+import it.getout.GestionePosizione.Beacon;
 import it.getout.GestionePosizione.Edificio;
 import it.getout.GestionePosizione.Piano;
+import it.getout.GestionePosizione.Tronco;
 
 /**
  * Created by Alessandro on 01/02/2018.
@@ -31,7 +35,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-/*
     public Edificio initEdificioAttuale(String string) {   //tipo edificio ancora non è dato sapere
             return new Edificio();
     }
@@ -48,6 +51,22 @@ public class DBHelper extends SQLiteOpenHelper {
         return new ArrayList();                 //fatto a caso
     }
 
-*/
+    public ArrayList<Aula> initAule(String string) {
+        return new ArrayList<>();
+    }
+
+    public ArrayList<Tronco> initTronchi(String string) {
+        return new ArrayList<>();
+    }
+
+    public HashMap<String,Beacon> initBeacons(Tronco tronco) {
+        return new HashMap<>();
+    }
+
+    public String queryMappa(Edificio edificio, Piano piano) {
+        return new String();
+    }
+
+
 
 }
