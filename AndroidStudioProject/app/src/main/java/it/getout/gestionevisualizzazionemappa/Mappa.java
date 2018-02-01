@@ -1,4 +1,4 @@
-package it.getout.GestioneVisualizzazioneMappa;
+package it.getout.gestionevisualizzazionemappa;
 
 import android.graphics.Bitmap;
 

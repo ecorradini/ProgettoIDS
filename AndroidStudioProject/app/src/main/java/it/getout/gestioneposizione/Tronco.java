@@ -1,4 +1,4 @@
-package it.getout.GestionePosizione;
+package it.getout.gestioneposizione;
 
 /**
  * Created by Alessandro on 01/02/2018.

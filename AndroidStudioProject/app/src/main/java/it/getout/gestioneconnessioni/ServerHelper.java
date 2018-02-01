@@ -1,4 +1,4 @@
-package it.getout.GestioneConnessioni;
+package it.getout.gestioneconnessioni;
 
 import android.graphics.Point;
 
