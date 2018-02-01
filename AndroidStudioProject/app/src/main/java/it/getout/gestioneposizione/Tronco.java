@@ -32,7 +32,7 @@ public class Tronco {
     }
 
     public Beacon getBeaconByID(String id){
-        return new Beacon();
+        return beacons.get(id);
     }
 
     public HashMap<String,Beacon> getBeacons(){
