@@ -1,12 +1,11 @@
-package it.getout.GestioneVisualizzazioneMappa;
+package it.getout.gestionevisualizzazionemappa;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
-import it.getout.GestionePosizione.Percorso;
+import it.getout.gestioneposizione.Percorso;
 
 /**
  * Created by Alessandro on 01/02/2018.

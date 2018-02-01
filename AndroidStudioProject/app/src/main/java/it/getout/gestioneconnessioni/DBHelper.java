@@ -1,19 +1,18 @@
-package it.getout.GestioneConnessioni;
+package it.getout.gestioneconnessioni;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Bitmap;
 import android.graphics.Point;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import it.getout.GestionePosizione.Aula;
-import it.getout.GestionePosizione.Beacon;
-import it.getout.GestionePosizione.Edificio;
-import it.getout.GestionePosizione.Piano;
-import it.getout.GestionePosizione.Tronco;
+import it.getout.gestioneposizione.Aula;
+import it.getout.gestioneposizione.Beacon;
+import it.getout.gestioneposizione.Edificio;
+import it.getout.gestioneposizione.Piano;
+import it.getout.gestioneposizione.Tronco;
 
 /**
  * Created by Alessandro on 01/02/2018.
@@ -36,7 +35,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public Edificio initEdificioAttuale(String string) {   //tipo edificio ancora non è dato sapere
-            return new Edificio();
+            return new Edificio(string);
     }
 
     public Piano initPianoAttuale(Edificio edificio){

@@ -1,4 +1,4 @@
-package it.getout.GestionePosizione;
+package it.getout.gestioneposizione;
 
 import android.graphics.Point;
 
