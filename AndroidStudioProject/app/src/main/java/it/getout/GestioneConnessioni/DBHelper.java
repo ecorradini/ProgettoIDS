@@ -31,7 +31,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-
+/*
     public Edificio initEdificioAttuale(String string) {   //tipo edificio ancora non è dato sapere
             return new Edificio();
     }
@@ -48,6 +48,6 @@ public class DBHelper extends SQLiteOpenHelper {
         return new ArrayList();                 //fatto a caso
     }
 
-
+*/
 
 }
