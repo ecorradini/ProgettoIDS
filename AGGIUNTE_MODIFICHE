@@ -1,0 +1,13 @@
+AGGIUNTE:
+
+- MainActivity sul diagramma delle classi.
+- Modifica BitMap in Bitmap.
+- Come va fatto il diagramma delle sequenze per una classe statica?
+- Su "InitPianoAttuale" aggiungere parametro string.
+- getPianiDb aggiungere parametro string.
+- getAuleDb e getTronchiDb: aggiungere parametro string, anche initTronchi e initAule.
+- TUTTE LE CLASSI PACKAGE PRIVATE SONO PUBLIC.
+- initPiani() restituisce un arrayList di piano e non Piani.
+- getBeaconsDb: aggiungere 2 parametri string e un tronco
+- initTronchi manca il tipo di ritorno.
+- initBeacons: aggiungere due parametri stringhe.
