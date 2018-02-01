@@ -7,29 +7,29 @@ import android.graphics.Bitmap;
  */
 
 public class Mappa {
-    private Bitmap immagine;
-    private double witdh;
-    private double height;
+    private static Bitmap immagine;
+    private static double witdh;
+    private static double height;
 
-    public double getWitdh() {
+    public static double getWitdh() {
         return witdh;
     }
 
-    public double getHeight() {
+    public static double getHeight() {
         return height;
     }
 
-    public void setMappa (String string) {
+    public static void setMappa (String string) {
     }
 
-    public void getMappaDB(String string){
+    public static void getMappaDB(String string){
     }
 
-    public Bitmap getMappa() {
+    public static Bitmap getMappa() {
         return immagine;            //ritorno cosa? messo a caso
     }
 
-    public String convertiDaBase64(String string) {
+    public static String convertiDaBase64(String string) {
         return string;              //ritorno cosa? messo a caso
     }
 

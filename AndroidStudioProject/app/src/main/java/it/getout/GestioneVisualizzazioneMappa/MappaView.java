@@ -1,6 +1,7 @@
 package it.getout.GestioneVisualizzazioneMappa;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.widget.ImageView;
 
 /**
@@ -11,4 +12,9 @@ public class MappaView extends android.support.v7.widget.AppCompatImageView{
     public MappaView(Context context) {
         super(context);
     }
+
+    private Canvas canvas;
+
+
+
 }
