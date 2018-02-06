@@ -15,3 +15,6 @@ AGGIUNTE:
 - Togliere costruttore da mappaView.
 - in Aula: piano deve essere privato.
 - Costruttore di aula: sostituire double,double con point.
+- Togliere tutte i collegamenti tra i metodi nel diagramma delle classi
+- Aggiungere relazioni nel diagramma delle classi
+- Aggiungere attributo dbHelper a PosizioneUtente
