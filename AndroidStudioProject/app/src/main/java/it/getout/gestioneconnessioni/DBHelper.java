@@ -39,7 +39,8 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public Piano initPianoAttuale(Edificio edificio){
-            return new Piano();
+        String nome = null; // fatto a caso
+        return new Piano(nome);
     }
 
     public Point getPosizione(String string) {
