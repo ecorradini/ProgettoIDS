@@ -7,9 +7,24 @@ import android.graphics.Point;
  */
 
 public class Aula {
+
     private String nome;
     private Point entrata;
     private Piano piano;
 
-    //public Aula (String nome, Point entrata, Piano piano)
+    public Aula (String nome, Point entrata, Piano piano){
+
+    }
+
+    public Point getEntrata(){
+        return entrata;
+    }
+
+    public Piano getPiano(){
+        return piano;
+    }
+
+    public String toString(){
+        return nome;
+    }
 }
