@@ -13,7 +13,9 @@ public class Aula {
     private Piano piano;
 
     public Aula (String nome, Point entrata, Piano piano){
-
+        this.nome = nome;
+        this.entrata = entrata;
+        this.piano = piano;
     }
 
     public Point getEntrata(){

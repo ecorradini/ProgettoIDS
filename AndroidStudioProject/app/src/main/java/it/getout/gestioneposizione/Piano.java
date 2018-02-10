@@ -13,6 +13,9 @@ public class Piano {
     private ArrayList<Tronco> tronchi;
 
     public Piano(String nome){//String nome (va inserito come parametro costruttore
+        this.nome = nome;
+        this.getAuleDB(this.nome);
+        this.getTronchiDB(this.nome);
     }
 
     public ArrayList<Aula> getAule(){

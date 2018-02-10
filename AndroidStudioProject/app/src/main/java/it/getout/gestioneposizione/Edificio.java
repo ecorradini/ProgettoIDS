@@ -12,7 +12,8 @@ public class Edificio {
     private ArrayList<Piano> piani;
 
     public Edificio(String nome) {
-
+        this.nome = nome;
+        this.getPianiDB();
     }
 
     public Piano getPiano(int index) {
@@ -24,7 +25,7 @@ public class Edificio {
     }
 
     private void getPianiDB(){
-        return;
+
     }
 
     public ArrayList<Piano> getPiani() {

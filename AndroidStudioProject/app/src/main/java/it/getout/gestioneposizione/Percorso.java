@@ -12,7 +12,7 @@ public class Percorso {
 
     private ArrayList<Tronco> tronchi;
 
-    public Percorso(Point point){
+    public Percorso(Point point){ //inserire point in destinazione?
 
     }
 

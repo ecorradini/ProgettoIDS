@@ -16,7 +16,10 @@ public class Tronco {
     private HashMap<String,Beacon> beacons;
 
     public Tronco(Point inizio, Point fine, double larghezza){
-
+        this.inizio = inizio;
+        this.fine = fine;
+        this.larghezza = larghezza;
+        this.getBeaconsDB();
     }
 
     public Point getInizio(){
