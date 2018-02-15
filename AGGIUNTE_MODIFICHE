@@ -1,27 +1,2 @@
 AGGIUNTE:
 
-- MainActivity sul diagramma delle classi.
-- Modifica BitMap in Bitmap.
-- Come va fatto il diagramma delle sequenze per una classe statica?
-- Su "InitPianoAttuale" aggiungere parametro string.
-- getPianiDb aggiungere parametro string.
-- getAuleDb e getTronchiDb: aggiungere parametro string, anche initTronchi e initAule.
-- TUTTE LE CLASSI PACKAGE PRIVATE SONO PUBLIC.
-- initPiani() restituisce un arrayList di piano e non Piani.
-- getBeaconsDb: aggiungere 2 parametri string e un tronco
-- initTronchi manca il tipo di ritorno.
-- initBeacons: aggiungere due parametri stringhe.
-- Aggiungere parametro stringa a initAule.
-- Togliere costruttore da mappaView.
-- in Aula: piano deve essere privato.
-- Costruttore di aula: sostituire double,double con point.
-- Togliere tutte i collegamenti tra i metodi nel diagramma delle classi
-- Aggiungere relazioni nel diagramma delle classi
-- Aggiungere attributo dbHelper a PosizioneUtente
-- Aggiungere a diagramma sequenze la seguente sequenza:
-1. Una volta instanziato edificioAttuale richiamare Mappa.setMappa()
-2. setMappa() richiama getMappaDB()
-****************
-3. getMappaDB() richiama PosizioneUtente.getDBReference().queryMappa(PosizioneUtente.getEdificioAttuale(),PosizioneUtente.getPianoAttuale()) che restituisce String mappa Base64
-4. getMappaDB richiama convertiDaBase64(String restituita da procedura precedente).
-
