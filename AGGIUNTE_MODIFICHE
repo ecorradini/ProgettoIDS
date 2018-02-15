@@ -18,3 +18,9 @@ AGGIUNTE:
 - Togliere tutte i collegamenti tra i metodi nel diagramma delle classi
 - Aggiungere relazioni nel diagramma delle classi
 - Aggiungere attributo dbHelper a PosizioneUtente
+- Aggiungere a diagramma sequenze la seguente sequenza:
+1. Una volta instanziato edificioAttuale richiamare Mappa.setMappa()
+2. setMappa() richiama getMappaDB()
+3. getMappaDB() richiama PosizioneUtente.getDBReference().queryMappa(PosizioneUtente.getEdificioAttuale(),PosizioneUtente.getPianoAttuale()) che restituisce String mappa Base64
+4. getMappaDB richiama convertiDaBase64(String restituita da procedura precedente).
+
