@@ -24,9 +24,9 @@ public class PosizioneUtente {
 
     }
 
-    /*private ArrayList<BluetoothDevice> scansionaBluetooth(){
+    private ArrayList<BluetoothDevice> scansionaBluetooth(){
 
-    }*/
+    }
 
     private String getBeaconId(ArrayList<BluetoothDevice> Array){
         return null;

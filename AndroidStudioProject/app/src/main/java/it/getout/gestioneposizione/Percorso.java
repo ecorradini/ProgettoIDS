@@ -11,21 +11,17 @@ import java.util.ArrayList;
 public class Percorso {
 
     private ArrayList<Tronco> tronchi;
+    private Point Destinazione;
 
-    public Percorso(Point point){ //inserire point in destinazione?
-
-    }
-
-    public Percorso(Point point, Aula aula){
-
+    public Percorso(Point destinazione, Point partenza){
+        this.Destinazione = destinazione;
     }
 
     public ArrayList<Tronco> getTronchi(){
         return  tronchi;
     }
 
-    public Point getDestinazione(){ //destinazione non dovrebbe essere un attributo?
-        Point destinazione = null;
-        return destinazione;
+    public Point getDestinazione(){
+        return Destinazione;
     }
 }
