@@ -1,9 +1,14 @@
 package it.getout.gestioneposizione;
 
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Intent;
 import android.graphics.Point;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+
+import static android.provider.Settings.Global.BLUETOOTH_ON;
 
 /**
  * Created by Alessandro on 01/02/2018.
@@ -20,12 +25,12 @@ public class PosizioneUtente {
 
     }
 
-    private void initBluetooth(){
-
+    public void initBluetooth(BluetoothAdapter btAdapter){
+        btAdapter = BluetoothAdapter.getDefaultAdapter();  // Local Bluetooth adapter
     }
 
     private ArrayList<BluetoothDevice> scansionaBluetooth(){
-
+return null;
     }
 
     private String getBeaconId(ArrayList<BluetoothDevice> Array){

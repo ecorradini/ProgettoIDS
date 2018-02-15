@@ -1,6 +1,8 @@
 package it.getout.gestionevisualizzazionemappa;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 
 /**
  * Created by Alessandro on 01/02/2018.
@@ -29,8 +31,9 @@ public class Mappa {
         return immagine;            //ritorno cosa? messo a caso
     }
 
-    public static String convertiDaBase64(String string) {
-        return string;              //ritorno cosa? messo a caso
+    private static void convertiDaBase64(String base64Image) {
+        byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+        immagine = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
 
 }
