@@ -112,10 +112,19 @@ public class DBHelper extends SQLiteOpenHelper {
         return new Edificio(nEdificio);
     }
 
-    public Piano initPianoAttuale(Edificio edificio, String idBeacon){
-        String sql = "SELECT "+COL_NOME+" FROM "+TABLE_PIANO+" WHERE "+COL_NOME+"="+idBeacon+" AND "+COL_EDIFICIO+"="+edificio.toString();
 
-        return new Piano(nome);
+    //passatogli l'id del beacon mi restituisce il piano
+    public Piano initPianoAttuale(Edificio edificio, String idBeacon){
+        String sql = "SELECT "+TABLE_PIANO+"."+COL_NOME+" AS NOME_PIANO"+
+                " FROM "+TABLE_BEACON+","+TABLE_TRONCO+","+TABLE_PIANO+","+TABLE_EDIFICIO+
+                " WHERE "+TABLE_BEACON+"."+COL_ID+"="+idBeacon+" AND "+
+                TABLE_BEACON+"."+COL_TRONCO+"="+TABLE_TRONCO+"."+COL_ID+" AND "+
+                TABLE_PIANO+"."+COL_NOME+"="+TABLE_TRONCO+"."+COL_PIANO+" AND "+TABLE_PIANO+
+                "."+COL_EDIFICIO+" = "+TABLE_EDIFICIO+"."+COL_NOME;
+
+
+        new Piano=nome;
+        return nome;
     }
 
     public Point getPosizione(String string) {
