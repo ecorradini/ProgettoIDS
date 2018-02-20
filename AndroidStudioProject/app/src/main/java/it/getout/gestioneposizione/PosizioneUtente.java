@@ -66,7 +66,7 @@ public class PosizioneUtente {
     }
 
     private static ArrayList<BluetoothDevice> scansionaBluetooth(){
-        //ArrayAdapter adapter = null;
+        /*ArrayAdapter adapter = null;
         ArrayList<BluetoothDevice> array = null;
         ArrayList<String> btst = null;
         Set<BluetoothDevice> dispositivi;
@@ -76,7 +76,8 @@ public class PosizioneUtente {
         for(BluetoothDevice bt : dispositivi){
             btst.add(bt.getName());
         }
-        return array;
+        return array;*/
+        //mBluetoothLeScanner = btAdapter.getBluetoothLeScanner();
     }
 
     private static String getBeaconId(ArrayList<BluetoothDevice> Array){

@@ -43,6 +43,8 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String COL_PIANO="PIANO";
     private final String COL_X="X";
     private final String COL_Y="Y";
+    private final String COL_XF="XF"; // x del beacon di fine del tronco
+    private final String COL_YF="YF"; // y del beacon di fine del tronco
     private final String COL_ID="ID";
     private final String COL_LARGHEZZA="LARGHEZZA";
     private final String COL_IMMAGINE="IMMAGINE";
@@ -133,7 +135,17 @@ public class DBHelper extends SQLiteOpenHelper {
         res.close();
         db.close();
 
-        return new Piano(nPiano);
+        Piano attuale = null;
+        int index = 0;
+        do {
+            if(PosizioneUtente.getEdificioAttuale().getPiani().get(index).toString().equals(nPiano)) {
+                attuale = PosizioneUtente.getEdificioAttuale().getPiani().get(index);
+            }
+            index++;
+        } while(attuale==null && index < PosizioneUtente.getEdificioAttuale().getPiani().size());
+
+
+        return attuale;
     }
 
     //passandogli l'id del beacon mi restituisce le coordinate x e y
@@ -201,13 +213,30 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
+    public ArrayList<Tronco> initTronchi(String nomePiano) {
+        SQLiteDatabase db = this.getReadableDatabase();
 
-    public ArrayList<Tronco> initTronchi(String string) {
-        return new ArrayList<>();
+        String sql = " SELECT "+COL_LARGHEZZA+","+COL_X+","+COL_Y+","+COL_XF+","+COL_YF+
+                     " FROM "+TABLE_TRONCO+ " WHERE "+COL_PIANO+"="+nomePiano;
+
+        Cursor res = db.rawQuery(sql,null);
+        ArrayList<Tronco> listaTronchi = new ArrayList<>();
+        res.moveToFirst();
+        while(res.moveToNext()) {
+            listaTronchi.add(new Tronco(
+                    new PointF(res.getFloat(res.getColumnIndex(COL_X)), res.getFloat(res.getColumnIndex(COL_Y))),
+                    new PointF(res.getFloat(res.getColumnIndex(COL_XF)), res.getFloat(res.getColumnIndex(COL_YF))),
+                    res.getDouble(res.getColumnIndex(COL_LARGHEZZA))));
+        }
+        res.close();
+        db.close();
+
+        return listaTronchi;
+
+
     }
 
-
-//id_tronco string string dato un tronco voglio tutti i beacon del tronco
+    //id_tronco string string dato un tronco voglio tutti i beacon del tronco
     public HashMap<String,Beacon> initBeacons(Tronco troncoAttuale) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -227,11 +256,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return
 
-
     }
 
     public String queryMappa(Edificio edificio, Piano piano) {
-
         return new String();
     }
 
