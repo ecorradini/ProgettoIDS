@@ -13,7 +13,7 @@ public class Edificio {
 
     public Edificio(String nome) {
         this.nome = nome;
-        this.getPianiDB();
+        getPianiDB();
     }
 
     public Piano getPiano(int index) {
@@ -25,7 +25,7 @@ public class Edificio {
     }
 
     private void getPianiDB(){
-
+        piani = PosizioneUtente.getDbReference().initPiani(nome);
     }
 
     public ArrayList<Piano> getPiani() {

@@ -48,6 +48,7 @@ public class PosizioneUtente {
 
     public static void getInfoByBeaconID(String beaconAttuale) {
         edificioAttuale = dbReference.initEdificioAttuale(beaconAttuale);
+        pianoAttuale = dbReference.initPianoAttuale(edificioAttuale,beaconAttuale);
     }
 
     private static void initBluetooth(Context context) {
@@ -98,4 +99,5 @@ public class PosizioneUtente {
         return pianoAttuale;
     }
 
+    public static DBHelper getDbReference() { return dbReference; }
 }
