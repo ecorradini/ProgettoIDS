@@ -3,6 +3,7 @@ package it.getout.gestionevisualizzazionemappa;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Point;
+import android.graphics.PointF;
 import android.util.AttributeSet;
 
 import it.getout.gestioneposizione.Percorso;
@@ -29,7 +30,7 @@ public class MappaView extends android.support.v7.widget.AppCompatImageView{
 
     }
 
-    public void disegnaPosizione(Canvas canvas, Point point) {
+    public void disegnaPosizione(Canvas canvas, PointF point) {
 
     }
 

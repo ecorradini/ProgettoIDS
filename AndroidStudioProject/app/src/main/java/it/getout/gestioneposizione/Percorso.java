@@ -14,7 +14,7 @@ public class Percorso {
     private ArrayList<Tronco> tronchi;
     private PointF Destinazione;
 
-    public Percorso(PointF destinazione, Point partenza){
+    public Percorso(PointF destinazione, PointF partenza){
         this.Destinazione = destinazione;
     }
 
