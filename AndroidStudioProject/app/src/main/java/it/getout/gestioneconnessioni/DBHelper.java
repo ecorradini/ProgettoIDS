@@ -116,6 +116,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //passatogli l'id del beacon mi restituisce il piano
     public Piano initPianoAttuale(Edificio edificio, String idBeacon){
+        SQLiteDatabase db = this.getReadableDatabase();
+
         String sql = "SELECT "+TABLE_PIANO+"."+COL_NOME+" AS NOME_PIANO"+
                 " FROM "+TABLE_BEACON+","+TABLE_TRONCO+","+TABLE_PIANO+","+TABLE_EDIFICIO+
                 " WHERE "+TABLE_BEACON+"."+COL_ID+"="+idBeacon+" AND "+
@@ -123,9 +125,13 @@ public class DBHelper extends SQLiteOpenHelper {
                 TABLE_PIANO+"."+COL_NOME+"="+TABLE_TRONCO+"."+COL_PIANO+" AND "+TABLE_PIANO+
                 "."+COL_EDIFICIO+" = "+TABLE_EDIFICIO+"."+COL_NOME;
 
+        Cursor res = db.rawQuery(sql,null);
+        res.moveToFirst();
+        String nPiano = res.getString(res.getColumnIndex("NOME_PIANO"));
+        res.close();
+        db.close();
 
-        new Piano=nome;
-        return nome;
+        return new Piano(nPiano);
     }
 
     public Point getPosizione(String string) {
