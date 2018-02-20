@@ -25,25 +25,25 @@ import static android.provider.Settings.Global.BLUETOOTH_ON;
 public class PosizioneUtente {
 
     //Coordinate dell'utente
-    private PointF posizione;
+    private static PointF posizione;
     //Istanza dell'edificio in cui si trova l'utente
-    private Edificio edificioAttuale;
+    private static Edificio edificioAttuale;
     //Istanza del piano in cui si trova l'utente
-    private Piano pianoAttuale;
+    private static Piano pianoAttuale;
     //Istanza dell'attuale percorso calcolato
-    private Percorso percorso;
+    private static Percorso percorso;
     //Istanza dell'Adapter Bluetooth
-    private BluetoothAdapter btAdapter;
+    private static BluetoothAdapter btAdapter;
     //Istanza del gestore Database SQLite
-    private DBHelper dbReference;
+    private static DBHelper dbReference;
     public static final int REQUEST_ENABLE_BT = 1;
 
-    public void init(Context context) {
+    public static void init(Context context) {
         dbReference = new DBHelper(context);
         initBluetooth(context);
     }
 
-    private void initBluetooth(Context context) {
+    private static void initBluetooth(Context context) {
 
         if (btAdapter == null) {
             btAdapter = BluetoothAdapter.getDefaultAdapter();  // Local Bluetooth adapter
@@ -57,7 +57,7 @@ public class PosizioneUtente {
 
     }
 
-    private ArrayList<BluetoothDevice> scansionaBluetooth(){
+    private static ArrayList<BluetoothDevice> scansionaBluetooth(){
         //ArrayAdapter adapter = null;
         ArrayList<BluetoothDevice> array = null;
         ArrayList<String> btst = null;
@@ -71,23 +71,23 @@ public class PosizioneUtente {
         return array;
     }
 
-    private String getBeaconId(ArrayList<BluetoothDevice> Array){
+    private static String getBeaconId(ArrayList<BluetoothDevice> Array){
         return null;
     }
 
-    public void setPosizione(String beaconID){
+    public static void setPosizione(String beaconID){
         posizione = dbReference.getPosizione(beaconID);
     }
 
-    public PointF getPosizione(){ return posizione; }
+    public static PointF getPosizione(){ return posizione; }
 
-    public Percorso getPercorso(PointF point){
+    public static Percorso getPercorso(PointF point){
         return percorso;
     }
 
-    public Edificio getEdificioAttuale(){ return edificioAttuale; }
+    public static Edificio getEdificioAttuale(){ return edificioAttuale; }
 
-    public Piano getPianoAttuale(){
+    public static Piano getPianoAttuale(){
         return pianoAttuale;
     }
 

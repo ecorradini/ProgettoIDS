@@ -15,6 +15,7 @@ import it.getout.gestioneposizione.Aula;
 import it.getout.gestioneposizione.Beacon;
 import it.getout.gestioneposizione.Edificio;
 import it.getout.gestioneposizione.Piano;
+import it.getout.gestioneposizione.PosizioneUtente;
 import it.getout.gestioneposizione.Tronco;
 
 /**
@@ -152,7 +153,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    //
+    // dato un nome dell'edificio restituisce la lista dei suoi piani
     public ArrayList<Piano> initPiani(String nomeEdificio) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -171,9 +172,37 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public ArrayList<Aula> initAule(String string) {
-        return new ArrayList<>();
+    // dato un nome del piano restituisce tutte le sue aule
+    public ArrayList<Aula> initAule(String nomePiano) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String sql = " SELECT "+COL_NOME+","+COL_X+","+COL_Y+ " FROM "+TABLE_AULA+ " WHERE "+COL_PIANO+"="+nomePiano;
+
+        Piano attuale = null;
+        int index = 0;
+        do {
+            if(PosizioneUtente.getEdificioAttuale().getPiani().get(index).toString().equals(nomePiano)) {
+                attuale = PosizioneUtente.getEdificioAttuale().getPiani().get(index);
+            }
+            index++;
+        } while(attuale==null && index < PosizioneUtente.getEdificioAttuale().getPiani().size());
+
+        Cursor res = db.rawQuery(sql,null);
+        ArrayList<Aula> listaAule = new ArrayList<>();
+        res.moveToFirst();
+        while(res.moveToNext()) {
+            listaAule.add(new Aula(res.getString(res.getColumnIndex(COL_NOME)),
+                    new PointF(res.getFloat(res.getColumnIndex(COL_X)),res.getFloat(res.getColumnIndex(COL_Y))),attuale));
+        }
+        res.close();
+        db.close();
+
+        return listaAule;
     }
+
+
+
+
 
     public ArrayList<Tronco> initTronchi(String string) {
         return new ArrayList<>();
