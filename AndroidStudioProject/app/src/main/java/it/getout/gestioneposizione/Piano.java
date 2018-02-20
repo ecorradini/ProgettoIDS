@@ -27,7 +27,7 @@ public class Piano {
     }
 
     private void getAuleDB(String nome) {
-        PosizioneUtente.getDbReference().initAule(nome);
+        aule = PosizioneUtente.getDbReference().initAule(nome);
     }
 
     public ArrayList<Tronco> getTronchi(){
