@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import it.getout.gestioneconnessioni.DBHelper;
+
 import static android.provider.Settings.Global.BLUETOOTH_ON;
 
 /**
@@ -16,16 +18,24 @@ import static android.provider.Settings.Global.BLUETOOTH_ON;
 
 public class PosizioneUtente {
 
+    //Coordinate dell'utente
     private Point posizione;
+    //Istanza dell'edificio in cui si trova l'utente
     private Edificio edificioAttuale;
+    //Istanza del piano in cui si trova l'utente
     private Piano pianoAttuale;
+    //Istanza dell'attuale percorso calcolato
     private Percorso percorso;
+    //Istanza dell'Adapter Bluetooth
+    private BluetoothAdapter btAdapter;
+    //Istanza del gestore Database SQLite
+    private DBHelper dbReference;
 
     public void init(){
 
     }
 
-    public void initBluetooth(BluetoothAdapter btAdapter){
+    public void initBluetooth(){
         btAdapter = BluetoothAdapter.getDefaultAdapter();  // Local Bluetooth adapter
     }
 

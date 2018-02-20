@@ -28,7 +28,7 @@ public class Mappa {
     }
 
     public static Bitmap getMappa() {
-        return immagine;            //ritorno cosa? messo a caso
+        return immagine;
     }
 
     private static void convertiDaBase64(String base64Image) {
