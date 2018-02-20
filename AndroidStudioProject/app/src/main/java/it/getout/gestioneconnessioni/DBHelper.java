@@ -103,7 +103,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 " FROM "+TABLE_EDIFICIO+","+TABLE_PIANO+","+TABLE_TRONCO+","+TABLE_BEACON+
                 " WHERE "+TABLE_BEACON+"."+COL_TRONCO+"="+TABLE_TRONCO+"."+COL_ID+" AND "+
                 TABLE_TRONCO+"."+COL_PIANO+"="+TABLE_PIANO+"."+COL_NOME+" AND "+
-                TABLE_PIANO+"."+COL_EDIFICIO+"="+TABLE_EDIFICIO+"."+COL_NOME;
+                TABLE_PIANO+"."+COL_EDIFICIO+"="+TABLE_EDIFICIO+"."+COL_NOME+
+                TABLE_BEACON+"."+COL_ID+"="+idBeacon;
         Cursor res = db.rawQuery(sql,null);
         res.moveToFirst();
         String nEdificio = res.getString(res.getColumnIndex("NOME_EDIFICIO"));
