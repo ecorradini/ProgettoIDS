@@ -37,11 +37,12 @@ public class PosizioneUtente {
     private DBHelper dbReference;
     public static final int REQUEST_ENABLE_BT = 1;
 
-    public void init() {
-
+    public void init(Context context) {
+        dbReference = new DBHelper(context);
+        initBluetooth(context);
     }
 
-    public void initBluetooth(Context context) {
+    private void initBluetooth(Context context) {
 
         if (btAdapter == null) {
             btAdapter = BluetoothAdapter.getDefaultAdapter();  // Local Bluetooth adapter
@@ -79,17 +80,13 @@ public class PosizioneUtente {
 
     }
 
-    public void getPosizione(){
-
-    }
+    public Point getPosizione(){ return posizione; }
 
     public Percorso getPercorso(Point point){
         return percorso;
     }
 
-    public Edificio getEdificioAttuale(){
-        return edificioAttuale;
-    }
+    public Edificio getEdificioAttuale(){ return edificioAttuale; }
 
     public Piano getPianoAttuale(){
         return pianoAttuale;
