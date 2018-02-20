@@ -2,11 +2,16 @@ package it.getout.gestioneposizione;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import it.getout.gestioneconnessioni.DBHelper;
 
@@ -30,17 +35,40 @@ public class PosizioneUtente {
     private BluetoothAdapter btAdapter;
     //Istanza del gestore Database SQLite
     private DBHelper dbReference;
+    public static final int REQUEST_ENABLE_BT = 1;
 
-    public void init(){
+    public void init() {
 
     }
 
-    public void initBluetooth(){
-        btAdapter = BluetoothAdapter.getDefaultAdapter();  // Local Bluetooth adapter
+    public void initBluetooth(Context context) {
+
+        if (btAdapter == null) {
+            btAdapter = BluetoothAdapter.getDefaultAdapter();  // Local Bluetooth adapter
+        }
+        // Is Bluetooth turned on?
+        if (!btAdapter.isEnabled()) {
+            // Prompt user to turn on Bluetooth (logic continues in onActivityResult()).
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            ((AppCompatActivity) context).startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        }
+
     }
+
+
 
     private ArrayList<BluetoothDevice> scansionaBluetooth(){
-return null;
+        //ArrayAdapter adapter = null;
+        ArrayList<BluetoothDevice> array = null;
+        ArrayList<String> btst = null;
+        Set<BluetoothDevice> dispositivi;
+        dispositivi = btAdapter.getBondedDevices();
+        array.clear();
+        //BluetoothDevice b = (BluetoothDevice) dispositivi;
+        for(BluetoothDevice bt : dispositivi){
+            btst.add(bt.getName());
+        }
+        return array;
     }
 
     private String getBeaconId(ArrayList<BluetoothDevice> Array){
