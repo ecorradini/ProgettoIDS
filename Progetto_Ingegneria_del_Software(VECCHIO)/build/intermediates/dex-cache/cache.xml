@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="/home/picsi/.android/build-cache/f861e3f3bd792719428a539ff9d99f91e1d7a2df/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="94bc1dfb84dcc8b6f6f8f7cc726d7b2dd39c1574">
+        <dex dex="/home/picsi/AndroidStudioProjects/Progetto_Ingegneria_del_Software/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_763d9b8dfed5f9c39f2f93dd3e615b6c98d73339/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/picsi/.android/build-cache/a82d6fef313ebad1059a2f6a5bdf0b042426a1c4/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="09b462bbcb77650284bd6614f1a32f360ef369f8">
+        <dex dex="/home/picsi/AndroidStudioProjects/Progetto_Ingegneria_del_Software/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_e0acc32e9dd67636ac0c099e63a7bdc560bdd38d/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/picsi/.android/build-cache/8f85d5a2b8d95fee819242937d73262337b8072f/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="e7f3132168957eefc46229fc32c3bd464642b71e">
+        <dex dex="/home/picsi/AndroidStudioProjects/Progetto_Ingegneria_del_Software/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_0dbd266a42139e9e185fac0895d484a6c935a59c/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/picsi/.android/build-cache/cd95862b81ad346215c4f8308c1cb74f3db0327b/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="7521486d9bfd2cd9e756e0cf75ed7d97f2ce2d3b">
+        <dex dex="/home/picsi/AndroidStudioProjects/Progetto_Ingegneria_del_Software/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_eb8bc12c7127a85d8c19e58e695a4b82c6962f00/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/picsi/.android/build-cache/a82d6fef313ebad1059a2f6a5bdf0b042426a1c4/output/jars/libs/internal_impl-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="fbf8da429efd5ad21e02e3e5ecaa1efc4167878d">
+        <dex dex="/home/picsi/AndroidStudioProjects/Progetto_Ingegneria_del_Software/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-24.2.1_48dcbf78cff296001f419a0d76360e97743e16bd/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/picsi/.android/build-cache/8f4f5be0e6ca7f1e77bfdf5dd78a685db4cef8b1/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="9c4c3bc902450c39ed54de170db4fb12aea20a35">
+        <dex dex="/home/picsi/AndroidStudioProjects/Progetto_Ingegneria_del_Software/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_6fcc2688e28c4bb4ec98ac5f7efea37a8c47ae56/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/picsi/.android/build-cache/51b9048940ab2ba42ac4a0e904a883396a73407e/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="43b2dba6b5a0b14527961b75329d0b90025f15ea">
+        <dex dex="/home/picsi/AndroidStudioProjects/Progetto_Ingegneria_del_Software/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_3df9527e1f0eadb81e26547c91b63cfbc8717ccd/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/picsi/.android/build-cache/8f4f5be0e6ca7f1e77bfdf5dd78a685db4cef8b1/output/jars/libs/internal_impl-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="935a969265b2a166b2d20415423f5f6e90fe16e0">
+        <dex dex="/home/picsi/AndroidStudioProjects/Progetto_Ingegneria_del_Software/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-24.2.1_8ae504baf3c7029fd09b082fb5ac15f15ba4f883/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/picsi/.android/build-cache/8f85d5a2b8d95fee819242937d73262337b8072f/output/jars/libs/internal_impl-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="867dad63c33388ff8c7644b236579355036d075f">
+        <dex dex="/home/picsi/AndroidStudioProjects/Progetto_Ingegneria_del_Software/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-24.2.1_d4fa6a0342746b72a3eb8f10a36c0822dc544a37/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/picsi/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/24.2.1/support-annotations-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="8de3aafecbdf98a61db6427f008f2d515bcd2544">
+        <dex dex="/home/picsi/AndroidStudioProjects/Progetto_Ingegneria_del_Software/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-24.2.1_3f2ec41e21cb5b70251e2b8d24d65fae85c5492a/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/picsi/AndroidStudioProjects/Progetto_Ingegneria_del_Software/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="b86cac7010a54306284aa6298cb28a9b3081c311">
+        <dex dex="/home/picsi/AndroidStudioProjects/Progetto_Ingegneria_del_Software/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_3d5cdcf7187e9a615bfbda82e1b13032afbc208c/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/picsi/AndroidStudioProjects/Progetto_Ingegneria_del_Software/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="/home/picsi/AndroidStudioProjects/Progetto_Ingegneria_del_Software/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_2820f279facd12130f2621eec58ff3cdbf0b7c54/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/picsi/.android/build-cache/7275f893fcdea7bc02548b89e7ea8cc12def6416/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="/home/picsi/AndroidStudioProjects/Progetto_Ingegneria_del_Software/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_0ce90ce1578680289634195c31429247eceedb77/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/picsi/.android/build-cache/1e54a77c072f2374967dd5e975eebb3cbe933a04/output/jars/libs/internal_impl-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="7e4389bd133359a2ff88623ff1e4ff93d6e6f780">
+        <dex dex="/home/picsi/AndroidStudioProjects/Progetto_Ingegneria_del_Software/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-24.2.1_8b0ed592d8f5514d8d421fec45ab471ce81c3d58/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/picsi/.android/build-cache/bbed250b9a3fd744a28f6a3f98961e9aea93ccf0/output/jars/libs/internal_impl-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="5f64d657e838e8375135c0f6057a7ff8fab6a50e">
+        <dex dex="/home/picsi/AndroidStudioProjects/Progetto_Ingegneria_del_Software/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-24.2.1_c94285e4c507f0175d46a25bca11f1e8ca34dd9a/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/picsi/.android/build-cache/1e54a77c072f2374967dd5e975eebb3cbe933a04/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="0ecb4b595fa0f0f8018a149ace3ea6525624f94e">
+        <dex dex="/home/picsi/AndroidStudioProjects/Progetto_Ingegneria_del_Software/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_6c1f8dfec19e8553530f4ebead45e0039f6739ba/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/picsi/.android/build-cache/bbed250b9a3fd744a28f6a3f98961e9aea93ccf0/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="b9a1ac78ad7ef3abedc4a4b30cd92bcacb939d1f">
+        <dex dex="/home/picsi/AndroidStudioProjects/Progetto_Ingegneria_del_Software/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_8ea2ed650a0f1b77aa0ae779e7091d15ad1d4d81/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/picsi/.android/build-cache/fbc1fcd75e072e7a114e4c42f623c1998c41917f/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="e03f47f3d1017a093bb3239d4ec47c3447f40744">
+        <dex dex="/home/picsi/AndroidStudioProjects/Progetto_Ingegneria_del_Software/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_7cd4a62283f2e85f30375c3884018c8372dd9fa9/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/picsi/.android/build-cache/03537978952ab3ff0b5df47209d7ddff1b8a9678/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="d5c731fc64c03dfe04d51134955b483551c35849">
+        <dex dex="/home/picsi/AndroidStudioProjects/Progetto_Ingegneria_del_Software/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_31e41a941ecec597060097e326b18114e1eccb42/classes.dex" />
+    </item>
+
+</items>
