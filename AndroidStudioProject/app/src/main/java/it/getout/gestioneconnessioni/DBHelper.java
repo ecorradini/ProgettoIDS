@@ -43,6 +43,8 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String COL_PIANO="PIANO";
     private final String COL_X="X";
     private final String COL_Y="Y";
+    private final String COL_XF="XF"; // x del beacon di fine del tronco
+    private final String COL_YF="YF"; // y del beacon di fine del tronco
     private final String COL_ID="ID";
     private final String COL_LARGHEZZA="LARGHEZZA";
     private final String COL_IMMAGINE="IMMAGINE";
@@ -201,11 +203,27 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
+    public ArrayList<Tronco> initTronchi(String nomePiano) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String sql = " SELECT "+COL_LARGHEZZA+","+COL_X+","+COL_Y+","+COL_XF+","+COL_YF+
+                     " FROM "+TABLE_TRONCO+ " WHERE "+COL_PIANO+"="+nomePiano;
+
+        Cursor res = db.rawQuery(sql,null);
+        ArrayList<Tronco> listaTronchi = new ArrayList<>();
+        res.moveToFirst();
+        while(res.moveToNext()) {
+            listaTronchi.add(new Tronco(
+                    new PointF(res.getFloat(res.getColumnIndex(COL_X)), res.getFloat(res.getColumnIndex(COL_Y))),
+                    new PointF(res.getFloat(res.getColumnIndex(COL_XF)), res.getFloat(res.getColumnIndex(COL_YF))),
+                    res.getDouble(res.getColumnIndex(COL_LARGHEZZA))));
+        }
+        res.close();
+        db.close();
+
+        return listaTronchi;
 
 
-
-    public ArrayList<Tronco> initTronchi(String string) {
-        return new ArrayList<>();
     }
 
     public HashMap<String,Beacon> initBeacons(Tronco tronco) {
