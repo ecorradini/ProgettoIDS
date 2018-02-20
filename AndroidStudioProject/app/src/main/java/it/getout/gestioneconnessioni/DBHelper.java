@@ -135,6 +135,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return new Piano(nPiano);
     }
 
+    //passandogli l'id del beacon mi restituisce le coordinate x e y
     public PointF getPosizione(String idBeacon) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -150,8 +151,24 @@ public class DBHelper extends SQLiteOpenHelper {
         return pos;
     }
 
-    public ArrayList<Piano> initPiani(String string) {
-        return new ArrayList();                 //fatto a caso
+
+    //
+    public ArrayList<Piano> initPiani(String nomeEdificio) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String sql = " SELECT "+COL_NOME+ " FROM "+TABLE_PIANO+ " WHERE "+COL_EDIFICIO+"="+nomeEdificio;
+
+        Cursor res = db.rawQuery(sql,null);
+        ArrayList<Piano> listaPiani = new ArrayList<>();
+        res.moveToFirst();
+        while(res.moveToNext()) {
+            listaPiani.add(new Piano(res.getString(res.getColumnIndex(COL_NOME))));
+        }
+        res.close();
+        db.close();
+
+        return listaPiani;
+
     }
 
     public ArrayList<Aula> initAule(String string) {
