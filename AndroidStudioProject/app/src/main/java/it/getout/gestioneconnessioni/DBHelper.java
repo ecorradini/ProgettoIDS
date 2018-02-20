@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Point;
+import android.graphics.PointF;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -114,7 +115,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    //passatogli l'id del beacon mi restituisce il piano
+    //passatogli l'id del beacon mi restituisce il piano  COL_CAZZOOOOOOOOOO
     public Piano initPianoAttuale(Edificio edificio, String idBeacon){
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -134,8 +135,19 @@ public class DBHelper extends SQLiteOpenHelper {
         return new Piano(nPiano);
     }
 
-    public Point getPosizione(String string) {
-        return new Point();                     //fatto a caso
+    public PointF getPosizione(String idBeacon) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String sql = "SELECT "+COL_X+","+COL_Y+
+                " FROM "+TABLE_BEACON+" WHERE "+TABLE_BEACON+"."+COL_ID+"="+idBeacon;
+
+        Cursor res = db.rawQuery(sql,null);
+        res.moveToFirst();
+        PointF pos = new PointF(res.getFloat(res.getColumnIndex(COL_X)),res.getFloat(res.getColumnIndex(COL_Y)));
+        res.close();
+        db.close();
+
+        return pos;
     }
 
     public ArrayList<Piano> initPiani(String string) {
