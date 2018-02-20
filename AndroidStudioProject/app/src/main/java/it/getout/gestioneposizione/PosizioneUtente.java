@@ -35,7 +35,7 @@ public class PosizioneUtente {
 
     }
 
-    public void initBluetooth(BluetoothAdapter btAdapter){
+    public void initBluetooth(){
         btAdapter = BluetoothAdapter.getDefaultAdapter();  // Local Bluetooth adapter
     }
 
