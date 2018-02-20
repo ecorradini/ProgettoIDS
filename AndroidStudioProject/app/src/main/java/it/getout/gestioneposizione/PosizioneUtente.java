@@ -30,17 +30,25 @@ public class PosizioneUtente {
     private static Edificio edificioAttuale;
     //Istanza del piano in cui si trova l'utente
     private static Piano pianoAttuale;
+    //Beacon al quale l'utente è collegato al momento
+    private static Beacon beaconAttuale;
     //Istanza dell'attuale percorso calcolato
     private static Percorso percorso;
     //Istanza dell'Adapter Bluetooth
     private static BluetoothAdapter btAdapter;
     //Istanza del gestore Database SQLite
     private static DBHelper dbReference;
+
     public static final int REQUEST_ENABLE_BT = 1;
 
     public static void init(Context context) {
         dbReference = new DBHelper(context);
         initBluetooth(context);
+    }
+
+    public static void getInfoByBeaconID(String beaconAttuale) {
+        edificioAttuale = dbReference.initEdificioAttuale(beaconAttuale);
+        pianoAttuale = dbReference.initPianoAttuale(edificioAttuale,beaconAttuale);
     }
 
     private static void initBluetooth(Context context) {
@@ -91,4 +99,5 @@ public class PosizioneUtente {
         return pianoAttuale;
     }
 
+    public static DBHelper getDbReference() { return dbReference; }
 }

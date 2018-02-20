@@ -14,8 +14,8 @@ public class Piano {
 
     public Piano(String nome){//String nome (va inserito come parametro costruttore
         this.nome = nome;
-        this.getAuleDB(this.nome);
-        this.getTronchiDB(this.nome);
+        getAuleDB(this.nome);
+        getTronchiDB(this.nome);
     }
 
     public ArrayList<Aula> getAule(){
@@ -27,6 +27,7 @@ public class Piano {
     }
 
     private void getAuleDB(String nome) {
+        aule = PosizioneUtente.getDbReference().initAule(nome);
     }
 
     public ArrayList<Tronco> getTronchi(){

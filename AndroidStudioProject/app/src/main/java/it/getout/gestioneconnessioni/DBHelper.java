@@ -135,7 +135,17 @@ public class DBHelper extends SQLiteOpenHelper {
         res.close();
         db.close();
 
-        return new Piano(nPiano);
+        Piano attuale = null;
+        int index = 0;
+        do {
+            if(PosizioneUtente.getEdificioAttuale().getPiani().get(index).toString().equals(nPiano)) {
+                attuale = PosizioneUtente.getEdificioAttuale().getPiani().get(index);
+            }
+            index++;
+        } while(attuale==null && index < PosizioneUtente.getEdificioAttuale().getPiani().size());
+
+
+        return attuale;
     }
 
     //passandogli l'id del beacon mi restituisce le coordinate x e y
