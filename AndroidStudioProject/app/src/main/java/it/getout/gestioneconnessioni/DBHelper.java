@@ -236,8 +236,26 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public HashMap<String,Beacon> initBeacons(Tronco tronco) {
-        return new HashMap<>();
+    //id_tronco string string dato un tronco voglio tutti i beacon del tronco
+    public HashMap<String,Beacon> initBeacons(Tronco troncoAttuale) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String sql = "SELECT "+TABLE_BEACON+"."+COL_ID+" AS ID_BEACON"+
+                ","+TABLE_BEACON+"."+COL_X+" AS X_BEACON"+
+                ","+TABLE_BEACON+"."+COL_Y+" AS Y_BEACON"+
+                " FROM "+TABLE_TRONCO+","+TABLE_BEACON+","+TABLE_PIANO+","+TABLE_EDIFICIO+
+                " WHERE "+TABLE_BEACON+"."+COL_TRONCO+"="+troncoAttuale.toString();
+
+        Cursor res = db.rawQuery(sql,null);
+        res.moveToFirst();
+
+
+
+        res.close();
+        db.close();
+
+        return
+
     }
 
     public String queryMappa(Edificio edificio, Piano piano) {
