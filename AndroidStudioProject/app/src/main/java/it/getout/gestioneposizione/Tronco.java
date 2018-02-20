@@ -1,6 +1,7 @@
 package it.getout.gestioneposizione;
 
 import android.graphics.Point;
+import android.graphics.PointF;
 
 import java.util.HashMap;
 
@@ -10,23 +11,23 @@ import java.util.HashMap;
 
 public class Tronco {
 
-    private Point inizio;
-    private Point fine;
+    private PointF inizio;
+    private PointF fine;
     private double larghezza;
     private HashMap<String,Beacon> beacons;
 
-    public Tronco(Point inizio, Point fine, double larghezza){
+    public Tronco(PointF inizio, PointF fine, double larghezza){
         this.inizio = inizio;
         this.fine = fine;
         this.larghezza = larghezza;
         this.getBeaconsDB();
     }
 
-    public Point getInizio(){
+    public PointF getInizio(){
         return inizio;
     }
 
-    public Point getFine(){
+    public PointF getFine(){
         return fine;
     }
 

@@ -1,6 +1,7 @@
 package it.getout.gestioneposizione;
 
 import android.graphics.Point;
+import android.graphics.PointF;
 
 import java.util.ArrayList;
 
@@ -11,9 +12,9 @@ import java.util.ArrayList;
 public class Percorso {
 
     private ArrayList<Tronco> tronchi;
-    private Point Destinazione;
+    private PointF Destinazione;
 
-    public Percorso(Point destinazione, Point partenza){
+    public Percorso(PointF destinazione, PointF partenza){
         this.Destinazione = destinazione;
     }
 
@@ -21,7 +22,7 @@ public class Percorso {
         return  tronchi;
     }
 
-    public Point getDestinazione(){
+    public PointF getDestinazione(){
         return Destinazione;
     }
 }

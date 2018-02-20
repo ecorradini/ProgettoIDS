@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
+import android.graphics.PointF;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
@@ -24,7 +25,7 @@ import static android.provider.Settings.Global.BLUETOOTH_ON;
 public class PosizioneUtente {
 
     //Coordinate dell'utente
-    private Point posizione;
+    private PointF posizione;
     //Istanza dell'edificio in cui si trova l'utente
     private Edificio edificioAttuale;
     //Istanza del piano in cui si trova l'utente
@@ -56,8 +57,6 @@ public class PosizioneUtente {
 
     }
 
-
-
     private ArrayList<BluetoothDevice> scansionaBluetooth(){
         //ArrayAdapter adapter = null;
         ArrayList<BluetoothDevice> array = null;
@@ -76,13 +75,13 @@ public class PosizioneUtente {
         return null;
     }
 
-    public void setPosizione(String string){
-
+    public void setPosizione(String beaconID){
+        posizione = dbReference.getPosizione(beaconID);
     }
 
-    public Point getPosizione(){ return posizione; }
+    public PointF getPosizione(){ return posizione; }
 
-    public Percorso getPercorso(Point point){
+    public Percorso getPercorso(PointF point){
         return percorso;
     }
 

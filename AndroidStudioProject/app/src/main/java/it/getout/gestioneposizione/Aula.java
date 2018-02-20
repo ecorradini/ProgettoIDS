@@ -1,6 +1,7 @@
 package it.getout.gestioneposizione;
 
 import android.graphics.Point;
+import android.graphics.PointF;
 
 /**
  * Created by Alessandro on 01/02/2018.
@@ -9,16 +10,16 @@ import android.graphics.Point;
 public class Aula {
 
     private String nome;
-    private Point entrata;
+    private PointF entrata;
     private Piano piano;
 
-    public Aula (String nome, Point entrata, Piano piano){
+    public Aula (String nome, PointF entrata, Piano piano){
         this.nome = nome;
         this.entrata = entrata;
         this.piano = piano;
     }
 
-    public Point getEntrata(){
+    public PointF getEntrata(){
         return entrata;
     }
 
