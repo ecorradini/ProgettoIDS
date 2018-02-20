@@ -1,6 +1,7 @@
 package it.getout.gestioneposizione;
 
 import android.graphics.Point;
+import android.graphics.PointF;
 
 /**
  * Created by Alessandro on 01/02/2018.
@@ -8,14 +9,14 @@ import android.graphics.Point;
 
 public class Beacon {
     private String id;
-    private Point posizione;
+    private PointF posizione;
 
-    public Beacon(String id, Point posizione){
+    public Beacon(String id, PointF posizione){
         this.id = id;
         this.posizione = posizione;
     }
 
-    public Point getPosizione(){
+    public PointF getPosizione(){
         return posizione;
     }
 
