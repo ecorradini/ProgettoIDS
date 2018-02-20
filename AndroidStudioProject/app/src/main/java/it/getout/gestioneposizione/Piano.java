@@ -39,7 +39,7 @@ public class Piano {
     }
 
     private void getTronchiDB(String nome){
-
+        tronchi = PosizioneUtente.getDbReference().initTronchi(nome);
     }
 
     public String toString(){
