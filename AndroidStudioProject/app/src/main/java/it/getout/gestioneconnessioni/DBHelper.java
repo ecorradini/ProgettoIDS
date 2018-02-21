@@ -267,8 +267,24 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public String queryMappa(Edificio edificio, Piano piano) {
-        return new String();
+
+    //passandogli un edificio ed un piano mi deve restituire la stringa in base64 dell'immagine del piano
+
+    public String queryMappa(Edificio edificioAttuale, Piano pianoAttuale) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String sql = "SELECT "+COL_IMMAGINE+                                //ricontrollare query, edificioAttuale serve?
+                " FROM "+TABLE_MAPPA+","+TABLE_PIANO+","+TABLE_EDIFICIO+
+                " WHERE "+TABLE_MAPPA+"."+COL_PIANO+"="+TABLE_PIANO+"."+pianoAttuale.toString()+
+                " AND "+TABLE_PIANO+"."+pianoAttuale.toString()+"="+TABLE_EDIFICIO+"."+pianoAttuale.toString();
+
+        Cursor res = db.rawQuery(sql,null);
+        res.moveToFirst();
+        String nImage = res.getString(res.getColumnIndex(COL_IMMAGINE));
+        res.close();
+        db.close();
+
+        return nImage ;
     }
 
 
