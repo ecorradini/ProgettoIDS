@@ -245,7 +245,7 @@ public class DBHelper extends SQLiteOpenHelper {
         String sql = "SELECT "+TABLE_BEACON+"."+COL_ID+" AS ID_BEACON"+
                 ","+TABLE_BEACON+"."+COL_X+" AS X_BEACON"+
                 ","+TABLE_BEACON+"."+COL_Y+" AS Y_BEACON"+
-                " FROM "+TABLE_TRONCO+","+TABLE_BEACON+","+TABLE_PIANO+","+TABLE_EDIFICIO+
+                " FROM "+TABLE_BEACON+
                 " WHERE "+TABLE_BEACON+"."+COL_TRONCO+"="+troncoAttuale.toString();
 
         Cursor res = db.rawQuery(sql,null);
@@ -255,9 +255,9 @@ public class DBHelper extends SQLiteOpenHelper {
         //Beacon(String id, PointF posizione)
         while(res.moveToNext()) {
             listaBeacon.put(        //metodo put per riempire un'hashmap
-                    new String(res.getString(res.getColumnIndex(COL_ID))),
+                    res.getString(res.getColumnIndex(COL_ID)),
                     new Beacon(
-                        new String(res.getString(res.getColumnIndex("ID_BEACON"))),
+                        res.getString(res.getColumnIndex("ID_BEACON")),
                         new PointF(res.getFloat(res.getColumnIndex("X_BEACON")), res.getFloat(res.getColumnIndex("Y_BEACON")))));
         }
         res.close();
@@ -270,13 +270,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //passandogli un edificio ed un piano mi deve restituire la stringa in base64 dell'immagine del piano
 
-    public String queryMappa(Edificio edificioAttuale, Piano pianoAttuale) {
+    public String queryMappa(Piano pianoAttuale) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String sql = "SELECT "+COL_IMMAGINE+                                //ricontrollare query, edificioAttuale serve?
-                " FROM "+TABLE_MAPPA+","+TABLE_PIANO+","+TABLE_EDIFICIO+
-                " WHERE "+TABLE_MAPPA+"."+COL_PIANO+"="+TABLE_PIANO+"."+pianoAttuale.toString()+
-                " AND "+TABLE_PIANO+"."+pianoAttuale.toString()+"="+TABLE_EDIFICIO+"."+pianoAttuale.toString();
+        String sql = "SELECT "+COL_IMMAGINE+
+                " FROM "+TABLE_MAPPA+
+                " WHERE "+COL_PIANO+"="+pianoAttuale.toString();
 
         Cursor res = db.rawQuery(sql,null);
         res.moveToFirst();
