@@ -237,6 +237,8 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //id_tronco string string dato un tronco voglio tutti i beacon del tronco
+    //non capisco Strng dentro hasmap visto che sarebbe la stessa stringa contenuta nell'oggetto Beacon
+
     public HashMap<String,Beacon> initBeacons(Tronco troncoAttuale) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -248,13 +250,20 @@ public class DBHelper extends SQLiteOpenHelper {
 
         Cursor res = db.rawQuery(sql,null);
         res.moveToFirst();
+        HashMap<String, Beacon> listaBeacon = new HashMap<String, Beacon>();
 
-
-
+        //Beacon(String id, PointF posizione)
+        while(res.moveToNext()) {
+            listaBeacon.put(        //metodo put per riempire un'hashmap
+                    new String(res.getString(res.getColumnIndex(COL_ID))),
+                    new Beacon(
+                        new String(res.getString(res.getColumnIndex("ID_BEACON"))),
+                        new PointF(res.getFloat(res.getColumnIndex("X_BEACON")), res.getFloat(res.getColumnIndex("Y_BEACON")))));
+        }
         res.close();
         db.close();
 
-        return
+        return listaBeacon;
 
     }
 
