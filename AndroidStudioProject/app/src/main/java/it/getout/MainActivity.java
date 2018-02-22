@@ -1,6 +1,7 @@
 package it.getout;
 
 import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -30,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
         //attivazione del bluetooth (qualora non sia già funzionante)
         if(!btAdapter.isEnabled()) btHelper.activateBluetooth();
 
-
-}
-
+        btHelper.discoverBLEDevices();
+    }
 }

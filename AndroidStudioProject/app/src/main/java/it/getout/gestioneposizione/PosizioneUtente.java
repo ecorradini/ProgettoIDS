@@ -14,6 +14,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Set;
 
+import it.getout.gestioneconnessioni.BluetoothHelper;
 import it.getout.gestioneconnessioni.DBHelper;
 
 import static android.provider.Settings.Global.BLUETOOTH_ON;
@@ -36,6 +37,8 @@ public class PosizioneUtente {
     private static Percorso percorso;
     //Istanza dell'Adapter Bluetooth
     private static BluetoothAdapter btAdapter;
+    //scanner per ricercare i dispositivi beacon
+    private static BluetoothHelper btHelper;
     //Istanza del gestore Database SQLite
     private static DBHelper dbReference;
 
@@ -50,32 +53,27 @@ public class PosizioneUtente {
         edificioAttuale = dbReference.initEdificioAttuale(beaconAttuale);
         pianoAttuale = dbReference.initPianoAttuale(edificioAttuale,beaconAttuale);
     }
-
+    /**
+    *Metodo che inizializza il bluetooth e tutte le sue fasi(scanner)
+     */
     private static void initBluetooth(Context context) {
 
         if (btAdapter == null) {
             btAdapter = BluetoothAdapter.getDefaultAdapter();  // Local Bluetooth adapter
+            btHelper = new BluetoothHelper(btAdapter, ((AppCompatActivity) context));
         }
         // Is Bluetooth turned on?
         if (!btAdapter.isEnabled()) {
             // Prompt user to turn on Bluetooth (logic continues in onActivityResult()).
-            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            ((AppCompatActivity) context).startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+            btHelper.activateBluetooth();
         }
-
     }
-
+    /**
+     *Metodo che si adopera ad effettuare lo scan dei dispositivi bluetooth
+     */
     private static ArrayList<BluetoothDevice> scansionaBluetooth(){
-        ArrayAdapter adapter = null;
-        ArrayList<BluetoothDevice> array = null;/*
-        ArrayList<String> btst = null;
-        Set<BluetoothDevice> dispositivi;
-        dispositivi = btAdapter.getBondedDevices();
-        array.clear();
-        //BluetoothDevice b = (BluetoothDevice) dispositivi;
-        for(BluetoothDevice bt : dispositivi){
-            btst.add(bt.getName());
-        }*/
+        ArrayList<BluetoothDevice> array = null;
+        btHelper.discoverBLEDevices();
         return array;
     }
 
