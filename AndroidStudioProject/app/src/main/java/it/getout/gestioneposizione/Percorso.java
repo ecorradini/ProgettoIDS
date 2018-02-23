@@ -15,9 +15,9 @@ public class Percorso {
     private ArrayList<Tronco> tronchi;
     private PointF destinazione;
 
-    public Percorso(PointF partenza, PointF destinazione) {
+    public Percorso(PointF destinazione) {
         this.destinazione = destinazione;
-        PosizioneUtente.getServerReference().richiediPercorso(partenza,destinazione);
+        PosizioneUtente.getServerReference().richiediPercorso(destinazione);
     }
 
     public PointF getDestinazione(){
