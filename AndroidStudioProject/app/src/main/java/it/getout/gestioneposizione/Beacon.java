@@ -24,5 +24,11 @@ public class Beacon {
         return this.posizione;
     }
 
+    public void setId(String id){
+        this.id = id;
+    }
 
+    public void setPosizione(PointF posizione){
+        this.posizione = posizione;
+    }
 }

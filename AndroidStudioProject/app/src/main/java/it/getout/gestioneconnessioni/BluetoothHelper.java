@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static android.content.ContentValues.TAG;
-import static it.getout.gestioneposizione.PosizioneUtente.REQUEST_ENABLE_BT;
 
 /**
  * Created by Alessandro on 20/02/2018.
@@ -32,6 +31,10 @@ public class BluetoothHelper {
 
     private static Context context;
 
+    public static final int REQUEST_ENABLE_BT = 1;
+
+    //istanza dell'adapter relativo al bluetooth
+    private BluetoothAdapter bluetoothAdapter;
     //rappresenta il beacon più vicino, con cui si deve effettuare il collegamento
     private BluetoothDevice currentBeacon;
     //rappresenta il beacon trovato dallo scan
@@ -50,9 +53,8 @@ public class BluetoothHelper {
     private ScanFilter scanFilter;
     private ScanSettings scanSettings;
     private List<ScanFilter> scanFilters;
-    private BluetoothAdapter bluetoothAdapter;
 
-    //identificativo del messaggio che si può ricevere
+    //flag per verificare che lo scan sia concluso
     public boolean terminatedScan = false;
 
     private static Activity activity;
@@ -66,9 +68,9 @@ public class BluetoothHelper {
         //insieme di UUID riconosciuti dallo scan e relativa inizializzazione
         uuids = new UUID[1];
         uuids[0] = UUID.fromString(beaconUUID);
+
         //inizializzati gli elementi per lo scan
         scanFilter = new ScanFilter.Builder().setServiceUuid(new ParcelUuid(UUID.fromString(beaconUUID))).build();
-
         scanFilters = new ArrayList<>();
         scanFilters.add(scanFilter);
         scanSettings = new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build();

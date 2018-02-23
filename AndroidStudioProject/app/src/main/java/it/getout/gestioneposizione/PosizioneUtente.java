@@ -2,24 +2,16 @@ package it.getout.gestioneposizione;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothManager;
+
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Point;
 import android.graphics.PointF;
-import android.support.v7.app.AppCompatActivity;
-import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 import it.getout.gestioneconnessioni.BluetoothHelper;
 import it.getout.gestioneconnessioni.DBHelper;
 import it.getout.gestioneconnessioni.ServerHelper;
 import it.getout.gestionevisualizzazionemappa.Mappa;
-
-import static android.provider.Settings.Global.BLUETOOTH_ON;
 
 /**
  * Created by Alessandro on 01/02/2018.
@@ -45,9 +37,8 @@ public class PosizioneUtente {
     private static DBHelper dbReference;
     //Istanza del gestore Server
     private static ServerHelper serverRefence;
-    private static ArrayList<BluetoothDevice> btdevice;
-
-    public static final int REQUEST_ENABLE_BT = 1;
+    //Istanza del descrittore dei dispositivi bluetooth
+    private static BluetoothDevice device;
 
     public static void init(Context context) {
         dbReference = new DBHelper(context);
@@ -75,19 +66,20 @@ public class PosizioneUtente {
             btHelper.activateBluetooth();
         }
 
-        btHelper = new BluetoothHelper(btAdapter, ((AppCompatActivity) context));
+        btHelper = new BluetoothHelper(btAdapter, context);
         btHelper.discoverBLEDevices();
     }
     /**
      *Metodo che si adopera ad effettuare lo scan dei dispositivi bluetooth
      */
     private static BluetoothDevice scansionaBluetooth(){
-        BluetoothDevice array = null;
         btHelper.discoverBLEDevices();
         while(!btHelper.getTerminatedscan()){
-            array = btHelper.getCurrentBeacon();
+            device = btHelper.getCurrentBeacon();
         }
-        return array;
+        //memorizzo beaconAttusle all'interno dell'oggetto Beacon
+        beaconAttuale.setId(device.getAddress());
+        return device;
     }
 
     private static String getBeaconId(ArrayList<BluetoothDevice> Array){
