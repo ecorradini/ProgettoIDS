@@ -44,6 +44,7 @@ public class PosizioneUtente {
     private static DBHelper dbReference;
     //Istanza del gestore Server
     private static ServerHelper serverRefence;
+    private static ArrayList<BluetoothDevice> btdevice;
 
     public static final int REQUEST_ENABLE_BT = 1;
 
@@ -64,13 +65,16 @@ public class PosizioneUtente {
 
         if (btAdapter == null) {
             btAdapter = BluetoothAdapter.getDefaultAdapter();  // Local Bluetooth adapter
-            btHelper = new BluetoothHelper(btAdapter, ((AppCompatActivity) context));
         }
+
         // Is Bluetooth turned on?
         if (!btAdapter.isEnabled()) {
-            // Prompt user to turn on Bluetooth (logic continues in onActivityResult()).
+            //attivazione del bluetooth (qualora non sia già funzionante)
             btHelper.activateBluetooth();
         }
+
+        btHelper = new BluetoothHelper(btAdapter, ((AppCompatActivity) context));
+        btHelper.discoverBLEDevices();
     }
     /**
      *Metodo che si adopera ad effettuare lo scan dei dispositivi bluetooth
