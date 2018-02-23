@@ -43,7 +43,7 @@ public class ServerHelper {
     }
 
     //AsyncTask che richiede il percorso al Server
-    private class richiediPercorso extends AsyncTask<PointF,Void,ArrayList<Tronco>> {
+    public class richiediPercorso extends AsyncTask<PointF,Void,ArrayList<Tronco>> {
         private PointF puntoPartenza;
         private ArrayList<Tronco> percorsoRisultato;
         @Override
