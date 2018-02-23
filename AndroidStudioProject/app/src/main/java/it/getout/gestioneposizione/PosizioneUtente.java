@@ -91,7 +91,7 @@ public class PosizioneUtente {
 
     public static PointF getPosizione(){ return posizione; }
 
-    public static Percorso getPercorso(PointF point){
+    public static Percorso getPercorso(){
         return percorso;
     }
 
