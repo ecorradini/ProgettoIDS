@@ -14,7 +14,6 @@ public class MainActivity extends AppCompatActivity {
     private static BluetoothAdapter btAdapter;
     //scanner per ricercare i dispositivi beacon
     private static BluetoothHelper btHelper;
-    //scanner per ricercare i dispositivi beacon
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,12 +22,5 @@ public class MainActivity extends AppCompatActivity {
 
         PosizioneUtente.init(this);
 
-        btAdapter = BluetoothAdapter.getDefaultAdapter();
-        //creazione del BluetoothHelper
-        if(btAdapter!=null) btHelper = new BluetoothHelper(btAdapter, this);
-        //attivazione del bluetooth (qualora non sia già funzionante)
-        if(!btAdapter.isEnabled()) btHelper.activateBluetooth();
-
-        btHelper.discoverBLEDevices();
     }
 }

@@ -52,7 +52,7 @@ public class BluetoothHelper {
     private List<ScanFilter> scanFilters;
     private BluetoothAdapter bluetoothAdapter;
 
-    private Activity activity;
+    private static Activity activity;
 
     public BluetoothHelper(BluetoothAdapter btAdapter, Context context){
 
