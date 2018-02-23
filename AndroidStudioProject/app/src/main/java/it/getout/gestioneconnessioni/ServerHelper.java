@@ -43,17 +43,17 @@ public class ServerHelper {
         context = c;
     }
 
-    public void richiediPercorso(PointF partenza, PointF destinazione) {
-        new RichiediPercorsoTask().execute(partenza,destinazione);
+    public void richiediPercorso(PointF destinazione) {
+        new RichiediPercorsoTask().execute(destinazione);
     }
 
     //AsyncTask che richiede il percorso al Server
     private class RichiediPercorsoTask extends AsyncTask<PointF,Void,Boolean> {
-        private PointF puntoPartenza;
+        private PointF puntoDestinazione;
         private ArrayList<Tronco> percorsoRisultato;
         @Override
         protected Boolean doInBackground(PointF... partenza) {
-            puntoPartenza = partenza[0];
+            puntoDestinazione = partenza[0];
             //La variabile da restituire
             percorsoRisultato = new ArrayList<>();
             RequestQueue mRequestQueue;
@@ -108,8 +108,8 @@ public class ServerHelper {
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("XI", String.valueOf(PosizioneUtente.getPosizione().x));
                     params.put("YI", String.valueOf(PosizioneUtente.getPosizione().y));
-                    params.put("XF",String.valueOf(puntoPartenza.x));
-                    params.put("YF",String.valueOf(puntoPartenza.y));
+                    params.put("XF",String.valueOf(puntoDestinazione.x));
+                    params.put("YF",String.valueOf(puntoDestinazione.y));
                     params.put("EDIFICIO",PosizioneUtente.getEdificioAttuale().toString());
                     params.put("PIANO",PosizioneUtente.getPianoAttuale().toString());
 
