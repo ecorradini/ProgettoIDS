@@ -1,5 +1,3 @@
-richiediPercorso : AsyncTask<PointF[],Void,ArrayList<Tronco>>
-aggiunto medoto equals a Tronco
 ServerHelper non è statica
 Aggiunto attributo istanza ServerHelper serverReference a PosizioneUtente
 
