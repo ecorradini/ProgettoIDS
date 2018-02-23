@@ -11,12 +11,14 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import it.getout.MainActivity;
 import it.getout.gestioneposizione.Aula;
 import it.getout.gestioneposizione.Beacon;
 import it.getout.gestioneposizione.Edificio;
 import it.getout.gestioneposizione.Piano;
 import it.getout.gestioneposizione.PosizioneUtente;
 import it.getout.gestioneposizione.Tronco;
+import it.getout.gestionevisualizzazionemappa.MappaFragment;
 
 /**
  * Created by Alessandro on 01/02/2018.
@@ -160,7 +162,6 @@ public class DBHelper extends SQLiteOpenHelper {
         PointF pos = new PointF(res.getFloat(res.getColumnIndex(COL_X)),res.getFloat(res.getColumnIndex(COL_Y)));
         res.close();
         db.close();
-
         return pos;
     }
 
@@ -227,7 +228,7 @@ public class DBHelper extends SQLiteOpenHelper {
             listaTronchi.add(new Tronco(
                     new PointF(res.getFloat(res.getColumnIndex(COL_X)), res.getFloat(res.getColumnIndex(COL_Y))),
                     new PointF(res.getFloat(res.getColumnIndex(COL_XF)), res.getFloat(res.getColumnIndex(COL_YF))),
-                    res.getDouble(res.getColumnIndex(COL_LARGHEZZA))));
+                    res.getFloat(res.getColumnIndex(COL_LARGHEZZA))));
         }
         res.close();
         db.close();

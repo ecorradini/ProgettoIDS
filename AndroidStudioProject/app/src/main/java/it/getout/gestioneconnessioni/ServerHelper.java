@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import it.getout.MainActivity;
 import it.getout.gestioneposizione.PosizioneUtente;
 import it.getout.gestioneposizione.Tronco;
 
@@ -94,6 +95,7 @@ public class ServerHelper {
                             }
 
                             PosizioneUtente.getPercorso().setTronchi(percorsoRisultato);
+                            ((MainActivity)context).getMappaFragment().disegnaPercorso();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

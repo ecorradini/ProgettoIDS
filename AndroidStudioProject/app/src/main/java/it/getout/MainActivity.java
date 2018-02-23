@@ -7,6 +7,8 @@ import it.getout.gestionevisualizzazionemappa.MappaFragment;
 
 public class MainActivity extends AppCompatActivity {
 
+    MappaFragment mappaFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -15,4 +17,6 @@ public class MainActivity extends AppCompatActivity {
         PosizioneUtente.init(this);
 
     }
+
+    public MappaFragment getMappaFragment() { return mappaFragment; }
 }
