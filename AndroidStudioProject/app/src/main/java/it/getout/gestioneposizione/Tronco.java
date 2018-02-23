@@ -47,4 +47,7 @@ public class Tronco {
         return beacons;
     }
 
+    public boolean equals(PointF i, PointF f) { return inizio==i && fine==f; }
+    public boolean equals(Tronco t) { return inizio==t.getInizio() && fine==t.getFine(); }
+
 }
