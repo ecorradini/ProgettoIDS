@@ -52,8 +52,8 @@ public class ServerHelper {
         private PointF puntoDestinazione;
         private ArrayList<Tronco> percorsoRisultato;
         @Override
-        protected Boolean doInBackground(PointF... partenza) {
-            puntoDestinazione = partenza[0];
+        protected Boolean doInBackground(PointF... destinazione) {
+            puntoDestinazione = destinazione[0];
             //La variabile da restituire
             percorsoRisultato = new ArrayList<>();
             RequestQueue mRequestQueue;
