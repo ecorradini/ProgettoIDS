@@ -16,6 +16,10 @@ public class Edificio {
         getPianiDB();
     }
 
+    private void getPianiDB(){
+        piani = PosizioneUtente.getDbReference().initPiani(nome);
+    }
+
     public Piano getPiano(int index) {
         return piani.get(index);
     }
@@ -24,11 +28,5 @@ public class Edificio {
         return nome;
     }
 
-    private void getPianiDB(){
-        piani = PosizioneUtente.getDbReference().initPiani(nome);
-    }
-
-    public ArrayList<Piano> getPiani() {
-        return new ArrayList<Piano>();
-    }
+    public ArrayList<Piano> getPiani() { return piani; }
 }

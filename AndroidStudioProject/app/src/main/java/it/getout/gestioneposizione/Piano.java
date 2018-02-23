@@ -18,6 +18,14 @@ public class Piano {
         getTronchiDB(this.nome);
     }
 
+    private void getAuleDB(String nome) {
+        aule = PosizioneUtente.getDbReference().initAule(nome);
+    }
+
+    private void getTronchiDB(String nome){
+        tronchi = PosizioneUtente.getDbReference().initTronchi(nome);
+    }
+
     public ArrayList<Aula> getAule(){
         return aule;
     }
@@ -26,20 +34,12 @@ public class Piano {
         return aule.get(index);
     }
 
-    private void getAuleDB(String nome) {
-        aule = PosizioneUtente.getDbReference().initAule(nome);
-    }
-
     public ArrayList<Tronco> getTronchi(){
         return tronchi;
     }
 
     public Tronco getTronco(int index){
         return tronchi.get(index);
-    }
-
-    private void getTronchiDB(String nome){
-        tronchi = PosizioneUtente.getDbReference().initTronchi(nome);
     }
 
     public String toString(){

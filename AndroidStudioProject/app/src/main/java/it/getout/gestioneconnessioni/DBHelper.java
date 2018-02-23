@@ -188,7 +188,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public ArrayList<Aula> initAule(String nomePiano) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String sql = " SELECT "+COL_NOME+","+COL_X+","+COL_Y+ " FROM "+TABLE_AULA+ " WHERE "+COL_PIANO+"="+nomePiano;
+        String sql = " SELECT "+COL_NOME+","+COL_X+","+COL_Y+
+                     " FROM "+TABLE_AULA+ " WHERE "+COL_PIANO+"="+nomePiano;
 
         Piano attuale = null;
         int index = 0;

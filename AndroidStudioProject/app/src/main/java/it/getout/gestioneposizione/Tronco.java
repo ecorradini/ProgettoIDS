@@ -23,6 +23,10 @@ public class Tronco {
         this.getBeaconsDB();
     }
 
+    private void getBeaconsDB(){
+        beacons = PosizioneUtente.getDbReference().initBeacons(this);
+    }
+
     public PointF getInizio(){
         return inizio;
     }
@@ -42,10 +46,5 @@ public class Tronco {
     public HashMap<String,Beacon> getBeacons(){
         return beacons;
     }
-
-    private void getBeaconsDB(){
-
-    }
-
 
 }
