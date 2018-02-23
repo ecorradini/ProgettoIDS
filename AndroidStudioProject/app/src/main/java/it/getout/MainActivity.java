@@ -16,14 +16,12 @@ public class MainActivity extends AppCompatActivity {
     private static BluetoothHelper btHelper;
     //scanner per ricercare i dispositivi beacon
 
-    private PosizioneUtente posUtente;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        posUtente.init(this);
+        PosizioneUtente.init(this);
 
         btAdapter = BluetoothAdapter.getDefaultAdapter();
         //creazione del BluetoothHelper

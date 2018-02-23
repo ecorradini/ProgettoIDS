@@ -1,5 +1,6 @@
 package it.getout.gestioneconnessioni;
 
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.le.ScanCallback;
@@ -50,6 +51,8 @@ public class BluetoothHelper {
     private ScanSettings scanSettings;
     private List<ScanFilter> scanFilters;
     private BluetoothAdapter bluetoothAdapter;
+
+    private Activity activity;
 
     public BluetoothHelper(BluetoothAdapter btAdapter, Context context){
 
@@ -166,12 +169,12 @@ public class BluetoothHelper {
                 }
                 //nel caso per n cicli non venga aggiornato
                 else {
-                    cont++;
+                    /*cont++;
                     if(cont>=maxNoUpdate) {
                         currentBeacon = selectedBeacon;
                         update();
                         cont = 0;
-                    }
+                    }*/
                 }
             }
         }
@@ -180,16 +183,16 @@ public class BluetoothHelper {
     /**
      * Metodo che cancella la registrazione del broadcast receiver
      */
-    public void closeScan() {
+   /*public void closeScan() {
         if(broadcastReceiver!=null) context.unregisterReceiver(broadcastReceiver);
-    }
+    }*/
 
     //callback utilizzata per trovare dispositivi nel raggio d'azione
     private BluetoothAdapter.LeScanCallback mLeScanCallback =
             new BluetoothAdapter.LeScanCallback() {
                 @Override
                 public void onLeScan(final BluetoothDevice device, final int rssi, byte[] scanRecord) {
-                    activity.runOnUiThread(new Runnable() {
+                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             mLeDeviceListAdapter.addDevice(device,rssi);
