@@ -100,6 +100,22 @@ public class MappaFragment extends Fragment {
     }
 
     public void disegnaPosizione() {
+        //Instanzio un Bitmap temporaneo delle dimensioni dell'ImageView che lo conterrà
+        Bitmap tempMappa = Bitmap.createBitmap(immMappa.getMeasuredWidth(),immMappa.getMeasuredHeight(), Bitmap.Config.RGB_565);
+        Canvas tempCanvas = new Canvas(tempMappa);
+        //Disegno questo Bitmap in un canvas
+        tempCanvas.drawBitmap(tempMappa,0,0,null);
+        //Definisco il Paint di ciascun tronco selezionato
+        Paint paint = new Paint();
+        paint.setColor(Color.BLUE);
 
+        //Definisco le coordinate del punto
+        float x = PosizioneUtente.getPosizione().x;
+        float y = PosizioneUtente.getPosizione().y;
+
+        //Disegno il punto
+        tempCanvas.drawPoint(x,y,paint);
+
+        immMappa.setImageDrawable(new BitmapDrawable(getResources(),tempMappa));
     }
 }
