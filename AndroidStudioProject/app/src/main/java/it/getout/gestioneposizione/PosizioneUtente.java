@@ -17,6 +17,7 @@ import java.util.Set;
 import it.getout.gestioneconnessioni.BluetoothHelper;
 import it.getout.gestioneconnessioni.DBHelper;
 import it.getout.gestioneconnessioni.ServerHelper;
+import it.getout.gestionevisualizzazionemappa.Mappa;
 
 import static android.provider.Settings.Global.BLUETOOTH_ON;
 
@@ -57,6 +58,7 @@ public class PosizioneUtente {
     public static void getInfoByBeaconID(String beaconAttuale) {
         edificioAttuale = dbReference.initEdificioAttuale(beaconAttuale);
         pianoAttuale = dbReference.initPianoAttuale(edificioAttuale,beaconAttuale);
+        Mappa.setMappa(pianoAttuale);
     }
     /**
     *Metodo che inizializza il bluetooth e tutte le sue fasi(scanner)

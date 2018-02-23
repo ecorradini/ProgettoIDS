@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import it.getout.gestioneconnessioni.BluetoothHelper;
 import it.getout.gestioneposizione.PosizioneUtente;
+import it.getout.gestionevisualizzazionemappa.MappaFragment;
 
 public class MainActivity extends AppCompatActivity {
 
