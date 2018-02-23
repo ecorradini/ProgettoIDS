@@ -103,5 +103,5 @@ public class PosizioneUtente {
 
     public static DBHelper getDbReference() { return dbReference; }
 
-    public static ServerHelper getServerRefence() { return serverRefence; }
+    public static ServerHelper getServerReference() { return serverRefence; }
 }

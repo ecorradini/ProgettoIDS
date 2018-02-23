@@ -2,8 +2,9 @@ package it.getout.gestioneposizione;
 
 import android.graphics.Point;
 import android.graphics.PointF;
-
 import java.util.ArrayList;
+
+import it.getout.gestioneconnessioni.ServerHelper;
 
 /**
  * Created by Alessandro on 01/02/2018.
@@ -12,17 +13,21 @@ import java.util.ArrayList;
 public class Percorso {
 
     private ArrayList<Tronco> tronchi;
-    private PointF Destinazione;
+    private PointF destinazione;
 
-    public Percorso(PointF destinazione, PointF partenza){
-        this.Destinazione = destinazione;
-    }
-
-    public ArrayList<Tronco> getTronchi(){
-        return  tronchi;
+    public Percorso(PointF partenza, PointF destinazione) {
+        this.destinazione = destinazione;
+        PosizioneUtente.getServerReference().richiediPercorso(partenza,destinazione);
     }
 
     public PointF getDestinazione(){
-        return Destinazione;
+        return destinazione;
     }
+
+    public ArrayList<Tronco> getTronchi(){
+        return tronchi;
+
+    }
+
+
 }
