@@ -16,6 +16,7 @@ import java.util.Set;
 
 import it.getout.gestioneconnessioni.BluetoothHelper;
 import it.getout.gestioneconnessioni.DBHelper;
+import it.getout.gestioneconnessioni.ServerHelper;
 
 import static android.provider.Settings.Global.BLUETOOTH_ON;
 
@@ -41,11 +42,14 @@ public class PosizioneUtente {
     private static BluetoothHelper btHelper;
     //Istanza del gestore Database SQLite
     private static DBHelper dbReference;
+    //Istanza del gestore Server
+    private static ServerHelper serverRefence;
 
     public static final int REQUEST_ENABLE_BT = 1;
 
     public static void init(Context context) {
         dbReference = new DBHelper(context);
+        serverRefence = new ServerHelper(context);
         initBluetooth(context);
     }
 
