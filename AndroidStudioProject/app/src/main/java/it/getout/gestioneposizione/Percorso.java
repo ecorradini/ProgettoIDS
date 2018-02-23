@@ -29,5 +29,7 @@ public class Percorso {
 
     }
 
+    public void setTronchi(ArrayList<Tronco> t) { tronchi = t; }
+
 
 }

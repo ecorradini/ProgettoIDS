@@ -92,6 +92,8 @@ public class ServerHelper {
                                     break;
                                 }
                             }
+
+                            PosizioneUtente.getPercorso().setTronchi(percorsoRisultato);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
