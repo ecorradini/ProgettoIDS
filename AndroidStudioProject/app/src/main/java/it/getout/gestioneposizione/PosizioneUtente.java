@@ -81,9 +81,12 @@ public class PosizioneUtente {
     /**
      *Metodo che si adopera ad effettuare lo scan dei dispositivi bluetooth
      */
-    private static ArrayList<BluetoothDevice> scansionaBluetooth(){
-        ArrayList<BluetoothDevice> array = null;
+    private static BluetoothDevice scansionaBluetooth(){
+        BluetoothDevice array = null;
         btHelper.discoverBLEDevices();
+        while(!btHelper.getTerminatedscan()){
+            array = btHelper.getCurrentBeacon();
+        }
         return array;
     }
 

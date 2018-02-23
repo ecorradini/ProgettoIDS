@@ -11,11 +11,6 @@ import it.getout.gestionevisualizzazionemappa.MappaFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-    //struttura utilizzata per interfacciarsi con il bluetooth
-    private static BluetoothAdapter btAdapter;
-    //scanner per ricercare i dispositivi beacon
-    private static BluetoothHelper btHelper;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

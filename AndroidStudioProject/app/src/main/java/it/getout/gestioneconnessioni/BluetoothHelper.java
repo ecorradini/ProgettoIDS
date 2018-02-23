@@ -52,6 +52,9 @@ public class BluetoothHelper {
     private List<ScanFilter> scanFilters;
     private BluetoothAdapter bluetoothAdapter;
 
+    //identificativo del messaggio che si può ricevere
+    public boolean terminatedScan = false;
+
     private static Activity activity;
 
     public BluetoothHelper(BluetoothAdapter btAdapter, Context context){
@@ -135,7 +138,7 @@ public class BluetoothHelper {
 
             //attende per la durata dello scan e poi lancia la runnable per stopparlo
             scanHandler.postDelayed(stopScan, 1000L);
-
+            terminatedScan = false;
         }
     };
 
@@ -153,7 +156,6 @@ public class BluetoothHelper {
                     e.printStackTrace();
                     Log.e("bluetooth error","accendi il bluetooth");
                 }
-
             }
             else {
                 bluetoothAdapter.stopLeScan(mLeScanCallback);
@@ -177,6 +179,7 @@ public class BluetoothHelper {
                     }*/
                 }
             }
+            terminatedScan = true;
         }
     };
 
@@ -199,7 +202,6 @@ public class BluetoothHelper {
                         }
                     });
                 }
-
             };
 
 
@@ -229,7 +231,9 @@ public class BluetoothHelper {
 
     };
 
-    private Context getContext(){
+    public Context getContext(){
         return context;
     }
+
+    public boolean getTerminatedscan(){ return terminatedScan; }
 }
