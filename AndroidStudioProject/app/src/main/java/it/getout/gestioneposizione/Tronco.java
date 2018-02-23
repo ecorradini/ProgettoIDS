@@ -23,6 +23,13 @@ public class Tronco {
         this.getBeaconsDB();
     }
 
+    public boolean equals(PointF i, PointF f) {
+        return i==inizio && f==fine;
+    }
+    public boolean equals(Tronco t) {
+        return t.getInizio()==inizio && t.getFine() == fine;
+    }
+
     public PointF getInizio(){
         return inizio;
     }
