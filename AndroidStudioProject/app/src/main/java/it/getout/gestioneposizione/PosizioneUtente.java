@@ -1,10 +1,12 @@
 package it.getout.gestioneposizione;
 
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 
 import android.content.Context;
 import android.graphics.PointF;
+import android.support.v7.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
@@ -40,10 +42,10 @@ public class PosizioneUtente {
     //Istanza del descrittore dei dispositivi bluetooth
     private static BluetoothDevice device;
 
-    public static void init(Context context) {
-        dbReference = new DBHelper(context);
-        serverRefence = new ServerHelper(context);
-        initBluetooth(context);
+    public static void init(Activity a) {
+        dbReference = new DBHelper(a.getBaseContext());
+        serverRefence = new ServerHelper(a.getBaseContext());
+        initBluetooth((AppCompatActivity) a);
     }
 
     public static void getInfoByBeaconID(String beaconAttuale) {
@@ -54,7 +56,7 @@ public class PosizioneUtente {
     /**
     *Metodo che inizializza il bluetooth e tutte le sue fasi(scanner)
      */
-    private static void initBluetooth(Context context) {
+    private static void initBluetooth(AppCompatActivity a) {
 
         if (btAdapter == null) {
             btAdapter = BluetoothAdapter.getDefaultAdapter();  // Local Bluetooth adapter
@@ -66,8 +68,10 @@ public class PosizioneUtente {
             btHelper.activateBluetooth();
         }
 
-        btHelper = new BluetoothHelper(btAdapter, context);
-        btHelper.discoverBLEDevices();
+        btHelper = new BluetoothHelper(btAdapter, a);
+        device =  scansionaBluetooth();
+        //memorizzo beaconAttusle all'interno dell'oggetto Beacon
+        beaconAttuale.setId(device.getAddress());
     }
     /**
      *Metodo che si adopera ad effettuare lo scan dei dispositivi bluetooth
@@ -77,8 +81,6 @@ public class PosizioneUtente {
         while(!btHelper.getTerminatedscan()){
             device = btHelper.getCurrentBeacon();
         }
-        //memorizzo beaconAttusle all'interno dell'oggetto Beacon
-        beaconAttuale.setId(device.getAddress());
         return device;
     }
 

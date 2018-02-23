@@ -29,8 +29,6 @@ import static android.content.ContentValues.TAG;
 
 public class BluetoothHelper {
 
-    private static Context context;
-
     public static final int REQUEST_ENABLE_BT = 1;
 
     //istanza dell'adapter relativo al bluetooth
@@ -55,16 +53,17 @@ public class BluetoothHelper {
     private List<ScanFilter> scanFilters;
 
     //flag per verificare che lo scan sia concluso
-    public boolean terminatedScan = false;
+    public boolean terminatedScan;
 
     private static Activity activity;
 
-    public BluetoothHelper(BluetoothAdapter btAdapter, Context context){
+    public BluetoothHelper(BluetoothAdapter btAdapter, AppCompatActivity a){
 
-        context = context;
+        activity = a;
         bluetoothAdapter = btAdapter;
+        terminatedScan = false;
         //inizializzati i componenti del bluetooth
-        mLeDeviceListAdapter = new LeDeviceListAdapter(context);
+        mLeDeviceListAdapter = new LeDeviceListAdapter(a.getBaseContext());
         //insieme di UUID riconosciuti dallo scan e relativa inizializzazione
         uuids = new UUID[1];
         uuids[0] = UUID.fromString(beaconUUID);
@@ -108,7 +107,7 @@ public class BluetoothHelper {
      */
     public static void activateBluetooth () {
         Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-        ((AppCompatActivity) context).startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        ((AppCompatActivity) activity.getBaseContext()).startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
     }
 
     //thread che si occupa di far partire lo scan in cerca dei beacon
@@ -185,13 +184,6 @@ public class BluetoothHelper {
         }
     };
 
-    /**
-     * Metodo che cancella la registrazione del broadcast receiver
-     */
-   /*public void closeScan() {
-        if(broadcastReceiver!=null) context.unregisterReceiver(broadcastReceiver);
-    }*/
-
     //callback utilizzata per trovare dispositivi nel raggio d'azione
     private BluetoothAdapter.LeScanCallback mLeScanCallback =
             new BluetoothAdapter.LeScanCallback() {
@@ -232,10 +224,6 @@ public class BluetoothHelper {
         }
 
     };
-
-    public Context getContext(){
-        return context;
-    }
 
     public boolean getTerminatedscan(){ return terminatedScan; }
 }
