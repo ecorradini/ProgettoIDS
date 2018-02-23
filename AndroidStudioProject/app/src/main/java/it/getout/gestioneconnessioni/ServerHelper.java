@@ -43,24 +43,16 @@ public class ServerHelper {
         context = c;
     }
 
-    public ArrayList<Tronco> richiediPercorso(PointF partenza, PointF destinazione) {
-        ArrayList<Tronco> res = null;
-        try {
-            res = new RichiediPercorsoTask().execute(partenza,destinazione).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return res;
+    public void richiediPercorso(PointF partenza, PointF destinazione) {
+        new RichiediPercorsoTask().execute(partenza,destinazione);
     }
 
     //AsyncTask che richiede il percorso al Server
-    private class RichiediPercorsoTask extends AsyncTask<PointF,Void,ArrayList<Tronco>> {
+    private class RichiediPercorsoTask extends AsyncTask<PointF,Void,Boolean> {
         private PointF puntoPartenza;
         private ArrayList<Tronco> percorsoRisultato;
         @Override
-        protected ArrayList<Tronco> doInBackground(PointF... partenza) {
+        protected Boolean doInBackground(PointF... partenza) {
             puntoPartenza = partenza[0];
             //La variabile da restituire
             percorsoRisultato = new ArrayList<>();
@@ -127,17 +119,7 @@ public class ServerHelper {
             //Aggiungo la richiesta alla coda
             mRequestQueue.add(jsonObjectRequest);
 
-            return percorsoRisultato;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<Tronco> percorso) {
-            if(percorso.size()>0) {
-                //ho il percorso del server
-            }
-            else {
-                //errore download
-            }
+            return true;
         }
     }
 }
