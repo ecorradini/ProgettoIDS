@@ -16,11 +16,13 @@ public class Beacon {
         this.posizione = posizione;
     }
 
-    public PointF getPosizione(){
-        return posizione;
+    public String getId(){
+        return this.id;
     }
 
-    public String getId(){
-        return id;
+    public PointF getPosizione(){
+        return this.posizione;
     }
+
+
 }

@@ -19,15 +19,19 @@ public class Aula {
         this.piano = piano;
     }
 
+    //meotodi per ottenere nome, entrata e piano di un'aula
+
+    public String getNome() {
+        return this.nome;
+    }
+
     public PointF getEntrata(){
-        return entrata;
+        return this.entrata;
     }
 
     public Piano getPiano(){
-        return piano;
+        return this.piano;
     }
 
-    public String toString(){
-        return nome;
-    }
+
 }
