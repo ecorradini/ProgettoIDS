@@ -16,6 +16,11 @@ public class MainActivity extends AppCompatActivity {
 
         PosizioneUtente.init(this);
 
+        //Una volta che ho inizializzato tutte le informazioni di partenza con il metodo init di PosizioneUtente
+        //istanzio il fragment con la mappa e disegno la posizione
+        mappaFragment = MappaFragment.newInstance();
+        mappaFragment.disegnaPosizione();
+
     }
 
     public MappaFragment getMappaFragment() { return mappaFragment; }
