@@ -23,6 +23,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import it.getout.gestioneposizione.PosizioneUtente;
 import it.getout.gestioneposizione.Tronco;
@@ -42,8 +43,20 @@ public class ServerHelper {
         context = c;
     }
 
+    public ArrayList<Tronco> richiediPercorso(PointF partenza, PointF destinazione) {
+        ArrayList<Tronco> res = null;
+        try {
+            res = new RichiediPercorsoTask().execute(partenza,destinazione).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
     //AsyncTask che richiede il percorso al Server
-    public class richiediPercorso extends AsyncTask<PointF,Void,ArrayList<Tronco>> {
+    private class RichiediPercorsoTask extends AsyncTask<PointF,Void,ArrayList<Tronco>> {
         private PointF puntoPartenza;
         private ArrayList<Tronco> percorsoRisultato;
         @Override
