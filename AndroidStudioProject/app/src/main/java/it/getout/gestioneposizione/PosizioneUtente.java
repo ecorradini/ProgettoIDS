@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 
-import android.content.Context;
 import android.graphics.PointF;
 import android.support.v7.app.AppCompatActivity;
 
