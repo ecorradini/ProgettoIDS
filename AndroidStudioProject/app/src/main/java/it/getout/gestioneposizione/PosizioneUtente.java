@@ -15,7 +15,7 @@ import it.getout.gestioneconnessioni.ServerHelper;
 import it.getout.gestionevisualizzazionemappa.Mappa;
 
 /**
- * Created by Alessandro on 01/02/2018.
+ * Created on 01/02/2018.
  */
 
 public class PosizioneUtente {

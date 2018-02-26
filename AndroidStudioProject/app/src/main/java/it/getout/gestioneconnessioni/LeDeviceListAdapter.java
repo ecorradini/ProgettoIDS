@@ -21,7 +21,7 @@ import it.getout.gestioneposizione.Beacon;
 public class LeDeviceListAdapter {
         //beacon più vicino all'utente
     private BluetoothDevice currentBeacon;
-    private static HashMap<String, Beacon> sensors;
+    private static HashMap<String, BluetoothDevice> sensors;
     private String TAG2 = "LeDeviceAdapter";
         //Hashmap di dispositivi estratti dallo scan (K: potenza del segnali RSSI, dispositivo trovato dallo scan)
     private TreeMap<Integer,BluetoothDevice> mLeDevices;
@@ -55,7 +55,7 @@ public class LeDeviceListAdapter {
         Iterator it = mLeDevices.entrySet().iterator();
             //scandisce la lista in base alla distanza rispetto all'utente, finchè non trova un beacon presente nel CSV o finchè
             //non termina la lista
-        while (b==null && it.hasNext()) {
+        while (b == null && it.hasNext()) {
             Map.Entry entry = (Map.Entry) it.next();
             BluetoothDevice dev = (BluetoothDevice) entry.getValue();
                 //valuta se il beacon trovato è presente nella lista di quelli salvati nel CSV. Se si allora si è trovato il
@@ -65,8 +65,9 @@ public class LeDeviceListAdapter {
             }
             else {
                 Toast.makeText(context,
-                        " Si è individuato un sensore non presente nel documento, " +
-                                " dovresti aggiornare il file", Toast.LENGTH_SHORT).show();
+                        " Si è individuato un sensore non presente nel documento, ", Toast.LENGTH_SHORT).show();
+
+                sensors.put(dev.getAddress(), dev);
             }
         }
 

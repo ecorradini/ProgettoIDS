@@ -8,7 +8,7 @@ import it.getout.gestioneposizione.Piano;
 import it.getout.gestioneposizione.PosizioneUtente;
 
 /**
- * Created by Alessandro on 01/02/2018.
+ * Created on 01/02/2018.
  */
 
 public class Mappa {

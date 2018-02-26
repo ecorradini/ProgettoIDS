@@ -53,8 +53,13 @@ public class BluetoothHelper {
 
     //flag per verificare che lo scan sia concluso
     public boolean terminatedScan;
-
+    //activity corrente
     private static Activity activity;
+
+    //numero massimo di scan senza che venga mandata la posizione al server
+    private static final int maxNoUpdate = 5;
+    //conta quante volte consecutive non si invia la propria posizione al server
+    private int cont;
 
     public BluetoothHelper(BluetoothAdapter btAdapter, AppCompatActivity a){
 
@@ -136,9 +141,10 @@ public class BluetoothHelper {
                 bluetoothAdapter.startLeScan(uuids, mLeScanCallback);
             }
 
+            terminatedScan = false;
+
             //attende per la durata dello scan e poi lancia la runnable per stopparlo
             scanHandler.postDelayed(stopScan, 1000L);
-            terminatedScan = false;
         }
     };
 
@@ -165,18 +171,17 @@ public class BluetoothHelper {
             //trova il beacon più vicino
             selectedBeacon = mLeDeviceListAdapter.selectedDevice();
 
-            if(selectedBeacon!=null){
-                if (currentBeacon==null || !currentBeacon.getAddress().equals(mLeDeviceListAdapter.getCurrentBeacon().getAddress())) {
+            if(selectedBeacon != null){
+                if (currentBeacon == null || !currentBeacon.getAddress().equals(mLeDeviceListAdapter.getCurrentBeacon().getAddress())) {
                     currentBeacon = mLeDeviceListAdapter.getCurrentBeacon();
                 }
                 //nel caso per n cicli non venga aggiornato
                 else {
-                    /*cont++;
+                    cont++;
                     if(cont>=maxNoUpdate) {
                         currentBeacon = selectedBeacon;
-                        update();
                         cont = 0;
-                    }*/
+                    }
                 }
             }
             terminatedScan = true;
