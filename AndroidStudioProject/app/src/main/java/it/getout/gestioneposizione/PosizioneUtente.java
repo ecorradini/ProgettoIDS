@@ -56,7 +56,6 @@ public class PosizioneUtente {
     *Metodo che inizializza il bluetooth e tutte le sue fasi(scanner)
      */
     private static void initBluetooth(AppCompatActivity a) {
-
         if (btAdapter == null) {
             btAdapter = BluetoothAdapter.getDefaultAdapter();  // Local Bluetooth adapter
         }
@@ -83,8 +82,8 @@ public class PosizioneUtente {
         return device;
     }
 
-    private static String getBeaconId(ArrayList<BluetoothDevice> Array){
-        return null;
+    private static String getBeaconId(){
+        return beaconAttuale.getId();
     }
 
     public static void setPosizione(String beaconID){
