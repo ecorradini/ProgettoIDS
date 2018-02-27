@@ -58,7 +58,7 @@ public class LeDeviceListAdapter {
         while (b == null && it.hasNext()) {
             Map.Entry entry = (Map.Entry) it.next();
             BluetoothDevice dev = (BluetoothDevice) entry.getValue();
-                //valuta se il beacon trovato è presente nella lista di quelli salvati nel CSV. Se si allora si è trovato il
+                //valuta se il beacon trovato è presente nella lista di quelli salvati. Se si allora si è trovato il
                 //dispositivo più vicino
             if(sensors.containsKey(dev.getAddress())) {
                 b = dev;

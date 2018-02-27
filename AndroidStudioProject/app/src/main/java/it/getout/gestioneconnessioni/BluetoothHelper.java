@@ -226,7 +226,6 @@ public class BluetoothHelper {
             System.out.println("BLE// onScanFailed");
             Log.e("Scan Failed", "Error Code: " + errorCode);
         }
-
     };
 
     public boolean getTerminatedscan(){ return terminatedScan; }
