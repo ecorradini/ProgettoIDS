@@ -1,0 +1,1 @@
+Rimandare procedure di ServerHelper per l'ottenimento dei dati (stessi di DBHelper) dopo aver fatto il server così sappiamo bene come so fatti i json.
