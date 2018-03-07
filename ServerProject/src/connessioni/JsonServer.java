@@ -1,13 +1,18 @@
 package connessioni;
 
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import entita.Edificio;
 import entita.Piano;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.InetSocketAddress;
-
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class JsonServer {
@@ -17,9 +22,8 @@ public class JsonServer {
     public JsonServer() throws IOException {
         server = HttpServer.create(new InetSocketAddress(9600),0);
 
-        server.createContext("/edificio",new com.sun.net.httpserver.HttpHandler() {
-            public void handle(com.sun.net.httpserver.HttpExchange arg0) throws IOException {
-
+        server.createContext("/edificio",new HttpHandler() {
+            public void handle(HttpExchange arg0) throws IOException {
                 String response = Edificio.selectEdificioByBeacon(arg0.getRequestURI().getQuery());  //vuole una stringa e riprende una stringa
                 arg0.sendResponseHeaders(200, response.length());
                 OutputStream os = arg0.getResponseBody();
@@ -29,8 +33,8 @@ public class JsonServer {
 
         } );
 
-        server.createContext("/piano", new com.sun.net.httpserver.HttpHandler() {
-            public void handle(com.sun.net.httpserver.HttpExchange arg0) throws IOException {
+        server.createContext("/piano", new HttpHandler() {
+            public void handle(HttpExchange arg0) throws IOException {
                 String response = Piano.selectAllPianiByEdificio(arg0.getRequestURI().getQuery());
                 arg0.sendResponseHeaders(200, response.length());
                 OutputStream os = arg0.getResponseBody();
