@@ -12,6 +12,8 @@ public class DatabaseConnection {
         Class.forName("oracle.jdbc.driver.OracleDriver");   //controllare stringa
         connection = null;
         connection = DriverManager.getConnection("jdbc:oracle:thin:@" + host + ":1521:XE","UTE","UTE");
+
+        //rivedere parametro di DriverManager.getConnection
     }
 
     public static Connection getConn() {
