@@ -2,7 +2,6 @@ package connessioni;
 
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
 
 public class Server {
@@ -17,7 +16,7 @@ public class Server {
             e.printStackTrace();
         }
 
-        JsonServer server = JsonServer();
+        JsonServer server = new JsonServer();
 
     }
 }
