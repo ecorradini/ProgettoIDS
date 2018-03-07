@@ -1,19 +1,21 @@
 package entita;
 
+import connessioni.DatabaseConnection;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Tronco {
-    public static String ID = "ID";
-    public static String X = "X";
-    public static String Y = "Y";
-    public static String XF = "XF";
-    public static String YF = "YF";
-    public static String LARGHEZZA = "LARGHEZZA";
-    public static String PIANO = "PIANO";
-    public static String TABLE_TRONCO = "TRONCO";
+    public static final String ID = "ID";
+    public static final String X = "X";
+    public static final String Y = "Y";
+    public static final String XF = "XF";
+    public static final String YF = "YF";
+    public static final String LARGHEZZA = "LARGHEZZA";
+    public static final String PIANO = "PIANO";
+    public static final String TABLE_TRONCO = "TRONCO";
 
     public static String selectAllTronchiByPiano(String piano) {
         Connection conn = DatabaseConnection.getConn();

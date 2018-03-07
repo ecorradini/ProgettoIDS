@@ -1,16 +1,18 @@
 package entita;
 
+import connessioni.DatabaseConnection;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Beacon {
-    public static String ID = "ID";
-    public static String X = "X";
-    public static String Y = "Y";
-    public static String TRONCO = "TRONCO";
-    public static String TABLE_BEACON = "BEACON";
+    public static final String ID = "ID";
+    public static final String X = "X";
+    public static final String Y = "Y";
+    public static final String TRONCO = "TRONCO";
+    public static final String TABLE_BEACON = "BEACON";
 
     public static String selectPosizioneById(String idBeacon) {
         Connection conn = DatabaseConnection.getConn();

@@ -1,5 +1,7 @@
 package entita;
 
+import connessioni.DatabaseConnection;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,9 +9,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class Piano {
-    public static String NOME = "NOME";
-    public static String EDIFICIO = "EDIFICIO";
-    public static String TABLE_PIANO = "PIANO";
+    public static final String NOME = "NOME";
+    public static final String EDIFICIO = "EDIFICIO";
+    public static final String TABLE_PIANO = "PIANO";
 
     public static String selectPianoByBeacon(String idBeacon) {
         Connection conn = DatabaseConnection.getConn();
