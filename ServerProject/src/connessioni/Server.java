@@ -7,7 +7,6 @@ import java.sql.SQLException;
 
 public class Server {
     public static void main(String[] args) throws IOException{
-        PlugConnection.init(args[0],9600);
 
         try {
             DatabaseConnection.init(args[1]);
