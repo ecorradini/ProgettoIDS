@@ -9,3 +9,9 @@ Aggiungere procedura per il controllo della presenza della connessione internet
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
+
+Class Diagram UT2:
+
+- MappaFragment è scritto male
+
+- initPianoAttuale ha il solo parametro String, non edificio
