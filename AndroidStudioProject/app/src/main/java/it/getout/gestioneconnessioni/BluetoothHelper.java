@@ -77,6 +77,8 @@ public class BluetoothHelper {
         scanFilters = new ArrayList<>();
         scanFilters.add(scanFilter);
         scanSettings = new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build();
+        //viene inizializzato l'handler
+        scanHandler = new Handler();
     }
 
     /**
