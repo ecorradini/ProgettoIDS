@@ -10,12 +10,10 @@ public class DatabaseConnection {
 
     public static void init(String host) throws ClassNotFoundException, SQLException {
         Class.forName("oracle.jdbc.driver.OracleDriver");   //controllare stringa
-
-        connection = (Connection) DriverManager.getConnection("jdbc:oracle:thin:@" + host + ":1521:XE","UTE","UTE");
+        connection = null;
+        connection = DriverManager.getConnection("jdbc:oracle:thin:@" + host + ":1521:XE","UTE","UTE");
 
         //rivedere parametro di DriverManager.getConnection
-
-        connection = (Connection) DriverManager.getConnection("jdbc:oracle:thin:@" + host + ":1521:XE","UTE","UTE");
     }
 
     public static Connection getConn() {
