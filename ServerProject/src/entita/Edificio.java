@@ -7,9 +7,9 @@ import java.sql.Statement;
 
 public class Edificio {
     //Nome della colonna "NOME"
-    private static final String NOME = "NOME";
+    public static final String NOME = "NOME";
     //Nome della tabella "EDIFICIO"
-    private static final String TABLE_EDIFICIO = "EDIFICIO";
+    public static final String TABLE_EDIFICIO = "EDIFICIO";
 
     public static String selectEdificioByBeacon(String idBeacon) {
         Connection conn = DatabaseConnection.getConn();
@@ -27,7 +27,7 @@ public class Edificio {
             ResultSet rs = stm.executeQuery(query);
 
             while(rs.next()) {
-                nomeEdificio = rs.getString(NOME);
+                nomeEdificio = rs.getString("NOME_EDIFICIO");
             }
 
             rs.close();

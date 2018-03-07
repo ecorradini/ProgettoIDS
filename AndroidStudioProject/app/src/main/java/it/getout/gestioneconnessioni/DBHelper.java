@@ -121,7 +121,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     //passatogli l'id del beacon mi restituisce il piano  COL_CAZZOOOOOOOOOO
-    public Piano initPianoAttuale(Edificio edificio, String idBeacon){
+    public Piano initPianoAttuale(String idBeacon){
         SQLiteDatabase db = this.getReadableDatabase();
 
         String sql = "SELECT "+TABLE_PIANO+"."+COL_NOME+" AS NOME_PIANO"+
