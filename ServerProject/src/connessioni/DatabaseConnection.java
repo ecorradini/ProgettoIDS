@@ -6,13 +6,13 @@ import java.sql.SQLException;
 
 public class DatabaseConnection {
     private static Connection connection;
+    public static final String dbUrl="jdbc:mysql://localhost:3306/getout";
 
-    public static void init(String host) throws ClassNotFoundException, SQLException {
-        Class.forName("oracle.jdbc.driver.OracleDriver");   //controllare stringa
-        connection = null;
-        connection = DriverManager.getConnection("jdbc:oracle:thin:@" + host + ":1521:XE","UTE","UTE");
+    public static void init() throws ClassNotFoundException, SQLException {
+        Class.forName("com.mysql.jdbc.Driver");
 
-        //rivedere parametro di DriverManager.getConnection
+        connection = DriverManager.getConnection(dbUrl,"root","getout2018");
+
     }
 
     public static Connection getConn() {

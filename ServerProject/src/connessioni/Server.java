@@ -8,7 +8,7 @@ public class Server {
     public static void main(String[] args) throws IOException{
 
         try {
-            DatabaseConnection.init(args[1]);
+            DatabaseConnection.init();
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
