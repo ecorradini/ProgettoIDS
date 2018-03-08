@@ -70,18 +70,18 @@ public class DBHelper extends SQLiteOpenHelper {
                 COL_Y+" FLOAT(4,2) NOT NULL,"+
                 COL_PIANO+" VARCHAR(20) NOT NULL"+")";
         String create_tronco="CREATE TABLE "+TABLE_TRONCO+"("+
-                COL_ID+" NUMBER(10) PRIMARY KEY AUTOINCREMENT,"+
+                COL_ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"+
                 COL_X+" FLOAT(4,2) NOT NULL,"+
                 COL_Y+" FLOAT(4,2) NOT NULL,"+
                 COL_LARGHEZZA+" FLOAT(8,4) NOT NULL,"+
                 COL_PIANO+" VARCHAR(20) NOT NULL"+")";
         String create_beacon="CREATE TABLE "+TABLE_BEACON+"("+
-                COL_ID+" NUMBER(10) PRIMARY KEY AUTOINCREMENT,"+
+                COL_ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"+
                 COL_X+" FLOAT(4,2) NOT NULL,"+
                 COL_Y+" FLOAT(4,2) NOT NULL,"+
                 COL_TRONCO+" VARCHAR(20) NOT NULL"+")";
         String create_mappa="CREATE TABLE "+TABLE_MAPPA+"("+
-                COL_IMMAGINE+" VARCHAR(MAX) NOT NULL,"+
+                COL_IMMAGINE+" TEXT NOT NULL,"+
                 COL_PIANO+" VARCHAR(20) PRIMARY KEY"+")";
 
         sqLiteDatabase.execSQL(create_edificio);
