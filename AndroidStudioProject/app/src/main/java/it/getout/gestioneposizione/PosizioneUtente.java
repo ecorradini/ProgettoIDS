@@ -49,7 +49,7 @@ public class PosizioneUtente {
 
     public static void getInfoByBeaconID(String beaconAttuale) {
         edificioAttuale = dbReference.initEdificioAttuale(beaconAttuale);
-        pianoAttuale = dbReference.initPianoAttuale(edificioAttuale,beaconAttuale);
+        pianoAttuale = dbReference.initPianoAttuale(beaconAttuale);
         Mappa.setMappa(pianoAttuale);
     }
     /**
