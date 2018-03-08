@@ -1,4 +1,4 @@
-Rimandare procedure di ServerHelper per l'ottenimento dei dati (stessi di DBHelper) dopo aver fatto il server così sappiamo bene come so fatti i json.
+﻿Rimandare procedure di ServerHelper per l'ottenimento dei dati (stessi di DBHelper) dopo aver fatto il server così sappiamo bene come so fatti i json.
 
 Aggiungere i permessi per il bluetooth, vanno richiesti a runtime se android >= 6
 "fail to start le scan - SecurityException thrown: java.lang.SecurityException: Need ACCESS_COARSE_LOCATION or ACCESS_FINE_LOCATION permission to get scan results"
@@ -15,3 +15,5 @@ Class Diagram UT2:
 - MappaFragment è scritto male
 
 - initPianoAttuale ha il solo parametro String, non edificio
+
+-diagramma database cambiare number in float
