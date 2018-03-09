@@ -1,7 +1,5 @@
 ﻿Rimandare procedure di ServerHelper per l'ottenimento dei dati (stessi di DBHelper) dopo aver fatto il server così sappiamo bene come so fatti i json.
 
-Aggiungere i permessi per il bluetooth, vanno richiesti a runtime se android >= 6
-"fail to start le scan - SecurityException thrown: java.lang.SecurityException: Need ACCESS_COARSE_LOCATION or ACCESS_FINE_LOCATION permission to get scan results"
 
 Aggiungere procedura per il controllo della presenza della connessione internet
     private boolean checkInternet() {
@@ -10,16 +8,6 @@ Aggiungere procedura per il controllo della presenza della connessione internet
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 
-Class Diagram UT2:
 
-- MappaFragment è scritto male
 
-- initPianoAttuale ha il solo parametro String, non edificio
 
-- diagramma database cambiare number in float
-
-Class Diagram UT3:
-
-- in Mappa cambiare IMMAGINI in IMMAGINE
-
-- in Aula cambiare TABLE:AULA in TABLE_AULTA
