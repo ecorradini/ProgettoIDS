@@ -40,6 +40,8 @@ public class Aula {
         json = json.substring(0,json.length()-1);
         json = json + "]}";
 
+        System.out.println("RESPONSE: "+json);
+
         return json;
     }
 }

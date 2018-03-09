@@ -36,6 +36,10 @@ public class Mappa {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return "{ "+"\"MAPPA\":\""+immagineBase64+"\"}";
+        String json = "{ "+"\"MAPPA\":\""+immagineBase64+"\"}";
+
+        System.out.println("RESPONSE: "+json);
+
+        return json;
     }
 }
