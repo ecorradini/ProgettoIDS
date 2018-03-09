@@ -17,11 +17,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="JsonServer.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="JsonServer.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/connessioni/JsonServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1814">
-              <caret line="116" column="0" lean-forward="true" selection-start-line="116" selection-start-column="0" selection-end-line="116" selection-end-column="0" />
+            <state relative-caret-position="578">
+              <caret line="97" column="54" lean-forward="false" selection-start-line="97" selection-start-column="54" selection-end-line="97" selection-end-column="54" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Tronco.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/entita/Tronco.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1195">
+              <caret line="42" column="47" lean-forward="false" selection-start-line="42" selection-start-column="47" selection-end-line="42" selection-end-column="47" />
               <folding />
             </state>
           </provider>
@@ -671,18 +681,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/entita/Tronco.java">
+    <entry file="file://$PROJECT_DIR$/src/connessioni/JsonServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1258">
-          <caret line="42" column="47" lean-forward="false" selection-start-line="42" selection-start-column="47" selection-end-line="42" selection-end-column="47" />
+        <state relative-caret-position="578">
+          <caret line="97" column="54" lean-forward="false" selection-start-line="97" selection-start-column="54" selection-end-line="97" selection-end-column="54" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/connessioni/JsonServer.java">
+    <entry file="file://$PROJECT_DIR$/src/entita/Tronco.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1814">
-          <caret line="116" column="0" lean-forward="true" selection-start-line="116" selection-start-column="0" selection-end-line="116" selection-end-column="0" />
+        <state relative-caret-position="1195">
+          <caret line="42" column="47" lean-forward="false" selection-start-line="42" selection-start-column="47" selection-end-line="42" selection-end-column="47" />
           <folding />
         </state>
       </provider>
