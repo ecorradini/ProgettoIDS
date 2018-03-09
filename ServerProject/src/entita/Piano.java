@@ -63,7 +63,7 @@ public class Piano {
         }
 
         //Eliminare la virgola finale
-        json = json.substring(0,json.length()-2);
+        json = json.substring(0,json.length()-1);
         json = json + "]}";
 
         return json;
