@@ -73,6 +73,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 COL_ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"+
                 COL_X+" FLOAT(4,2) NOT NULL,"+
                 COL_Y+" FLOAT(4,2) NOT NULL,"+
+                COL_XF+" FLOAT(4,2) NOT NULL,"+
+                COL_YF+" FLOAT(4,2) NOT NULL,"+
                 COL_LARGHEZZA+" FLOAT(8,4) NOT NULL,"+
                 COL_PIANO+" VARCHAR(20) NOT NULL"+")";
         String create_beacon="CREATE TABLE "+TABLE_BEACON+"("+
