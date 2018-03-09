@@ -19,7 +19,7 @@ public class Piano {
 
         String query =  "SELECT "+TABLE_PIANO+"."+NOME+" AS NOME_PIANO"+
                 " FROM "+Beacon.TABLE_BEACON+","+Tronco.TABLE_TRONCO+","+TABLE_PIANO+","+Edificio.TABLE_EDIFICIO+
-                " WHERE "+Beacon.TABLE_BEACON+"."+Beacon.ID+"="+idBeacon+" AND "+
+                " WHERE "+Beacon.TABLE_BEACON+"."+Beacon.ID+"=\'"+idBeacon+"\' AND "+
                 Beacon.TABLE_BEACON+"."+Beacon.TRONCO+"="+Tronco.TABLE_TRONCO+"."+Tronco.ID+" AND "+
                 TABLE_PIANO+"."+NOME+"="+Tronco.TABLE_TRONCO+"."+Tronco.PIANO+" AND "+TABLE_PIANO+
                 "."+EDIFICIO+" = "+Edificio.TABLE_EDIFICIO+"."+Edificio.NOME;
@@ -34,7 +34,6 @@ public class Piano {
 
             rs.close();
             stm.close();
-            DatabaseConnection.getConn().commit();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -46,7 +45,7 @@ public class Piano {
         Connection conn = DatabaseConnection.getConn();
         String json="{\""+edificio+"\":[";
 
-        String query =  "SELECT "+NOME+ " FROM "+TABLE_PIANO+ " WHERE "+Edificio.TABLE_EDIFICIO+"="+edificio;
+        String query =  "SELECT "+NOME+ " FROM "+TABLE_PIANO+ " WHERE "+Edificio.TABLE_EDIFICIO+"=\'"+edificio+"\'";
 
         try {
             Statement stm = conn.createStatement();
@@ -58,7 +57,6 @@ public class Piano {
 
             rs.close();
             stm.close();
-            DatabaseConnection.getConn().commit();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

@@ -19,7 +19,7 @@ public class Mappa {
 
         String query =  "SELECT "+ IMMAGINE+
                 " FROM "+TABLE_MAPPA+
-                " WHERE "+PIANO+"="+piano;
+                " WHERE "+PIANO+"=\'"+piano+"\'";
 
         try {
             Statement stm = conn.createStatement();
