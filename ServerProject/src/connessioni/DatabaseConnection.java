@@ -14,7 +14,7 @@ public class DatabaseConnection {
     public static void init() throws ClassNotFoundException, SQLException {
 
         Class.forName("com.mysql.jdbc.Driver");
-        connection = DriverManager.getConnection(dbUrl, "root", "getout2018");
+        connection = DriverManager.getConnection(dbUrl, "gigio", "getout2018");
         System.out.println("Connesso al DB");
 
     }
