@@ -38,8 +38,9 @@ import it.getout.gestioneposizione.Tronco;
 public class ServerHelper {
 
     private static final String BASE_URL = "http://DA SOSTITUIRE CON URL SERVER";
-    private static final String SERV_PERCORSO= "/percorso";
-    private static final String SERV_PIANI= "/piano";
+    private static final String SERV_PERCORSO = "/percorso";
+    private static final String SERV_PIANI = "/piano";
+    private static final String SERV_EDIFICIO = "/edificio";
 
     private Context context;
 
@@ -155,13 +156,71 @@ public class ServerHelper {
                 public void onResponse(JSONObject response) {
                     try {
                         //Prendo l'array "piani"
-                        JSONArray array = response.getJSONArray("piano");
+                        JSONArray array = response.getJSONArray("PIANO");
                         for (int j = 0; j < array.length(); j++) {
                             JSONObject current = array.getJSONObject(j);
-                            if(building == current.get("edificio")){
-                                //per ogni elemento di array, ricavo il nome del piano e inserisco il piano nell'arraylist
-                                piani.add(new Piano(current.getString("nome")));
-                            }
+
+                            //per ogni elemento di array, ricavo il nome del piano e inserisco il piano nell'arraylist
+                            piani.add(new Piano(current.getString("nome")));
+
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    for (int i=0;i < piani.size();i++){
+                        params.put("PIANO" + Integer.toString(i), piani.get(i).toString());
+                    }
+                    return params;
+                }
+            };
+            //Aggiungo la richiesta alla coda
+            mRequestQueue.add(jsonObjectRequest);
+
+            return true;
+        }
+    }
+
+    //AsyncTask che richiede l'edificio in base all'idbeacon connesso dal Server
+    private class RichiediEdificio extends AsyncTask<String,Void,Boolean> {
+        private String idBeacon;
+        private Edificio edificio;
+
+        @Override
+        protected Boolean doInBackground(final String...idbeacon) {
+            idBeacon = idbeacon[0];
+            //La variabile da restituire
+            edificio = null;
+            RequestQueue mRequestQueue;
+            //Metodi per il cache delle richieste JSON (Sembra che servano altrimenti non funziona)
+            Cache cache = new DiskBasedCache(context.getCacheDir(), 1024 * 1024);
+            Network network = new BasicNetwork(new HurlStack());
+            mRequestQueue = new RequestQueue(cache, network);
+            mRequestQueue.start();
+            //Url per la richiesta del percorso
+            String url = BASE_URL + SERV_EDIFICIO;
+            //Instanzio la richiesta JSON
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+                //Alla risposta
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        //Prendo l'array "Edificio"
+                        JSONArray array = response.getJSONArray("EDIFICIO_ATTUALE");
+                        for (int j = 0; j < array.length(); j++) {
+                            JSONObject current = array.getJSONObject(j);
+                            //per ogni elemento di array, ricavo l'edificio
+                            piani.add(new Piano(current.getString("nome")));
 
 
                         }
