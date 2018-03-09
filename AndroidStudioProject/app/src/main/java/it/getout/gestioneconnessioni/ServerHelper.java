@@ -39,11 +39,16 @@ import it.getout.gestioneposizione.Tronco;
 public class ServerHelper {
 
     private static final String BASE_URL = "http://DA SOSTITUIRE CON URL SERVER";
-    private static final String SERV_PERCORSO = "/percorso"; //URL percorso
-    private static final String SERV_PIANIEDI = "/pianiedificio?"; //URL pianoedificio
-    private static final String SERV_EDIFICIO = "/edificioattuale?"; //URL edificio
-    private static final String SERV_BEACON = "/beacontronco?"; //URL beacon da tronco
-    private static final String SERV_PIANIATT = "/pianoattuale?"; //URL pianoattuale da idbeacon
+    private static final String SERV_PERCORSO = "/percorso";            //URL percorso
+    private static final String SERV_PIANIEDI = "/pianiedificio?";      //URL piano da edificio
+    private static final String SERV_EDIFICIO = "/edificioattuale?";    //URL edificio da idbeacon
+    private static final String SERV_BEACON = "/beacontronco?";         //URL beacon da tronco
+    private static final String SERV_PIANIATT = "/pianoattuale?";       //URL pianoattuale da idbeacon
+    private static final String SERV_POSIZIONE = "/posizione?";         //URL posizione da idbeacon
+    private static final String SERV_AULEPIANO = "/aulepiano?";         //URL aule da piano
+    private static final String SERV_TRONCHIPIANO = "/tronchipiano?";   //URL tronchi da piano
+    private static final String SERV_MAPPAPIANO = "/mappapiano?";       //URL tronchi da piano
+
 
     private Context context;
 
@@ -322,7 +327,7 @@ public class ServerHelper {
         }
     }
 
-    //AsyncTask che richiede il piano in base all'idbeacon connesso dal Server
+    //AsyncTask che richiede il piano in base all'idbeacon connesso dal Server (PIANOATTUALE)
     private class RichiedipianobyBeaconTask extends AsyncTask<String,Void,Boolean> {
         private String idbeacon;
         private Piano piani;
@@ -339,7 +344,7 @@ public class ServerHelper {
             mRequestQueue = new RequestQueue(cache, network);
             mRequestQueue.start();
             //Url per la richiesta del percorso
-            String url = BASE_URL + SERV_BEACON + idbeacon;
+            String url = BASE_URL + SERV_PIANIATT + idbeacon;
             //Instanzio la richiesta JSON
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
                 //Alla risposta
