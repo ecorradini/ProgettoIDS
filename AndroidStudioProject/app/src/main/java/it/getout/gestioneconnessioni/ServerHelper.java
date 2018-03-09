@@ -136,7 +136,7 @@ public class ServerHelper {
         private ArrayList<Piano> piani;
 
         @Override
-        protected Boolean doInBackground(Edificio...edificio) {
+        protected Boolean doInBackground(final Edificio...edificio) {
             building = edificio[0];
             //La variabile da restituire
             piani = new ArrayList<>();
@@ -158,9 +158,11 @@ public class ServerHelper {
                         JSONArray array = response.getJSONArray("piano");
                         for (int j = 0; j < array.length(); j++) {
                             JSONObject current = array.getJSONObject(j);
+                            if(building == current.get("edificio")){
+                                //per ogni elemento di array, ricavo il nome del piano e inserisco il piano nell'arraylist
+                                piani.add(new Piano(current.getString("nome")));
+                            }
 
-                            //per ogni elemento di array, ricavo il nome del piano e inserisco il piano nell'arraylist
-                            piani.add(new Piano(current.getString("nome")));
 
                         }
                     } catch (JSONException e) {
