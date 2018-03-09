@@ -12,6 +12,9 @@ public class DatabaseConnection {
         Class.forName("com.mysql.jdbc.Driver");
 
         connection = DriverManager.getConnection(dbUrl,"root","getout2018");
+        if(!connection.isClosed()) {
+            System.out.println("Connesso al DB");
+        }
 
     }
 

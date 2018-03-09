@@ -23,6 +23,7 @@ public class JsonServer {
 
         server.createContext("/edificio", new HttpHandler() {
             public void handle(HttpExchange arg0) throws IOException {
+                System.out.println("Richiesto Edificio da Beacon");
                 String response = Edificio.selectEdificioByBeacon(arg0.getRequestURI().getQuery());  //vuole una stringa e riprende una stringa
                 arg0.sendResponseHeaders(200, response.length());
                 OutputStream os = arg0.getResponseBody();
@@ -35,6 +36,7 @@ public class JsonServer {
 
         server.createContext("/piano", new HttpHandler() {
             public void handle(HttpExchange arg0) throws IOException {
+                System.out.println("Richiesto Piano da Beacon");
                 String response = Piano.selectPianoByBeacon(arg0.getRequestURI().getQuery());
                 arg0.sendResponseHeaders(200, response.length());
                 OutputStream os = arg0.getResponseBody();
@@ -47,6 +49,7 @@ public class JsonServer {
 
         server.createContext("/beacon", new HttpHandler() {
             public void handle(HttpExchange arg0) throws IOException {
+                System.out.println("Richiesti Beacons da Tronco");
                 String response = Beacon.selectAllBeaconsByTronco(arg0.getRequestURI().getQuery());
                 arg0.sendResponseHeaders(200, response.length());
                 OutputStream os = arg0.getResponseBody();
@@ -58,6 +61,7 @@ public class JsonServer {
 
         server.createContext("/beacon", new HttpHandler() {
             public void handle(HttpExchange arg0) throws IOException {
+                System.out.println("Richiesta Posizione da Beacon");
                 String response = Beacon.selectPosizioneById(arg0.getRequestURI().getQuery());
                 arg0.sendResponseHeaders(200, response.length());
                 OutputStream os = arg0.getResponseBody();
@@ -89,6 +93,7 @@ public class JsonServer {
 
         server.createContext("/tronco", new HttpHandler() {
             public void handle(HttpExchange arg0) throws IOException {
+                System.out.println("Richiesti Tronchi da Piano");
                 String response = Tronco.selectAllTronchiByPiano(arg0.getRequestURI().getQuery());
                 arg0.sendResponseHeaders(200, response.length());
                 OutputStream os = arg0.getResponseBody();
@@ -99,6 +104,7 @@ public class JsonServer {
 
         server.createContext("/mappa", new HttpHandler() {
             public void handle(HttpExchange arg0) throws IOException {
+                System.out.println("Richieste Mappe da Piano");
                 String response = Mappa.selectMappaByPiano(arg0.getRequestURI().getQuery());
                 arg0.sendResponseHeaders(200, response.length());
                 OutputStream os = arg0.getResponseBody();
