@@ -93,7 +93,7 @@ public class PosizioneUtente {
         return device;
     }
 
-    private static String getBeaconId(){
+    public static String getBeaconId(){
         return beaconAttuale.getId();
     }
 
