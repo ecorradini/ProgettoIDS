@@ -19,7 +19,7 @@ public class Beacon {
         String xPos = "", yPos = "";
 
         String query =  "SELECT "+X+","+Y+
-                " FROM "+TABLE_BEACON+" WHERE "+TABLE_BEACON+"."+ID+"="+idBeacon;
+                " FROM "+TABLE_BEACON+" WHERE "+TABLE_BEACON+"."+ID+"=\'"+idBeacon+"\'";
 
         try {
             Statement stm = conn.createStatement();
@@ -32,7 +32,6 @@ public class Beacon {
 
             rs.close();
             stm.close();
-            DatabaseConnection.getConn().commit();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -46,7 +45,7 @@ public class Beacon {
 
         String query =  "SELECT "+ID+","+X+","+Y+
                 " FROM "+TABLE_BEACON+
-                " WHERE "+TRONCO+"="+tronco;
+                " WHERE "+TRONCO+"=\'"+tronco+"\'";
 
         try {
             Statement stm = conn.createStatement();
@@ -58,14 +57,13 @@ public class Beacon {
 
             rs.close();
             stm.close();
-            DatabaseConnection.getConn().commit();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
         //Eliminare la virgola finale
-        json = json.substring(0,json.length()-2);
+        json = json.substring(0,json.length()-1);
         json = json + "]}";
 
         return json;

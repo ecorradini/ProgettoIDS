@@ -22,7 +22,7 @@ public class Tronco {
         String json="{\""+piano+"\":[";
 
         String query =  "SELECT "+LARGHEZZA+","+X+","+Y+","+XF+","+YF+
-                " FROM "+TABLE_TRONCO+ " WHERE "+PIANO+"="+piano;
+                " FROM "+TABLE_TRONCO+ " WHERE "+PIANO+"=\'"+piano+"\'";
 
         try {
             Statement stm = conn.createStatement();
@@ -34,14 +34,13 @@ public class Tronco {
 
             rs.close();
             stm.close();
-            DatabaseConnection.getConn().commit();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
         //Eliminare la virgola finale
-        json = json.substring(0,json.length()-2);
+        json = json.substring(0,json.length()-1);
         json = json + "]}";
 
         return json;
