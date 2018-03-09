@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 
+import android.content.Context;
 import android.graphics.PointF;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -40,22 +43,28 @@ public class PosizioneUtente {
     private static ServerHelper serverRefence;
     //Istanza del descrittore dei dispositivi bluetooth
     private static BluetoothDevice device;
+    //Context
+    private static Context context;
 
-    public static void init(Activity a) {
-        dbReference = new DBHelper(a.getBaseContext());
-        serverRefence = new ServerHelper(a.getBaseContext());
-        initBluetooth((AppCompatActivity) a);
+    public static void init(Context c) {
+        context = c;
+        dbReference = new DBHelper(c);
+        serverRefence = new ServerHelper(c);
+        initBluetooth(c);
     }
 
     public static void getInfoByBeaconID(String beaconAttuale) {
-        edificioAttuale = dbReference.initEdificioAttuale(beaconAttuale);
-        pianoAttuale = dbReference.initPianoAttuale(beaconAttuale);
+        if(!checkInternet()) {
+            edificioAttuale = dbReference.initEdificioAttuale(beaconAttuale);
+            pianoAttuale = dbReference.initPianoAttuale(beaconAttuale);
+        }
+
         Mappa.setMappa(pianoAttuale);
     }
     /**
     *Metodo che inizializza il bluetooth e tutte le sue fasi(scanner)
      */
-    private static void initBluetooth(AppCompatActivity a) {
+    private static void initBluetooth(Context c) {
         if (btAdapter == null) {
             btAdapter = BluetoothAdapter.getDefaultAdapter();  // Local Bluetooth adapter
         }
@@ -66,10 +75,12 @@ public class PosizioneUtente {
             btHelper.activateBluetooth();
         }
 
-        btHelper = new BluetoothHelper(btAdapter, a);
+        btHelper = new BluetoothHelper(btAdapter, (AppCompatActivity)c);
         device =  scansionaBluetooth();
         //memorizzo beaconAttusle all'interno dell'oggetto Beacon
         beaconAttuale.setId(device.getAddress());
+
+        getInfoByBeaconID(beaconAttuale.getId());
     }
     /**
      *Metodo che si adopera ad effettuare lo scan dei dispositivi bluetooth
@@ -105,4 +116,10 @@ public class PosizioneUtente {
     public static DBHelper getDbReference() { return dbReference; }
 
     public static ServerHelper getServerReference() { return serverRefence; }
+
+    public static boolean checkInternet() {
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+    }
 }
