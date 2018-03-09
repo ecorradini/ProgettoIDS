@@ -156,7 +156,7 @@ public class ServerHelper {
                 public void onResponse(JSONObject response) {
                     try {
                         //Prendo l'array "piani"
-                        JSONArray array = response.getJSONArray("PIANO");
+                        JSONArray array = response.getJSONArray("pianoattuale");
                         for (int j = 0; j < array.length(); j++) {
                             JSONObject current = array.getJSONObject(j);
 
@@ -217,13 +217,10 @@ public class ServerHelper {
                     try {
                         //Prendo l'array "Edificio"
                         JSONArray array = response.getJSONArray("EDIFICIO_ATTUALE");
-                        for (int j = 0; j < array.length(); j++) {
-                            JSONObject current = array.getJSONObject(j);
-                            //per ogni elemento di array, ricavo l'edificio
-                            piani.add(new Piano(current.getString("nome")));
+                            JSONObject current = array.getJSONObject(0);
+                            //ricavo l'edificio e lo istanzio
+                            edificio = new Edificio(current.getString("nome"));
 
-
-                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -237,9 +234,7 @@ public class ServerHelper {
                 @Override
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<String, String>();
-                    for (int i=0;i < piani.size();i++){
-                        params.put("PIANO" + Integer.toString(i), piani.get(i).toString());
-                    }
+                        params.put("EDIFICIO", edificio.toString());
                     return params;
                 }
             };
