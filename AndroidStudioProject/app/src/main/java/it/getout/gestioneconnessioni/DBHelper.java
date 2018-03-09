@@ -83,7 +83,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 COL_Y+" FLOAT(6,2) NOT NULL,"+
                 COL_TRONCO+" VARCHAR(20) NOT NULL"+")";
         String create_mappa="CREATE TABLE "+TABLE_MAPPA+"("+
-                COL_IMMAGINE+" TEXT NOT NULL,"+
+                COL_IMMAGINE+" LONGTEXT NOT NULL,"+
                 COL_PIANO+" VARCHAR(20) PRIMARY KEY"+")";
 
         sqLiteDatabase.execSQL(create_edificio);
