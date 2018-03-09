@@ -22,7 +22,7 @@ public class Edificio {
                 " WHERE "+Beacon.TABLE_BEACON+"."+Beacon.TRONCO+"="+Tronco.TABLE_TRONCO+"."+Tronco.ID+" AND "+
                 Tronco.TABLE_TRONCO+"."+Tronco.PIANO+"="+Piano.TABLE_PIANO+"."+Piano.NOME+" AND "+
                 Piano.TABLE_PIANO+"."+Piano.EDIFICIO+"="+TABLE_EDIFICIO+"."+NOME+" AND "+
-                Beacon.TABLE_BEACON+"."+Beacon.ID+"="+idBeacon;
+                Beacon.TABLE_BEACON+"."+Beacon.ID+"=\'"+idBeacon+"\'";
         try {
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(query);
@@ -33,7 +33,6 @@ public class Edificio {
 
             rs.close();
             stm.close();
-            DatabaseConnection.getConn().commit();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
