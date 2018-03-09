@@ -39,7 +39,7 @@ public class Piano {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return "{ "+"\"PIANO_ATTUALE\":\""+nomePiano+"\""+"}";
+        return "{"+"\"PIANO_ATTUALE\":\""+nomePiano+"\""+"}";
     }
 
     public static String selectAllPianiByEdificio(String edificio) {

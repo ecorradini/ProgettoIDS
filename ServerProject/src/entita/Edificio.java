@@ -21,9 +21,8 @@ public class Edificio {
                 " FROM "+TABLE_EDIFICIO+","+Piano.TABLE_PIANO+","+Tronco.TABLE_TRONCO+","+Beacon.TABLE_BEACON+
                 " WHERE "+Beacon.TABLE_BEACON+"."+Beacon.TRONCO+"="+Tronco.TABLE_TRONCO+"."+Tronco.ID+" AND "+
                 Tronco.TABLE_TRONCO+"."+Tronco.PIANO+"="+Piano.TABLE_PIANO+"."+Piano.NOME+" AND "+
-                Piano.TABLE_PIANO+"."+Piano.EDIFICIO+"="+TABLE_EDIFICIO+"."+NOME+
+                Piano.TABLE_PIANO+"."+Piano.EDIFICIO+"="+TABLE_EDIFICIO+"."+NOME+" AND "+
                 Beacon.TABLE_BEACON+"."+Beacon.ID+"="+idBeacon;
-
         try {
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(query);
@@ -39,6 +38,6 @@ public class Edificio {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return "{ "+"\"EDIFICIO_ATTUALE\":\""+nomeEdificio+"\""+"}";
+        return "{"+"\"EDIFICIO_ATTUALE\":\""+nomeEdificio+"\""+"}";
     }
 }
