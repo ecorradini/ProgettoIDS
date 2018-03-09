@@ -37,6 +37,7 @@ public class Edificio {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
         String json = "{"+"\"EDIFICIO_ATTUALE\":\""+nomeEdificio+"\""+"}";
 
         System.out.println("RESPONSE: "+json);
