@@ -36,7 +36,11 @@ public class Beacon {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return "{ "+"\"POSIZIONE\":\"{\"X\":\""+xPos+"\",\"Y\":\""+yPos+"\"}}";
+        String json = "{ "+"\"POSIZIONE\":\"{\"X\":\""+xPos+"\",\"Y\":\""+yPos+"\"}}";
+
+        System.out.println("RESPONSE: "+json);
+
+        return json;
     }
 
     public static String selectAllBeaconsByTronco(String tronco) {
@@ -65,6 +69,8 @@ public class Beacon {
         //Eliminare la virgola finale
         json = json.substring(0,json.length()-1);
         json = json + "]}";
+
+        System.out.println("RESPONSE: "+json);
 
         return json;
     }

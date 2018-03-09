@@ -38,7 +38,12 @@ public class Piano {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return "{"+"\"PIANO_ATTUALE\":\""+nomePiano+"\""+"}";
+
+        String json = "{"+"\"PIANO_ATTUALE\":\""+nomePiano+"\""+"}";
+
+        System.out.println("RESPONSE: "+json);
+
+        return json;
     }
 
     public static String selectAllPianiByEdificio(String edificio) {
@@ -65,6 +70,8 @@ public class Piano {
         //Eliminare la virgola finale
         json = json.substring(0,json.length()-1);
         json = json + "]}";
+
+        System.out.println("RESPONSE: "+json);
 
         return json;
     }
