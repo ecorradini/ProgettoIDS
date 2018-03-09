@@ -40,10 +40,10 @@ public class ServerHelper {
 
     private static final String BASE_URL = "http://DA SOSTITUIRE CON URL SERVER";
     private static final String SERV_PERCORSO = "/percorso"; //URL percorso
-    private static final String SERV_PIANIEDI = "/pianiedificio" + PosizioneUtente.getEdificioAttuale(); //URL pianoedificio
-    private static final String SERV_EDIFICIO = "/edificioattuale?" + PosizioneUtente.getBeaconId(); //URL edificio
+    private static final String SERV_PIANIEDI = "/pianiedificio?"; //URL pianoedificio
+    private static final String SERV_EDIFICIO = "/edificioattuale?"; //URL edificio
     private static final String SERV_BEACON = "/beacontronco?"; //URL beacon da tronco
-    private static final String SERV_PIANIATT = "/pianoattuale?" + PosizioneUtente.getBeaconId(); //URL pianoattuale da idbeacon
+    private static final String SERV_PIANIATT = "/pianoattuale?"; //URL pianoattuale da idbeacon
 
     private Context context;
 
@@ -55,7 +55,21 @@ public class ServerHelper {
         new RichiediPercorsoTask().execute(destinazione);
     }
 
+    public void RichiediPianibyEdificio(Edificio edificio) {
+        new RichiediPianibyEdificioTask().execute(edificio);
+    }
 
+    public void RichiediEdificio(String idbeacon) {
+        new RichiediEdificioTask().execute(idbeacon);
+    }
+
+    public void RichiediBeaconbyTronco(Tronco...tronco) {
+        new RichiediBeaconbyTroncoTask().execute(tronco);
+    }
+
+    public void RichiedipianobyBeacon(String...beacon) {
+        new RichiedipianobyBeaconTask().execute(beacon);
+    }
 
     //AsyncTask che richiede il percorso al Server
     private class RichiediPercorsoTask extends AsyncTask<PointF,Void,Boolean> {
@@ -137,12 +151,12 @@ public class ServerHelper {
     }
 
     //AsyncTask che richiede i piani in base all'edificio al Server
-    private class RichiediPianibyEdificio extends AsyncTask<Edificio,Void,Boolean> {
+    private class RichiediPianibyEdificioTask extends AsyncTask<Edificio,Void,Boolean> {
         private Edificio building;
         private ArrayList<Piano> piani;
 
         @Override
-        protected Boolean doInBackground(final Edificio...edificio) {
+        protected Boolean doInBackground(Edificio...edificio) {
             building = edificio[0];
             //La variabile da restituire
             piani = new ArrayList<>();
@@ -153,7 +167,7 @@ public class ServerHelper {
             mRequestQueue = new RequestQueue(cache, network);
             mRequestQueue.start();
             //Url per la richiesta del percorso
-            String url = BASE_URL + SERV_PIANIEDI;
+            String url = BASE_URL + SERV_PIANIEDI + building;
             //Instanzio la richiesta JSON
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
                 //Alla risposta
@@ -197,12 +211,12 @@ public class ServerHelper {
     }
 
     //AsyncTask che richiede l'edificio in base all'idbeacon connesso dal Server
-    private class RichiediEdificio extends AsyncTask<String,Void,Boolean> {
+    private class RichiediEdificioTask extends AsyncTask<String,Void,Boolean> {
         private String idBeacon;
         private Edificio edificio;
 
         @Override
-        protected Boolean doInBackground(final String...idbeacon) {
+        protected Boolean doInBackground(String...idbeacon) {
             idBeacon = idbeacon[0];
             //La variabile da restituire
             edificio = null;
@@ -213,7 +227,7 @@ public class ServerHelper {
             mRequestQueue = new RequestQueue(cache, network);
             mRequestQueue.start();
             //Url per la richiesta del percorso
-            String url = BASE_URL + SERV_EDIFICIO;
+            String url = BASE_URL + SERV_EDIFICIO + idBeacon;
             //Instanzio la richiesta JSON
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
                 //Alla risposta
@@ -251,12 +265,12 @@ public class ServerHelper {
     }
 
     //AsyncTask che richiede i beacon in base al tronco dal Server
-    private class RichiediBeaconbyTronco extends AsyncTask<Tronco,Void,Boolean> {
+    private class RichiediBeaconbyTroncoTask extends AsyncTask<Tronco,Void,Boolean> {
         private Tronco troncos;
         private ArrayList<Beacon> beacons;
 
         @Override
-        protected Boolean doInBackground(final Tronco...tronco) {
+        protected Boolean doInBackground(Tronco...tronco) {
             troncos = tronco[0];
             //La variabile da restituire
             beacons = new ArrayList<Beacon>();
@@ -267,7 +281,7 @@ public class ServerHelper {
             mRequestQueue = new RequestQueue(cache, network);
             mRequestQueue.start();
             //Url per la richiesta del percorso
-            String url = BASE_URL + SERV_BEACON;
+            String url = BASE_URL + SERV_BEACON + troncos;
             //Instanzio la richiesta JSON
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
                 //Alla risposta
@@ -280,7 +294,7 @@ public class ServerHelper {
                             JSONObject current = array.getJSONObject(i);
 
                             PointF posizione = new PointF(Float.parseFloat(current.getString("X")),Float.parseFloat(current.getString("Y")));
-                            beacons.add(new Beacon(current.getString("ID"), posizione);
+                            beacons.add(new Beacon(current.getString("ID"), posizione));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -295,7 +309,63 @@ public class ServerHelper {
                 @Override
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<String, String>();
-                    params.put("EDIFICIO", edificio.toString());
+                    for (int i=0;i < beacons.size();i++){
+                        params.put("BEACON" + Integer.toString(i), beacons.get(i).getId());
+                    }
+                    return params;
+                }
+            };
+            //Aggiungo la richiesta alla coda
+            mRequestQueue.add(jsonObjectRequest);
+
+            return true;
+        }
+    }
+
+    //AsyncTask che richiede il piano in base all'idbeacon connesso dal Server
+    private class RichiedipianobyBeaconTask extends AsyncTask<String,Void,Boolean> {
+        private String idbeacon;
+        private Piano piani;
+
+        @Override
+        protected Boolean doInBackground(String...beacon) {
+            idbeacon = beacon[0];
+            //La variabile da restituire
+            piani = null;
+            RequestQueue mRequestQueue;
+            //Metodi per il cache delle richieste JSON (Sembra che servano altrimenti non funziona)
+            Cache cache = new DiskBasedCache(context.getCacheDir(), 1024 * 1024);
+            Network network = new BasicNetwork(new HurlStack());
+            mRequestQueue = new RequestQueue(cache, network);
+            mRequestQueue.start();
+            //Url per la richiesta del percorso
+            String url = BASE_URL + SERV_BEACON + idbeacon;
+            //Instanzio la richiesta JSON
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+                //Alla risposta
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        //Prendo l'array "piani"
+                        JSONArray array = response.getJSONArray("pianoattuale");
+
+                        JSONObject current = array.getJSONObject(0);
+                        piani = new Piano(current.getString("nomePiano"));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("PIANO", piani.toString());
                     return params;
                 }
             };
