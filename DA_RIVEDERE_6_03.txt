@@ -16,4 +16,10 @@ Class Diagram UT2:
 
 - initPianoAttuale ha il solo parametro String, non edificio
 
--diagramma database cambiare number in float
+- diagramma database cambiare number in float
+
+Class Diagram UT3:
+
+- in Mappa cambiare IMMAGINI in IMMAGINE
+
+- in Aula cambiare TABLE:AULA in TABLE_AULTA
