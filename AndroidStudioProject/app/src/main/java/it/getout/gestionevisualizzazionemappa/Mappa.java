@@ -28,6 +28,10 @@ public class Mappa {
         immagine = convertiDaBase64(getMappaDB(piano));
     }
 
+    public static void setMappa(String base64Image){
+            immagine = convertiDaBase64(base64Image);
+    }
+
     private static String getMappaDB(Piano piano){
         return PosizioneUtente.getDbReference().queryMappa(piano);
     }

@@ -1,6 +1,7 @@
 package it.getout.gestioneconnessioni;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.os.AsyncTask;
@@ -26,11 +27,13 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import it.getout.MainActivity;
+import it.getout.gestioneposizione.Aula;
 import it.getout.gestioneposizione.Beacon;
 import it.getout.gestioneposizione.Edificio;
 import it.getout.gestioneposizione.Piano;
 import it.getout.gestioneposizione.PosizioneUtente;
 import it.getout.gestioneposizione.Tronco;
+import it.getout.gestionevisualizzazionemappa.Mappa;
 
 /**
  * Created by Alessandro on 01/02/2018.
@@ -74,6 +77,22 @@ public class ServerHelper {
 
     public void RichiedipianobyBeacon(String...beacon) {
         new RichiedipianobyBeaconTask().execute(beacon);
+    }
+
+    public void RichiediPosizione(String...beacon) {
+        new RichiediPosizioneTask().execute(beacon);
+    }
+
+    public void RichiediAulebyPiano(Piano...piano) {
+        new RichiediAulebyPianoTask().execute(piano);
+    }
+
+    public void RichiediTronchibyPiano(Piano...piano) {
+        new RichiediTronchibyPianoTask().execute(piano);
+    }
+
+    public void RichiediMappabyPiano(Piano...piano) {
+        new RichiediMappabyPianoTask().execute(piano);
     }
 
     //AsyncTask che richiede il percorso al Server
@@ -380,4 +399,233 @@ public class ServerHelper {
             return true;
         }
     }
+
+    //AsyncTask che richiede il piano in base all'idbeacon connesso dal Server (PIANOATTUALE)
+    private class RichiediPosizioneTask extends AsyncTask<String,Void,Boolean> {
+        private String idbeacon;
+        private PointF posizione;
+
+        @Override
+        protected Boolean doInBackground(String...beacon) {
+            idbeacon = beacon[0];
+            //La variabile da restituire
+            posizione = null;
+            RequestQueue mRequestQueue;
+            //Metodi per il cache delle richieste JSON (Sembra che servano altrimenti non funziona)
+            Cache cache = new DiskBasedCache(context.getCacheDir(), 1024 * 1024);
+            Network network = new BasicNetwork(new HurlStack());
+            mRequestQueue = new RequestQueue(cache, network);
+            mRequestQueue.start();
+            //Url per la richiesta del percorso
+            String url = BASE_URL + SERV_POSIZIONE + idbeacon;
+            //Instanzio la richiesta JSON
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+                //Alla risposta
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        //Prendo l'array "posizione"
+                        JSONArray array = response.getJSONArray("posizione");
+
+                        JSONObject current = array.getJSONObject(0);
+                        posizione = new PointF(Float.parseFloat(current.getString("X")),Float.parseFloat(current.getString("Y")));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("X", Float.toString(posizione.x));
+                    params.put("Y", Float.toString(posizione.y));
+                    return params;
+                }
+            };
+            //Aggiungo la richiesta alla coda
+            mRequestQueue.add(jsonObjectRequest);
+
+            return true;
+        }
+    }
+
+    //AsyncTask che richiede i beacon in base al tronco dal Server
+    private class RichiediAulebyPianoTask extends AsyncTask<Piano,Void,Boolean> {
+        private Piano piano;
+        private ArrayList<Aula> aule;
+
+        @Override
+        protected Boolean doInBackground(Piano...pianos) {
+            piano = pianos[0];
+            //La variabile da restituire
+            aule = new ArrayList<Aula>();
+            RequestQueue mRequestQueue;
+            //Metodi per il cache delle richieste JSON (Sembra che servano altrimenti non funziona)
+            Cache cache = new DiskBasedCache(context.getCacheDir(), 1024 * 1024);
+            Network network = new BasicNetwork(new HurlStack());
+            mRequestQueue = new RequestQueue(cache, network);
+            mRequestQueue.start();
+            //Url per la richiesta del percorso
+            String url = BASE_URL + SERV_AULEPIANO + piano;
+            //Instanzio la richiesta JSON
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+                //Alla risposta
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        //Prendo l'array "Edificio"
+                        JSONArray array = response.getJSONArray("aulepiano");
+                        for (int i=0; i < array.length(); i++){
+                            JSONObject current = array.getJSONObject(i);
+
+                            PointF entrata = new PointF(Float.parseFloat(current.getString("X")),Float.parseFloat(current.getString("Y")));
+                            aule.add(new Aula(current.getString("NOME"), entrata, piano));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    for (int i=0;i < aule.size();i++){
+                        params.put("AULA" + Integer.toString(i), aule.get(i).getNome());
+                    }
+                    return params;
+                }
+            };
+            //Aggiungo la richiesta alla coda
+            mRequestQueue.add(jsonObjectRequest);
+
+            return true;
+        }
+    }
+
+    //AsyncTask che richiede i beacon in base al tronco dal Server
+    private class RichiediTronchibyPianoTask extends AsyncTask<Piano,Void,Boolean> {
+        private Piano piano;
+        private ArrayList<Tronco> tronco;
+
+        @Override
+        protected Boolean doInBackground(Piano...pianos) {
+            piano = pianos[0];
+            //La variabile da restituire
+            tronco = new ArrayList<Tronco>();
+            RequestQueue mRequestQueue;
+            //Metodi per il cache delle richieste JSON (Sembra che servano altrimenti non funziona)
+            Cache cache = new DiskBasedCache(context.getCacheDir(), 1024 * 1024);
+            Network network = new BasicNetwork(new HurlStack());
+            mRequestQueue = new RequestQueue(cache, network);
+            mRequestQueue.start();
+            //Url per la richiesta del percorso
+            String url = BASE_URL + SERV_TRONCHIPIANO + piano;
+            //Instanzio la richiesta JSON
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+                //Alla risposta
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        //Prendo l'array "Edificio"
+                        JSONArray array = response.getJSONArray("tronchipiano");
+                        for (int i=0; i < array.length(); i++){
+                            JSONObject current = array.getJSONObject(i);
+
+                            PointF inizio = new PointF(Float.parseFloat(current.getString("X")),Float.parseFloat(current.getString("Y")));
+                            PointF fine = new PointF(Float.parseFloat(current.getString("XF")),Float.parseFloat(current.getString("YF")));
+                            tronco.add(new Tronco(inizio, fine, Float.parseFloat(current.getString("LARGHEZZA"))));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    for (int i=0;i < tronco.size();i++){
+                        params.put("AULA" + Integer.toString(i), Float.toString(tronco.get(i).getLarghezza()) + " - "
+                                + Float.toString(tronco.get(i).getInizio().x) + ", "+ Float.toString(tronco.get(i).getInizio().y));
+                    }
+                    return params;
+                }
+            };
+            //Aggiungo la richiesta alla coda
+            mRequestQueue.add(jsonObjectRequest);
+
+            return true;
+        }
+    }
+
+    //AsyncTask che richiede i beacon in base al tronco dal Server
+    private class RichiediMappabyPianoTask extends AsyncTask<Piano,Void,Boolean> {
+        private Piano piano;
+        private Bitmap mappa;
+
+        @Override
+        protected Boolean doInBackground(Piano...pianos) {
+            piano = pianos[0];
+            //La variabile da restituire
+            mappa = null;
+            RequestQueue mRequestQueue;
+            //Metodi per il cache delle richieste JSON (Sembra che servano altrimenti non funziona)
+            Cache cache = new DiskBasedCache(context.getCacheDir(), 1024 * 1024);
+            Network network = new BasicNetwork(new HurlStack());
+            mRequestQueue = new RequestQueue(cache, network);
+            mRequestQueue.start();
+            //Url per la richiesta del percorso
+            String url = BASE_URL + SERV_MAPPAPIANO + piano;
+            //Instanzio la richiesta JSON
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+                //Alla risposta
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        //Prendo l'array "Edificio"
+                        JSONArray array = response.getJSONArray("mappapiano");
+
+                            JSONObject current = array.getJSONObject(0);
+                            Mappa.setMappa(current.getString("MAPPA"));
+                            mappa = Mappa.getMappa();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                        params.put("MAPPA", Double.toString(Mappa.getWitdh()) + " - " + Double.toString(Mappa.getWitdh()));
+                    return params;
+                }
+            };
+            //Aggiungo la richiesta alla coda
+            mRequestQueue.add(jsonObjectRequest);
+
+            return true;
+        }
+    }
+
 }
