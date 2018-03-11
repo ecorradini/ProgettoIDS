@@ -9,6 +9,7 @@ import android.graphics.PointF;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -50,7 +51,9 @@ public class PosizioneUtente {
         context = c;
         dbReference = new DBHelper(c);
         serverRefence = new ServerHelper(c);
-        initBluetooth(c);
+       // initBluetooth(c);
+        //Solo per TESTS
+        getInfoByBeaconID("prova");
     }
 
     public static void getInfoByBeaconID(String beaconAttuale) {
@@ -58,8 +61,11 @@ public class PosizioneUtente {
             edificioAttuale = dbReference.initEdificioAttuale(beaconAttuale);
             pianoAttuale = dbReference.initPianoAttuale(beaconAttuale);
         }
+        else {
+            serverRefence.richiediEdificio(beaconAttuale);
+        }
 
-        Mappa.setMappa(pianoAttuale);
+        //Mappa.setMappa(pianoAttuale);
     }
     /**
     *Metodo che inizializza il bluetooth e tutte le sue fasi(scanner)
@@ -108,6 +114,7 @@ public class PosizioneUtente {
     }
 
     public static Edificio getEdificioAttuale(){ return edificioAttuale; }
+    public static void setEdificioAttuale(Edificio edificio) { edificioAttuale=edificio; }
 
     public static Piano getPianoAttuale(){
         return pianoAttuale;

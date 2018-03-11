@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.android.volley.Cache;
 import com.android.volley.Network;
@@ -41,7 +42,7 @@ import it.getout.gestionevisualizzazionemappa.Mappa;
 
 public class ServerHelper {
 
-    private static final String BASE_URL = "http://DA SOSTITUIRE CON URL SERVER";
+    private static final String BASE_URL = "http://192.168.0.116:9600";
     private static final String SERV_PERCORSO = "/percorso";            //URL percorso
     private static final String SERV_PIANIEDI = "/pianiedificio?";      //URL piano da edificio
     private static final String SERV_EDIFICIO = "/edificioattuale?";    //URL edificio da idbeacon
@@ -59,39 +60,27 @@ public class ServerHelper {
         context = c;
     }
 
-    public void richiediPercorso(PointF destinazione) {
-        new RichiediPercorsoTask().execute(destinazione);
-    }
+    public void richiediPercorso(PointF destinazione) { new RichiediPercorsoTask().execute(destinazione); }
 
-    public void RichiediPianibyEdificio(Edificio edificio) {
-        new RichiediPianibyEdificioTask().execute(edificio);
-    }
+    public void richiediPianibyEdificio(Edificio edificio) { new RichiediPianibyEdificioTask().execute(edificio); }
 
-    public void RichiediEdificio(String idbeacon) {
-        new RichiediEdificioTask().execute(idbeacon);
-    }
+    public void richiediEdificio(String idbeacon) { new RichiediEdificioTask().execute(idbeacon); }
 
-    public void RichiediBeaconbyTronco(Tronco...tronco) {
-        new RichiediBeaconbyTroncoTask().execute(tronco);
-    }
+    public void richiediBeaconbyTronco(Tronco tronco) { new RichiediBeaconbyTroncoTask().execute(tronco); }
 
-    public void RichiedipianobyBeacon(String...beacon) {
-        new RichiedipianobyBeaconTask().execute(beacon);
-    }
+    public void richiedipianobyBeacon(String beacon) { new RichiedipianobyBeaconTask().execute(beacon); }
 
-    public void RichiediPosizione(String...beacon) {
+    public void richiediPosizione(String beacon) {
         new RichiediPosizioneTask().execute(beacon);
     }
 
-    public void RichiediAulebyPiano(Piano...piano) {
+    public void richiediAulebyPiano(Piano piano) {
         new RichiediAulebyPianoTask().execute(piano);
     }
 
-    public void RichiediTronchibyPiano(Piano...piano) {
-        new RichiediTronchibyPianoTask().execute(piano);
-    }
+    public void richiediTronchibyPiano(Piano piano) { new RichiediTronchibyPianoTask().execute(piano); }
 
-    public void RichiediMappabyPiano(Piano...piano) {
+    public void richiediMappabyPiano(Piano...piano) {
         new RichiediMappabyPianoTask().execute(piano);
     }
 
@@ -175,13 +164,14 @@ public class ServerHelper {
     }
 
     //AsyncTask che richiede i piani in base all'edificio al Server
-    private class RichiediPianibyEdificioTask extends AsyncTask<Edificio,Void,Boolean> {
-        private Edificio building;
-        private ArrayList<Piano> piani;
+    private class RichiediPianibyEdificioTask extends AsyncTask<Edificio,Void,ArrayList<Piano>> {
+        private Edificio edificio;
+        private boolean downloaded;
+        ArrayList<Piano> piani;
 
         @Override
-        protected Boolean doInBackground(Edificio...edificio) {
-            building = edificio[0];
+        protected ArrayList<Piano> doInBackground(Edificio...e) {
+            edificio = e[0];
             //La variabile da restituire
             piani = new ArrayList<>();
             RequestQueue mRequestQueue;
@@ -191,23 +181,25 @@ public class ServerHelper {
             mRequestQueue = new RequestQueue(cache, network);
             mRequestQueue.start();
             //Url per la richiesta del percorso
-            String url = BASE_URL + SERV_PIANIEDI + building;
+            String url = BASE_URL + SERV_PIANIEDI + edificio.toString();
+            downloaded = false;
             //Instanzio la richiesta JSON
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 //Alla risposta
                 @Override
                 public void onResponse(JSONObject response) {
                     try {
                         //Prendo l'array "piani"
-                        JSONArray array = response.getJSONArray("pianiedificio");
+                        JSONArray array = response.getJSONArray(edificio.toString());
                         for (int j = 0; j < array.length(); j++) {
                             JSONObject current = array.getJSONObject(j);
 
                             //per ogni elemento di array, ricavo il nome del piano e inserisco il piano nell'arraylist
-                            piani.add(new Piano(current.getString("nome")));
-
-
+                            //piani.add(new Piano(current.getString("nome")));
+                            Log.d("PIANO "+edificio.toString(),current.getString("PIANO"));
+                            piani.add(new Piano(edificio.toString()));
                         }
+                        downloaded = true;
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -217,32 +209,42 @@ public class ServerHelper {
                 public void onErrorResponse(VolleyError error) {
 
                 }
-            }) {
-                @Override
-                protected Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<String, String>();
-                    for (int i=0;i < piani.size();i++){
-                        params.put("PIANO" + Integer.toString(i), piani.get(i).toString());
-                    }
-                    return params;
-                }
-            };
+            });
             //Aggiungo la richiesta alla coda
             mRequestQueue.add(jsonObjectRequest);
 
-            return true;
+            //Aspetto di aver scaricato tutti i piano
+            Thread attesa = new Thread() {
+                public void run() {
+                    while(!downloaded);
+                }
+            };
+            attesa.start();
+            try {
+                attesa.join();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+
+            return piani;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Piano> p) {
+            if(p.size()>0) {
+                edificio.setPiani(p);
+            }
         }
     }
 
     //AsyncTask che richiede l'edificio in base all'idbeacon connesso dal Server
-    private class RichiediEdificioTask extends AsyncTask<String,Void,Boolean> {
+    private class RichiediEdificioTask extends AsyncTask<String,Void,Edificio> {
         private String idBeacon;
         private Edificio edificio;
 
         @Override
-        protected Boolean doInBackground(String...idbeacon) {
+        protected Edificio doInBackground(String...idbeacon) {
             idBeacon = idbeacon[0];
-            //La variabile da restituire
             edificio = null;
             RequestQueue mRequestQueue;
             //Metodi per il cache delle richieste JSON (Sembra che servano altrimenti non funziona)
@@ -253,17 +255,13 @@ public class ServerHelper {
             //Url per la richiesta del percorso
             String url = BASE_URL + SERV_EDIFICIO + idBeacon;
             //Instanzio la richiesta JSON
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 //Alla risposta
                 @Override
                 public void onResponse(JSONObject response) {
                     try {
-                        //Prendo l'array "Edificio"
-                        JSONArray array = response.getJSONArray("edificioattuale");
-                            JSONObject current = array.getJSONObject(0);
-                            //ricavo l'edificio e lo istanzio
-                            edificio = new Edificio(current.getString("nome"));
-
+                        String nomeEdificio = response.getString("EDIFICIO_ATTUALE");
+                        edificio = new Edificio(nomeEdificio);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -271,20 +269,32 @@ public class ServerHelper {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-
+                    Log.d("JSON ED ATTUALE ERROR",error.toString());
                 }
-            }) {
-                @Override
-                protected Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<String, String>();
-                        params.put("EDIFICIO", edificio.toString());
-                    return params;
-                }
-            };
+            });
             //Aggiungo la richiesta alla coda
             mRequestQueue.add(jsonObjectRequest);
 
-            return true;
+            //Aspetto che l'edificio venga instanziato
+            Thread attesa = new Thread() {
+                public void run() {
+                    while(edificio==null);
+                }
+            };
+            attesa.start();
+            try {
+                attesa.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            return edificio;
+        }
+
+        @Override
+        protected void onPostExecute(Edificio edificio) {
+            PosizioneUtente.setEdificioAttuale(edificio);
+            Log.d("EDIFICIO ATTUALE",edificio.toString());
         }
     }
 
@@ -456,12 +466,13 @@ public class ServerHelper {
     }
 
     //AsyncTask che richiede i beacon in base al tronco dal Server
-    private class RichiediAulebyPianoTask extends AsyncTask<Piano,Void,Boolean> {
+    private class RichiediAulebyPianoTask extends AsyncTask<Piano,Void,ArrayList<Aula>> {
         private Piano piano;
         private ArrayList<Aula> aule;
+        private boolean downloaded;
 
         @Override
-        protected Boolean doInBackground(Piano...pianos) {
+        protected ArrayList<Aula> doInBackground(Piano...pianos) {
             piano = pianos[0];
             //La variabile da restituire
             aule = new ArrayList<Aula>();
@@ -473,20 +484,26 @@ public class ServerHelper {
             mRequestQueue.start();
             //Url per la richiesta del percorso
             String url = BASE_URL + SERV_AULEPIANO + piano;
+            downloaded = false;
             //Instanzio la richiesta JSON
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 //Alla risposta
                 @Override
                 public void onResponse(JSONObject response) {
                     try {
                         //Prendo l'array "Edificio"
-                        JSONArray array = response.getJSONArray("aulepiano");
+                        JSONArray array = response.getJSONArray(piano.toString());
                         for (int i=0; i < array.length(); i++){
                             JSONObject current = array.getJSONObject(i);
 
+                            String nomeAula = current.getString("NOME");
                             PointF entrata = new PointF(Float.parseFloat(current.getString("X")),Float.parseFloat(current.getString("Y")));
-                            aule.add(new Aula(current.getString("NOME"), entrata, piano));
+
+                            aule.add(new Aula(nomeAula, entrata, piano));
                         }
+
+                        downloaded = true;
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -496,33 +513,44 @@ public class ServerHelper {
                 public void onErrorResponse(VolleyError error) {
 
                 }
-            }) {
-                @Override
-                protected Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<String, String>();
-                    for (int i=0;i < aule.size();i++){
-                        params.put("AULA" + Integer.toString(i), aule.get(i).getNome());
-                    }
-                    return params;
-                }
-            };
+            });
             //Aggiungo la richiesta alla coda
             mRequestQueue.add(jsonObjectRequest);
 
-            return true;
+            //Aspetto di aver scaricato tutti i piano
+            Thread attesa = new Thread() {
+                public void run() {
+                    while(!downloaded);
+                }
+            };
+            attesa.start();
+            try {
+                attesa.join();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+
+            return aule;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Aula> a) {
+            piano.setAule(a);
         }
     }
 
     //AsyncTask che richiede i beacon in base al tronco dal Server
-    private class RichiediTronchibyPianoTask extends AsyncTask<Piano,Void,Boolean> {
+    private class RichiediTronchibyPianoTask extends AsyncTask<Piano,Void,ArrayList<Tronco>> {
         private Piano piano;
-        private ArrayList<Tronco> tronco;
+        private ArrayList<Tronco> tronchi;
+        private boolean downloaded;
 
         @Override
-        protected Boolean doInBackground(Piano...pianos) {
+        protected ArrayList<Tronco> doInBackground(Piano...pianos) {
             piano = pianos[0];
+            downloaded = false;
             //La variabile da restituire
-            tronco = new ArrayList<Tronco>();
+            tronchi = new ArrayList<Tronco>();
             RequestQueue mRequestQueue;
             //Metodi per il cache delle richieste JSON (Sembra che servano altrimenti non funziona)
             Cache cache = new DiskBasedCache(context.getCacheDir(), 1024 * 1024);
@@ -532,20 +560,24 @@ public class ServerHelper {
             //Url per la richiesta del percorso
             String url = BASE_URL + SERV_TRONCHIPIANO + piano;
             //Instanzio la richiesta JSON
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 //Alla risposta
                 @Override
                 public void onResponse(JSONObject response) {
                     try {
                         //Prendo l'array "Edificio"
-                        JSONArray array = response.getJSONArray("tronchipiano");
+                        JSONArray array = response.getJSONArray(piano.toString());
                         for (int i=0; i < array.length(); i++){
                             JSONObject current = array.getJSONObject(i);
 
                             PointF inizio = new PointF(Float.parseFloat(current.getString("X")),Float.parseFloat(current.getString("Y")));
                             PointF fine = new PointF(Float.parseFloat(current.getString("XF")),Float.parseFloat(current.getString("YF")));
-                            tronco.add(new Tronco(inizio, fine, Float.parseFloat(current.getString("LARGHEZZA"))));
+                            float larghezza = Float.parseFloat(current.getString("LARGHEZZA"));
+
+                            tronchi.add(new Tronco(inizio, fine, larghezza));
                         }
+
+                        downloaded = true;
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -555,21 +587,31 @@ public class ServerHelper {
                 public void onErrorResponse(VolleyError error) {
 
                 }
-            }) {
-                @Override
-                protected Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<String, String>();
-                    for (int i=0;i < tronco.size();i++){
-                        params.put("AULA" + Integer.toString(i), Float.toString(tronco.get(i).getLarghezza()) + " - "
-                                + Float.toString(tronco.get(i).getInizio().x) + ", "+ Float.toString(tronco.get(i).getInizio().y));
-                    }
-                    return params;
-                }
-            };
+            });
             //Aggiungo la richiesta alla coda
             mRequestQueue.add(jsonObjectRequest);
 
-            return true;
+            //Aspetto di aver scaricato tutti i piano
+            Thread attesa = new Thread() {
+                public void run() {
+                    while(!downloaded);
+                }
+            };
+            attesa.start();
+            try {
+                attesa.join();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+
+            return tronchi;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Tronco> t) {
+            if(t.size()>0) {
+                piano.setTronchi(t);
+            }
         }
     }
 

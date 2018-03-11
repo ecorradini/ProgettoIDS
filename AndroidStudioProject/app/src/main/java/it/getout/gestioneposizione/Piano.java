@@ -14,22 +14,32 @@ public class Piano {
 
     public Piano(String nome){//String nome (va inserito come parametro costruttore
         this.nome = nome;
-        getAuleDB(this.nome);
-        getTronchiDB(this.nome);
+        downloadAule();
+        downloadTronchi();
     }
 
-    private void getAuleDB(String nome) {
-        aule = PosizioneUtente.getDbReference().initAule(nome);
+    private void downloadAule() {
+        if(!PosizioneUtente.checkInternet()) {
+            aule = PosizioneUtente.getDbReference().initAule(nome);
+        }
+        else {
+            PosizioneUtente.getServerReference().richiediAulebyPiano(this);
+        }
     }
 
-    private void getTronchiDB(String nome){
-        tronchi = PosizioneUtente.getDbReference().initTronchi(nome);
+    private void downloadTronchi() {
+        if(!PosizioneUtente.checkInternet()) {
+            tronchi = PosizioneUtente.getDbReference().initTronchi(nome);
+        }
+        else {
+
+        }
     }
 
     public ArrayList<Aula> getAule(){
         return aule;
     }
-
+    public void setAule(ArrayList<Aula> a) { aule=a; }
     public Aula getAula(int index){
         return aule.get(index);
     }
@@ -37,6 +47,7 @@ public class Piano {
     public ArrayList<Tronco> getTronchi(){
         return tronchi;
     }
+    public void setTronchi(ArrayList<Tronco> t) { tronchi = t; }
 
     public Tronco getTronco(int index){
         return tronchi.get(index);

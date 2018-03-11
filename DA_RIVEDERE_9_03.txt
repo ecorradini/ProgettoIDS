@@ -1,0 +1,2 @@
+Class Diagram UT2:
+- Aggiungere il metodo checkInternet alla classe PosizioneUtente

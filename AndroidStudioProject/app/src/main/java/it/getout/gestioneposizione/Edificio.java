@@ -13,11 +13,16 @@ public class Edificio {
 
     public Edificio(String nome) {
         this.nome = nome;
-        getPianiDB();
+        downloadPiani();
     }
 
-    private void getPianiDB(){
-        piani = PosizioneUtente.getDbReference().initPiani(nome);
+    private void downloadPiani() {
+        if(!PosizioneUtente.checkInternet()) {
+            piani = PosizioneUtente.getDbReference().initPiani(nome);
+        }
+        else {
+            PosizioneUtente.getServerReference().richiediPianibyEdificio(this);
+        }
     }
 
     public Piano getPiano(int index) {
@@ -29,4 +34,5 @@ public class Edificio {
     }
 
     public ArrayList<Piano> getPiani() { return piani; }
+    public void setPiani(ArrayList<Piano> p) { piani = p; }
 }
