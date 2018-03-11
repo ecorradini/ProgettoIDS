@@ -63,6 +63,7 @@ public class PosizioneUtente {
         }
         else {
             serverRefence.richiediEdificio(beaconAttuale);
+            //serverRefence.richiediPianobyBeacon(beaconAttuale);
         }
 
         //Mappa.setMappa(pianoAttuale);
@@ -119,6 +120,7 @@ public class PosizioneUtente {
     public static Piano getPianoAttuale(){
         return pianoAttuale;
     }
+    public static void setPianoAttuale(Piano p) { pianoAttuale = p; }
 
     public static DBHelper getDbReference() { return dbReference; }
 

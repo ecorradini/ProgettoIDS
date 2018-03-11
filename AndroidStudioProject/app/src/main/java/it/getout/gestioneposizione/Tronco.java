@@ -20,11 +20,16 @@ public class Tronco {
         this.inizio = inizio;
         this.fine = fine;
         this.larghezza = larghezza;
-        this.getBeaconsDB();
+        downloadBeacons();
     }
 
-    private void getBeaconsDB(){
-        beacons = PosizioneUtente.getDbReference().initBeacons(this);
+    private void downloadBeacons() {
+        if(!PosizioneUtente.checkInternet()) {
+            beacons = PosizioneUtente.getDbReference().initBeacons(this);
+        }
+        else {
+            PosizioneUtente.getServerReference().richiediBeaconbyTronco(this);
+        }
     }
 
     public PointF getInizio(){
@@ -46,6 +51,7 @@ public class Tronco {
     public HashMap<String,Beacon> getBeacons(){
         return beacons;
     }
+    public void setBeacons(HashMap<String,Beacon> b) { beacons = b; }
 
     public boolean equals(PointF i, PointF f) { return inizio==i && fine==f; }
     public boolean equals(Tronco t) { return inizio==t.getInizio() && fine==t.getFine(); }

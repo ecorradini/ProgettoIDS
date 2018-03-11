@@ -32,7 +32,7 @@ public class Piano {
             tronchi = PosizioneUtente.getDbReference().initTronchi(nome);
         }
         else {
-
+            PosizioneUtente.getServerReference().richiediTronchibyPiano(this);
         }
     }
 
