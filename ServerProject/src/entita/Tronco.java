@@ -37,14 +37,14 @@ public class Tronco {
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        } finally {
+
+            //Eliminare la virgola finale
+            json = json.substring(0, json.length() - 1);
+            json = json + "]}";
+
+            System.out.println("RESPONSE: " + json);
         }
-
-        //Eliminare la virgola finale
-        json = json.substring(0,json.length()-1);
-        json = json + "]}";
-
-        System.out.println("RESPONSE: "+json);
-
         return json;
     }
 }
