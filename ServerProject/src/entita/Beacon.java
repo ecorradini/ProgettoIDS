@@ -65,10 +65,13 @@ public class Beacon {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
-        //Eliminare la virgola finale
-        json = json.substring(0,json.length()-1);
-        json = json + "]}";
+        finally {
+            //Eliminare la virgola finale
+            if(json.substring(json.length() - 1,json.length()).equals(",")) {
+                json = json.substring(0, json.length() - 1);
+            }
+            json = json + "]}";
+        }
 
         System.out.println("RESPONSE: "+json);
 

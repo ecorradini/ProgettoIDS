@@ -13,6 +13,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import it.getout.MainActivity;
 import it.getout.gestioneconnessioni.BluetoothHelper;
 import it.getout.gestioneconnessioni.DBHelper;
 import it.getout.gestioneconnessioni.ServerHelper;
@@ -62,8 +63,28 @@ public class PosizioneUtente {
             pianoAttuale = dbReference.initPianoAttuale(beaconAttuale);
         }
         else {
-            serverRefence.richiediEdificio(beaconAttuale);
+
+            ((MainActivity)context).startLoading();
+
+            //serverRefence.richiediEdificio(PosizioneUtente.beaconAttuale.toString());
+            serverRefence.richiediEdificio("prova");
+/*
             //serverRefence.richiediPianobyBeacon(beaconAttuale);
+            serverRefence.richiediPianobyBeacon("prova");
+
+            //Aspetto che l'edificio venga instanziato
+            Thread attesaPiano = new Thread() {
+                public void run() {
+                    while(pianoAttuale==null);
+                }
+            };
+            attesaPiano.start();
+            try {
+                attesaPiano.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }*/
+
         }
 
         //Mappa.setMappa(pianoAttuale);
