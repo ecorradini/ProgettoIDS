@@ -68,23 +68,9 @@ public class PosizioneUtente {
 
             //serverRefence.richiediEdificio(PosizioneUtente.beaconAttuale.toString());
             serverRefence.richiediEdificio("prova");
-/*
-            //serverRefence.richiediPianobyBeacon(beaconAttuale);
-            serverRefence.richiediPianobyBeacon("prova");
 
-            //Aspetto che l'edificio venga instanziato
-            Thread attesaPiano = new Thread() {
-                public void run() {
-                    while(pianoAttuale==null);
-                }
-            };
-            attesaPiano.start();
-            try {
-                attesaPiano.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }*/
-
+            //Il piano attuale viene instanziato alla fine di richiedi edificio
+            //Alla fine di richiedi edificio viene anche terminata la barra di caricamento
         }
 
         //Mappa.setMappa(pianoAttuale);
@@ -146,6 +132,8 @@ public class PosizioneUtente {
     public static DBHelper getDbReference() { return dbReference; }
 
     public static ServerHelper getServerReference() { return serverRefence; }
+
+    public static Beacon getBeaconAttuale() { return beaconAttuale; }
 
     public static boolean checkInternet() {
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);

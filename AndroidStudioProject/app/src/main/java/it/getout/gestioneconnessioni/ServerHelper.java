@@ -238,7 +238,6 @@ public class ServerHelper {
             if(p.size()>0) {
                 edificio.setPiani(p);
             }
-            ((MainActivity)context).stopLoading();
         }
     }
 
@@ -293,7 +292,10 @@ public class ServerHelper {
                 e.printStackTrace();
             }
 
-            return edificio;
+            //richiediPianobyBeacon(PosizioneUtente.getBeaconAttuale().toString());
+            //richiediPianobyBeacon("prova");
+
+           return edificio;
         }
 
         @Override
@@ -370,7 +372,7 @@ public class ServerHelper {
                 ex.printStackTrace();
             }
 
-            return beacons;
+           return beacons;
         }
 
         @Override
@@ -445,6 +447,7 @@ public class ServerHelper {
         @Override
         protected void onPostExecute(Piano p) {
             PosizioneUtente.setPianoAttuale(p);
+            ((MainActivity)context).stopLoading();
         }
     }
 
@@ -487,15 +490,7 @@ public class ServerHelper {
                 public void onErrorResponse(VolleyError error) {
 
                 }
-            }) {
-                @Override
-                protected Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put("X", Float.toString(posizione.x));
-                    params.put("Y", Float.toString(posizione.y));
-                    return params;
-                }
-            };
+            });
             //Aggiungo la richiesta alla coda
             mRequestQueue.add(jsonObjectRequest);
 
@@ -645,7 +640,6 @@ public class ServerHelper {
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
-
             return tronchi;
         }
 
