@@ -52,9 +52,9 @@ public class PosizioneUtente {
         context = c;
         dbReference = new DBHelper(c);
         serverRefence = new ServerHelper(c);
-       // initBluetooth(c);
+        initBluetooth(c);
         //Solo per TESTS
-        getInfoByBeaconID("prova");
+        getInfoByBeaconID(beaconAttuale.toString());
     }
 
     public static void getInfoByBeaconID(String beaconAttuale) {
@@ -66,14 +66,9 @@ public class PosizioneUtente {
 
             ((MainActivity)context).startLoading();
 
-            //serverRefence.richiediEdificio(PosizioneUtente.beaconAttuale.toString());
-            serverRefence.richiediEdificio("prova");
-
-            //Il piano attuale viene instanziato alla fine di richiedi edificio
-            //Alla fine di richiedi edificio viene anche terminata la barra di caricamento
+            //serverRefence.richiediEdificio(beaconAttuale);
+            serverRefence.richiediEdificio(beaconAttuale);
         }
-
-        //Mappa.setMappa(pianoAttuale);
     }
     /**
     *Metodo che inizializza il bluetooth e tutte le sue fasi(scanner)
@@ -92,7 +87,7 @@ public class PosizioneUtente {
         btHelper = new BluetoothHelper(btAdapter, (AppCompatActivity)c);
         device =  scansionaBluetooth();
         //memorizzo beaconAttusle all'interno dell'oggetto Beacon
-        beaconAttuale.setId(device.getAddress());
+        beaconAttuale = new Beacon(device.getAddress());
 
         getInfoByBeaconID(beaconAttuale.getId());
     }

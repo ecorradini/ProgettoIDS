@@ -26,6 +26,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import it.getout.MainActivity;
 import it.getout.gestioneposizione.Aula;
@@ -42,7 +45,8 @@ import it.getout.gestionevisualizzazionemappa.Mappa;
 
 public class ServerHelper {
 
-    private static final String BASE_URL = "http://192.168.0.114:9600";
+    //private static final String BASE_URL = "http://192.168.0.114:9600";
+    private static final String BASE_URL = "http://172.23.134.169:9600";
     private static final String SERV_PERCORSO = "/percorso";            //URL percorso
     private static final String SERV_PIANIEDI = "/pianiedificio?";      //URL piano da edificio
     private static final String SERV_EDIFICIO = "/edificioattuale?";    //URL edificio da idbeacon
@@ -245,11 +249,13 @@ public class ServerHelper {
     private class RichiediEdificioTask extends AsyncTask<String,Void,Edificio> {
         private String idBeacon;
         private Edificio edificio;
+        private boolean downloaded;
 
         @Override
-        protected Edificio doInBackground(String...idbeacon) {
+        protected Edificio doInBackground(String... idbeacon) {
             idBeacon = idbeacon[0];
             edificio = null;
+            downloaded = false;
             RequestQueue mRequestQueue;
             //Metodi per il cache delle richieste JSON (Sembra che servano altrimenti non funziona)
             Cache cache = new DiskBasedCache(context.getCacheDir(), 1024 * 1024);
@@ -266,6 +272,7 @@ public class ServerHelper {
                     try {
                         String nomeEdificio = response.getString("EDIFICIO_ATTUALE");
                         edificio = new Edificio(nomeEdificio);
+                        downloaded = true;
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -273,23 +280,23 @@ public class ServerHelper {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.d("JSON ED ATTUALE ERROR",error.toString());
+                    Log.d("JSON ED ATTUALE ERROR", error.toString());
                 }
             });
             //Aggiungo la richiesta alla coda
             mRequestQueue.add(jsonObjectRequest);
 
-            //Aspetto che l'edificio venga instanziato
+            //Aspetto di aver scaricato tutti i piano
             Thread attesa = new Thread() {
                 public void run() {
-                    while(edificio==null);
+                    while(!downloaded);
                 }
             };
             attesa.start();
             try {
                 attesa.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
             }
 
             //richiediPianobyBeacon(PosizioneUtente.getBeaconAttuale().toString());
@@ -302,6 +309,7 @@ public class ServerHelper {
         protected void onPostExecute(Edificio edificio) {
             Log.d("EDIFICIO",edificio.toString());
             PosizioneUtente.setEdificioAttuale(edificio);
+            richiediPianobyBeacon("prova");
         }
     }
 
@@ -385,9 +393,11 @@ public class ServerHelper {
     private class RichiediPianobyBeaconTask extends AsyncTask<String,Void,Piano> {
         private String idbeacon;
         private Piano piano;
+        private boolean downloaded;
 
         @Override
         protected Piano doInBackground(String...beacon) {
+            downloaded = false;
             idbeacon = beacon[0];
             //La variabile da restituire
             piano = null;
@@ -407,15 +417,14 @@ public class ServerHelper {
                     try {
                         String nomePiano = response.getString("PIANO_ATTUALE");
 
-                        int i=0;
-                        do {
-                            Piano corrente = PosizioneUtente.getEdificioAttuale().getPiano(i);
-                            if(corrente.toString().equals(nomePiano)) {
-                                piano = corrente;
-                            }
-                        } while(piano==null && i<PosizioneUtente.getEdificioAttuale().getPiani().size());
+                        for(int i=0; i<PosizioneUtente.getEdificioAttuale().getPiani().size(); i++) {
+                            if(nomePiano.equals(PosizioneUtente.getEdificioAttuale().getPiano(i).toString())) piano = PosizioneUtente.getEdificioAttuale().getPiano(i);
+                        }
+
+                        downloaded = true;
 
                     } catch (JSONException e) {
+                        Log.d("ECCEZIONE PIANO",e.getMessage());
                         e.printStackTrace();
                     }
                 }
@@ -431,7 +440,7 @@ public class ServerHelper {
             //Aspetto che l'edificio venga instanziato
             Thread attesa = new Thread() {
                 public void run() {
-                    while(piano==null);
+                    while(!downloaded);
                 }
             };
             attesa.start();
@@ -446,6 +455,7 @@ public class ServerHelper {
 
         @Override
         protected void onPostExecute(Piano p) {
+            Log.d("PIANO_ATTUALE",p.toString());
             PosizioneUtente.setPianoAttuale(p);
             ((MainActivity)context).stopLoading();
         }

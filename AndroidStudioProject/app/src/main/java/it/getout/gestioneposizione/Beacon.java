@@ -11,6 +11,10 @@ public class Beacon {
     private String id;
     private PointF posizione;
 
+    public Beacon(String id) {
+        this.id = id;
+    }
+
     public Beacon(String id, PointF posizione){
         this.id = id;
         this.posizione = posizione;

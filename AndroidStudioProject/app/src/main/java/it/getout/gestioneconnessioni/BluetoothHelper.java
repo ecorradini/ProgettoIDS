@@ -71,11 +71,11 @@ public class BluetoothHelper {
         //insieme di UUID riconosciuti dallo scan e relativa inizializzazione
         uuids = new UUID[1];
         uuids[0] = UUID.fromString(beaconUUID);
-
+/*
         //inizializzati gli elementi per lo scan
         scanFilter = new ScanFilter.Builder().setServiceUuid(new ParcelUuid(UUID.fromString(beaconUUID))).build();
         scanFilters = new ArrayList<>();
-        scanFilters.add(scanFilter);
+        scanFilters.add(scanFilter);*/
         scanSettings = new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build();
         //viene inizializzato l'handler
         scanHandler = new Handler();
@@ -210,7 +210,7 @@ public class BluetoothHelper {
 
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
-            Log.i("result", result.toString());
+            Log.d("result", result.toString());
             BluetoothDevice btDevice = result.getDevice();
             mLeDeviceListAdapter.addDevice(btDevice,result.getRssi());
         }
