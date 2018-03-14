@@ -10,6 +10,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
+import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -25,11 +28,14 @@ public class MainActivity extends AppCompatActivity {
 
     private final int PERMESSO_LOCATION = 1;
     MappaFragment mappaFragment;
+    private CardView loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        loading = findViewById(R.id.cv_loading);
 
         if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMESSO_LOCATION);
@@ -56,4 +62,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public MappaFragment getMappaFragment() { return mappaFragment; }
+
+    public void startLoading() {
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        loading.setVisibility(View.VISIBLE);
+    }
+
+    public void stopLoading() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        loading.setVisibility(View.GONE);
+    }
 }

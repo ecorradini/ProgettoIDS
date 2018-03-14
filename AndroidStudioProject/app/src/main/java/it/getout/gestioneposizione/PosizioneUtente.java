@@ -13,6 +13,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import it.getout.MainActivity;
 import it.getout.gestioneconnessioni.BluetoothHelper;
 import it.getout.gestioneconnessioni.DBHelper;
 import it.getout.gestioneconnessioni.ServerHelper;
@@ -62,8 +63,14 @@ public class PosizioneUtente {
             pianoAttuale = dbReference.initPianoAttuale(beaconAttuale);
         }
         else {
-            serverRefence.richiediEdificio(beaconAttuale);
-            //serverRefence.richiediPianobyBeacon(beaconAttuale);
+
+            ((MainActivity)context).startLoading();
+
+            //serverRefence.richiediEdificio(PosizioneUtente.beaconAttuale.toString());
+            serverRefence.richiediEdificio("prova");
+
+            //Il piano attuale viene instanziato alla fine di richiedi edificio
+            //Alla fine di richiedi edificio viene anche terminata la barra di caricamento
         }
 
         //Mappa.setMappa(pianoAttuale);
@@ -125,6 +132,8 @@ public class PosizioneUtente {
     public static DBHelper getDbReference() { return dbReference; }
 
     public static ServerHelper getServerReference() { return serverRefence; }
+
+    public static Beacon getBeaconAttuale() { return beaconAttuale; }
 
     public static boolean checkInternet() {
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);

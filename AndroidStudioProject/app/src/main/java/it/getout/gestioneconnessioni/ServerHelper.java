@@ -42,7 +42,7 @@ import it.getout.gestionevisualizzazionemappa.Mappa;
 
 public class ServerHelper {
 
-    private static final String BASE_URL = "http://192.168.0.116:9600";
+    private static final String BASE_URL = "http://192.168.0.114:9600";
     private static final String SERV_PERCORSO = "/percorso";            //URL percorso
     private static final String SERV_PIANIEDI = "/pianiedificio?";      //URL piano da edificio
     private static final String SERV_EDIFICIO = "/edificioattuale?";    //URL edificio da idbeacon
@@ -191,14 +191,17 @@ public class ServerHelper {
                     try {
                         //Prendo l'array "piani"
                         JSONArray array = response.getJSONArray(edificio.toString());
-                        for (int j = 0; j < array.length(); j++) {
-                            JSONObject current = array.getJSONObject(j);
+                        if(array.length()>0) {
+                            for (int j = 0; j < array.length(); j++) {
 
-                            String nomePiano = current.getString("PIANO");
-                            //per ogni elemento di array, ricavo il nome del piano e inserisco il piano nell'arraylist
-                            //piani.add(new Piano(current.getString("nome")));
-                            Log.d("PIANO "+edificio.toString(),nomePiano);
-                            piani.add(new Piano(nomePiano));
+                                JSONObject current = array.getJSONObject(j);
+
+                                String nomePiano = current.getString("PIANO");
+                                //per ogni elemento di array, ricavo il nome del piano e inserisco il piano nell'arraylist
+                                //piani.add(new Piano(current.getString("nome")));
+                                Log.d("PIANO " + edificio.toString(), nomePiano);
+                                piani.add(new Piano(nomePiano));
+                            }
                         }
                         downloaded = true;
                     } catch (JSONException e) {
@@ -289,7 +292,10 @@ public class ServerHelper {
                 e.printStackTrace();
             }
 
-            return edificio;
+            //richiediPianobyBeacon(PosizioneUtente.getBeaconAttuale().toString());
+            //richiediPianobyBeacon("prova");
+
+           return edificio;
         }
 
         @Override
@@ -366,7 +372,7 @@ public class ServerHelper {
                 ex.printStackTrace();
             }
 
-            return beacons;
+           return beacons;
         }
 
         @Override
@@ -441,6 +447,7 @@ public class ServerHelper {
         @Override
         protected void onPostExecute(Piano p) {
             PosizioneUtente.setPianoAttuale(p);
+            ((MainActivity)context).stopLoading();
         }
     }
 
@@ -483,15 +490,7 @@ public class ServerHelper {
                 public void onErrorResponse(VolleyError error) {
 
                 }
-            }) {
-                @Override
-                protected Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put("X", Float.toString(posizione.x));
-                    params.put("Y", Float.toString(posizione.y));
-                    return params;
-                }
-            };
+            });
             //Aggiungo la richiesta alla coda
             mRequestQueue.add(jsonObjectRequest);
 
@@ -527,17 +526,18 @@ public class ServerHelper {
                     try {
                         //Prendo l'array "Edificio"
                         JSONArray array = response.getJSONArray(piano.toString());
-                        for (int i=0; i < array.length(); i++){
-                            JSONObject current = array.getJSONObject(i);
+                        if(array.length()>0) {
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject current = array.getJSONObject(i).getJSONObject("AULA");
 
-                            String nomeAula = current.getString("NOME");
-                            PointF entrata = new PointF(Float.parseFloat(current.getString("X")),Float.parseFloat(current.getString("Y")));
+                                String nomeAula = current.getString("NOME");
+                                PointF entrata = new PointF(Float.parseFloat(current.getString("X")), Float.parseFloat(current.getString("Y")));
 
-                            Log.d("AULA "+piano.toString(),nomeAula);
+                                Log.d("AULA " + piano.toString(), nomeAula);
 
-                            aule.add(new Aula(nomeAula, entrata, piano));
+                                aule.add(new Aula(nomeAula, entrata, piano));
+                            }
                         }
-
                         downloaded = true;
 
                     } catch (JSONException e) {
@@ -604,7 +604,7 @@ public class ServerHelper {
                         //Prendo l'array "Edificio"
                         JSONArray array = response.getJSONArray(piano.toString());
                         for (int i=0; i < array.length(); i++){
-                            JSONObject current = array.getJSONObject(i);
+                            JSONObject current = array.getJSONObject(i).getJSONObject("TRONCO");
 
                             PointF inizio = new PointF(Float.parseFloat(current.getString("X")),Float.parseFloat(current.getString("Y")));
                             PointF fine = new PointF(Float.parseFloat(current.getString("XF")),Float.parseFloat(current.getString("YF")));
@@ -640,7 +640,6 @@ public class ServerHelper {
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
-
             return tronchi;
         }
 
