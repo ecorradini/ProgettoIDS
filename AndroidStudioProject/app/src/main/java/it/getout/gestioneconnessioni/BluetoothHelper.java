@@ -18,6 +18,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import static android.content.ContentValues.TAG;
 
@@ -146,7 +147,25 @@ public class BluetoothHelper {
             terminatedScan = false;
 
             //attende per la durata dello scan e poi lancia la runnable per stopparlo
-            scanHandler.postDelayed(stopScan, 1000L);
+            //scanHandler.postDelayed(stopScan, 1000L);
+
+            Thread attesa = new Thread() {
+                public void run() {
+                    try {
+                        TimeUnit.SECONDS.sleep(1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } finally {
+                        stopScan.run();
+                    }
+                }
+            };
+            attesa.start();
+            try {
+                attesa.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     };
 
