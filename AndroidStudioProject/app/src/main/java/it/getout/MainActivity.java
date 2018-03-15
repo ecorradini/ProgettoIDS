@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import it.getout.gestioneconnessioni.Connessioni;
 import it.getout.gestioneconnessioni.DBHelper;
 import it.getout.gestioneconnessioni.ServerHelper;
 import it.getout.gestioneposizione.PosizioneUtente;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMESSO_LOCATION);
         }
         else {
+            Connessioni.init(this);
             PosizioneUtente.init(this);
         }
     }

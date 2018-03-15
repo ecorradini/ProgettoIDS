@@ -42,7 +42,7 @@ public class PosizioneUtente {
         initBluetooth(c);
 
         //Solo per TESTS
-        getInfoByBeaconID(beaconAttuale.toString());
+        getInfoByBeaconID("prova");
     }
 
     public static void getInfoByBeaconID(String beaconAttuale) {
@@ -73,9 +73,10 @@ public class PosizioneUtente {
         btHelper = new BluetoothHelper(btAdapter, (AppCompatActivity)c);
         device =  scansionaBluetooth();
         //memorizzo beaconAttusle all'interno dell'oggetto Beacon
-        beaconAttuale = new Beacon(device.getAddress());
-
-        getInfoByBeaconID(beaconAttuale.getId());
+        if(device != null){
+            beaconAttuale = new Beacon(device.getAddress());
+            getInfoByBeaconID(beaconAttuale.getId());
+        }
     }
     /**
      *Metodo che si adopera ad effettuare lo scan dei dispositivi bluetooth
