@@ -8,17 +8,17 @@ import android.content.Context;
 
 public class Connessioni {
     private static DBHelper dbReference;
-    private static ServerHelper serverRefence;
+    private static ServerHelper serverReference;
 
 
     public static void init(Context c) {
         dbReference = new DBHelper(c);
-        serverRefence = new ServerHelper(c);
+        serverReference = new ServerHelper(c);
     }
 
 
     public static DBHelper getDbReference() { return dbReference; }             ///
 
-    public static ServerHelper getServerReference() { return serverRefence; }   ///
+    public static ServerHelper getServerReference() { return serverReference; }   ///
 
 }
