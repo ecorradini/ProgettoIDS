@@ -46,9 +46,7 @@ public class Connessioni {
         btHelper = new BluetoothHelper(btAdapter, (AppCompatActivity)c);
         device =  scansionaBluetooth();
         //memorizzo beaconAttusle all'interno dell'oggetto Beacon
-        if(device != null && !PosizioneUtente.getBeaconAttuale().getId().equals(device.getAddress())){
-            PosizioneUtente.setBeaconAttuale(new Beacon(device.getAddress()));
-        }
+        PosizioneUtente.setBeaconAttuale(new Beacon(device.getAddress()));
     }
     /**
      *Metodo che si adopera ad effettuare lo scan dei dispositivi bluetooth
