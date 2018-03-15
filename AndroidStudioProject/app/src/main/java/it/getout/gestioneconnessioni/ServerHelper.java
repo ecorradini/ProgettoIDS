@@ -45,8 +45,8 @@ import it.getout.gestionevisualizzazionemappa.Mappa;
 
 public class ServerHelper {
 
-    //private static final String BASE_URL = "http://192.168.0.114:9600";
-    private static final String BASE_URL = "http://172.23.134.169:9600";
+    private static final String BASE_URL = "http://192.168.0.114:9600";
+    //private static final String BASE_URL = "http://172.23.134.169:9600";
     private static final String SERV_PERCORSO = "/percorso";            //URL percorso
     private static final String SERV_PIANIEDI = "/pianiedificio?";      //URL piano da edificio
     private static final String SERV_EDIFICIO = "/edificioattuale?";    //URL edificio da idbeacon
