@@ -2,6 +2,8 @@ package it.getout.gestioneposizione;
 
 import java.util.ArrayList;
 
+import it.getout.gestioneconnessioni.Connessioni;
+
 /**
  * Created by Alessandro on 01/02/2018.
  */
@@ -20,19 +22,19 @@ public class Piano {
 
     private void downloadAule() {
         if(!PosizioneUtente.checkInternet()) {
-            aule = PosizioneUtente.getDbReference().initAule(nome);
+            aule = Connessioni.getDbReference().initAule(nome);
         }
         else {
-            PosizioneUtente.getServerReference().richiediAulebyPiano(this);
+            Connessioni.getServerReference().richiediAulebyPiano(this);
         }
     }
 
     private void downloadTronchi() {
         if(!PosizioneUtente.checkInternet()) {
-            tronchi = PosizioneUtente.getDbReference().initTronchi(nome);
+            tronchi = Connessioni.getDbReference().initTronchi(nome);
         }
         else {
-            PosizioneUtente.getServerReference().richiediTronchibyPiano(this);
+            Connessioni.getServerReference().richiediTronchibyPiano(this);
         }
     }
 

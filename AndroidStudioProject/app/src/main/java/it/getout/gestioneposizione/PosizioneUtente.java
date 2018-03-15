@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import it.getout.MainActivity;
 import it.getout.gestioneconnessioni.BluetoothHelper;
+import it.getout.gestioneconnessioni.Connessioni;
 import it.getout.gestioneconnessioni.DBHelper;
 import it.getout.gestioneconnessioni.ServerHelper;
 import it.getout.gestionevisualizzazionemappa.Mappa;
@@ -39,10 +40,7 @@ public class PosizioneUtente {
     private static BluetoothAdapter btAdapter;
     //scanner per ricercare i dispositivi beacon
     private static BluetoothHelper btHelper;
-    //Istanza del gestore Database SQLite
-    private static DBHelper dbReference;
-    //Istanza del gestore Server
-    private static ServerHelper serverRefence;
+
     //Istanza del descrittore dei dispositivi bluetooth
     private static BluetoothDevice device;
     //Context
@@ -50,24 +48,25 @@ public class PosizioneUtente {
 
     public static void init(Context c) {
         context = c;
-        dbReference = new DBHelper(c);
-        serverRefence = new ServerHelper(c);
+        //dbReference = new DBHelper(c);            tolti e messi in connessioni.java
+        //serverRefence = new ServerHelper(c);
         initBluetooth(c);
+
         //Solo per TESTS
         getInfoByBeaconID(beaconAttuale.toString());
     }
 
     public static void getInfoByBeaconID(String beaconAttuale) {
         if(!checkInternet()) {
-            edificioAttuale = dbReference.initEdificioAttuale(beaconAttuale);
-            pianoAttuale = dbReference.initPianoAttuale(beaconAttuale);
+            edificioAttuale = Connessioni.getDbReference().initEdificioAttuale(beaconAttuale);
+            pianoAttuale = Connessioni.getDbReference().initPianoAttuale(beaconAttuale);
         }
         else {
 
             ((MainActivity)context).startLoading();
 
             //serverRefence.richiediEdificio(beaconAttuale);
-            serverRefence.richiediEdificio(beaconAttuale);
+            Connessioni.getServerReference().richiediEdificio(beaconAttuale);
         }
     }
     /**
@@ -107,7 +106,7 @@ public class PosizioneUtente {
     }
 
     public static void setPosizione(String beaconID){
-        posizione = dbReference.getPosizione(beaconID);
+        posizione = Connessioni.getDbReference().getPosizione(beaconID);
     }
 
     public static PointF getPosizione(){ return posizione; }
@@ -124,13 +123,15 @@ public class PosizioneUtente {
     }
     public static void setPianoAttuale(Piano p) { pianoAttuale = p; }
 
+/* metodi tolti e messi nella classe connessioni
+
     public static DBHelper getDbReference() { return dbReference; }
 
     public static ServerHelper getServerReference() { return serverRefence; }
-
+*/
     public static Beacon getBeaconAttuale() { return beaconAttuale; }
 
-    public static boolean checkInternet() {
+    public static boolean checkInternet() {                                     ///
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();

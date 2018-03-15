@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import it.getout.gestioneconnessioni.DBHelper;
+import it.getout.gestioneconnessioni.ServerHelper;
 import it.getout.gestioneposizione.PosizioneUtente;
 import it.getout.gestionevisualizzazionemappa.MappaFragment;
 import android.Manifest;
@@ -27,6 +29,7 @@ import android.Manifest;
 public class MainActivity extends AppCompatActivity {
 
     private final int PERMESSO_LOCATION = 1;
+
     MappaFragment mappaFragment;
     private CardView loading;
 
@@ -62,6 +65,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public MappaFragment getMappaFragment() { return mappaFragment; }
+
+
+
 
     public void startLoading() {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);

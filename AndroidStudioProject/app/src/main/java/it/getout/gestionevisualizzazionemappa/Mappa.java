@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
+import it.getout.gestioneconnessioni.Connessioni;
 import it.getout.gestioneposizione.Piano;
 import it.getout.gestioneposizione.PosizioneUtente;
 
@@ -33,7 +34,7 @@ public class Mappa {
     }
 
     private static String getMappaDB(Piano piano){
-        return PosizioneUtente.getDbReference().queryMappa(piano);
+        return Connessioni.getDbReference().queryMappa(piano);
     }
 
     public static Bitmap getMappa() {

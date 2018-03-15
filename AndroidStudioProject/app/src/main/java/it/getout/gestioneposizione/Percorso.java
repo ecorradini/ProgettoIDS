@@ -4,6 +4,7 @@ import android.graphics.Point;
 import android.graphics.PointF;
 import java.util.ArrayList;
 
+import it.getout.gestioneconnessioni.Connessioni;
 import it.getout.gestioneconnessioni.ServerHelper;
 
 /**
@@ -17,7 +18,7 @@ public class Percorso {
 
     public Percorso(PointF destinazione) {
         this.destinazione = destinazione;
-        PosizioneUtente.getServerReference().richiediPercorso(destinazione);
+        Connessioni.getServerReference().richiediPercorso(destinazione);
     }
 
     public PointF getDestinazione(){

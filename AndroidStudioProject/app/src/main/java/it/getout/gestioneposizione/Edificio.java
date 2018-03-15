@@ -1,6 +1,7 @@
 package it.getout.gestioneposizione;
 import java.util.ArrayList;
 
+import it.getout.gestioneconnessioni.Connessioni;
 import it.getout.gestioneposizione.Piano;
 
 /**
@@ -18,10 +19,10 @@ public class Edificio {
 
     private void downloadPiani() {
         if(!PosizioneUtente.checkInternet()) {
-            piani = PosizioneUtente.getDbReference().initPiani(nome);
+            piani = Connessioni.getDbReference().initPiani(nome);
         }
         else {
-            PosizioneUtente.getServerReference().richiediPianibyEdificio(this);
+            Connessioni.getServerReference().richiediPianibyEdificio(this);
         }
     }
 

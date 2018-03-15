@@ -5,6 +5,8 @@ import android.graphics.PointF;
 
 import java.util.HashMap;
 
+import it.getout.gestioneconnessioni.Connessioni;
+
 /**
  * Created by Alessandro on 01/02/2018.
  */
@@ -25,10 +27,10 @@ public class Tronco {
 
     private void downloadBeacons() {
         if(!PosizioneUtente.checkInternet()) {
-            beacons = PosizioneUtente.getDbReference().initBeacons(this);
+            beacons = Connessioni.getDbReference().initBeacons(this);
         }
         else {
-            PosizioneUtente.getServerReference().richiediBeaconbyTronco(this);
+            Connessioni.getServerReference().richiediBeaconbyTronco(this);
         }
     }
 
