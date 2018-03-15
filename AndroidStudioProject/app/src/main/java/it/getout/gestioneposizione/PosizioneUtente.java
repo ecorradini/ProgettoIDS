@@ -1,24 +1,16 @@
 package it.getout.gestioneposizione;
 
-import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-
 import android.content.Context;
 import android.graphics.PointF;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-
-import java.util.ArrayList;
-
 import it.getout.MainActivity;
 import it.getout.gestioneconnessioni.BluetoothHelper;
 import it.getout.gestioneconnessioni.Connessioni;
-import it.getout.gestioneconnessioni.DBHelper;
-import it.getout.gestioneconnessioni.ServerHelper;
-import it.getout.gestionevisualizzazionemappa.Mappa;
+
 
 /**
  * Created on 01/02/2018.
@@ -40,7 +32,6 @@ public class PosizioneUtente {
     private static BluetoothAdapter btAdapter;
     //scanner per ricercare i dispositivi beacon
     private static BluetoothHelper btHelper;
-
     //Istanza del descrittore dei dispositivi bluetooth
     private static BluetoothDevice device;
     //Context
@@ -48,8 +39,6 @@ public class PosizioneUtente {
 
     public static void init(Context c) {
         context = c;
-        //dbReference = new DBHelper(c);            tolti e messi in connessioni.java
-        //serverRefence = new ServerHelper(c);
         initBluetooth(c);
 
         //Solo per TESTS
@@ -64,8 +53,6 @@ public class PosizioneUtente {
         else {
 
             ((MainActivity)context).startLoading();
-
-            //serverRefence.richiediEdificio(beaconAttuale);
             Connessioni.getServerReference().richiediEdificio(beaconAttuale);
         }
     }
@@ -123,12 +110,7 @@ public class PosizioneUtente {
     }
     public static void setPianoAttuale(Piano p) { pianoAttuale = p; }
 
-/* metodi tolti e messi nella classe connessioni
 
-    public static DBHelper getDbReference() { return dbReference; }
-
-    public static ServerHelper getServerReference() { return serverRefence; }
-*/
     public static Beacon getBeaconAttuale() { return beaconAttuale; }
 
     public static boolean checkInternet() {                                     ///
