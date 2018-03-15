@@ -28,21 +28,16 @@ public class PosizioneUtente {
     private static Beacon beaconAttuale;
     //Istanza dell'attuale percorso calcolato
     private static Percorso percorso;
-    //Istanza dell'Adapter Bluetooth
-    private static BluetoothAdapter btAdapter;
-    //scanner per ricercare i dispositivi beacon
-    private static BluetoothHelper btHelper;
-    //Istanza del descrittore dei dispositivi bluetooth
-    private static BluetoothDevice device;
+
+
     //Context
     private static Context context;
 
     public static void init(Context c) {
         context = c;
-        initBluetooth(c);
 
         //Solo per TESTS
-        getInfoByBeaconID("prova");
+        getInfoByBeaconID(beaconAttuale.getId());
     }
 
     public static void getInfoByBeaconID(String beaconAttuale) {
@@ -56,38 +51,7 @@ public class PosizioneUtente {
             Connessioni.getServerReference().richiediEdificio(beaconAttuale);
         }
     }
-    /**
-    *Metodo che inizializza il bluetooth e tutte le sue fasi(scanner)
-     */
-    private static void initBluetooth(Context c) {
-        if (btAdapter == null) {
-            btAdapter = BluetoothAdapter.getDefaultAdapter();  // Local Bluetooth adapter
-        }
 
-        // Is Bluetooth turned on?
-        if (!btAdapter.isEnabled()) {
-            //attivazione del bluetooth (qualora non sia già funzionante)
-            btHelper.activateBluetooth();
-        }
-
-        btHelper = new BluetoothHelper(btAdapter, (AppCompatActivity)c);
-        device =  scansionaBluetooth();
-        //memorizzo beaconAttusle all'interno dell'oggetto Beacon
-        if(device != null){
-            beaconAttuale = new Beacon(device.getAddress());
-            getInfoByBeaconID(beaconAttuale.getId());
-        }
-    }
-    /**
-     *Metodo che si adopera ad effettuare lo scan dei dispositivi bluetooth
-     */
-    private static BluetoothDevice scansionaBluetooth(){
-        btHelper.discoverBLEDevices();
-        while(!btHelper.getTerminatedscan()){
-            device = btHelper.getCurrentBeacon();
-        }
-        return device;
-    }
 
     public static String getBeaconId(){
         return beaconAttuale.getId();
@@ -113,6 +77,7 @@ public class PosizioneUtente {
 
 
     public static Beacon getBeaconAttuale() { return beaconAttuale; }
+    public static void setBeaconAttuale(Beacon b) { beaconAttuale = b; }
 
     public static boolean checkInternet() {                                     ///
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
