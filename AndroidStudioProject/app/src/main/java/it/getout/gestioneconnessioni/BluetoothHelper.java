@@ -46,7 +46,8 @@ public class BluetoothHelper {
     //adapter per interpretare ciò che viene trovato nello scan
     private LeDeviceListAdapter mLeDeviceListAdapter;
     //uuid dei sensortag utilizati
-    private static final String beaconUUID = "0000aa80-0000-1000-8000-00805f9b34fb";
+    //private static final String beaconUUID = "0000aa80-0000-1000-8000-00805f9b34fb";
+    private static final String beaconUUID = "00002902-0000-1000-8000-00805f9b34fb";
 
     //maschera di UUID, serve per filtrare i dispositivi bluetooth da analizzare
     private UUID[] uuids;
@@ -67,6 +68,7 @@ public class BluetoothHelper {
     private static final int maxNoUpdate = 5;
     //conta quante volte consecutive non si invia la propria posizione al server
     private int cont;
+    private boolean connected;
 
     public BluetoothHelper(BluetoothAdapter btAdapter, AppCompatActivity a){
 
@@ -90,6 +92,8 @@ public class BluetoothHelper {
 
         //viene inizializzato l'handler
         scanHandler = new Handler();
+
+        connected = false;
     }
 
     /**
@@ -113,10 +117,11 @@ public class BluetoothHelper {
      */
 
     public void discoverBLEDevices() {
+        Log.e("BLE_Scanner", "DiscoverBLE, in condition");
         //parte il thread deputato allo scan dei bluetooth LE
         startScan.run();
 
-        Log.e("BLE_Scanner", "DiscoverBLE, in condition");
+
     }
 
     /**
@@ -140,8 +145,7 @@ public class BluetoothHelper {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 if (bluetoothAdapter != null) {
                     try {
-                        bluetoothAdapter.getBluetoothLeScanner()
-                                .startScan(scanFilters, scanSettings, mScanCallback);
+                        bluetoothAdapter.getBluetoothLeScanner().startScan(scanFilters, scanSettings, mScanCallback);
                     } catch (NullPointerException e) {
                         e.printStackTrace();
                         Log.e("bluetooth error","accendi il bluetooth");
@@ -158,10 +162,25 @@ public class BluetoothHelper {
 
             //attende per la durata dello scan e poi lancia la runnable per stopparlo
             //scanHandler.postDelayed(stopScan, 3000L);
+            /*Thread attesa = new Thread() {
+                public void run() {
+                    try {
+                        TimeUnit.SECONDS.sleep(10);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } finally {
+                        stopScan.run();
+                    }
+                }
+            };
+            attesa.start();*/
+
             Thread attesa = new Thread() {
                 public void run() {
                     try {
-                        TimeUnit.SECONDS.sleep(1);
+                        while(!connected)
+                            Log.i("BEACON","IN ATTESA DI CONNESSIONE");
+                            TimeUnit.SECONDS.sleep(1500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } finally {
@@ -187,8 +206,7 @@ public class BluetoothHelper {
             Log.e(TAG, "Stop Scan");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 try {
-                    bluetoothAdapter.getBluetoothLeScanner()
-                            .stopScan(mScanCallback);
+                    bluetoothAdapter.getBluetoothLeScanner().stopScan(mScanCallback);
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                     Log.e("bluetooth error","accendi il bluetooth");
@@ -229,6 +247,7 @@ public class BluetoothHelper {
                         @Override
                         public void run() {
                             mLeDeviceListAdapter.addDevice(device,rssi);
+                            connected = true;
                         }
                     });
                 }
@@ -244,6 +263,7 @@ public class BluetoothHelper {
             BluetoothDevice btDevice = result.getDevice();
             Log.e("bluetooth error", result.getDevice().getAddress());
             mLeDeviceListAdapter.addDevice(btDevice,result.getRssi());
+            connected = true;
         }
 
         @Override

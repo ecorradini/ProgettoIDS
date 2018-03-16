@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import it.getout.gestioneposizione.Beacon;
 import it.getout.gestioneposizione.PosizioneUtente;
@@ -45,6 +46,25 @@ public class Connessioni {
 
         btHelper = new BluetoothHelper(btAdapter, (AppCompatActivity)c);
         device =  scansionaBluetooth();
+        Thread attesa = new Thread() {
+            public void run() {
+                while(device==null) {
+                    try {
+                        Log.e("DEVICE","NON ISTANZIATO");
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        attesa.start();
+        try {
+            attesa.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         //memorizzo beaconAttusle all'interno dell'oggetto Beacon
         PosizioneUtente.setBeaconAttuale(new Beacon(device.getAddress()));
     }
@@ -53,9 +73,17 @@ public class Connessioni {
      */
     private static BluetoothDevice scansionaBluetooth(){
         btHelper.discoverBLEDevices();
-        while(!btHelper.getTerminatedscan()){
+        do {
             device = btHelper.getCurrentBeacon();
-        }
+            if (device == null) Log.i("DEVICE", "NULL");
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            //} while(!btHelper.getTerminatedscan());
+        } while(device==null);
+
         return device;
     }
 
