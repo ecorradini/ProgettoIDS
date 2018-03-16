@@ -13,6 +13,7 @@ public class Beacon {
 
     public Beacon(String id) {
         this.id = id;
+        this.posizione = null;
     }
 
     public Beacon(String id, PointF posizione){

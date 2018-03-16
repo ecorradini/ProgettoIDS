@@ -65,7 +65,7 @@ public class BluetoothHelper {
     private static Activity activity;
 
     //numero massimo di scan senza che venga mandata la posizione al server
-    private static final int maxNoUpdate = 5;
+    private static final int maxNoUpdate = 10;
     //conta quante volte consecutive non si invia la propria posizione al server
     private int cont;
     private boolean connected;
@@ -87,13 +87,26 @@ public class BluetoothHelper {
         scanFilters.add(scanFilter);
         scanSettings = new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build();
 
-        //inizializzati gli elementi per lo scan
-        scanFilter = new ScanFilter.Builder().setServiceUuid(new ParcelUuid(UUID.fromString(beaconUUID))).build();
+        //inizializzazione del filtro per i messaggi e registrazione del broadcast receiver
+        initializeFilter();
 
         //viene inizializzato l'handler
         scanHandler = new Handler();
 
         connected = false;
+
+        cont = 0;
+    }
+
+    /**
+     * Metodo per costruire il filtro per i messaggi che può ricevere il broadcastReceiver
+     */
+    //inseriti i filtri per i messaggi ricevuti
+    private void initializeFilter() {
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(SCAN_PHASE_FINISHED);
+        intentFilter.addAction(SUSPEND_SCAN);
+        intentFilter.addAction(EMERGENCY);
     }
 
     /**
@@ -145,7 +158,8 @@ public class BluetoothHelper {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 if (bluetoothAdapter != null) {
                     try {
-                        bluetoothAdapter.getBluetoothLeScanner().startScan(scanFilters, scanSettings, mScanCallback);
+                        bluetoothAdapter.getBluetoothLeScanner()
+                                .startScan(scanFilters, scanSettings, mScanCallback);
                     } catch (NullPointerException e) {
                         e.printStackTrace();
                         Log.e("bluetooth error","accendi il bluetooth");
@@ -206,7 +220,8 @@ public class BluetoothHelper {
             Log.e(TAG, "Stop Scan");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 try {
-                    bluetoothAdapter.getBluetoothLeScanner().stopScan(mScanCallback);
+                    bluetoothAdapter.getBluetoothLeScanner()
+                            .stopScan(mScanCallback);
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                     Log.e("bluetooth error","accendi il bluetooth");
