@@ -252,7 +252,8 @@ public class ServerHelper {
         private boolean downloaded;
 
         @Override
-        protected Edificio doInBackground(String... idbeacon) {
+        protected Edificio doInBackground(String... idbeacon)
+        {
             idBeacon = idbeacon[0];
             edificio = null;
             downloaded = false;

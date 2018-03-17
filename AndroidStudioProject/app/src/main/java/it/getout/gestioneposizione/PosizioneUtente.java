@@ -52,7 +52,6 @@ public class PosizioneUtente {
         }
     }
 
-
     public static String getBeaconId(){
         return beaconAttuale.getId();
     }
@@ -68,15 +67,17 @@ public class PosizioneUtente {
     }
 
     public static Edificio getEdificioAttuale(){ return edificioAttuale; }
+
     public static void setEdificioAttuale(Edificio edificio) { edificioAttuale=edificio; }
 
     public static Piano getPianoAttuale(){
         return pianoAttuale;
     }
+
     public static void setPianoAttuale(Piano p) { pianoAttuale = p; }
 
-
     public static Beacon getBeaconAttuale() { return beaconAttuale; }
+
     public static void setBeaconAttuale(Beacon b) { beaconAttuale = b; }
 
     public static boolean checkInternet() {                                     ///

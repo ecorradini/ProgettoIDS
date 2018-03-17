@@ -53,9 +53,11 @@ public class Tronco {
     public HashMap<String,Beacon> getBeacons(){
         return beacons;
     }
+
     public void setBeacons(HashMap<String,Beacon> b) { beacons = b; }
 
     public boolean equals(PointF i, PointF f) { return inizio==i && fine==f; }
+
     public boolean equals(Tronco t) { return inizio==t.getInizio() && fine==t.getFine(); }
 
 }
