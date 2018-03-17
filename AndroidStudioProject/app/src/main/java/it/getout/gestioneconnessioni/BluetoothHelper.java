@@ -46,8 +46,8 @@ public class BluetoothHelper {
     //adapter per interpretare ciò che viene trovato nello scan
     private LeDeviceListAdapter mLeDeviceListAdapter;
     //uuid dei sensortag utilizati
-    //private static final String beaconUUID = "0000aa80-0000-1000-8000-00805f9b34fb";
-    private static final String beaconUUID = "00002902-0000-1000-8000-00805f9b34fb";
+    private static final String beaconUUID = "0000aa80-0000-1000-8000-00805f9b34fb";
+//    private static final String beaconUUID = "00002902-0000-1000-8000-00805f9b34fb";
 
     //maschera di UUID, serve per filtrare i dispositivi bluetooth da analizzare
     private UUID[] uuids;
