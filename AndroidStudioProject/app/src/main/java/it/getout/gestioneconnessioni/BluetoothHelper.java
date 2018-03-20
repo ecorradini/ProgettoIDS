@@ -128,7 +128,6 @@ public class BluetoothHelper {
     /**
      * Metodo per iniziare lo scan che ricerca i sensortag presenti nel raggio d'azione dell'utente
      */
-
     public void discoverBLEDevices() {
         Log.e("BLE_Scanner", "DiscoverBLE, in condition");
         //parte il thread deputato allo scan dei bluetooth LE
@@ -145,7 +144,9 @@ public class BluetoothHelper {
         ((AppCompatActivity) activity.getBaseContext()).startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
     }
 
-    //thread che si occupa di far partire lo scan in cerca dei beacon
+    /**
+     * thread che si occupa di far partire lo scan in cerca dei beacon
+     */
     private Runnable startScan = new Runnable() {
         @Override
         public void run() {
@@ -211,8 +212,9 @@ public class BluetoothHelper {
         }
     };
 
-
-    //thread per mettere in pausa lo scan ed eventualmente elaborare i dati
+    /**
+     * thread per mettere in pausa lo scan ed eventualmente elaborare i dati
+     */
     private Runnable stopScan = new Runnable() {
         @Override
         public void run() {
@@ -228,7 +230,7 @@ public class BluetoothHelper {
                 }
             }
             else {
-                bluetoothAdapter.stopLeScan(mLeScanCallback);
+                bluetoothAdapter.stopLeScan(mLeScanCallback); //in caso device abbia versione anteriore a lollipop
             }
             Log.i(TAG,"numero: " + mLeDeviceListAdapter.getCount());
 
@@ -252,7 +254,7 @@ public class BluetoothHelper {
         }
     };
 
-    //callback utilizzata per trovare dispositivi nel raggio d'azione
+    //callback utilizzata per trovare dispositivi nel raggio d'azione per il metodo deprecato
     private BluetoothAdapter.LeScanCallback mLeScanCallback =
             new BluetoothAdapter.LeScanCallback() {
                 @Override

@@ -51,26 +51,25 @@ public class LeDeviceListAdapter {
     public BluetoothDevice selectedDevice() {
 
         BluetoothDevice b = null;
-
+        //istanzio lo strumento per iterare la lista mLeDevices
         Iterator it = mLeDevices.entrySet().iterator();
-            //scandisce la lista in base alla distanza rispetto all'utente, finchè non trova un beacon presente nel CSV o finchè
-            //non termina la lista
+
+        //scandisce la lista in base alla distanza rispetto all'utente, finchè non trova un beacon o finchè non termina la lista
         while (b == null && it.hasNext()) {
             Map.Entry entry = (Map.Entry) it.next();
             BluetoothDevice dev = (BluetoothDevice) entry.getValue();
-                //valuta se il beacon trovato è presente nella lista di quelli salvati. Se si allora si è trovato il
-                //dispositivo più vicino
+
+            //valuta se il beacon trovato è presente nella lista sensors di quelli salvati. Se si allora si è trovato il dispositivo più vicino
             if(sensors.containsKey(dev.getAddress())) {
                 b = dev;
+                Log.d(TAG2,"device detected: " + dev.getAddress());
             }
             else {
-                Toast.makeText(context,
-                        " Si è individuato un sensore non presente nel documento, ", Toast.LENGTH_SHORT).show();
-
+                Log.d(TAG2,"put device: " + dev.getAddress());
+                Toast.makeText(context," Si è individuato un sensore non presente in lista, ", Toast.LENGTH_SHORT).show();
                 sensors.put(dev.getAddress(), dev);
             }
         }
-
         currentBeacon = b;
         return b;
     }
