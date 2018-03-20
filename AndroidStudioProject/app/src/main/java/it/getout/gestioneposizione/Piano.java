@@ -41,7 +41,9 @@ public class Piano {
     public ArrayList<Aula> getAule(){
         return aule;
     }
+
     public void setAule(ArrayList<Aula> a) { aule=a; }
+
     public Aula getAula(int index){
         return aule.get(index);
     }
@@ -49,6 +51,7 @@ public class Piano {
     public ArrayList<Tronco> getTronchi(){
         return tronchi;
     }
+
     public void setTronchi(ArrayList<Tronco> t) { tronchi = t; }
 
     public Tronco getTronco(int index){

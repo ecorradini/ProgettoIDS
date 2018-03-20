@@ -1,9 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="ServerProject:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/ServerProject_jar</output-path>
-    <root id="archive" name="ServerProject.jar">
-      <element id="module-output" name="ServerProject" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/libs/mysql-connector-java-5.1.22-bin.jar" path-in-jar="/" />
-    </root>
-  </artifact>
-</component>
