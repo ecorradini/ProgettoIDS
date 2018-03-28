@@ -47,7 +47,7 @@ public class BluetoothHelper {
     private LeDeviceListAdapter mLeDeviceListAdapter;
     //uuid dei sensortag utilizati
     private static final String beaconUUID = "0000aa80-0000-1000-8000-00805f9b34fb";
-//    private static final String beaconUUID = "00002902-0000-1000-8000-00805f9b34fb";
+    //private static final String beaconUUID = "00002902-0000-1000-8000-00805f9b34fb";
 
     //maschera di UUID, serve per filtrare i dispositivi bluetooth da analizzare
     private UUID[] uuids;
@@ -161,6 +161,7 @@ public class BluetoothHelper {
                     try {
                         bluetoothAdapter.getBluetoothLeScanner()
                                 .startScan(scanFilters, scanSettings, mScanCallback);
+                        Log.d(TAG, "Start Scan-2");
                     } catch (NullPointerException e) {
                         e.printStackTrace();
                         Log.e("bluetooth error","accendi il bluetooth");
@@ -176,11 +177,11 @@ public class BluetoothHelper {
             terminatedScan = false;
 
             //attende per la durata dello scan e poi lancia la runnable per stopparlo
-            //scanHandler.postDelayed(stopScan, 3000L);
-            /*Thread attesa = new Thread() {
+            //scanHandler.postDelayed(stopScan, 5000L);
+            Thread attesa = new Thread() {
                 public void run() {
                     try {
-                        TimeUnit.SECONDS.sleep(10);
+                        TimeUnit.SECONDS.sleep(5000L);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } finally {
@@ -188,14 +189,15 @@ public class BluetoothHelper {
                     }
                 }
             };
-            attesa.start();*/
+            attesa.start();
 
-            Thread attesa = new Thread() {
+            /*Thread attesa = new Thread() {
                 public void run() {
                     try {
-                        while(!connected)
+                        while(!connected){
                             Log.i("BEACON","IN ATTESA DI CONNESSIONE");
-                            TimeUnit.SECONDS.sleep(1500);
+                            TimeUnit.SECONDS.sleep(1500L);
+                        }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } finally {
@@ -208,7 +210,7 @@ public class BluetoothHelper {
                 attesa.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
+            }*/
         }
     };
 
@@ -272,7 +274,7 @@ public class BluetoothHelper {
             };
 
     //callback utilizzata per trovare dispositivi nel raggio d'azione
-    public ScanCallback mScanCallback = new ScanCallback() {
+    private ScanCallback mScanCallback = new ScanCallback() {
 
         @Override
         public void onScanResult(int callbackType, ScanResult result) {

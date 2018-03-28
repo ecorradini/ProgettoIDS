@@ -40,8 +40,8 @@ public class LeDeviceListAdapter {
      */
     public void addDevice(BluetoothDevice device, int rssi) {
         if (!mLeDevices.containsValue(device)) {
-            mLeDevices.put(rssi,device);
             Log.d(TAG2,"device: " + device.getAddress() + " rssi: " + rssi);
+            mLeDevices.put(rssi,device);
         }
     }
 
