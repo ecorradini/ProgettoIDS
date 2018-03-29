@@ -65,7 +65,7 @@ public class BluetoothHelper {
     private static Activity activity;
 
     //numero massimo di scan senza che venga mandata la posizione al server
-    private static final int maxNoUpdate = 10;
+    private static final int maxNoUpdate = 5;
     //conta quante volte consecutive non si invia la propria posizione al server
     private int cont;
     private boolean connected;
@@ -160,7 +160,7 @@ public class BluetoothHelper {
                 if (bluetoothAdapter != null) {
                     try {
                         bluetoothAdapter.getBluetoothLeScanner()
-                                .startScan(scanFilters, scanSettings, mScanCallback);
+                                .startScan(scanFilters, scanSettings, mScanCallback); //problema
                         Log.d(TAG, "Start Scan-2");
                     } catch (NullPointerException e) {
                         e.printStackTrace();
@@ -177,16 +177,18 @@ public class BluetoothHelper {
             terminatedScan = false;
 
             //attende per la durata dello scan e poi lancia la runnable per stopparlo
-            //scanHandler.postDelayed(stopScan, 5000L);
+            //scanHandler.postDelayed(stopScan, 1000L);
             Thread attesa = new Thread() {
                 public void run() {
                     try {
-                        TimeUnit.SECONDS.sleep(5000L);
+                        TimeUnit.SECONDS.sleep(1500L);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
-                    } finally {
-                        stopScan.run();
                     }
+                    Log.e("bluetooth error","accendi il bluetooth");
+                    stopScan.run();
+
+
                 }
             };
             attesa.start();
@@ -242,6 +244,7 @@ public class BluetoothHelper {
             if(selectedBeacon != null){
                 if (currentBeacon == null || !currentBeacon.getAddress().equals(mLeDeviceListAdapter.getCurrentBeacon().getAddress())) {
                     currentBeacon = mLeDeviceListAdapter.getCurrentBeacon();
+                    cont = 0;
                 }
                 //nel caso per n cicli non venga aggiornato
                 else {
