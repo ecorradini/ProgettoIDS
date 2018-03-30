@@ -77,7 +77,7 @@ public class Connessioni {
             device = btHelper.getCurrentBeacon();
             if (device == null) Log.i("DEVICE", "NULL");
             try {
-                Thread.sleep(1500);
+                Thread.sleep(5500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
