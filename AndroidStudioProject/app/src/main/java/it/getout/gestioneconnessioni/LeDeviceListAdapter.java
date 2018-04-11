@@ -24,7 +24,7 @@ public class LeDeviceListAdapter {
     private static HashMap<String, BluetoothDevice> sensors;
     private String TAG2 = "LeDeviceAdapter";
         //Hashmap di dispositivi estratti dallo scan (K: potenza del segnali RSSI, dispositivo trovato dallo scan)
-    private TreeMap<Integer,BluetoothDevice> mLeDevices;
+    private TreeMap<Integer, BluetoothDevice> mLeDevices;
     private Context context;
 
     /**
@@ -53,9 +53,9 @@ public class LeDeviceListAdapter {
         BluetoothDevice b = null;
         //istanzio lo strumento per iterare la lista mLeDevices
         Iterator it = mLeDevices.entrySet().iterator();
-
+        Log.d(TAG2,"device detection");
         //scandisce la lista in base alla distanza rispetto all'utente, finchè non trova un beacon o finchè non termina la lista
-        while (b == null && it.hasNext()) {
+        while (b == null && it.hasNext()) {Log.d(TAG2,"device " );
             Map.Entry entry = (Map.Entry) it.next();
             BluetoothDevice dev = (BluetoothDevice) entry.getValue();
 
@@ -63,8 +63,8 @@ public class LeDeviceListAdapter {
             if(sensors.containsKey(dev.getAddress())) {
                 b = dev;
                 Log.d(TAG2,"device detected: " + dev.getAddress());
-            }
-            else {
+            }else {
+
                 Log.d(TAG2,"put device: " + dev.getAddress());
                 Toast.makeText(context," Si è individuato un sensore non presente in lista, ", Toast.LENGTH_SHORT).show();
                 sensors.put(dev.getAddress(), dev);

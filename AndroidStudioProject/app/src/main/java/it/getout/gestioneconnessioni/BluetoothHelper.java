@@ -3,6 +3,7 @@ package it.getout.gestioneconnessioni;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
@@ -29,7 +30,7 @@ import static android.content.ContentValues.TAG;
  * La presente classe si occuperà di definire la scansione, connessione e comunicazione con i Beacon tramite bluetooth
  */
 
-public class BluetoothHelper {
+public class BluetoothHelper extends StateMachine {
 
     public static final int REQUEST_ENABLE_BT = 1;
     //alcuni possibili messaggi che può ricevere lo scan (vengono utilizzati come parametri per l'intenFilter)
@@ -70,6 +71,8 @@ public class BluetoothHelper {
     private int cont;
     private boolean connected;
 
+    private BluetoothLeScanner sBluetoothLeScanner;
+
     public BluetoothHelper(BluetoothAdapter btAdapter, AppCompatActivity a){
 
         activity = a;
@@ -85,8 +88,8 @@ public class BluetoothHelper {
         scanFilter = new ScanFilter.Builder().setServiceUuid(new ParcelUuid(UUID.fromString(beaconUUID))).build();
         scanFilters = new ArrayList<>();
         scanFilters.add(scanFilter);
-        scanSettings = new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build();
 
+        scanSettings = new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build();
         //inizializzazione del filtro per i messaggi e registrazione del broadcast receiver
         initializeFilter();
 
@@ -95,6 +98,7 @@ public class BluetoothHelper {
 
         connected = false;
 
+        executeState();
         cont = 0;
     }
 
@@ -174,37 +178,21 @@ public class BluetoothHelper {
                 bluetoothAdapter.startLeScan(uuids, mLeScanCallback);
             }
 
-            terminatedScan = false;
-
+            //terminatedScan = false;
             //attende per la durata dello scan e poi lancia la runnable per stopparlo
-            //scanHandler.postDelayed(stopScan, 1000L);
+            //scanHandler.postDelayed(stopScan, 3000L);
+
             Thread attesa = new Thread() {
                 public void run() {
                     try {
-                        TimeUnit.SECONDS.sleep(1500L);
+                        TimeUnit.SECONDS.sleep(1);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
-                    }
-                    Log.e("bluetooth error","accendi il bluetooth");
-                    stopScan.run();
-
-
-                }
-            };
-            attesa.start();
-
-            /*Thread attesa = new Thread() {
-                public void run() {
-                    try {
-                        while(!connected){
-                            Log.i("BEACON","IN ATTESA DI CONNESSIONE");
-                            TimeUnit.SECONDS.sleep(1500L);
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } finally {
+                    }finally {
                         stopScan.run();
+                        Log.d("bluetooth error","bluetooth");
                     }
+
                 }
             };
             attesa.start();
@@ -212,7 +200,9 @@ public class BluetoothHelper {
                 attesa.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }*/
+            }
+            //stopScan.run();
+
         }
     };
 
@@ -223,11 +213,10 @@ public class BluetoothHelper {
         @Override
         public void run() {
 
-            Log.e(TAG, "Stop Scan");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 try {
-                    bluetoothAdapter.getBluetoothLeScanner()
-                            .stopScan(mScanCallback);
+                    Log.d(TAG, "Stop Scan");
+                    bluetoothAdapter.getBluetoothLeScanner().stopScan(mScanCallback);
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                     Log.e("bluetooth error","accendi il bluetooth");
@@ -236,10 +225,11 @@ public class BluetoothHelper {
             else {
                 bluetoothAdapter.stopLeScan(mLeScanCallback); //in caso device abbia versione anteriore a lollipop
             }
-            Log.i(TAG,"numero: " + mLeDeviceListAdapter.getCount());
+
 
             //trova il beacon più vicino
             selectedBeacon = mLeDeviceListAdapter.selectedDevice();
+            Log.i(TAG,"numero: " + mLeDeviceListAdapter.getCount());
 
             if(selectedBeacon != null){
                 if (currentBeacon == null || !currentBeacon.getAddress().equals(mLeDeviceListAdapter.getCurrentBeacon().getAddress())) {
@@ -256,6 +246,18 @@ public class BluetoothHelper {
                 }
             }
             terminatedScan = true;
+
+        }
+    };
+
+    //thread per gestire l'attesa fra due scan consecutivi
+    private Runnable wait = new Runnable() {
+        @Override
+        public void run() {
+            //finita l'attesa richiama i metodi per passare allo stato successivo
+            int next = nextState();
+            changeState(next);
+            executeState();
         }
     };
 
@@ -277,7 +279,7 @@ public class BluetoothHelper {
             };
 
     //callback utilizzata per trovare dispositivi nel raggio d'azione
-    private ScanCallback mScanCallback = new ScanCallback() {
+    public ScanCallback mScanCallback = new ScanCallback() {
 
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
@@ -285,7 +287,6 @@ public class BluetoothHelper {
             BluetoothDevice btDevice = result.getDevice();
             Log.e("bluetooth error", result.getDevice().getAddress());
             mLeDeviceListAdapter.addDevice(btDevice,result.getRssi());
-            connected = true;
         }
 
         @Override
@@ -294,7 +295,7 @@ public class BluetoothHelper {
             for (ScanResult sr : results) {
                 Log.i("ScanResult - Results", sr.toString());
             }
-        }
+    }
 
         @Override
         public void onScanFailed(int errorCode) {
@@ -302,6 +303,7 @@ public class BluetoothHelper {
             Log.e("Scan Failed", "Error Code: " + errorCode);
         }
     };
+
 
     public boolean getTerminatedscan(){ return terminatedScan; }
 }
