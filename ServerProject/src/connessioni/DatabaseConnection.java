@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 public class DatabaseConnection {
     private static Connection connection;
-    public static final String dbUrl="jdbc:mysql://localhost:3306/getout";
+    public static final String dbUrl="jdbc:jtds:sqlserver://den1.mssql5.gear.host/getoutdb";
 
     public static void init() throws ClassNotFoundException, SQLException {
         //Chiedo la password del Server
@@ -23,8 +23,8 @@ public class DatabaseConnection {
         char passwordArray[] = console.readPassword("Password del database: ");
         String password = new String(passwordArray);
 
-        Class.forName("com.mysql.jdbc.Driver");
-        connection = DriverManager.getConnection(dbUrl, "getout_user", password);
+        //Class.forName("com.mysql.jdbc.Driver");
+        connection = DriverManager.getConnection(dbUrl, "getoutdb", password);
         System.out.println("Connesso al DB");
 
     }
