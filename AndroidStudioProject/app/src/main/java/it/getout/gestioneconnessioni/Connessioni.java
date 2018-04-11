@@ -45,13 +45,14 @@ public class Connessioni {
         }
 
         btHelper = new BluetoothHelper(btAdapter, (AppCompatActivity)c);
-        device =  scansionaBluetooth();
+        device = scansionaBluetooth();
         Thread attesa = new Thread() {
             public void run() {
                 while(device==null) {
                     try {
                         Log.e("DEVICE","NON ISTANZIATO");
-                        Thread.sleep(1000);
+                        Thread.sleep(7000);
+                        device =  scansionaBluetooth();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -77,12 +78,12 @@ public class Connessioni {
             device = btHelper.getCurrentBeacon();
             if (device == null) Log.i("DEVICE", "NULL");
             try {
-                Thread.sleep(5500);
+                Thread.sleep(5000L);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            //} while(!btHelper.getTerminatedscan());
-        } while(device==null);
+        } while(!btHelper.getTerminatedscan());
+        //} while(device==null);
 
         return device;
     }
