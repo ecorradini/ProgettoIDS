@@ -1,6 +1,5 @@
 #!/bin/bash
 DISTRO=`lsb_release -i | cut -f 2-`
-su
 if [DISTRO="Ubuntu"] 
 then
 	wget http://dev.mysql.com/get/mysql-apt-config_0.8.9-1_all.deb
