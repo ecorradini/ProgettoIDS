@@ -19,12 +19,12 @@ import it.getout.gestioneposizione.Beacon;
 
 // Adapter per gestire i dispositivi identificati durante lo scanner.
 public class LeDeviceListAdapter {
-        //beacon più vicino all'utente
+    //beacon più vicino all'utente
     private BluetoothDevice currentBeacon;
     private static HashMap<String, BluetoothDevice> sensors;
     private String TAG2 = "LeDeviceAdapter";
-        //Hashmap di dispositivi estratti dallo scan (K: potenza del segnali RSSI, dispositivo trovato dallo scan)
-    private TreeMap<Integer, BluetoothDevice> mLeDevices;
+    //Hashmap di dispositivi estratti dallo scan (K: potenza del segnali RSSI, dispositivo trovato dallo scan)
+    private TreeMap<Integer,BluetoothDevice> mLeDevices;
     private Context context;
 
     /**
@@ -40,8 +40,8 @@ public class LeDeviceListAdapter {
      */
     public void addDevice(BluetoothDevice device, int rssi) {
         if (!mLeDevices.containsValue(device)) {
-            Log.d(TAG2,"device: " + device.getAddress() + " rssi: " + rssi);
             mLeDevices.put(rssi,device);
+            Log.d(TAG2,"device: " + device.getAddress() + " rssi: " + rssi);
         }
     }
 
@@ -51,25 +51,26 @@ public class LeDeviceListAdapter {
     public BluetoothDevice selectedDevice() {
 
         BluetoothDevice b = null;
-        //istanzio lo strumento per iterare la lista mLeDevices
+
         Iterator it = mLeDevices.entrySet().iterator();
-        Log.d(TAG2,"device detection");
-        //scandisce la lista in base alla distanza rispetto all'utente, finchè non trova un beacon o finchè non termina la lista
-        while (b == null && it.hasNext()) {Log.d(TAG2,"device " );
+        //scandisce la lista in base alla distanza rispetto all'utente, finchè non trova un beacon presente nel CSV o finchè
+        //non termina la lista
+        while (b == null && it.hasNext()) {
             Map.Entry entry = (Map.Entry) it.next();
             BluetoothDevice dev = (BluetoothDevice) entry.getValue();
-
-            //valuta se il beacon trovato è presente nella lista sensors di quelli salvati. Se si allora si è trovato il dispositivo più vicino
+            //valuta se il beacon trovato è presente nella lista di quelli salvati. Se si allora si è trovato il
+            //dispositivo più vicino
             if(sensors.containsKey(dev.getAddress())) {
                 b = dev;
-                Log.d(TAG2,"device detected: " + dev.getAddress());
-            }else {
+            }
+            else {
+                Toast.makeText(context,
+                        " Si è individuato un sensore non presente nel documento, ", Toast.LENGTH_SHORT).show();
 
-                Log.d(TAG2,"put device: " + dev.getAddress());
-                Toast.makeText(context," Si è individuato un sensore non presente in lista, ", Toast.LENGTH_SHORT).show();
                 sensors.put(dev.getAddress(), dev);
             }
         }
+
         currentBeacon = b;
         return b;
     }
