@@ -9,6 +9,8 @@ import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import java.util.Timer;
+
 import it.getout.MainActivity;
 import it.getout.gestioneconnessioni.BluetoothHelper;
 import it.getout.gestioneconnessioni.Connessioni;
@@ -42,7 +44,7 @@ public class PosizioneUtente {
         try {
             getInfoByBeaconID(beaconAttuale.getId());
         } catch (Exception e){
-                e.printStackTrace();
+            e.printStackTrace();
             Log.e("bluetooth error","non funziona");
         }
 

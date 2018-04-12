@@ -30,7 +30,7 @@ import static android.content.ContentValues.TAG;
  * La presente classe si occuperà di definire la scansione, connessione e comunicazione con i Beacon tramite bluetooth
  */
 
-public class BluetoothHelper extends StateMachine {
+public class BluetoothHelper {
 
     public static final int REQUEST_ENABLE_BT = 1;
     //alcuni possibili messaggi che può ricevere lo scan (vengono utilizzati come parametri per l'intenFilter)
@@ -49,6 +49,7 @@ public class BluetoothHelper extends StateMachine {
     //uuid dei sensortag utilizati
     private static final String beaconUUID = "0000aa80-0000-1000-8000-00805f9b34fb";
     //private static final String beaconUUID = "00002902-0000-1000-8000-00805f9b34fb";
+    private static final String beaconUUID = "001ea0c7-1683-4e40-8a28-ec34e30a7a63";
 
     //maschera di UUID, serve per filtrare i dispositivi bluetooth da analizzare
     private UUID[] uuids;
@@ -97,8 +98,6 @@ public class BluetoothHelper extends StateMachine {
         scanHandler = new Handler();
 
         connected = false;
-
-        executeState();
         cont = 0;
     }
 
@@ -135,9 +134,7 @@ public class BluetoothHelper extends StateMachine {
     public void discoverBLEDevices() {
         Log.e("BLE_Scanner", "DiscoverBLE, in condition");
         //parte il thread deputato allo scan dei bluetooth LE
-        startScan.run();
-
-
+        startScan.start();
     }
 
     /**
@@ -151,7 +148,7 @@ public class BluetoothHelper extends StateMachine {
     /**
      * thread che si occupa di far partire lo scan in cerca dei beacon
      */
-    private Runnable startScan = new Runnable() {
+    private Thread startScan = new Thread() {
         @Override
         public void run() {
             //cancella la lista di sensortag precedentemente trovati
@@ -163,9 +160,7 @@ public class BluetoothHelper extends StateMachine {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 if (bluetoothAdapter != null) {
                     try {
-                        bluetoothAdapter.getBluetoothLeScanner()
-                                .startScan(scanFilters, scanSettings, mScanCallback); //problema
-                        Log.d(TAG, "Start Scan-2");
+                        bluetoothAdapter.getBluetoothLeScanner().startScan(scanFilters, scanSettings, mScanCallback); //problema
                     } catch (NullPointerException e) {
                         e.printStackTrace();
                         Log.e("bluetooth error","accendi il bluetooth");
@@ -178,38 +173,21 @@ public class BluetoothHelper extends StateMachine {
                 bluetoothAdapter.startLeScan(uuids, mLeScanCallback);
             }
 
-            //terminatedScan = false;
+            terminatedScan = false;
             //attende per la durata dello scan e poi lancia la runnable per stopparlo
-            //scanHandler.postDelayed(stopScan, 3000L);
-
-            Thread attesa = new Thread() {
-                public void run() {
-                    try {
-                        TimeUnit.SECONDS.sleep(1);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }finally {
-                        stopScan.run();
-                        Log.d("bluetooth error","bluetooth");
-                    }
-
-                }
-            };
-            attesa.start();
             try {
-                attesa.join();
-            } catch (InterruptedException e) {
+                Thread.sleep(3000L);
+                stopScan.start();
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-            //stopScan.run();
-
         }
     };
 
     /**
      * thread per mettere in pausa lo scan ed eventualmente elaborare i dati
      */
-    private Runnable stopScan = new Runnable() {
+    private Thread stopScan = new Thread() {
         @Override
         public void run() {
 
@@ -250,17 +228,6 @@ public class BluetoothHelper extends StateMachine {
         }
     };
 
-    //thread per gestire l'attesa fra due scan consecutivi
-    private Runnable wait = new Runnable() {
-        @Override
-        public void run() {
-            //finita l'attesa richiama i metodi per passare allo stato successivo
-            int next = nextState();
-            changeState(next);
-            executeState();
-        }
-    };
-
     //callback utilizzata per trovare dispositivi nel raggio d'azione per il metodo deprecato
     private BluetoothAdapter.LeScanCallback mLeScanCallback =
             new BluetoothAdapter.LeScanCallback() {
@@ -279,7 +246,7 @@ public class BluetoothHelper extends StateMachine {
             };
 
     //callback utilizzata per trovare dispositivi nel raggio d'azione
-    public ScanCallback mScanCallback = new ScanCallback() {
+    private ScanCallback mScanCallback = new ScanCallback() {
 
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
