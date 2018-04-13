@@ -45,7 +45,7 @@ import it.getout.gestionevisualizzazionemappa.Mappa;
 
 public class ServerHelper {
 
-    private static final String BASE_URL = "http://192.168.0.114:9600";
+    private static final String BASE_URL = "http://192.168.0.112:9600";
     //private static final String BASE_URL = "http://172.23.134.169:9600";
     private static final String SERV_PERCORSO = "/percorso";            //URL percorso
     private static final String SERV_PIANIEDI = "/pianiedificio?";      //URL piano da edificio
@@ -274,6 +274,7 @@ public class ServerHelper {
                         String nomeEdificio = response.getString("EDIFICIO_ATTUALE");
                         edificio = new Edificio(nomeEdificio);
                         downloaded = true;
+                        ((MainActivity)context).stopLoading();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -300,9 +301,6 @@ public class ServerHelper {
                 ex.printStackTrace();
             }
 
-            //richiediPianobyBeacon(PosizioneUtente.getBeaconAttuale().toString());
-            //richiediPianobyBeacon("prova");
-
            return edificio;
         }
 
@@ -310,7 +308,6 @@ public class ServerHelper {
         protected void onPostExecute(Edificio edificio) {
             Log.d("EDIFICIO",edificio.toString());
             PosizioneUtente.setEdificioAttuale(edificio);
-            richiediPianobyBeacon("prova");
         }
     }
 
@@ -458,7 +455,6 @@ public class ServerHelper {
         protected void onPostExecute(Piano p) {
             Log.d("PIANO_ATTUALE",p.toString());
             PosizioneUtente.setPianoAttuale(p);
-            ((MainActivity)context).stopLoading();
         }
     }
 

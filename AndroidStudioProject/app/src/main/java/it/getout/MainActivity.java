@@ -42,12 +42,16 @@ public class MainActivity extends AppCompatActivity {
 
         loading = findViewById(R.id.cv_loading);
 
+        startLoading();
+
         if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMESSO_LOCATION);
         }
+        else if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+            Connessioni.init(this);
+        }
         else {
             Connessioni.init(this);
-
         }
     }
 
@@ -69,16 +73,30 @@ public class MainActivity extends AppCompatActivity {
 
     public MappaFragment getMappaFragment() { return mappaFragment; }
 
-
-
-
     public void startLoading() {
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-        loading.setVisibility(View.VISIBLE);
+        new Thread(){
+            public void run(){
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                        loading.setVisibility(View.VISIBLE);
+                    }
+                });
+            }
+        }.start();
+
     }
 
     public void stopLoading() {
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-        loading.setVisibility(View.GONE);
+        new Thread(){
+            public void run(){
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                        loading.setVisibility(View.GONE);
+                    }
+                });
+            }
+        }.start();
     }
 }

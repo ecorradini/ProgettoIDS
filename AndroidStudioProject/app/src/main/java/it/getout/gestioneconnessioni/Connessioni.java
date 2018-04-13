@@ -55,9 +55,7 @@ public class Connessioni {
                 public void run () {
                     try {
                         do {
-                            Thread.sleep(7000L);
-                            Log.i("NON sono connesso","PP");
-                            Log.i("THREAD", "device: "+device);
+                            Thread.sleep(500);
                             device = scansionaBluetooth();
                         }while(device==null);
                     } catch (InterruptedException e) {

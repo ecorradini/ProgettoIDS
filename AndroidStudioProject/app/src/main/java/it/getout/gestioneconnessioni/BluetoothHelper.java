@@ -146,7 +146,7 @@ public class BluetoothHelper {
             Thread postDelayed = new Thread() {
                 public void run() {
                     try {
-                        Thread.sleep(5000L);
+                        Thread.sleep(1000L);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

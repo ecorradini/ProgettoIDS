@@ -9,9 +9,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Mappa {
-    public static String PIANO;
-    public static String IMMAGINE;
-    public static String TABLE_MAPPA;
+    public static final String PIANO = "PIANO";
+    public static final String IMMAGINE = "IMMAGINE";
+    public static final String TABLE_MAPPA = "MAPPA";
 
     public static String selectMappaByPiano(String piano) {
         Connection conn = DatabaseConnection.getConn();
@@ -43,3 +43,4 @@ public class Mappa {
         return json;
     }
 }
+

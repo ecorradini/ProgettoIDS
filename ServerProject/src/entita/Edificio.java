@@ -8,11 +8,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Edificio {
-
     //Nome della colonna "NOME"
-    public static String NOME;
+    public static final String NOME = "NOME";
     //Nome della tabella "EDIFICIO"
-    public static String TABLE_EDIFICIO;
+    public static final String TABLE_EDIFICIO = "EDIFICIO";
 
     public static String selectEdificioByBeacon(String idBeacon) {
         Connection conn = DatabaseConnection.getConn();
@@ -24,7 +23,6 @@ public class Edificio {
                 Tronco.TABLE_TRONCO+"."+Tronco.PIANO+"="+Piano.TABLE_PIANO+"."+Piano.NOME+" AND "+
                 Piano.TABLE_PIANO+"."+Piano.EDIFICIO+"="+TABLE_EDIFICIO+"."+NOME+" AND "+
                 Beacon.TABLE_BEACON+"."+Beacon.ID+"=\'"+idBeacon+"\'";
-        System.out.println(query);
         try {
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(query);
@@ -47,3 +45,4 @@ public class Edificio {
         return json;
     }
 }
+

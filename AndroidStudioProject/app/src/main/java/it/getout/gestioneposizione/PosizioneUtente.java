@@ -51,16 +51,6 @@ public class PosizioneUtente {
             pianoAttuale = Connessioni.getDbReference().initPianoAttuale(beaconAttuale);
         }
         else {
-            new Thread(){
-                public void run(){
-                    ((MainActivity)context).runOnUiThread(new Runnable() {
-                        public void run() {
-                            ((MainActivity) context).startLoading();
-                        }
-                    });
-                }
-            }.start();
-
             Connessioni.getServerReference().richiediEdificio(beaconAttuale);
         }
     }
