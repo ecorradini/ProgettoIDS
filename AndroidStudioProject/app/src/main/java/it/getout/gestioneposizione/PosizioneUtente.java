@@ -22,16 +22,11 @@ import it.getout.gestioneconnessioni.Connessioni;
 
 public class PosizioneUtente {
 
-    //Coordinate dell'utente
-    private static PointF posizione;
-    //Istanza dell'edificio in cui si trova l'utente
-    private static Edificio edificioAttuale;
-    //Istanza del piano in cui si trova l'utente
-    private static Piano pianoAttuale;
-    //Beacon al quale l'utente è collegato al momento
-    private static Beacon beaconAttuale;
-    //Istanza dell'attuale percorso calcolato
-    private static Percorso percorso;
+    private static PointF posizione; //Coordinate dell'utente
+    private static Edificio edificioAttuale; //Istanza dell'edificio in cui si trova l'utente
+    private static Piano pianoAttuale; //Istanza del piano in cui si trova l'utente
+    private static Beacon beaconAttuale; //Beacon al quale l'utente è collegato al momento
+    private static Percorso percorso; //Istanza dell'attuale percorso calcolato
 
 
     //Context
@@ -56,8 +51,16 @@ public class PosizioneUtente {
             pianoAttuale = Connessioni.getDbReference().initPianoAttuale(beaconAttuale);
         }
         else {
+            new Thread(){
+                public void run(){
+                    ((MainActivity)context).runOnUiThread(new Runnable() {
+                        public void run() {
+                            ((MainActivity) context).startLoading();
+                        }
+                    });
+                }
+            }.start();
 
-            ((MainActivity)context).startLoading();
             Connessioni.getServerReference().richiediEdificio(beaconAttuale);
         }
     }

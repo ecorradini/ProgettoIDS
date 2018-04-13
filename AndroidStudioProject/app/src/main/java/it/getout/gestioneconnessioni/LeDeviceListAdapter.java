@@ -19,12 +19,12 @@ import it.getout.gestioneposizione.Beacon;
 
 // Adapter per gestire i dispositivi identificati durante lo scanner.
 public class LeDeviceListAdapter {
-    //beacon più vicino all'utente
-    private BluetoothDevice currentBeacon;
+
+    private BluetoothDevice currentBeacon; //beacon più vicino all'utente
     private static HashMap<String, BluetoothDevice> sensors;
     private String TAG2 = "LeDeviceAdapter";
-    //Hashmap di dispositivi estratti dallo scan (K: potenza del segnali RSSI, dispositivo trovato dallo scan)
-    private TreeMap<Integer,BluetoothDevice> mLeDevices;
+
+    private TreeMap<Integer,BluetoothDevice> mLeDevices; //Hashmap di dispositivi estratti dallo scan (K: potenza del segnali RSSI, dispositivo trovato dallo scan)
     private Context context;
 
     /**
@@ -33,6 +33,7 @@ public class LeDeviceListAdapter {
     public LeDeviceListAdapter(Context context) {
         super();
         mLeDevices = new TreeMap<>(Collections.<Integer>reverseOrder());
+        sensors = new HashMap<>();
         this.context = context;
     }
     /**
@@ -41,9 +42,14 @@ public class LeDeviceListAdapter {
     public void addDevice(BluetoothDevice device, int rssi) {
         if (!mLeDevices.containsValue(device)) {
             mLeDevices.put(rssi,device);
-            Log.d(TAG2,"device: " + device.getAddress() + " rssi: " + rssi);
+            sensors.put(device.getAddress(), device);
+            Log.i(TAG2,"device aggiunto: " + device.getAddress() + " rssi: " + rssi);
+        }
+        else {
+            Log.i("addDevice", "non aggiunto");
         }
     }
+
 
     /**
      * Metodo che calcola e restituisce il beacon più vicino fra quelli trovati
