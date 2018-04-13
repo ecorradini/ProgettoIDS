@@ -8,11 +8,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Aula {
-    public static final String NOME = "NOME";
-    public static final String X = "X";
-    public static final String Y = "Y";
-    public static final String PIANO = "PIANO";
-    public static final String TABLE_AULA = "AULA";
+    public static String NOME;
+    public static String X;
+    public static String Y;
+    public static String PIANO;
+    public static String TABLE_AULA;
 
     public static String selectAllAuleByPiano(String piano) {
         Connection conn = DatabaseConnection.getConn();

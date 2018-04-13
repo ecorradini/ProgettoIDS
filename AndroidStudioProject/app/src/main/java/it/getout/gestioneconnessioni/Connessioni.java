@@ -22,12 +22,15 @@ public class Connessioni {
     private static BluetoothHelper btHelper;
     //Istanza del descrittore dei dispositivi bluetooth
     private static BluetoothDevice device;
+    private static Context context;
 
 
     public static void init(Context c) {
+        context=c;
         dbReference = new DBHelper(c);
         serverReference = new ServerHelper(c);
         initBluetooth(c);
+
     }
 
     /**
@@ -48,11 +51,26 @@ public class Connessioni {
         device = scansionaBluetooth();
 
         try {
-            //memorizzo beaconAttusle all'interno dell'oggetto Beacon
-            PosizioneUtente.setBeaconAttuale(new Beacon(device.getAddress()));
-        } catch(NullPointerException e) {
-            Log.e("BLUETOOTH","NON CONNESSO");
-            initBluetooth(c);
+            Thread postDelayed = new Thread() {
+                public void run () {
+                    try {
+                        while(device==null) {
+                            Thread.sleep(1000L);
+                            Log.e("NON sono connesso","PP");
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } finally {
+                        Log.e("Mi sono connesso",device.getAddress());
+                        PosizioneUtente.setBeaconAttuale(new Beacon(device.getAddress()));
+                        PosizioneUtente.init(context);
+
+                    }
+                }
+            };
+            postDelayed.start();
+        } catch(Exception e) {
+            Log.e("THREAD","VAFFANCULO");
         }
     }
     /**

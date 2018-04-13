@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             Connessioni.init(this);
-            PosizioneUtente.init(this);
 
         }
     }
@@ -58,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
             case PERMESSO_LOCATION: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Connessioni.init(this);
-                    PosizioneUtente.init(this);
                 }
                 else {
                     Toast.makeText(MainActivity.this, "Permessi negati. L'app ha bisogno del permesso, altrimenti morirai al prossimo incendio!", Toast.LENGTH_SHORT).show();

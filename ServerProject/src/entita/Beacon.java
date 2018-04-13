@@ -8,11 +8,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Beacon {
-    public static final String ID = "ID";
-    public static final String X = "X";
-    public static final String Y = "Y";
-    public static final String TRONCO = "TRONCO";
-    public static final String TABLE_BEACON = "BEACON";
+    public static String ID;
+    public static String X;
+    public static String Y;
+    public static String TRONCO;
+    public static String TABLE_BEACON;
 
     public static String selectPosizioneById(String idBeacon) {
         Connection conn = DatabaseConnection.getConn();

@@ -129,24 +129,34 @@ public class BluetoothHelper {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 if (bluetoothAdapter != null) {
                     try {
-                        bluetoothAdapter.getBluetoothLeScanner()
-                                .startScan(scanFilters, scanSettings, mScanCallback);
+                        bluetoothAdapter.getBluetoothLeScanner().startScan(scanFilters, scanSettings, mScanCallback);
                     } catch (NullPointerException e) {
                         e.printStackTrace();
-                        Log.e("bluetooth error","accendi il bluetooth");
+                        Log.e("bluetooth error", "accendi il bluetooth");
                     }
 
                 }
-            }
-            else {
+            } else {
                 //parte effettivamente la ricerca dei sensortag
                 bluetoothAdapter.startLeScan(uuids, mLeScanCallback);
             }
 
+
             terminatedScan = false;
 
             //attende per la durata dello scan e poi lancia la runnable per stopparlo
-            scanHandler.postDelayed(stopScan, 1000L);
+            //scanHandler.postDelayed(stopScan, 1000L);
+            Thread postDelayed = new Thread() {
+                public void run() {
+                    try {
+                        Thread.sleep(3000L);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    stopScan.run();
+                }
+            };
+            postDelayed.start();
         }
     };
 

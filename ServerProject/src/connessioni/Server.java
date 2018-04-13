@@ -10,10 +10,6 @@ public class Server {
         try {
             System.out.println("Server Start");
             DatabaseConnection.init();
-
-        } catch (ClassNotFoundException e) {
-            System.out.println("Eccezione Class not found");
-            e.printStackTrace();
         } catch (SQLException e) {
             System.out.println("Eccezione SQL");
             e.printStackTrace();
