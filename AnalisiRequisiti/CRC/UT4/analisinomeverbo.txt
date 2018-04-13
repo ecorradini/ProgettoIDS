@@ -1,0 +1,10 @@
+nome
+emergenza, posizione, utente, evacuazione, notifica emergenza,
+percorso, uscita, condizioni edifici0, edificio, notifica
+
+
+verbo
+ricevere, gestire, identificare, transitare, calcolare, aggiornare, controllare,
+rilevare,
+
+
