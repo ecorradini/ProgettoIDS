@@ -44,24 +44,46 @@ public class Connessioni {
         // Is Bluetooth turned on?
         if (!btAdapter.isEnabled()) {
             //attivazione del bluetooth (qualora non sia già funzionante)
-            btHelper.activateBluetooth();
+            BluetoothHelper.activateBluetooth();
         }
 
         btHelper = new BluetoothHelper(btAdapter, (AppCompatActivity)c);
         device = scansionaBluetooth();
 
-        PosizioneUtente.setBeaconAttuale(new Beacon(device.getAddress()));
-        PosizioneUtente.init(context);
+        try {
+            Thread postDelayed = new Thread() {
+                public void run () {
+                    try {
+                        do {
+                            Thread.sleep(7000L);
+                            Log.i("NON sono connesso","PP");
+                            Log.i("THREAD", "device: "+device);
+                            device = scansionaBluetooth();
+                        }while(device==null);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } finally {
+                        Log.e("Mi sono connesso",device.getAddress());
+                        PosizioneUtente.setBeaconAttuale(new Beacon(device.getAddress()));
+                        PosizioneUtente.init(context);
+
+                    }
+                }
+            };
+            postDelayed.start();
+        } catch(Exception e) {
+            Log.e("THREAD","VAFFANCULO");
+        }
     }
     /**
      *Metodo che si adopera ad effettuare lo scan dei dispositivi bluetooth
      */
     private static BluetoothDevice scansionaBluetooth(){
         btHelper.discoverBLEDevices();
-        while(!btHelper.getTerminatedscan()) {
+        do {
             device = btHelper.getCurrentBeacon();
-        }
-        //} while(device==null);
+        } while(!btHelper.getTerminatedscan());
+
 
         return device;
     }
