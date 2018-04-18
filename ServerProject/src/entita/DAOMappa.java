@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class Mappa {
+public class DAOMappa {
     public static final String PIANO = "PIANO";
     public static final String IMMAGINE = "IMMAGINE";
     public static final String TABLE_MAPPA = "MAPPA";

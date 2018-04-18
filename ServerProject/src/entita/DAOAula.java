@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class Aula {
+public class DAOAula {
     public static final String NOME = "NOME";
     public static final String X = "X";
     public static final String Y = "Y";

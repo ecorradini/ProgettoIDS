@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class Beacon {
+public class DAOBeacon {
     public static final String ID = "ID";
     public static final String X = "X";
     public static final String Y = "Y";

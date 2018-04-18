@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class Edificio {
+public class DAOEdificio {
     //Nome della colonna "NOME"
     public static final String NOME = "NOME";
     //Nome della tabella "EDIFICIO"
@@ -18,11 +18,11 @@ public class Edificio {
         String nomeEdificio = "";
 
         String query = "SELECT "+TABLE_EDIFICIO+"."+NOME+" AS NOME_EDIFICIO"+
-                " FROM "+TABLE_EDIFICIO+","+Piano.TABLE_PIANO+","+Tronco.TABLE_TRONCO+","+Beacon.TABLE_BEACON+
-                " WHERE "+Beacon.TABLE_BEACON+"."+Beacon.TRONCO+"="+Tronco.TABLE_TRONCO+"."+Tronco.ID+" AND "+
-                Tronco.TABLE_TRONCO+"."+Tronco.PIANO+"="+Piano.TABLE_PIANO+"."+Piano.NOME+" AND "+
-                Piano.TABLE_PIANO+"."+Piano.EDIFICIO+"="+TABLE_EDIFICIO+"."+NOME+" AND "+
-                Beacon.TABLE_BEACON+"."+Beacon.ID+"=\'"+idBeacon+"\'";
+                " FROM "+TABLE_EDIFICIO+","+DAOPiano.TABLE_PIANO+","+DAOTronco.TABLE_TRONCO+","+DAOBeacon.TABLE_BEACON+
+                " WHERE "+DAOBeacon.TABLE_BEACON+"."+DAOBeacon.TRONCO+"="+DAOTronco.TABLE_TRONCO+"."+DAOTronco.ID+" AND "+
+                DAOTronco.TABLE_TRONCO+"."+DAOTronco.PIANO+"="+DAOPiano.TABLE_PIANO+"."+DAOPiano.NOME+" AND "+
+                DAOPiano.TABLE_PIANO+"."+DAOPiano.EDIFICIO+"="+TABLE_EDIFICIO+"."+NOME+" AND "+
+                DAOBeacon.TABLE_BEACON+"."+DAOBeacon.ID+"=\'"+idBeacon+"\'";
         try {
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(query);
