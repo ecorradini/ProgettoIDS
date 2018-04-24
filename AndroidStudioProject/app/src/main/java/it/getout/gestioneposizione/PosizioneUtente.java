@@ -59,8 +59,8 @@ public class PosizioneUtente {
         return beaconAttuale.getId();
     }
 
-    public static void setPosizione(String beaconID){
-        posizione = Connessioni.getDbReference().getPosizione(beaconID);
+    public static void setPosizione(PointF pos){
+        posizione = pos;
     }
 
     public static PointF getPosizione(){ return posizione; }

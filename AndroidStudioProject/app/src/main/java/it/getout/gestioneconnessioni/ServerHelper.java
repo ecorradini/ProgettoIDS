@@ -22,6 +22,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -56,6 +59,7 @@ public class ServerHelper {
     private static final String SERV_AULEPIANO = "/aulepiano?";         //URL aule da piano
     private static final String SERV_TRONCHIPIANO = "/tronchipiano?";   //URL tronchi da piano
     private static final String SERV_MAPPAPIANO = "/mappapiano?";       //URL tronchi da piano
+    private static final String SERV_SUMUSER = "/sommautente?";         //UTL aggiunta utente
 
 
     private Context context;
@@ -476,8 +480,9 @@ public class ServerHelper {
             mRequestQueue.start();
             //Url per la richiesta del percorso
             String url = BASE_URL + SERV_POSIZIONE + idbeacon;
+            String url2 = BASE_URL + SERV_POSIZIONE + idbeacon;
             //Instanzio la richiesta JSON
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 //Alla risposta
                 @Override
                 public void onResponse(JSONObject response) {
@@ -487,6 +492,8 @@ public class ServerHelper {
 
                         JSONObject current = array.getJSONObject(0);
                         posizione = new PointF(Float.parseFloat(current.getString("X")),Float.parseFloat(current.getString("Y")));
+
+                        PosizioneUtente.setPosizione(posizione);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -500,6 +507,15 @@ public class ServerHelper {
             });
             //Aggiungo la richiesta alla coda
             mRequestQueue.add(jsonObjectRequest);
+
+            //Richiamo la procedura di somma utente
+            try {
+                URL sumUser = new URL(url2);
+                HttpURLConnection urlConnection = (HttpURLConnection) sumUser.openConnection();
+                urlConnection.connect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             return true;
         }
