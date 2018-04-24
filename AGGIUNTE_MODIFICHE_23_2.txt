@@ -1,7 +1,0 @@
-ServerHelper non è statica
-Aggiunto attributo istanza ServerHelper serverReference a PosizioneUtente
-
-La string JSON del percorso sarà di questo tipo:
-{"percorso":[{"ID":"1","XI":"5","YI":"6","XF":"7","YF":"1"},{"ID":"2","XI":"5","YI":"6","XF":"7","YF":"1"}]}
-ovvero:
-{"percorso":[{"ID":id_tronco,"XI":XI,"YI":YI,"XF":XF,"YF":YF}]}
