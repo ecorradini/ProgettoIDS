@@ -6,6 +6,7 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+
 import it.getout.gestioneposizione.Beacon;
 import it.getout.gestioneposizione.PosizioneUtente;
 
@@ -44,20 +45,23 @@ public class Connessioni {
         // Is Bluetooth turned on?
         if (!btAdapter.isEnabled()) {
             //attivazione del bluetooth (qualora non sia già funzionante)
-            BluetoothHelper.activateBluetooth();
+            BluetoothHelper.activateBluetooth((AppCompatActivity)c);
         }
 
         btHelper = new BluetoothHelper(btAdapter, (AppCompatActivity)c);
-        device = scansionaBluetooth();
+        //device = scansionaBluetooth();
 
         try {
             Thread postDelayed = new Thread() {
                 public void run () {
                     try {
                         do {
-                            Thread.sleep(500);
-                            device = scansionaBluetooth();
-                        }while(device==null);
+
+                            btHelper.discoverBLEDevices();
+                            Thread.sleep(1500);
+
+                        }while(!btHelper.getTerminatedscan());
+                        device = btHelper.getCurrentBeacon();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } finally {
@@ -67,6 +71,7 @@ public class Connessioni {
 
                     }
                 }
+
             };
             postDelayed.start();
         } catch(Exception e) {

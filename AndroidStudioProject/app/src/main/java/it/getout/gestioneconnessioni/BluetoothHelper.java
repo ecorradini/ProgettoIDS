@@ -78,7 +78,7 @@ public class BluetoothHelper {
         //inizializzati gli elementi per lo scan
         scanFilter = new ScanFilter.Builder().setServiceUuid(new ParcelUuid(UUID.fromString(beaconUUID))).build();
         scanFilters = new ArrayList<>();
-        scanFilters.add(scanFilter);
+        //scanFilters.add(scanFilter);
         scanSettings = new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build();
 
         scanHandler = new Handler(); //viene inizializzato l'handler
@@ -114,9 +114,9 @@ public class BluetoothHelper {
     /**
      * Metodo all'interno del quale viene richiesta l'attivazione del bluetooth
      */
-    public static void activateBluetooth () {
+    public static void activateBluetooth (AppCompatActivity c) {
         Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-        ((AppCompatActivity) activity.getBaseContext()).startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        c.startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
     }
 
     //thread che si occupa di far partire lo scan in cerca dei beacon
@@ -146,7 +146,7 @@ public class BluetoothHelper {
             Thread postDelayed = new Thread() {
                 public void run() {
                     try {
-                        Thread.sleep(1000L);
+                        Thread.sleep(500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -174,23 +174,28 @@ public class BluetoothHelper {
 
             Log.i(TAG,"numero: " + mLeDeviceListAdapter.getCount());
 
-            //trova il beacon più vicino
-            selectedBeacon = mLeDeviceListAdapter.selectedDevice();
+            if(mLeDeviceListAdapter.getCount() == 0)
+                terminatedScan = false;
+            else {
 
-            if(selectedBeacon != null){
-                if (currentBeacon == null || !currentBeacon.getAddress().equals(mLeDeviceListAdapter.getCurrentBeacon().getAddress())) {
-                    currentBeacon = mLeDeviceListAdapter.getCurrentBeacon();
-                }
-                //nel caso per n cicli non venga aggiornato
-                else {
-                    cont++;
-                    if(cont>=maxNoUpdate) {
-                        currentBeacon = selectedBeacon;
-                        cont = 0;
+                //trova il beacon più vicino
+                selectedBeacon = mLeDeviceListAdapter.selectedDevice();
+
+                if (selectedBeacon != null) {
+                    if (currentBeacon == null || !currentBeacon.getAddress().equals(mLeDeviceListAdapter.getCurrentBeacon().getAddress())) {
+                        currentBeacon = mLeDeviceListAdapter.getCurrentBeacon();
+                    }
+                    //nel caso per n cicli non venga aggiornato
+                    else {
+                        cont++;
+                        if (cont >= maxNoUpdate) {
+                            currentBeacon = selectedBeacon;
+                            cont = 0;
+                        }
                     }
                 }
+                terminatedScan = true;
             }
-            terminatedScan = true;
         }
     };
 
