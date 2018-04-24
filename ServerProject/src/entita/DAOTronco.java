@@ -8,14 +8,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DAOTronco {
-    public static final String ID = "ID";
-    public static final String X = "X";
-    public static final String Y = "Y";
-    public static final String XF = "XF";
-    public static final String YF = "YF";
-    public static final String LARGHEZZA = "LARGHEZZA";
-    public static final String PIANO = "PIANO";
-    public static final String TABLE_TRONCO = "TRONCO";
+    static final String ID = "ID";
+    static final String X = "X";
+    static final String Y = "Y";
+    static final String XF = "XF";
+    static final String YF = "YF";
+    static final String LARGHEZZA = "LARGHEZZA";
+    static final String PIANO = "PIANO";
+    static final String TABLE_TRONCO = "TRONCO";
 
     public static String selectAllTronchiByPiano(String piano) {
         Connection conn = DatabaseConnection.getConn();

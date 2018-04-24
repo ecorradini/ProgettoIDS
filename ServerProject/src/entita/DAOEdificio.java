@@ -9,9 +9,9 @@ import java.sql.Statement;
 
 public class DAOEdificio {
     //Nome della colonna "NOME"
-    public static final String NOME = "NOME";
+    static final String NOME = "NOME";
     //Nome della tabella "EDIFICIO"
-    public static final String TABLE_EDIFICIO = "EDIFICIO";
+    static final String TABLE_EDIFICIO = "EDIFICIO";
 
     public static String selectEdificioByBeacon(String idBeacon) {
         Connection conn = DatabaseConnection.getConn();

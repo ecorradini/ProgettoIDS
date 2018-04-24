@@ -108,6 +108,19 @@ public class JsonServer {
             }
         });
 
+        //Inserisci l'utente nella lista di utenti collegati al beacon
+        server.createContext("/sommautente", new com.sun.net.httpserver.HttpHandler() {
+
+            @Override
+            public void handle(com.sun.net.httpserver.HttpExchange arg0) throws IOException {
+                boolean res = DAOBeacon.sumUser(arg0.getRequestURI().getQuery());
+                arg0.sendResponseHeaders(200, (res ? "{OK}":"{ERROR}").length());
+                OutputStream os = arg0.getResponseBody();
+                os.write((res ? "{OK}":"{ERROR}").getBytes());
+                os.close();
+            }
+        });
+
         // connectionhendler server json server
 
 

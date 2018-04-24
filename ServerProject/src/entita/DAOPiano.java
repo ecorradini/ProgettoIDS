@@ -8,9 +8,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DAOPiano {
-    public static final String NOME = "NOME";
-    public static final String EDIFICIO = "EDIFICIO";
-    public static final String TABLE_PIANO = "PIANO";
+    static final String NOME = "NOME";
+    static final String EDIFICIO = "EDIFICIO";
+    static final String TABLE_PIANO = "PIANO";
 
     public static String selectPianoByBeacon(String idBeacon) {
         Connection conn = DatabaseConnection.getConn();
