@@ -1,23 +1,25 @@
 package connessioni;
 
 
+import java.io.Console;
 import java.io.IOException;
 import java.sql.SQLException;
 
 public class Server {
-    public static void main(String[] args) throws IOException{
+    public static String password;
+    public static void main(String[] args) throws IOException {
 
-        try {
-            System.out.println("Server Start");
-            DatabaseConnection.init();
 
-        } catch (ClassNotFoundException e) {
-            System.out.println("Eccezione Class not found");
-            e.printStackTrace();
-        } catch (SQLException e) {
-            System.out.println("Eccezione SQL");
-            e.printStackTrace();
+        System.out.println("Server Start");
+        //Chiedo la password del Server
+        Console console = System.console();
+        if (console == null) {
+            System.out.println("Istanza della console nulla");
+            System.exit(0);
         }
+        console.printf("%n");
+        char passwordArray[] = console.readPassword("Password del database: ");
+        password = new String(passwordArray);
 
         new JsonServer();
 

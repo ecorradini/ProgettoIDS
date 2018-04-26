@@ -1,6 +1,6 @@
 package entita;
 
-import connessioni.DatabaseConnection;
+import connessioni.Database;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -18,14 +18,13 @@ public class DAOTronco {
     static final String TABLE_TRONCO = "TRONCO";
 
     public static String selectAllTronchiByPiano(String piano) {
-        Connection conn = DatabaseConnection.getConn();
-        String json="{\""+piano+"\":[";
+        Database db = new Database();        String json="{\""+piano+"\":[";
 
         String query =  "SELECT "+LARGHEZZA+","+X+","+Y+","+XF+","+YF+
                 " FROM "+TABLE_TRONCO+ " WHERE "+PIANO+"=\'"+piano+"\'";
 
         try {
-            Statement stm = conn.createStatement();
+            Statement stm = db.connetti();
             ResultSet rs = stm.executeQuery(query);
 
             while(rs.next()) {
@@ -34,6 +33,7 @@ public class DAOTronco {
 
             rs.close();
             stm.close();
+            db.chiudiConnessione();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

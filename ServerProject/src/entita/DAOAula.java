@@ -1,6 +1,6 @@
 package entita;
 
-import connessioni.DatabaseConnection;
+import connessioni.Database;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -15,14 +15,14 @@ public class DAOAula {
     static final String TABLE_AULA = "AULA";
 
     public static String selectAllAuleByPiano(String piano) {
-        Connection conn = DatabaseConnection.getConn();
+        Database db = new Database();
         String json="{\""+piano+"\":[";
 
         String query =  "SELECT "+NOME+","+X+","+Y+
                 " FROM "+TABLE_AULA+ " WHERE "+PIANO+"=\'"+piano+"\'";
 
         try {
-            Statement stm = conn.createStatement();
+            Statement stm = db.connetti();
             ResultSet rs = stm.executeQuery(query);
 
             while(rs.next()) {
@@ -31,6 +31,7 @@ public class DAOAula {
 
             rs.close();
             stm.close();
+            db.chiudiConnessione();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

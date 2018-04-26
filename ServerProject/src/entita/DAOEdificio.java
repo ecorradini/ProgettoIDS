@@ -1,7 +1,6 @@
 package entita;
 
-import connessioni.DatabaseConnection;
-
+import connessioni.Database;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,7 +13,7 @@ public class DAOEdificio {
     static final String TABLE_EDIFICIO = "EDIFICIO";
 
     public static String selectEdificioByBeacon(String idBeacon) {
-        Connection conn = DatabaseConnection.getConn();
+        Database db = new Database();
         String nomeEdificio = "";
 
         String query = "SELECT "+TABLE_EDIFICIO+"."+NOME+" AS NOME_EDIFICIO"+
@@ -24,7 +23,7 @@ public class DAOEdificio {
                 DAOPiano.TABLE_PIANO+"."+DAOPiano.EDIFICIO+"="+TABLE_EDIFICIO+"."+NOME+" AND "+
                 DAOBeacon.TABLE_BEACON+"."+DAOBeacon.ID+"=\'"+idBeacon+"\'";
         try {
-            Statement stm = conn.createStatement();
+            Statement stm = db.connetti();
             ResultSet rs = stm.executeQuery(query);
 
             while(rs.next()) {
@@ -33,6 +32,7 @@ public class DAOEdificio {
 
             rs.close();
             stm.close();
+            db.chiudiConnessione();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

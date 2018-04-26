@@ -1,7 +1,6 @@
 package entita;
 
-import connessioni.DatabaseConnection;
-
+import connessioni.Database;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,14 +15,14 @@ public class DAOBeacon {
     static final String TABLE_BEACON = "BEACON";
 
     public static String selectPosizioneById(String idBeacon) {
-        Connection conn = DatabaseConnection.getConn();
+        Database db = new Database();
         String xPos = "", yPos = "";
 
         String query =  "SELECT "+X+","+Y+
                 " FROM "+TABLE_BEACON+" WHERE "+TABLE_BEACON+"."+ID+"=\'"+idBeacon+"\'";
 
         try {
-            Statement stm = conn.createStatement();
+            Statement stm = db.connetti();
             ResultSet rs = stm.executeQuery(query);
 
             while(rs.next()) {
@@ -33,6 +32,7 @@ public class DAOBeacon {
 
             rs.close();
             stm.close();
+            db.chiudiConnessione();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -45,7 +45,7 @@ public class DAOBeacon {
     }
 
     public static String selectAllBeaconsByTronco(String tronco) {
-        Connection conn = DatabaseConnection.getConn();
+        Database db = new Database();
         String json="{\""+tronco+"\":[";
 
         String query =  "SELECT "+ID+","+X+","+Y+
@@ -53,7 +53,7 @@ public class DAOBeacon {
                 " WHERE "+TRONCO+"=\'"+tronco+"\'";
 
         try {
-            Statement stm = conn.createStatement();
+            Statement stm = db.connetti();
             ResultSet rs = stm.executeQuery(query);
 
             while(rs.next()) {
@@ -62,6 +62,7 @@ public class DAOBeacon {
 
             rs.close();
             stm.close();
+            db.chiudiConnessione();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -80,14 +81,15 @@ public class DAOBeacon {
     }
 
     public static boolean sumUser(String beaconID) {
-        Connection conn = DatabaseConnection.getConn();
+        Database db = new Database();
         String query = "UPDATE "+TABLE_BEACON+" SET "+UTENTI+" = (SELECT "+UTENTI+" FROM"+ TABLE_BEACON+" WHERE "+ID+" =\'"+beaconID+"\')+1 WHERE "+ID+" = \'"+beaconID+"\'";
 
         try {
-            Statement stm = conn.createStatement();
+            Statement stm = db.connetti();
             stm.executeUpdate(query);
 
             stm.close();
+            db.chiudiConnessione();
 
             return true;
 

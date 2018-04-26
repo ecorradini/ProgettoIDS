@@ -1,7 +1,6 @@
 package entita;
 
-import connessioni.DatabaseConnection;
-
+import connessioni.Database;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,8 +12,7 @@ public class DAOPiano {
     static final String TABLE_PIANO = "PIANO";
 
     public static String selectPianoByBeacon(String idBeacon) {
-        Connection conn = DatabaseConnection.getConn();
-        String nomePiano = "";
+        Database db = new Database();        String nomePiano = "";
 
         String query =  "SELECT "+TABLE_PIANO+"."+NOME+" AS NOME_PIANO"+
                 " FROM "+DAOBeacon.TABLE_BEACON+","+DAOTronco.TABLE_TRONCO+","+TABLE_PIANO+","+DAOEdificio.TABLE_EDIFICIO+
@@ -24,7 +22,7 @@ public class DAOPiano {
                 "."+EDIFICIO+" = "+DAOEdificio.TABLE_EDIFICIO+"."+DAOEdificio.NOME;
 
         try {
-            Statement stm = conn.createStatement();
+            Statement stm = db.connetti();
             ResultSet rs = stm.executeQuery(query);
 
             while(rs.next()) {
@@ -33,6 +31,7 @@ public class DAOPiano {
 
             rs.close();
             stm.close();
+            db.chiudiConnessione();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -46,13 +45,14 @@ public class DAOPiano {
     }
 
     public static String selectAllPianiByEdificio(String edificio) {
-        Connection conn = DatabaseConnection.getConn();
+        Database db = new Database();
+
         String json="{\""+edificio+"\":[";
 
         String query =  "SELECT "+NOME+ " FROM "+TABLE_PIANO+ " WHERE "+DAOEdificio.TABLE_EDIFICIO+"=\'"+edificio+"\'";
 
         try {
-            Statement stm = conn.createStatement();
+            Statement stm = db.connetti();
             ResultSet rs = stm.executeQuery(query);
 
             while(rs.next()) {
@@ -61,6 +61,7 @@ public class DAOPiano {
 
             rs.close();
             stm.close();
+            db.chiudiConnessione();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

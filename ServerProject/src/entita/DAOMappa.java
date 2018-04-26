@@ -1,7 +1,6 @@
 package entita;
 
-import connessioni.DatabaseConnection;
-
+import connessioni.Database;
 import javax.management.ImmutableDescriptor;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -14,15 +13,14 @@ public class DAOMappa {
     static final String TABLE_MAPPA = "MAPPA";
 
     public static String selectMappaByPiano(String piano) {
-        Connection conn = DatabaseConnection.getConn();
-        String immagineBase64 = "";
+        Database db = new Database();        String immagineBase64 = "";
 
         String query =  "SELECT "+ IMMAGINE+
                 " FROM "+TABLE_MAPPA+
                 " WHERE "+PIANO+"=\'"+piano+"\'";
 
         try {
-            Statement stm = conn.createStatement();
+            Statement stm = db.connetti();
             ResultSet rs = stm.executeQuery(query);
 
             while(rs.next()) {
@@ -31,7 +29,7 @@ public class DAOMappa {
 
             rs.close();
             stm.close();
-            DatabaseConnection.getConn().commit();
+            db.chiudiConnessione();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
