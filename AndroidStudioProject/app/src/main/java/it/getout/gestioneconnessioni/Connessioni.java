@@ -60,7 +60,7 @@ public class Connessioni {
                             btHelper.discoverBLEDevices();
                             Thread.sleep(1500);
 
-                        }while(!btHelper.getTerminatedscan());
+                        }while(!btHelper.getTerminatedScan());
                         device = btHelper.getCurrentBeacon();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -81,16 +81,16 @@ public class Connessioni {
     /**
      *Metodo che si adopera ad effettuare lo scan dei dispositivi bluetooth
      */
-    private static BluetoothDevice scansionaBluetooth(){
+  /*  private static BluetoothDevice scansionaBluetooth(){
         btHelper.discoverBLEDevices();
         do {
             device = btHelper.getCurrentBeacon();
-        } while(!btHelper.getTerminatedscan());
+        } while(!btHelper.getTerminatedScan());
 
 
         return device;
     }
-
+*/
 
     public static DBHelper getDbReference() { return dbReference; }             ///
 

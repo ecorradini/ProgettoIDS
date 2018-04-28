@@ -49,7 +49,7 @@ public class BluetoothHelper {
     private UUID[] uuids;
     //handler utilizzato per lanciare le varie Runnable (start,stop,wait)
     private Handler scanHandler;
-    private static IntentFilter intentFilter;
+    //private static IntentFilter intentFilter;
     //elementi necessari per efettuare lo scan
     private ScanFilter scanFilter;
     private ScanSettings scanSettings;
@@ -78,7 +78,7 @@ public class BluetoothHelper {
         //inizializzati gli elementi per lo scan
         scanFilter = new ScanFilter.Builder().setServiceUuid(new ParcelUuid(UUID.fromString(beaconUUID))).build();
         scanFilters = new ArrayList<>();
-        //scanFilters.add(scanFilter);
+        scanFilters.add(scanFilter);
         scanSettings = new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build();
 
         scanHandler = new Handler(); //viene inizializzato l'handler
@@ -226,5 +226,5 @@ public class BluetoothHelper {
         }
     };
 
-    public boolean getTerminatedscan(){ return terminatedScan; }
+    public boolean getTerminatedScan(){ return terminatedScan; }
 }
