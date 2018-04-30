@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final int PERMESSO_LOCATION = 1;
 
-    MappaFragment mappaFragment;
+    private MappaFragment mappaFragment;
     private CardView loading;
 
     @Override
