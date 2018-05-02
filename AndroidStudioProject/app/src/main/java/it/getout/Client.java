@@ -2,18 +2,25 @@ package it.getout;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.widget.Toast;
 
+import it.getout.fragments.FragmentEmergenza;
 import it.getout.gestioneconnessioni.Connessioni;
 import it.getout.gestionevisualizzazionemappa.MappaFragment;
 
@@ -52,6 +59,19 @@ public class Client extends AppCompatActivity {
         MenuItem item = menu.findItem(R.id.switch_button);
         item.setActionView(R.layout.switch_layout);
         return true;
+    }
+
+    public void inizializzaFragment() {
+        Window window = getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(ContextCompat.getColor(this,R.color.colorPrimaryDarkEmergenza));
+
+        ActionBar bar = getSupportActionBar();
+        bar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryEmergenza)));
+
+        FragmentEmergenza emergenza = FragmentEmergenza.newInstance();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_main,emergenza).commit();
     }
 
     @Override

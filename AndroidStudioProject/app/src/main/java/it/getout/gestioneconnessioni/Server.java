@@ -44,8 +44,8 @@ public class Server
 {
 
     //private static final String BASE_URL = "http://192.168.0.112:9600";
-    private static final String BASE_URL = "http://192.168.1.184:9600";
-    //private static final String BASE_URL = "http://172.23.134.169:9600";
+    //private static final String BASE_URL = "http://192.168.1.184:9600";
+    private static final String BASE_URL = "http://172.23.134.169:9600";
     private static final String SERV_PERCORSO = "/percorso";            //URL percorso
     private static final String SERV_PIANIEDI = "/pianiedificio?";      //URL piano da edificio
     private static final String SERV_EDIFICIO = "/edificioattuale?";    //URL edificio da idbeacon
@@ -275,6 +275,7 @@ public class Server
                         edificio = new Edificio(nomeEdificio);
                         downloaded = true;
                         ((Client)context).stopLoading();
+                        ((Client)context).inizializzaFragment();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
