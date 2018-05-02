@@ -1,6 +1,5 @@
 package it.getout.gestioneposizione;
 
-import android.graphics.Point;
 import android.graphics.PointF;
 
 import java.util.HashMap;
@@ -26,7 +25,7 @@ public class Tronco {
     }
 
     private void downloadBeacons() {
-        if(!PosizioneUtente.checkInternet()) {
+        if(!Posizione.checkInternet()) {
             beacons = Connessioni.getDbReference().initBeacons(this);
         }
         else {

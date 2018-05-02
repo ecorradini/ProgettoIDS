@@ -1,11 +1,9 @@
 package it.getout.gestioneposizione;
 
-import android.graphics.Point;
 import android.graphics.PointF;
 import java.util.ArrayList;
 
 import it.getout.gestioneconnessioni.Connessioni;
-import it.getout.gestioneconnessioni.ServerHelper;
 
 /**
  * Created by Alessandro on 01/02/2018.

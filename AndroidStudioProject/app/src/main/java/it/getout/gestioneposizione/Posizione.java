@@ -1,18 +1,11 @@
 package it.getout.gestioneposizione;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.graphics.PointF;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import java.util.Timer;
-
-import it.getout.MainActivity;
-import it.getout.gestioneconnessioni.BluetoothHelper;
 import it.getout.gestioneconnessioni.Connessioni;
 
 
@@ -20,7 +13,7 @@ import it.getout.gestioneconnessioni.Connessioni;
  * Created on 01/02/2018.
  */
 
-public class PosizioneUtente {
+public class Posizione {
 
     private static PointF posizione; //Coordinate dell'utente
     private static Edificio edificioAttuale; //Istanza dell'edificio in cui si trova l'utente

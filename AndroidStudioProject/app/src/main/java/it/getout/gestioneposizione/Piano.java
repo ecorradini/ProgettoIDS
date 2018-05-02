@@ -21,7 +21,7 @@ public class Piano {
     }
 
     private void downloadAule() {
-        if(!PosizioneUtente.checkInternet()) {
+        if(!Posizione.checkInternet()) {
             aule = Connessioni.getDbReference().initAule(nome);
         }
         else {
@@ -30,7 +30,7 @@ public class Piano {
     }
 
     private void downloadTronchi() {
-        if(!PosizioneUtente.checkInternet()) {
+        if(!Posizione.checkInternet()) {
             tronchi = Connessioni.getDbReference().initTronchi(nome);
         }
         else {

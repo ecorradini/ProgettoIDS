@@ -8,4 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="EmergenzaTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimaryEmergenza</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkEmergenza</item>
+        <item name="colorAccent">@color/colorAccentEmergenza</item>
+    </style>
+
 </resources>

@@ -1,34 +1,30 @@
 package it.getout;
 
 import android.Manifest;
-import android.annotation.TargetApi;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import it.getout.fragments.FragmentEmergenza;
 import it.getout.gestioneconnessioni.Connessioni;
-import it.getout.gestioneconnessioni.DBHelper;
-import it.getout.gestioneconnessioni.ServerHelper;
-import it.getout.gestioneposizione.PosizioneUtente;
 import it.getout.gestionevisualizzazionemappa.MappaFragment;
-import android.Manifest;
 
-public class MainActivity extends AppCompatActivity {
+public class Client extends AppCompatActivity {
 
     private final int PERMESSO_LOCATION = 1;
 
@@ -39,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         loading = findViewById(R.id.cv_loading);
 
@@ -56,6 +53,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.mainmenu, menu);
+        MenuItem item = menu.findItem(R.id.switch_button);
+        item.setActionView(R.layout.switch_layout);
+        return true;
+    }
+
+    public void inizializzaFragment() {
+        Window window = getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(ContextCompat.getColor(this,R.color.colorPrimaryDarkEmergenza));
+
+        ActionBar bar = getSupportActionBar();
+        bar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryEmergenza)));
+
+        FragmentEmergenza emergenza = FragmentEmergenza.newInstance();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_main,emergenza).commit();
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case PERMESSO_LOCATION: {
@@ -63,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                     Connessioni.init(this);
                 }
                 else {
-                    Toast.makeText(MainActivity.this, "Permessi negati. L'app ha bisogno del permesso, altrimenti morirai al prossimo incendio!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Client.this, "Permessi negati. L'app ha bisogno del permesso, altrimenti morirai al prossimo incendio!", Toast.LENGTH_SHORT).show();
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMESSO_LOCATION);
                 }
                 break;

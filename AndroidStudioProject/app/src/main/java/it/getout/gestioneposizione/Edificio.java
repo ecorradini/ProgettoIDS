@@ -2,7 +2,6 @@ package it.getout.gestioneposizione;
 import java.util.ArrayList;
 
 import it.getout.gestioneconnessioni.Connessioni;
-import it.getout.gestioneposizione.Piano;
 
 /**
  * Created by Alessandro on 01/02/2018.
@@ -18,7 +17,7 @@ public class Edificio {
     }
 
     private void downloadPiani() {
-        if(!PosizioneUtente.checkInternet()) {
+        if(!Posizione.checkInternet()) {
             piani = Connessioni.getDbReference().initPiani(nome);
         }
         else {
