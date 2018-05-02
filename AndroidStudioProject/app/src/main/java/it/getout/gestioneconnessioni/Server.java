@@ -135,7 +135,6 @@ public class Server
                             }
 
                             Posizione.getPercorso().setTronchi(percorsoRisultato);
-                            ((Client)context).getMappaFragment().disegnaPercorso();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -551,7 +550,8 @@ public class Server
                                 JSONObject current = array.getJSONObject(i).getJSONObject("AULA");
 
                                 String nomeAula = current.getString("NOME");
-                                PointF entrata = new PointF(Float.parseFloat(current.getString("X")), Float.parseFloat(current.getString("Y")));
+
+                                String entrata = current.getString("ENTRATA");
 
                                 Log.d("AULA " + piano.toString(), nomeAula);
 

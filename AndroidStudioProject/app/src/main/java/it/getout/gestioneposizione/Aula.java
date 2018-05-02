@@ -10,10 +10,10 @@ import android.graphics.PointF;
 public class Aula {
 
     private String nome;
-    private PointF entrata;
+    private String entrata;
     private Piano piano;
 
-    public Aula (String nome, PointF entrata, Piano piano){
+    public Aula (String nome, String entrata, Piano piano){
         this.nome = nome;
         this.entrata = entrata;
         this.piano = piano;
@@ -25,9 +25,11 @@ public class Aula {
         return this.nome;
     }
 
-    public PointF getEntrata(){
+    public String getEntrata(){
         return this.entrata;
     }
+
+    public boolean isEntrata(Beacon b) { return b.equals(entrata); }
 
     public Piano getPiano(){
         return this.piano;

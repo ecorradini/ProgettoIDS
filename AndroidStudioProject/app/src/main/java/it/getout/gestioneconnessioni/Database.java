@@ -47,6 +47,7 @@ public class Database extends SQLiteOpenHelper {
     private final String COL_LARGHEZZA="LARGHEZZA";
     private final String COL_IMMAGINE="IMMAGINE";
     private final String COL_TRONCO="TRONCO";
+    private final String COL_ENTRATA="ENTRATA";
 
 
     public Database(Context context) {
@@ -204,7 +205,7 @@ public class Database extends SQLiteOpenHelper {
         res.moveToFirst();
         while(res.moveToNext()) {
             listaAule.add(new Aula(res.getString(res.getColumnIndex(COL_NOME)),
-                    new PointF(res.getFloat(res.getColumnIndex(COL_X)),res.getFloat(res.getColumnIndex(COL_Y))),attuale));
+                    res.getString(res.getColumnIndex(COL_ENTRATA)),attuale));
         }
         res.close();
         db.close();

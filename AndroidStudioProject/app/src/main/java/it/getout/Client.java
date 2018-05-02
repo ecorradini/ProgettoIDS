@@ -28,7 +28,6 @@ public class Client extends AppCompatActivity {
 
     private final int PERMESSO_LOCATION = 1;
 
-    private MappaFragment mappaFragment;
     private CardView loading;
 
     @Override
@@ -89,8 +88,6 @@ public class Client extends AppCompatActivity {
             }
         }
     }
-
-    public MappaFragment getMappaFragment() { return mappaFragment; }
 
     public void startLoading() {
         new Thread(){
