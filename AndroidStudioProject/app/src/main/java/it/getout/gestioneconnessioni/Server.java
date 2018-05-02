@@ -205,6 +205,7 @@ public class Server
                                 Log.d("PIANO " + edificio.toString(), nomePiano);
                                 piani.add(new Piano(nomePiano));
                             }
+                            richiediPianobyBeacon(Posizione.getBeaconAttuale().getId());
                         }
                         downloaded = true;
                     } catch (JSONException e) {
