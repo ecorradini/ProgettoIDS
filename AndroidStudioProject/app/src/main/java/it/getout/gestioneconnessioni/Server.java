@@ -2,7 +2,6 @@ package it.getout.gestioneconnessioni;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Point;
 import android.graphics.PointF;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -23,22 +22,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
-import it.getout.MainActivity;
+import it.getout.Client;
 import it.getout.gestioneposizione.Aula;
 import it.getout.gestioneposizione.Beacon;
 import it.getout.gestioneposizione.Edificio;
 import it.getout.gestioneposizione.Piano;
-import it.getout.gestioneposizione.PosizioneUtente;
+import it.getout.gestioneposizione.Posizione;
 import it.getout.gestioneposizione.Tronco;
 import it.getout.gestionevisualizzazionemappa.Mappa;
 
@@ -46,7 +40,8 @@ import it.getout.gestionevisualizzazionemappa.Mappa;
  * Created by Alessandro on 01/02/2018.
  */
 
-public class ServerHelper {
+public class Server
+{
 
     //private static final String BASE_URL = "http://192.168.0.112:9600";
     private static final String BASE_URL = "http://192.168.1.184:9600";
@@ -65,7 +60,7 @@ public class ServerHelper {
 
     private Context context;
 
-    public ServerHelper(Context c) {
+    public Server(Context c) {
         context = c;
     }
 
@@ -131,16 +126,16 @@ public class ServerHelper {
                                     Float.parseFloat(current.getString("YF"))
                             );
 
-                            for(int i=0; i < PosizioneUtente.getPianoAttuale().getTronchi().size(); i++) {
-                                Tronco attuale = PosizioneUtente.getPianoAttuale().getTronco(i);
+                            for(int i = 0; i < Posizione.getPianoAttuale().getTronchi().size(); i++) {
+                                Tronco attuale = Posizione.getPianoAttuale().getTronco(i);
                                 if (attuale.equals(inizio,fine)) {
                                     percorsoRisultato.add(attuale);
                                     break;
                                 }
                             }
 
-                            PosizioneUtente.getPercorso().setTronchi(percorsoRisultato);
-                            ((MainActivity)context).getMappaFragment().disegnaPercorso();
+                            Posizione.getPercorso().setTronchi(percorsoRisultato);
+                            ((Client)context).getMappaFragment().disegnaPercorso();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -155,12 +150,12 @@ public class ServerHelper {
                 @Override
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<String, String>();
-                    params.put("XI", String.valueOf(PosizioneUtente.getPosizione().x));
-                    params.put("YI", String.valueOf(PosizioneUtente.getPosizione().y));
+                    params.put("XI", String.valueOf(Posizione.getPosizione().x));
+                    params.put("YI", String.valueOf(Posizione.getPosizione().y));
                     params.put("XF",String.valueOf(puntoDestinazione.x));
                     params.put("YF",String.valueOf(puntoDestinazione.y));
-                    params.put("EDIFICIO",PosizioneUtente.getEdificioAttuale().toString());
-                    params.put("PIANO",PosizioneUtente.getPianoAttuale().toString());
+                    params.put("EDIFICIO", Posizione.getEdificioAttuale().toString());
+                    params.put("PIANO", Posizione.getPianoAttuale().toString());
 
                     return params;
                 }
@@ -279,7 +274,7 @@ public class ServerHelper {
                         String nomeEdificio = response.getString("EDIFICIO_ATTUALE");
                         edificio = new Edificio(nomeEdificio);
                         downloaded = true;
-                        ((MainActivity)context).stopLoading();
+                        ((Client)context).stopLoading();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -312,7 +307,7 @@ public class ServerHelper {
         @Override
         protected void onPostExecute(Edificio edificio) {
             Log.d("EDIFICIO",edificio.toString());
-            PosizioneUtente.setEdificioAttuale(edificio);
+            Posizione.setEdificioAttuale(edificio);
         }
     }
 
@@ -420,8 +415,8 @@ public class ServerHelper {
                     try {
                         String nomePiano = response.getString("PIANO_ATTUALE");
 
-                        for(int i=0; i<PosizioneUtente.getEdificioAttuale().getPiani().size(); i++) {
-                            if(nomePiano.equals(PosizioneUtente.getEdificioAttuale().getPiano(i).toString())) piano = PosizioneUtente.getEdificioAttuale().getPiano(i);
+                        for(int i = 0; i< Posizione.getEdificioAttuale().getPiani().size(); i++) {
+                            if(nomePiano.equals(Posizione.getEdificioAttuale().getPiano(i).toString())) piano = Posizione.getEdificioAttuale().getPiano(i);
                         }
 
                         downloaded = true;
@@ -459,7 +454,7 @@ public class ServerHelper {
         @Override
         protected void onPostExecute(Piano p) {
             Log.d("PIANO_ATTUALE",p.toString());
-            PosizioneUtente.setPianoAttuale(p);
+            Posizione.setPianoAttuale(p);
         }
     }
 
@@ -494,7 +489,7 @@ public class ServerHelper {
                         JSONObject current = array.getJSONObject(0);
                         posizione = new PointF(Float.parseFloat(current.getString("X")),Float.parseFloat(current.getString("Y")));
 
-                        PosizioneUtente.setPosizione(posizione);
+                        Posizione.setPosizione(posizione);
 
                     } catch (JSONException e) {
                         e.printStackTrace();

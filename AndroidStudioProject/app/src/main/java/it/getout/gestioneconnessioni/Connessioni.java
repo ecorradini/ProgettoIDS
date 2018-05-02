@@ -8,15 +8,15 @@ import android.util.Log;
 
 
 import it.getout.gestioneposizione.Beacon;
-import it.getout.gestioneposizione.PosizioneUtente;
+import it.getout.gestioneposizione.Posizione;
 
 /**
  * Created by Edoardo on 15/03/2018.
  */
 
 public class Connessioni {
-    private static DBHelper dbReference;
-    private static ServerHelper serverReference;
+    private static Database dbReference;
+    private static Server serverReference;
     //Istanza dell'Adapter Bluetooth
     private static BluetoothAdapter btAdapter;
     //scanner per ricercare i dispositivi beacon
@@ -28,8 +28,8 @@ public class Connessioni {
 
     public static void init(Context c) {
         context=c;
-        dbReference = new DBHelper(c);
-        serverReference = new ServerHelper(c);
+        dbReference = new Database(c);
+        serverReference = new Server(c);
         initBluetooth(c);
 
     }
@@ -66,8 +66,8 @@ public class Connessioni {
                         e.printStackTrace();
                     } finally {
                         Log.e("Mi sono connesso",device.getAddress());
-                        PosizioneUtente.setBeaconAttuale(new Beacon(device.getAddress()));
-                        PosizioneUtente.init(context);
+                        Posizione.setBeaconAttuale(new Beacon(device.getAddress()));
+                        Posizione.init(context);
 
                     }
                 }
@@ -92,8 +92,8 @@ public class Connessioni {
     }
 */
 
-    public static DBHelper getDbReference() { return dbReference; }             ///
+    public static Database getDbReference() { return dbReference; }             ///
 
-    public static ServerHelper getServerReference() { return serverReference; }   ///
+    public static Server getServerReference() { return serverReference; }   ///
 
 }

@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 
 import it.getout.R;
-import it.getout.gestioneposizione.PosizioneUtente;
+import it.getout.gestioneposizione.Posizione;
 import it.getout.gestioneposizione.Tronco;
 
 /**
@@ -51,7 +51,7 @@ public class MappaFragment extends Fragment {
     }
 
     public void disegnaPercorso() {
-        ArrayList<Tronco> percorso = PosizioneUtente.getPercorso().getTronchi();
+        ArrayList<Tronco> percorso = Posizione.getPercorso().getTronchi();
         //Instanzio un Bitmap temporaneo delle dimensioni dell'ImageView che lo conterrà
         Bitmap tempMappa = Bitmap.createBitmap(immMappa.getMeasuredWidth(),immMappa.getMeasuredHeight(), Bitmap.Config.RGB_565);
         Canvas tempCanvas = new Canvas(tempMappa);
@@ -110,8 +110,8 @@ public class MappaFragment extends Fragment {
         paint.setColor(Color.BLUE);
 
         //Definisco le coordinate del punto
-        float x = PosizioneUtente.getPosizione().x;
-        float y = PosizioneUtente.getPosizione().y;
+        float x = Posizione.getPosizione().x;
+        float y = Posizione.getPosizione().y;
 
         //Disegno il punto
         tempCanvas.drawPoint(x,y,paint);

@@ -1,34 +1,21 @@
 package it.getout;
 
 import android.Manifest;
-import android.annotation.TargetApi;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import it.getout.gestioneconnessioni.Connessioni;
-import it.getout.gestioneconnessioni.DBHelper;
-import it.getout.gestioneconnessioni.ServerHelper;
-import it.getout.gestioneposizione.PosizioneUtente;
 import it.getout.gestionevisualizzazionemappa.MappaFragment;
-import android.Manifest;
 
-public class MainActivity extends AppCompatActivity {
+public class Client extends AppCompatActivity {
 
     private final int PERMESSO_LOCATION = 1;
 
@@ -63,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                     Connessioni.init(this);
                 }
                 else {
-                    Toast.makeText(MainActivity.this, "Permessi negati. L'app ha bisogno del permesso, altrimenti morirai al prossimo incendio!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Client.this, "Permessi negati. L'app ha bisogno del permesso, altrimenti morirai al prossimo incendio!", Toast.LENGTH_SHORT).show();
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMESSO_LOCATION);
                 }
                 break;

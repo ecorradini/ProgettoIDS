@@ -6,7 +6,6 @@ import android.util.Base64;
 
 import it.getout.gestioneconnessioni.Connessioni;
 import it.getout.gestioneposizione.Piano;
-import it.getout.gestioneposizione.PosizioneUtente;
 
 /**
  * Created on 01/02/2018.

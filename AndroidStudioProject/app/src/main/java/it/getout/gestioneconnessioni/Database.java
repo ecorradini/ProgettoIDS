@@ -4,27 +4,23 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Point;
 import android.graphics.PointF;
-import android.view.View;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import it.getout.MainActivity;
 import it.getout.gestioneposizione.Aula;
 import it.getout.gestioneposizione.Beacon;
 import it.getout.gestioneposizione.Edificio;
 import it.getout.gestioneposizione.Piano;
-import it.getout.gestioneposizione.PosizioneUtente;
+import it.getout.gestioneposizione.Posizione;
 import it.getout.gestioneposizione.Tronco;
-import it.getout.gestionevisualizzazionemappa.MappaFragment;
 
 /**
  * Created by Alessandro on 01/02/2018.
  */
 
-public class DBHelper extends SQLiteOpenHelper {
+public class Database extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION=3;
 
@@ -53,7 +49,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String COL_TRONCO="TRONCO";
 
 
-    public DBHelper(Context context) {
+    public Database(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -142,11 +138,11 @@ public class DBHelper extends SQLiteOpenHelper {
         Piano attuale = null;
         int index = 0;
         do {
-            if(PosizioneUtente.getEdificioAttuale().getPiani().get(index).toString().equals(nPiano)) {
-                attuale = PosizioneUtente.getEdificioAttuale().getPiani().get(index);
+            if(Posizione.getEdificioAttuale().getPiani().get(index).toString().equals(nPiano)) {
+                attuale = Posizione.getEdificioAttuale().getPiani().get(index);
             }
             index++;
-        } while(attuale==null && index < PosizioneUtente.getEdificioAttuale().getPiani().size());
+        } while(attuale==null && index < Posizione.getEdificioAttuale().getPiani().size());
 
 
         return attuale;
@@ -197,11 +193,11 @@ public class DBHelper extends SQLiteOpenHelper {
         Piano attuale = null;
         int index = 0;
         do {
-            if(PosizioneUtente.getEdificioAttuale().getPiani().get(index).toString().equals(nomePiano)) {
-                attuale = PosizioneUtente.getEdificioAttuale().getPiani().get(index);
+            if(Posizione.getEdificioAttuale().getPiani().get(index).toString().equals(nomePiano)) {
+                attuale = Posizione.getEdificioAttuale().getPiani().get(index);
             }
             index++;
-        } while(attuale==null && index < PosizioneUtente.getEdificioAttuale().getPiani().size());
+        } while(attuale==null && index < Posizione.getEdificioAttuale().getPiani().size());
 
         Cursor res = db.rawQuery(sql,null);
         ArrayList<Aula> listaAule = new ArrayList<>();
