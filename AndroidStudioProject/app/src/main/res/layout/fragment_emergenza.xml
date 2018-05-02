@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDarkEmergenza"
+    android:weightSum="3"
+    android:orientation="vertical"
+    android:padding="40dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:textColor="@android:color/white"
+        android:layout_gravity="center"
+        android:text="Modalità Emergenza"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        android:layout_weight="0.5"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2.5"
+        android:id="@+id/mappa_container"
+        android:layout_marginBottom="70dp"/>
+
+</LinearLayout>

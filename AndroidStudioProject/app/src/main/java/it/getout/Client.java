@@ -8,6 +8,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -27,6 +29,7 @@ public class Client extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         loading = findViewById(R.id.cv_loading);
 
         startLoading();
@@ -40,6 +43,15 @@ public class Client extends AppCompatActivity {
         else {
             Connessioni.init(this);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.mainmenu, menu);
+        MenuItem item = menu.findItem(R.id.switch_button);
+        item.setActionView(R.layout.switch_layout);
+        return true;
     }
 
     @Override
