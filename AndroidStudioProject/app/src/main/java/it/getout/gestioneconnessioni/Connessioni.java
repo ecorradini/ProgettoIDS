@@ -17,8 +17,6 @@ import it.getout.gestioneposizione.Posizione;
 public class Connessioni {
     private static Database dbReference;
     private static Server serverReference;
-    //Istanza dell'Adapter Bluetooth
-    private static BluetoothAdapter btAdapter;
     //scanner per ricercare i dispositivi beacon
     private static BluetoothHelper btHelper;
     //Istanza del descrittore dei dispositivi bluetooth
@@ -38,9 +36,8 @@ public class Connessioni {
      *Metodo che inizializza il bluetooth e tutte le sue fasi(scanner)
      */
     private static void initBluetooth(Context c) {
-        if (btAdapter == null) {
-            btAdapter = BluetoothAdapter.getDefaultAdapter();  // Local Bluetooth adapter
-        }
+
+        BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();  // Local Bluetooth adapter
 
         // Is Bluetooth turned on?
         if (!btAdapter.isEnabled()) {
@@ -49,48 +46,36 @@ public class Connessioni {
         }
 
         btHelper = new BluetoothHelper(btAdapter, (AppCompatActivity)c);
-        //device = scansionaBluetooth();
 
         try {
             Thread postDelayed = new Thread() {
                 public void run () {
+
+                    BluetoothDevice device = null;
+
                     try {
                         do {
-
                             btHelper.discoverBLEDevices();
                             Thread.sleep(1500);
-
                         }while(!btHelper.getTerminatedScan());
+
                         device = btHelper.getCurrentBeacon();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } finally {
+
                         Log.e("Mi sono connesso",device.getAddress());
                         Posizione.setBeaconAttuale(new Beacon(device.getAddress()));
                         Posizione.init(context);
 
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                 }
 
             };
             postDelayed.start();
         } catch(Exception e) {
-            Log.e("THREAD","VAFFANCULO");
+            e.printStackTrace();
         }
     }
-    /**
-     *Metodo che si adopera ad effettuare lo scan dei dispositivi bluetooth
-     */
-  /*  private static BluetoothDevice scansionaBluetooth(){
-        btHelper.discoverBLEDevices();
-        do {
-            device = btHelper.getCurrentBeacon();
-        } while(!btHelper.getTerminatedScan());
-
-
-        return device;
-    }
-*/
 
     public static Database getDbReference() { return dbReference; }             ///
 
