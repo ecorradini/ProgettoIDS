@@ -50,7 +50,7 @@ public class MappaFragment extends Fragment {
         return view;
     }
 
-    public void disegnaPercorso() {
+    /*public void disegnaPercorso() {
         ArrayList<Tronco> percorso = Posizione.getPercorso().getTronchi();
         //Instanzio un Bitmap temporaneo delle dimensioni dell'ImageView che lo conterrà
         Bitmap tempMappa = Bitmap.createBitmap(immMappa.getMeasuredWidth(),immMappa.getMeasuredHeight(), Bitmap.Config.RGB_565);
@@ -78,7 +78,7 @@ public class MappaFragment extends Fragment {
 
              */
 
-            //La coordinata left è la distanza del lato L dalla parte sinistra del canvas:
+         /*   //La coordinata left è la distanza del lato L dalla parte sinistra del canvas:
             //quindi è dato dalla cordinata X di inizio del tronco - metà della larghezza
             float left = percorso.get(i).getInizio().x - (percorso.get(i).getLarghezza()/2);
             //La coordinata right è la distanza del lato R dalla parte sinistra del canvas:
@@ -97,7 +97,7 @@ public class MappaFragment extends Fragment {
             immMappa.setImageDrawable(new BitmapDrawable(getResources(),tempMappa));
         }
 
-    }
+    }*/
 
     public void disegnaPosizione() {
         //Instanzio un Bitmap temporaneo delle dimensioni dell'ImageView che lo conterrà

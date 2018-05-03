@@ -19,7 +19,6 @@ public class Posizione {
     private static Edificio edificioAttuale; //Istanza dell'edificio in cui si trova l'utente
     private static Piano pianoAttuale; //Istanza del piano in cui si trova l'utente
     private static Beacon beaconAttuale; //Beacon al quale l'utente è collegato al momento
-    private static Percorso percorso; //Istanza dell'attuale percorso calcolato
 
 
     //Context
@@ -40,11 +39,12 @@ public class Posizione {
 
     public static void getInfoByBeaconID(String beaconAttuale) {
         if(!checkInternet()) {
-            edificioAttuale = Connessioni.getDbReference().initEdificioAttuale(beaconAttuale);
-            pianoAttuale = Connessioni.getDbReference().initPianoAttuale(beaconAttuale);
+            edificioAttuale = Connessioni.getDbReference().richiediEdificioAttuale(beaconAttuale);
+            pianoAttuale = Connessioni.getDbReference().richiediPianoAttuale(beaconAttuale);
         }
         else {
-            Connessioni.getServerReference().richiediEdificio(beaconAttuale);
+            edificioAttuale = Connessioni.getServerReference().richiediEdificioAttuale(beaconAttuale);
+            pianoAttuale = Connessioni.getServerReference().richiediPianoAttuale(beaconAttuale);
         }
     }
 
@@ -57,10 +57,6 @@ public class Posizione {
     }
 
     public static PointF getPosizione(){ return posizione; }
-
-    public static Percorso getPercorso(){
-        return percorso;
-    }
 
     public static Edificio getEdificioAttuale(){ return edificioAttuale; }
 

@@ -699,11 +699,12 @@ public class Server extends GestoreDati
                         for (int i=0; i < array.length(); i++){
                             JSONObject current = array.getJSONObject(i).getJSONObject("TRONCO");
 
+                            int id = current.getInt("ID");
                             PointF inizio = new PointF(Float.parseFloat(current.getString("X")),Float.parseFloat(current.getString("Y")));
                             PointF fine = new PointF(Float.parseFloat(current.getString("XF")),Float.parseFloat(current.getString("YF")));
                             float larghezza = Float.parseFloat(current.getString("LARGHEZZA"));
 
-                            tronchi.add(new Tronco(inizio, fine, larghezza));
+                            tronchi.add(new Tronco(id,inizio, fine, larghezza));
                         }
 
                         downloaded = true;

@@ -12,12 +12,14 @@ import it.getout.gestioneconnessioni.Connessioni;
 
 public class Tronco {
 
+    private int id;
     private PointF inizio;
     private PointF fine;
     private float larghezza;
     private HashMap<String,Beacon> beacons;
 
-    public Tronco(PointF inizio, PointF fine, float larghezza){
+    public Tronco(int id, PointF inizio, PointF fine, float larghezza){
+        this.id = id;
         this.inizio = inizio;
         this.fine = fine;
         this.larghezza = larghezza;
@@ -26,10 +28,10 @@ public class Tronco {
 
     private void downloadBeacons() {
         if(!Posizione.checkInternet()) {
-            beacons = Connessioni.getDbReference().initBeacons(this);
+            beacons = Connessioni.getDbReference().richiediBeaconTronco(id);
         }
         else {
-            Connessioni.getServerReference().richiediBeaconbyTronco(this);
+            Connessioni.getServerReference().richiediBeaconTronco(id);
         }
     }
 

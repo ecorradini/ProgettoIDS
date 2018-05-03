@@ -18,10 +18,10 @@ public class Edificio {
 
     private void downloadPiani() {
         if(!Posizione.checkInternet()) {
-            piani = Connessioni.getDbReference().initPiani(nome);
+            piani = Connessioni.getDbReference().richiediPianiEdificio(nome);
         }
         else {
-            Connessioni.getServerReference().richiediPianibyEdificio(this);
+            Connessioni.getServerReference().richiediPianiEdificio(nome);
         }
     }
 

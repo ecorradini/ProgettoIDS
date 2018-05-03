@@ -21,7 +21,7 @@ public class DAOTronco {
         Connection conn = DatabaseConnection.getConn();
         String json="{\""+piano+"\":[";
 
-        String query =  "SELECT "+LARGHEZZA+","+X+","+Y+","+XF+","+YF+
+        String query =  "SELECT "+ID+","+LARGHEZZA+","+X+","+Y+","+XF+","+YF+
                 " FROM "+TABLE_TRONCO+ " WHERE "+PIANO+"=\'"+piano+"\'";
 
         try {
@@ -29,7 +29,7 @@ public class DAOTronco {
             ResultSet rs = stm.executeQuery(query);
 
             while(rs.next()) {
-                json = json + "{\"TRONCO\":{\"X\":\""+rs.getFloat(X)+"\",\"Y\":\""+rs.getFloat(Y)+"\",\"XF\":\""+rs.getFloat(XF)+"\",\"YF\":\""+rs.getFloat(YF)+"\",\"LARGHEZZA\":\""+rs.getFloat(LARGHEZZA)+"\"}},";
+                json = json + "{\"TRONCO\":{\"ID\":\""+rs.getInt(ID)+"\",\"X\":\""+rs.getFloat(X)+"\",\"Y\":\""+rs.getFloat(Y)+"\",\"XF\":\""+rs.getFloat(XF)+"\",\"YF\":\""+rs.getFloat(YF)+"\",\"LARGHEZZA\":\""+rs.getFloat(LARGHEZZA)+"\"}},";
             }
 
             rs.close();

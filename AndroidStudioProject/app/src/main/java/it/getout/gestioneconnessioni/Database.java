@@ -130,7 +130,7 @@ public class Database extends GestoreDati {
     public ArrayList<Tronco> richiediTronchiPiano(String nomePiano) {
         SQLiteDatabase db = connessione.getReadableDatabase();
 
-        String sql = " SELECT "+DBStrings.COL_LARGHEZZA+","+DBStrings.COL_X+","+DBStrings.COL_Y+","+DBStrings.COL_XF+","+DBStrings.COL_YF+
+        String sql = " SELECT "+DBStrings.COL_ID+","+DBStrings.COL_LARGHEZZA+","+DBStrings.COL_X+","+DBStrings.COL_Y+","+DBStrings.COL_XF+","+DBStrings.COL_YF+
                 " FROM "+DBStrings.TABLE_TRONCO+ " WHERE "+DBStrings.COL_PIANO+"="+nomePiano;
 
         Cursor res = db.rawQuery(sql,null);
@@ -138,6 +138,7 @@ public class Database extends GestoreDati {
         res.moveToFirst();
         while(res.moveToNext()) {
             listaTronchi.add(new Tronco(
+                    res.getInt(res.getColumnIndex(DBStrings.COL_ID)),
                     new PointF(res.getFloat(res.getColumnIndex(DBStrings.COL_X)), res.getFloat(res.getColumnIndex(DBStrings.COL_Y))),
                     new PointF(res.getFloat(res.getColumnIndex(DBStrings.COL_XF)), res.getFloat(res.getColumnIndex(DBStrings.COL_YF))),
                     res.getFloat(res.getColumnIndex(DBStrings.COL_LARGHEZZA))));

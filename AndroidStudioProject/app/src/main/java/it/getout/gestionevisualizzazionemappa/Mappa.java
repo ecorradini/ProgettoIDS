@@ -33,7 +33,7 @@ public class Mappa {
     }
 
     private static String getMappaDB(Piano piano){
-        return Connessioni.getDbReference().queryMappa(piano);
+        return Connessioni.getDbReference().richiediMappaPiano(piano.toString());
     }
 
     public static Bitmap getMappa() {

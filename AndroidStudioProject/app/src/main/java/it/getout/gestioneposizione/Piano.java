@@ -22,19 +22,19 @@ public class Piano {
 
     private void downloadAule() {
         if(!Posizione.checkInternet()) {
-            aule = Connessioni.getDbReference().initAule(nome);
+            aule = Connessioni.getDbReference().richiediAulePiano(nome);
         }
         else {
-            Connessioni.getServerReference().richiediAulebyPiano(this);
+            Connessioni.getServerReference().richiediAulePiano(nome);
         }
     }
 
     private void downloadTronchi() {
         if(!Posizione.checkInternet()) {
-            tronchi = Connessioni.getDbReference().initTronchi(nome);
+            tronchi = Connessioni.getDbReference().richiediTronchiPiano(nome);
         }
         else {
-            Connessioni.getServerReference().richiediTronchibyPiano(this);
+            Connessioni.getServerReference().richiediTronchiPiano(nome);
         }
     }
 
