@@ -13,9 +13,9 @@ public abstract class GestoreDati {
 
     public abstract Edificio richiediEdificioAttuale(String beacon);
 
-    public abstract Piano richiediPianoAttuale(String edificio);
+    public abstract Piano richiediPianoAttuale(String beacon);
 
-    public abstract String richiediMappaPiano(Piano piano);
+    public abstract String richiediMappaPiano(String piano);
 
     public abstract HashMap<String,Beacon> richiediBeaconTronco(int idTronco);
 
