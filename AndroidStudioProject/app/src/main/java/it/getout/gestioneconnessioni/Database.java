@@ -20,7 +20,7 @@ import it.getout.gestioneposizione.Tronco;
  * Created by Alessandro on 01/02/2018.
  */
 
-public class Database {
+public class Database extends GestoreDati {
 
     private ConnessioneDatabase connessione;
 
@@ -28,7 +28,8 @@ public class Database {
         connessione = new ConnessioneDatabase(context);
     }
 
-    public Edificio initEdificioAttuale(String idBeacon) {   //tipo edificio ancora non è dato sapere
+    @Override
+    public Edificio richiediEdificioAttuale(String idBeacon) {   //tipo edificio ancora non è dato sapere
         SQLiteDatabase db = connessione.getReadableDatabase();
         String sql = "SELECT "+DBStrings.TABLE_EDIFICIO+"."+DBStrings.COL_NOME+" AS NOME_EDIFICIO"+
                 " FROM "+DBStrings.TABLE_EDIFICIO+","+DBStrings.TABLE_PIANO+","+DBStrings.TABLE_TRONCO+","+DBStrings.TABLE_BEACON+
@@ -44,8 +45,9 @@ public class Database {
         return new Edificio(nEdificio);
     }
 
-    //passatogli l'id del beacon mi restituisce il piano  COL_CAZZOOOOOOOOOO
-    public Piano initPianoAttuale(String idBeacon){
+    //passatogli l'id del beacon mi restituisce il piano
+    @Override
+    public Piano richiediPianoAttuale(String idBeacon){
         SQLiteDatabase db = connessione.getReadableDatabase();
 
         String sql = "SELECT "+DBStrings.TABLE_PIANO+"."+DBStrings.COL_NOME+" AS NOME_PIANO"+
@@ -74,23 +76,104 @@ public class Database {
         return attuale;
     }
 
-    //passandogli l'id del beacon mi restituisce le coordinate x e y
-    public PointF getPosizione(String idBeacon) {
+    //passandogli un edificio ed un piano mi deve restituire la stringa in base64 dell'immagine del piano
+    @Override
+    public String richiediMappaPiano(String pianoAttuale) {
+
         SQLiteDatabase db = connessione.getReadableDatabase();
 
-        String sql = "SELECT "+DBStrings.COL_X+","+DBStrings.COL_Y+
-                " FROM "+DBStrings.TABLE_BEACON+" WHERE "+DBStrings.TABLE_BEACON+"."+DBStrings.COL_ID+"="+idBeacon;
+        String sql = "SELECT "+DBStrings.COL_IMMAGINE+
+                " FROM "+DBStrings.TABLE_MAPPA+
+                " WHERE "+DBStrings.COL_PIANO+"="+pianoAttuale;
 
         Cursor res = db.rawQuery(sql,null);
         res.moveToFirst();
-        PointF pos = new PointF(res.getFloat(res.getColumnIndex(DBStrings.COL_X)),res.getFloat(res.getColumnIndex(DBStrings.COL_Y)));
+        String nImage = res.getString(res.getColumnIndex(DBStrings.COL_IMMAGINE));
         res.close();
         db.close();
-        return pos;
+
+        return nImage ;
+    }
+
+    //id_tronco string string dato un tronco voglio tutti i beacon del tronco
+    //non capisco Strng dentro hasmap visto che sarebbe la stessa stringa contenuta nell'oggetto Beacon
+    @Override
+    public HashMap<String,Beacon> richiediBeaconTronco(int troncoAttuale) {
+        SQLiteDatabase db = connessione.getReadableDatabase();
+
+        String sql = "SELECT "+DBStrings.TABLE_BEACON+"."+DBStrings.COL_ID+" AS ID_BEACON"+
+                ","+DBStrings.TABLE_BEACON+"."+DBStrings.COL_X+" AS X_BEACON"+
+                ","+DBStrings.TABLE_BEACON+"."+DBStrings.COL_Y+" AS Y_BEACON"+
+                " FROM "+DBStrings.TABLE_BEACON+
+                " WHERE "+DBStrings.TABLE_BEACON+"."+DBStrings.COL_TRONCO+"="+troncoAttuale;
+
+        Cursor res = db.rawQuery(sql,null);
+        res.moveToFirst();
+        HashMap<String, Beacon> listaBeacon = new HashMap<String, Beacon>();
+
+        //Beacon(String id, PointF posizione)
+        while(res.moveToNext()) {
+            listaBeacon.put(        //metodo put per riempire un'hashmap
+                    res.getString(res.getColumnIndex(DBStrings.COL_ID)),
+                    new Beacon(
+                            res.getString(res.getColumnIndex("ID_BEACON")),
+                            new PointF(res.getFloat(res.getColumnIndex("X_BEACON")), res.getFloat(res.getColumnIndex("Y_BEACON")))));
+        }
+        res.close();
+        db.close();
+
+        return listaBeacon;
+
+    }
+
+    @Override
+    public ArrayList<Tronco> richiediTronchiPiano(String nomePiano) {
+        SQLiteDatabase db = connessione.getReadableDatabase();
+
+        String sql = " SELECT "+DBStrings.COL_LARGHEZZA+","+DBStrings.COL_X+","+DBStrings.COL_Y+","+DBStrings.COL_XF+","+DBStrings.COL_YF+
+                " FROM "+DBStrings.TABLE_TRONCO+ " WHERE "+DBStrings.COL_PIANO+"="+nomePiano;
+
+        Cursor res = db.rawQuery(sql,null);
+        ArrayList<Tronco> listaTronchi = new ArrayList<>();
+        res.moveToFirst();
+        while(res.moveToNext()) {
+            listaTronchi.add(new Tronco(
+                    new PointF(res.getFloat(res.getColumnIndex(DBStrings.COL_X)), res.getFloat(res.getColumnIndex(DBStrings.COL_Y))),
+                    new PointF(res.getFloat(res.getColumnIndex(DBStrings.COL_XF)), res.getFloat(res.getColumnIndex(DBStrings.COL_YF))),
+                    res.getFloat(res.getColumnIndex(DBStrings.COL_LARGHEZZA))));
+        }
+        res.close();
+        db.close();
+
+        return listaTronchi;
+
+    }
+
+
+    // dato un nome del piano restituisce tutte le sue aule
+    @Override
+    public ArrayList<Aula> richiediAulePiano(String nomePiano) {
+        SQLiteDatabase db = connessione.getReadableDatabase();
+
+        String sql = " SELECT "+DBStrings.COL_NOME+","+DBStrings.COL_X+","+DBStrings.COL_Y+
+                " FROM "+DBStrings.TABLE_AULA+ " WHERE "+DBStrings.COL_PIANO+"="+nomePiano;
+
+        Cursor res = db.rawQuery(sql,null);
+        ArrayList<Aula> listaAule = new ArrayList<>();
+        res.moveToFirst();
+        while(res.moveToNext()) {
+            listaAule.add(new Aula(res.getString(res.getColumnIndex(DBStrings.COL_NOME)),
+                    res.getString(res.getColumnIndex(DBStrings.COL_ENTRATA))));
+        }
+        res.close();
+        db.close();
+
+        return listaAule;
     }
 
     // dato un nome dell'edificio restituisce la lista dei suoi piani
-    public ArrayList<Piano> initPiani(String nomeEdificio) {
+    @Override
+    public ArrayList<Piano> richiediPianiEdificio(String nomeEdificio) {
         SQLiteDatabase db = connessione.getReadableDatabase();
 
         String sql = " SELECT "+DBStrings.COL_NOME+ " FROM "+DBStrings.TABLE_PIANO+ " WHERE "+DBStrings.COL_EDIFICIO+"="+nomeEdificio;
@@ -108,104 +191,5 @@ public class Database {
 
     }
 
-    // dato un nome del piano restituisce tutte le sue aule
-    public ArrayList<Aula> initAule(String nomePiano) {
-        SQLiteDatabase db = connessione.getReadableDatabase();
-
-        String sql = " SELECT "+DBStrings.COL_NOME+","+DBStrings.COL_X+","+DBStrings.COL_Y+
-                     " FROM "+DBStrings.TABLE_AULA+ " WHERE "+DBStrings.COL_PIANO+"="+nomePiano;
-
-        Piano attuale = null;
-        int index = 0;
-        do {
-            if(Posizione.getEdificioAttuale().getPiani().get(index).toString().equals(nomePiano)) {
-                attuale = Posizione.getEdificioAttuale().getPiani().get(index);
-            }
-            index++;
-        } while(attuale==null && index < Posizione.getEdificioAttuale().getPiani().size());
-
-        Cursor res = db.rawQuery(sql,null);
-        ArrayList<Aula> listaAule = new ArrayList<>();
-        res.moveToFirst();
-        while(res.moveToNext()) {
-            listaAule.add(new Aula(res.getString(res.getColumnIndex(DBStrings.COL_NOME)),
-                    res.getString(res.getColumnIndex(DBStrings.COL_ENTRATA)),attuale));
-        }
-        res.close();
-        db.close();
-
-        return listaAule;
-    }
-
-
-    public ArrayList<Tronco> initTronchi(String nomePiano) {
-        SQLiteDatabase db = connessione.getReadableDatabase();
-
-        String sql = " SELECT "+DBStrings.COL_LARGHEZZA+","+DBStrings.COL_X+","+DBStrings.COL_Y+","+DBStrings.COL_XF+","+DBStrings.COL_YF+
-                     " FROM "+DBStrings.TABLE_TRONCO+ " WHERE "+DBStrings.COL_PIANO+"="+nomePiano;
-
-        Cursor res = db.rawQuery(sql,null);
-        ArrayList<Tronco> listaTronchi = new ArrayList<>();
-        res.moveToFirst();
-        while(res.moveToNext()) {
-            listaTronchi.add(new Tronco(
-                    new PointF(res.getFloat(res.getColumnIndex(DBStrings.COL_X)), res.getFloat(res.getColumnIndex(DBStrings.COL_Y))),
-                    new PointF(res.getFloat(res.getColumnIndex(DBStrings.COL_XF)), res.getFloat(res.getColumnIndex(DBStrings.COL_YF))),
-                    res.getFloat(res.getColumnIndex(DBStrings.COL_LARGHEZZA))));
-        }
-        res.close();
-        db.close();
-
-        return listaTronchi;
-
-
-    }
-
-    //id_tronco string string dato un tronco voglio tutti i beacon del tronco
-    //non capisco Strng dentro hasmap visto che sarebbe la stessa stringa contenuta nell'oggetto Beacon
-    public HashMap<String,Beacon> initBeacons(Tronco troncoAttuale) {
-        SQLiteDatabase db = connessione.getReadableDatabase();
-
-        String sql = "SELECT "+DBStrings.TABLE_BEACON+"."+DBStrings.COL_ID+" AS ID_BEACON"+
-                ","+DBStrings.TABLE_BEACON+"."+DBStrings.COL_X+" AS X_BEACON"+
-                ","+DBStrings.TABLE_BEACON+"."+DBStrings.COL_Y+" AS Y_BEACON"+
-                " FROM "+DBStrings.TABLE_BEACON+
-                " WHERE "+DBStrings.TABLE_BEACON+"."+DBStrings.COL_TRONCO+"="+troncoAttuale.toString();
-
-        Cursor res = db.rawQuery(sql,null);
-        res.moveToFirst();
-        HashMap<String, Beacon> listaBeacon = new HashMap<String, Beacon>();
-
-        //Beacon(String id, PointF posizione)
-        while(res.moveToNext()) {
-            listaBeacon.put(        //metodo put per riempire un'hashmap
-                    res.getString(res.getColumnIndex(DBStrings.COL_ID)),
-                    new Beacon(
-                        res.getString(res.getColumnIndex("ID_BEACON")),
-                        new PointF(res.getFloat(res.getColumnIndex("X_BEACON")), res.getFloat(res.getColumnIndex("Y_BEACON")))));
-        }
-        res.close();
-        db.close();
-
-        return listaBeacon;
-
-    }
-
-    //passandogli un edificio ed un piano mi deve restituire la stringa in base64 dell'immagine del piano
-    public String queryMappa(Piano pianoAttuale) {
-        SQLiteDatabase db = connessione.getReadableDatabase();
-
-        String sql = "SELECT "+DBStrings.COL_IMMAGINE+
-                " FROM "+DBStrings.TABLE_MAPPA+
-                " WHERE "+DBStrings.COL_PIANO+"="+pianoAttuale.toString();
-
-        Cursor res = db.rawQuery(sql,null);
-        res.moveToFirst();
-        String nImage = res.getString(res.getColumnIndex(DBStrings.COL_IMMAGINE));
-        res.close();
-        db.close();
-
-        return nImage ;
-    }
 }
 

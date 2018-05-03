@@ -11,12 +11,10 @@ public class Aula {
 
     private String nome;
     private String entrata;
-    private Piano piano;
 
-    public Aula (String nome, String entrata, Piano piano){
+    public Aula (String nome, String entrata){
         this.nome = nome;
         this.entrata = entrata;
-        this.piano = piano;
     }
 
     //meotodi per ottenere nome, entrata e piano di un'aula
@@ -30,10 +28,5 @@ public class Aula {
     }
 
     public boolean isEntrata(Beacon b) { return b.equals(entrata); }
-
-    public Piano getPiano(){
-        return this.piano;
-    }
-
 
 }
