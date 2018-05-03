@@ -17,7 +17,7 @@ public abstract class GestoreDati {
 
     public abstract String richiediMappaPiano(String piano);
 
-    public abstract HashMap<String,Beacon> richiediBeaconTronco(int idTronco);
+    public abstract HashMap<String,Beacon> richiediBeaconTronco(int Tronco);
 
     public abstract ArrayList<Tronco> richiediTronchiPiano(String piano);
 
