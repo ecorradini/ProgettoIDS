@@ -15,12 +15,12 @@ import it.getout.gestioneposizione.Posizione;
  */
 
 public class Connessioni {
+    //Istanza del Database
     private static Database dbReference;
+    //Istanza del Server
     private static Server serverReference;
-    //scanner per ricercare i dispositivi beacon
+    //Istanza del Bluetooth
     private static BluetoothHelper btHelper;
-    //Istanza del descrittore dei dispositivi bluetooth
-    private static BluetoothDevice device;
     private static Context context;
 
 
