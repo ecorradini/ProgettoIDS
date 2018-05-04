@@ -26,7 +26,7 @@ import it.getout.gestioneposizione.Tronco;
 public class MappaFragment extends Fragment {
 
     public View view;
-    private ImageView immMappa;
+    private TouchImageView immMappa;
 
     public static MappaFragment newInstance() {
         return new MappaFragment();
@@ -47,10 +47,10 @@ public class MappaFragment extends Fragment {
 
             //immMappa.setImageBitmap(Mappa.getMappa());
 
-            TouchImageView img; //new TouchImageView(this);
-            img = (TouchImageView) view.findViewById(R.id.image_mappa);
-            img.setImageBitmap(Mappa.getMappa());
-            img.setMaxZoom(4f);
+            //TouchImageView img; new TouchImageView(this);
+            immMappa = (TouchImageView) view.findViewById(R.id.image_mappa);
+            immMappa.setImageBitmap(Mappa.getMappa());
+            immMappa.setMaxZoom(4f);
             //setContentView(img);
         }
         return view;
