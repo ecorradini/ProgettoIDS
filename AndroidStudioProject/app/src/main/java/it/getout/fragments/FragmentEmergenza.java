@@ -35,6 +35,7 @@ public class FragmentEmergenza extends Fragment {
             textEmergenza.startAnimation(getBlinkAnimation());
 
             getFragmentManager().beginTransaction().replace(R.id.mappa_container, ((Client)getActivity()).getMappaFragment()).commit();
+
         }
         return view;
     }

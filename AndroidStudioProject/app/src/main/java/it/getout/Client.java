@@ -76,7 +76,6 @@ public class Client extends AppCompatActivity {
                         bar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryEmergenza)));
 
                         mappaFragment = MappaFragment.newInstance();
-                        //mappaFragment.disegnaPosizione();
 
                         FragmentEmergenza emergenza = FragmentEmergenza.newInstance();
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_main, emergenza).commit();

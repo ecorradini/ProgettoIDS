@@ -5,8 +5,13 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import entita.*;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.io.*;
 import java.net.InetSocketAddress;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
 
 
 public class JsonServer {
@@ -97,7 +102,7 @@ public class JsonServer {
             }
         });
 
-        server.createContext("/mappapiano", new HttpHandler() {
+        /*server.createContext("/mappapiano", new HttpHandler() {
             public void handle(HttpExchange arg0) throws IOException {
                 System.out.println("Richieste Mappe da DAOPiano");
                 String response = DAOMappa.selectMappaByPiano(arg0.getRequestURI().getQuery());
@@ -105,6 +110,20 @@ public class JsonServer {
                 OutputStream os = arg0.getResponseBody();
                 os.write(response.getBytes());
                 os.close();
+            }
+        });*/
+        server.createContext("/mappapiano", new HttpHandler() {
+            public void handle(HttpExchange arg0) throws IOException {
+                System.out.println("Richieste Mappe da DAOPiano");
+                String path = Server.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("/ServerProject.jar","");
+                String link = DAOMappa.selectMappaByPiano(arg0.getRequestURI().getQuery());
+                System.out.println(path+link);
+
+                File file = new File(path+link);
+                arg0.sendResponseHeaders(200, file.length());
+                OutputStream outputStream=arg0.getResponseBody();
+                Files.copy(file.toPath(), outputStream);
+                outputStream.close();
             }
         });
 

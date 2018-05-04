@@ -4,7 +4,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.PointF;
+import android.util.Base64;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -78,7 +81,7 @@ public class Database extends GestoreDati {
 
     //passandogli un edificio ed un piano mi deve restituire la stringa in base64 dell'immagine del piano
     @Override
-    public String richiediMappaPiano(String pianoAttuale) {
+    public Bitmap richiediMappaPiano(String pianoAttuale) {
 
         SQLiteDatabase db = connessione.getReadableDatabase();
 
@@ -92,7 +95,8 @@ public class Database extends GestoreDati {
         res.close();
         db.close();
 
-        return nImage ;
+        byte[] decodedString = Base64.decode(nImage, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
 
     //id_tronco string string dato un tronco voglio tutti i beacon del tronco

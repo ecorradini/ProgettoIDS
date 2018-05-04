@@ -1,6 +1,8 @@
 package it.getout.gestioneconnessioni;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.PointF;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -13,6 +15,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
+import com.android.volley.toolbox.HttpResponse;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
 
@@ -20,6 +23,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
@@ -137,12 +145,12 @@ public class Server extends GestoreDati
     }
 
     @Override
-    public String richiediMappaPiano(String piano) {
+    public Bitmap richiediMappaPiano(String piano) {
 
         class ThreadAttesaMappa extends Thread {
 
             private String piano;
-            private String mappa;
+            private Bitmap mappa;
 
             private ThreadAttesaMappa(String piano) {
                 super();
@@ -156,7 +164,7 @@ public class Server extends GestoreDati
                 mappa = task.getResult();
             }
 
-            private String getResult() { return mappa; }
+            private Bitmap getResult() { return mappa; }
         }
 
         ThreadAttesaMappa attesaMappa = new ThreadAttesaMappa(piano);
@@ -719,50 +727,31 @@ public class Server extends GestoreDati
     private class RichiediMappaPianoTask extends AsyncTask<String,Void,Boolean> {
 
         private String piano;
-        private String mappa;
+        private Bitmap mappa;
         private boolean downloaded;
 
         @Override
         protected Boolean doInBackground(String...pianoI) {
-            downloaded = false;
             piano = pianoI[0];
-            RequestQueue mRequestQueue;
-            mappa="";
-            //Metodi per il cache delle richieste JSON (Sembra che servano altrimenti non funziona)
-            Cache cache = new DiskBasedCache(context.getCacheDir(), 1024 * 1024);
-            Network network = new BasicNetwork(new HurlStack());
-            mRequestQueue = new RequestQueue(cache, network);
-            mRequestQueue.start();
-            //Url per la richiesta del percorso
-            String url = BASE_URL + SERV_MAPPAPIANO + piano;
-            //Instanzio la richiesta JSON
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
-                //Alla risposta
-                @Override
-                public void onResponse(JSONObject response) {
-                    try {
-                            mappa = response.getString("MAPPA");
+            downloaded = false;
 
-                            downloaded = true;
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-
-                }
-            });
-
-            //Aggiungo la richiesta alla coda
-            mRequestQueue.add(jsonObjectRequest);
-
+            try {
+                String src = BASE_URL + SERV_MAPPAPIANO + piano;
+                URL url = new URL(src);
+                Log.d("URL",url.toString());
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                mappa = BitmapFactory.decodeStream(input);
+                downloaded = true;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return true;
         }
 
-        public String getResult() {
+        public Bitmap getResult() {
             while(!downloaded) {
                 try {
                     Thread.sleep(500);

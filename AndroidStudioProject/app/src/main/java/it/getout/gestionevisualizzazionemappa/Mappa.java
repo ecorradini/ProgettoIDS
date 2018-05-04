@@ -21,10 +21,15 @@ public class Mappa {
         return height;
     }
 
-    public static void setMappa(String base64Image){
+    /*public static void setMappa(String base64Image){
         immagine = convertiDaBase64(base64Image);
         width = immagine.getWidth();
         height = immagine.getHeight();
+    }*/
+    public static void setMappa(Bitmap image) {
+        immagine = image;
+        width = image.getWidth();
+        height = image.getHeight();
     }
 
     public static Bitmap getMappa() {

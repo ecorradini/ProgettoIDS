@@ -1,5 +1,7 @@
 package it.getout.gestioneconnessioni;
 
+import android.graphics.Bitmap;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -15,7 +17,7 @@ public abstract class GestoreDati {
 
     public abstract Piano richiediPianoAttuale(String beacon);
 
-    public abstract String richiediMappaPiano(String piano);
+    public abstract Bitmap richiediMappaPiano(String piano);
 
     public abstract HashMap<String,Beacon> richiediBeaconTronco(int Tronco);
 

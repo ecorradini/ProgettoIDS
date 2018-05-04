@@ -10,14 +10,14 @@ import java.sql.Statement;
 
 public class DAOMappa {
     static final String PIANO = "PIANO";
-    static final String IMMAGINE = "IMMAGINE";
+    static final String LINK = "LINK";
     static final String TABLE_MAPPA = "MAPPA";
 
     public static String selectMappaByPiano(String piano) {
         Connection conn = DatabaseConnection.getConn();
-        String immagineBase64 = "";
+        String link="";
 
-        String query =  "SELECT "+ IMMAGINE+
+        String query =  "SELECT "+ LINK+
                 " FROM "+TABLE_MAPPA+
                 " WHERE "+PIANO+"=\'"+piano+"\'";
 
@@ -26,21 +26,16 @@ public class DAOMappa {
             ResultSet rs = stm.executeQuery(query);
 
             while(rs.next()) {
-                immagineBase64 = rs.getString(IMMAGINE);
+                link = rs.getString(LINK);
             }
 
             rs.close();
             stm.close();
-            DatabaseConnection.getConn().commit();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        String json = "{ "+"\"MAPPA\":\""+immagineBase64+"\"}";
-
-        System.out.println("RESPONSE: "+json);
-
-        return json;
+        return link;
     }
 }
 
