@@ -6,6 +6,7 @@ import java.util.ArrayList;
  */
 
 public class Edificio {
+
     private String nome;
     private ArrayList<Piano> piani;
 

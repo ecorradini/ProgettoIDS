@@ -10,11 +10,11 @@ import android.util.Base64;
 
 public class Mappa {
     private static Bitmap immagine;
-    private static double witdh;
+    private static double width;
     private static double height;
 
-    public static double getWitdh() {
-        return witdh;
+    public static double getWidth() {
+        return width;
     }
 
     public static double getHeight() {
@@ -22,7 +22,9 @@ public class Mappa {
     }
 
     public static void setMappa(String base64Image){
-            immagine = convertiDaBase64(base64Image);
+        immagine = convertiDaBase64(base64Image);
+        width = immagine.getWidth();
+        height = immagine.getHeight();
     }
 
     public static Bitmap getMappa() {

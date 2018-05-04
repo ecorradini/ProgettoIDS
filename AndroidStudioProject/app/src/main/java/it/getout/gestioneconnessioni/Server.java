@@ -741,11 +741,7 @@ public class Server extends GestoreDati
                 @Override
                 public void onResponse(JSONObject response) {
                     try {
-                        //Prendo l'array "Edificio"
-                        JSONArray array = response.getJSONArray("mappapiano");
-
-                            JSONObject current = array.getJSONObject(0);
-                            mappa = current.getString("MAPPA");
+                            mappa = response.getString("MAPPA");
 
                             downloaded = true;
 

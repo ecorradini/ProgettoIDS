@@ -11,11 +11,6 @@ public class Beacon {
     private String id;
     private PointF posizione;
 
-    public Beacon(String id) {
-        this.id = id;
-        this.posizione = null;
-    }
-
     public Beacon(String id, PointF posizione){
         this.id = id;
         this.posizione = posizione;
@@ -29,11 +24,4 @@ public class Beacon {
         return this.posizione;
     }
 
-    public void setId(String id){
-        this.id = id;
-    }
-
-    public void setPosizione(PointF posizione){
-        this.posizione = posizione;
-    }
 }

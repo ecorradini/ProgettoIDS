@@ -10,6 +10,7 @@ import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
 
+import it.getout.Client;
 import it.getout.R;
 
 public class FragmentEmergenza extends Fragment {
@@ -32,6 +33,8 @@ public class FragmentEmergenza extends Fragment {
 
             TextView textEmergenza = (TextView)view.findViewById(R.id.textEmergenza);
             textEmergenza.startAnimation(getBlinkAnimation());
+
+            getFragmentManager().beginTransaction().replace(R.id.mappa_container, ((Client)getActivity()).getMappaFragment()).commit();
         }
         return view;
     }

@@ -27,6 +27,6 @@ public class Aula {
         return this.entrata;
     }
 
-    public boolean isEntrata(Beacon b) { return b.equals(entrata); }
+    public boolean isEntrata(Beacon b) { return b.getId().equals(entrata); }
 
 }

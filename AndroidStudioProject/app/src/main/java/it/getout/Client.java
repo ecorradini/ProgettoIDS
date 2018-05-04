@@ -20,6 +20,7 @@ import android.widget.Toast;
 import it.getout.fragments.FragmentEmergenza;
 import it.getout.gestioneposizione.GestoreEntita;
 import it.getout.gestioneposizione.Posizione;
+import it.getout.gestionevisualizzazionemappa.MappaFragment;
 
 public class Client extends AppCompatActivity {
 
@@ -27,6 +28,7 @@ public class Client extends AppCompatActivity {
 
     private CardView loading;
     private GestoreEntita gestore;
+    private MappaFragment mappaFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +75,9 @@ public class Client extends AppCompatActivity {
                         ActionBar bar = getSupportActionBar();
                         bar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryEmergenza)));
 
+                        mappaFragment = MappaFragment.newInstance();
+                        //mappaFragment.disegnaPosizione();
+
                         FragmentEmergenza emergenza = FragmentEmergenza.newInstance();
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_main, emergenza).commit();
 
@@ -82,6 +87,8 @@ public class Client extends AppCompatActivity {
             }
         }.start();
     }
+
+    public MappaFragment getMappaFragment() { return mappaFragment; }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {

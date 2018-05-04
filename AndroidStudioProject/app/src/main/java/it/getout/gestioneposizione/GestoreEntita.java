@@ -16,6 +16,7 @@ import it.getout.gestioneconnessioni.Bluetooth;
 import it.getout.gestioneconnessioni.Database;
 import it.getout.gestioneconnessioni.GestoreDati;
 import it.getout.gestioneconnessioni.Server;
+import it.getout.gestionevisualizzazionemappa.Mappa;
 
 public class GestoreEntita {
 
@@ -55,6 +56,8 @@ public class GestoreEntita {
 
         Posizione.setEdificioAttuale(edificioAttuale);
         Posizione.setPianoAttuale(reader.richiediPianoAttuale(beacon));
+
+        Mappa.setMappa(reader.richiediMappaPiano(Posizione.getPianoAttuale().toString()));
 
         ((Client)context).inizializzaFragment();
     }

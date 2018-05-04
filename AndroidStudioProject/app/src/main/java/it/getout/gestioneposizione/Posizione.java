@@ -3,6 +3,8 @@ package it.getout.gestioneposizione;
 import android.content.Context;
 import android.graphics.PointF;
 
+import it.getout.gestionevisualizzazionemappa.MappaFragment;
+
 
 /**
  * Created on 01/02/2018.
@@ -13,7 +15,6 @@ public class Posizione {
     private static Edificio edificioAttuale; //Istanza dell'edificio in cui si trova l'utente
     private static Piano pianoAttuale; //Istanza del piano in cui si trova l'utente
     private static String beaconAttuale; //Beacon al quale l'utente è collegato al momento
-
 
     public static Edificio getEdificioAttuale(){ return edificioAttuale; }
 
