@@ -44,6 +44,26 @@ public class GestoreEntita {
         final ArrayList<Thread> threadsParalleli = new ArrayList<>();
 
         class ThreadParallelo extends Thread {
+
+            final ArrayList<Thread> threadsParalleliTronco = new ArrayList<>();
+
+            class ThreadParalleloTronco extends Thread {
+                private Tronco troncoAttuale;
+
+                private ThreadParalleloTronco(Tronco troncoAttuale) {
+                    this.troncoAttuale = troncoAttuale;
+                    threadsParalleliTronco.add(this);
+                    start();
+                }
+
+                public void run() {
+                    HashMap<String,Beacon> beaconsTronco = reader.richiediBeaconTronco(troncoAttuale.getId());
+                    troncoAttuale.setBeacons(beaconsTronco);
+
+                    threadsParalleliTronco.remove(this);
+                }
+            }
+
             private Piano pianoAttuale;
 
             private ThreadParallelo(Piano pianoAttuale) {
@@ -57,8 +77,24 @@ public class GestoreEntita {
                 pianoAttuale.setAule(aulePiano);
                 ArrayList<Tronco> tronchiPiano = reader.richiediTronchiPiano(pianoAttuale.toString());
                 for(int j=0; j<tronchiPiano.size(); j++) {
-                    HashMap<String,Beacon> beaconsTronco = reader.richiediBeaconTronco(tronchiPiano.get(j).getId());
-                    tronchiPiano.get(j).setBeacons(beaconsTronco);
+                    new ThreadParalleloTronco(tronchiPiano.get(j));
+                }
+                Thread attesa = new Thread() {
+                    public void run() {
+                        while(threadsParalleliTronco.size()>0) {
+                            try {
+                                Thread.sleep(100);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                };
+                attesa.start();
+                try {
+                    attesa.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
                 pianoAttuale.setTronchi(tronchiPiano);
 
@@ -74,7 +110,7 @@ public class GestoreEntita {
             public void run() {
                 while(threadsParalleli.size()>0) {
                     try {
-                        Thread.sleep(500);
+                        Thread.sleep(100);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

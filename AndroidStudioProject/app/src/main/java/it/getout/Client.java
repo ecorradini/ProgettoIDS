@@ -74,6 +74,7 @@ public class Client extends AppCompatActivity {
 
                         ActionBar bar = getSupportActionBar();
                         bar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryEmergenza)));
+                        bar.setTitle("Modalità Emergenza");
 
                         mappaFragment = MappaFragment.newInstance();
 

@@ -31,8 +31,8 @@ public class FragmentEmergenza extends Fragment {
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_emergenza, container, false);
 
-            TextView textEmergenza = (TextView)view.findViewById(R.id.textEmergenza);
-            textEmergenza.startAnimation(getBlinkAnimation());
+            //TextView textEmergenza = (TextView)view.findViewById(R.id.textEmergenza);
+            //textEmergenza.startAnimation(getBlinkAnimation());
 
             getFragmentManager().beginTransaction().replace(R.id.mappa_container, ((Client)getActivity()).getMappaFragment()).commit();
 
@@ -40,7 +40,7 @@ public class FragmentEmergenza extends Fragment {
         return view;
     }
 
-    public Animation getBlinkAnimation(){
+    /*public Animation getBlinkAnimation(){
         Animation animation = new AlphaAnimation(1, 0);         // Change alpha from fully visible to invisible
         animation.setDuration(600);                             // duration - half a second
         animation.setInterpolator(new LinearInterpolator());    // do not alter animation rate
@@ -48,5 +48,5 @@ public class FragmentEmergenza extends Fragment {
         animation.setRepeatMode(Animation.REVERSE);             // Reverse animation at the end so the button will fade back in
 
         return animation;
-    }
+    }*/
 }

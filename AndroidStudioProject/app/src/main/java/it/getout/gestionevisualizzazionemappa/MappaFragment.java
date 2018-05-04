@@ -133,15 +133,18 @@ public class MappaFragment extends Fragment {
 
         Paint paint = new Paint();
         paint.setAntiAlias(true);
-        paint.setColor(Color.BLUE);
+        paint.setColor(Color.parseColor("#00c853"));
 
 
         Bitmap workingBitmap = Bitmap.createBitmap(Mappa.getMappa());
         Bitmap mutableBitmap = workingBitmap.copy(Bitmap.Config.ARGB_8888, true);
 
+        //Definisco le coordinate del punto
+        float x = Posizione.getPosizione().x;
+        float y = Posizione.getPosizione().y;
 
         Canvas canvas = new Canvas(mutableBitmap);
-        canvas.drawCircle(60, 50, 25, paint);
+        canvas.drawCircle(x, y, 25, paint);
 
         //immMappa.setAdjustViewBounds(true);
         immMappa.setImageBitmap(mutableBitmap);

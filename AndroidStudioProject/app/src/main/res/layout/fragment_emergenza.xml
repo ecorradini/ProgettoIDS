@@ -3,11 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDarkEmergenza"
-    android:weightSum="3"
-    android:orientation="vertical"
-    android:padding="40dp">
+    android:orientation="vertical">
 
-    <TextView
+    <!--<TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:textColor="@android:color/white"
@@ -17,12 +15,10 @@
         android:textStyle="bold"
         android:textSize="30sp"
         android:layout_weight="0.5"
-        android:id="@+id/textEmergenza"/>
+        android:id="@+id/textEmergenza"/>-->
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2.5"
-        android:id="@+id/mappa_container"
-        android:layout_marginBottom="70dp"/>
+        android:layout_height="match_parent"
+        android:id="@+id/mappa_container"/>
 
 </LinearLayout>
