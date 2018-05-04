@@ -40,18 +40,54 @@ public class GestoreEntita {
     private void scaricaDati() {
         Edificio edificioAttuale = reader.richiediEdificioAttuale(beacon);
         ArrayList<Piano> pianiEdificio = reader.richiediPianiEdificio(edificioAttuale.toString());
-        for(int i=0; i<pianiEdificio.size(); i++) {
-            ArrayList<Aula> aulePiano = reader.richiediAulePiano(pianiEdificio.get(i).toString());
-            pianiEdificio.get(i).setAule(aulePiano);
-            ArrayList<Tronco> tronchiPiano = reader.richiediTronchiPiano(pianiEdificio.get(i).toString());
-            Log.e("TRONCHI "+pianiEdificio.get(i).toString(),tronchiPiano.size()+"");
-            for(int j=0; j<tronchiPiano.size(); j++) {
-                Log.e("TRONCO",tronchiPiano.get(j).getId()+"");
-                HashMap<String,Beacon> beaconsTronco = reader.richiediBeaconTronco(tronchiPiano.get(j).getId());
-                tronchiPiano.get(j).setBeacons(beaconsTronco);
+
+        final ArrayList<Thread> threadsParalleli = new ArrayList<>();
+
+        class ThreadParallelo extends Thread {
+            private Piano pianoAttuale;
+
+            private ThreadParallelo(Piano pianoAttuale) {
+                this.pianoAttuale = pianoAttuale;
+                threadsParalleli.add(this);
+                start();
             }
-            pianiEdificio.get(i).setTronchi(tronchiPiano);
+
+            public void run() {
+                ArrayList<Aula> aulePiano = reader.richiediAulePiano(pianoAttuale.toString());
+                pianoAttuale.setAule(aulePiano);
+                ArrayList<Tronco> tronchiPiano = reader.richiediTronchiPiano(pianoAttuale.toString());
+                for(int j=0; j<tronchiPiano.size(); j++) {
+                    HashMap<String,Beacon> beaconsTronco = reader.richiediBeaconTronco(tronchiPiano.get(j).getId());
+                    tronchiPiano.get(j).setBeacons(beaconsTronco);
+                }
+                pianoAttuale.setTronchi(tronchiPiano);
+
+                threadsParalleli.remove(this);
+            }
         }
+
+        for(int i=0; i<pianiEdificio.size(); i++) {
+            new ThreadParallelo(pianiEdificio.get(i));
+        }
+
+        Thread attesa = new Thread() {
+            public void run() {
+                while(threadsParalleli.size()>0) {
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        attesa.start();
+        try {
+            attesa.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         edificioAttuale.setPiani(pianiEdificio);
 
         Posizione.setEdificioAttuale(edificioAttuale);
