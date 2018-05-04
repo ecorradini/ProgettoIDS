@@ -1,6 +1,7 @@
 package it.getout.gestionevisualizzazionemappa;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -8,6 +9,7 @@ import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,21 +42,19 @@ public class MappaFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (view == null) {
-            view = inflater.inflate(R.layout.mappa_fragment, container, false);
+        view = inflater.inflate(R.layout.mappa_fragment, container, false);
 
-            //immMappa = (ImageView) view.findViewById(R.id.image_mappa);
-
-            //immMappa.setImageBitmap(Mappa.getMappa());
-
-            //TouchImageView img; new TouchImageView(this);
-            immMappa = (TouchImageView) view.findViewById(R.id.image_mappa);
-            immMappa.setImageBitmap(Mappa.getMappa());
-            immMappa.setMaxZoom(4f);
-            //setContentView(img);
-        }
+        immMappa = (TouchImageView)view.findViewById(R.id.image_mappa);
+        immMappa.setMaxZoom(4f);
         return view;
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        disegnaPosizione();
+    }
+
 
     /*public void disegnaPercorso() {
         ArrayList<Tronco> percorso = Posizione.getPercorso().getTronchi();
@@ -106,9 +106,10 @@ public class MappaFragment extends Fragment {
     }*/
 
     public void disegnaPosizione() {
+        /*
         //Instanzio un Bitmap temporaneo delle dimensioni dell'ImageView che lo conterrà
-        Bitmap tempMappa = Bitmap.createBitmap(immMappa.getMeasuredWidth(),immMappa.getMeasuredHeight(), Bitmap.Config.RGB_565);
-        Canvas tempCanvas = new Canvas(tempMappa);
+        Bitmap tempMappa = Bitmap.createBitmap((int)Mappa.getWidth(),(int)Mappa.getHeight(), Bitmap.Config.RGB_565);
+        Canvas tempCanvas = new Canvas();
         //Disegno questo Bitmap in un canvas
         tempCanvas.drawBitmap(tempMappa,0,0,null);
         //Definisco il Paint di ciascun tronco selezionato
@@ -120,8 +121,30 @@ public class MappaFragment extends Fragment {
         float y = Posizione.getPosizione().y;
 
         //Disegno il punto
-        tempCanvas.drawPoint(x,y,paint);
+        tempCanvas.drawCircle(x, y, 10, paint);
 
-        immMappa.setImageDrawable(new BitmapDrawable(getResources(),tempMappa));
+        immMappa.setImageDrawable(new BitmapDrawable(getResources(),tempMappa));*/
+
+        BitmapFactory.Options myOptions = new BitmapFactory.Options();
+        myOptions.inDither = true;
+        myOptions.inScaled = false;
+        myOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;// important
+        myOptions.inPurgeable = true;
+
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setColor(Color.BLUE);
+
+
+        Bitmap workingBitmap = Bitmap.createBitmap(Mappa.getMappa());
+        Bitmap mutableBitmap = workingBitmap.copy(Bitmap.Config.ARGB_8888, true);
+
+
+        Canvas canvas = new Canvas(mutableBitmap);
+        canvas.drawCircle(60, 50, 25, paint);
+
+        //immMappa.setAdjustViewBounds(true);
+        immMappa.setImageBitmap(mutableBitmap);
+
     }
 }
