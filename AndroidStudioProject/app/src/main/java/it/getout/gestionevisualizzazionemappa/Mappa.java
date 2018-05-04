@@ -4,9 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
-import it.getout.gestioneconnessioni.Connessioni;
-import it.getout.gestioneposizione.Piano;
-
 /**
  * Created on 01/02/2018.
  */
@@ -24,16 +21,8 @@ public class Mappa {
         return height;
     }
 
-    public static void setMappa (Piano piano) {
-        immagine = convertiDaBase64(getMappaDB(piano));
-    }
-
     public static void setMappa(String base64Image){
             immagine = convertiDaBase64(base64Image);
-    }
-
-    private static String getMappaDB(Piano piano){
-        return Connessioni.getDbReference().richiediMappaPiano(piano.toString());
     }
 
     public static Bitmap getMappa() {

@@ -4,8 +4,6 @@ import android.graphics.PointF;
 
 import java.util.HashMap;
 
-import it.getout.gestioneconnessioni.Connessioni;
-
 /**
  * Created by Alessandro on 01/02/2018.
  */
@@ -23,17 +21,9 @@ public class Tronco {
         this.inizio = inizio;
         this.fine = fine;
         this.larghezza = larghezza;
-        downloadBeacons();
     }
 
-    private void downloadBeacons() {
-        if(!Posizione.checkInternet()) {
-            beacons = Connessioni.getDbReference().richiediBeaconTronco(id);
-        }
-        else {
-            Connessioni.getServerReference().richiediBeaconTronco(id);
-        }
-    }
+    public int getId() { return id; }
 
     public PointF getInizio(){
         return inizio;

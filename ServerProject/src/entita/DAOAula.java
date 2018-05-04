@@ -12,13 +12,14 @@ public class DAOAula {
     static final String X = "X";
     static final String Y = "Y";
     static final String PIANO = "PIANO";
+    static final String ENTRATA = "ENTRATA";
     static final String TABLE_AULA = "AULA";
 
     public static String selectAllAuleByPiano(String piano) {
         Connection conn = DatabaseConnection.getConn();
         String json="{\""+piano+"\":[";
 
-        String query =  "SELECT "+NOME+","+X+","+Y+
+        String query =  "SELECT "+NOME+","+X+","+Y+","+ENTRATA+
                 " FROM "+TABLE_AULA+ " WHERE "+PIANO+"=\'"+piano+"\'";
 
         try {
@@ -26,7 +27,7 @@ public class DAOAula {
             ResultSet rs = stm.executeQuery(query);
 
             while(rs.next()) {
-                json = json + "{\"AULA\":{\"NOME\":\""+rs.getString(NOME)+"\",\"X\":\""+rs.getFloat(X)+"\",\"Y\":\""+rs.getFloat(Y)+"\"}},";
+                json = json + "{\"AULA\":{\"NOME\":\""+rs.getString(NOME)+"\",\"X\":\""+rs.getFloat(X)+"\",\"Y\":\""+rs.getFloat(Y)+"\",\"ENTRATA\":\""+rs.getString(ENTRATA)+"\"}},";
             }
 
             rs.close();

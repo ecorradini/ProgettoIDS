@@ -30,7 +30,7 @@ import static android.content.ContentValues.TAG;
  * La presente classe si occuperà di definire la scansione, connessione e comunicazione con i Beacon tramite bluetooth
  */
 
-public class BluetoothHelper {
+public class Bluetooth {
 
     public static final int REQUEST_ENABLE_BT = 1;
 
@@ -65,7 +65,7 @@ public class BluetoothHelper {
     //conta quante volte consecutive non si invia la propria posizione al server
     private int cont;
 
-    public BluetoothHelper(BluetoothAdapter btAdapter, AppCompatActivity a){
+    public Bluetooth(BluetoothAdapter btAdapter, AppCompatActivity a){
 
         activity = a;
         bluetoothAdapter = btAdapter;

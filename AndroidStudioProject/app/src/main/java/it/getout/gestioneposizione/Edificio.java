@@ -1,8 +1,6 @@
 package it.getout.gestioneposizione;
 import java.util.ArrayList;
 
-import it.getout.gestioneconnessioni.Connessioni;
-
 /**
  * Created by Alessandro on 01/02/2018.
  */
@@ -13,16 +11,6 @@ public class Edificio {
 
     public Edificio(String nome) {
         this.nome = nome;
-        downloadPiani();
-    }
-
-    private void downloadPiani() {
-        if(!Posizione.checkInternet()) {
-            piani = Connessioni.getDbReference().richiediPianiEdificio(nome);
-        }
-        else {
-            Connessioni.getServerReference().richiediPianiEdificio(nome);
-        }
     }
 
     public Piano getPiano(int index) {
@@ -34,5 +22,6 @@ public class Edificio {
     }
 
     public ArrayList<Piano> getPiani() { return piani; }
+
     public void setPiani(ArrayList<Piano> p) { piani = p; }
 }
