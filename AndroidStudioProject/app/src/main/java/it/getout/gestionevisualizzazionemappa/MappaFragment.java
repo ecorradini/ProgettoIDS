@@ -43,9 +43,15 @@ public class MappaFragment extends Fragment {
         if (view == null) {
             view = inflater.inflate(R.layout.mappa_fragment, container, false);
 
-            immMappa = (ImageView)view.findViewById(R.id.image_mappa);
+            //immMappa = (ImageView) view.findViewById(R.id.image_mappa);
 
-            immMappa.setImageBitmap(Mappa.getMappa());
+            //immMappa.setImageBitmap(Mappa.getMappa());
+
+            TouchImageView img; //new TouchImageView(this);
+            img = (TouchImageView) view.findViewById(R.id.image_mappa);
+            img.setImageBitmap(Mappa.getMappa());
+            img.setMaxZoom(4f);
+            //setContentView(img);
         }
         return view;
     }
