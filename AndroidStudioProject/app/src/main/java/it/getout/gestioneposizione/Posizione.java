@@ -14,7 +14,7 @@ public class Posizione {
 
     private static Edificio edificioAttuale; //Istanza dell'edificio in cui si trova l'utente
     private static Piano pianoAttuale; //Istanza del piano in cui si trova l'utente
-    private static String beaconAttuale; //Beacon al quale l'utente è collegato al momento
+    private static Beacon beaconAttuale; //Beacon al quale l'utente è collegato al momento
 
     public static Edificio getEdificioAttuale(){ return edificioAttuale; }
 
@@ -27,16 +27,10 @@ public class Posizione {
     public static void setPianoAttuale(Piano p) { pianoAttuale = p; }
 
     public static PointF getPosizione() {
-        Beacon res = null;
-        for(int i=0; i<pianoAttuale.getTronchi().size(); i++) {
-            if(pianoAttuale.getTronchi().get(i).getBeacons().containsKey(beaconAttuale)) {
-                res = pianoAttuale.getTronchi().get(i).getBeaconByID(beaconAttuale);
-            }
-        }
-        return res.getPosizione();
+        return beaconAttuale.getPosizione();
     }
 
-    public static String getIDBeaconAttuale() { return beaconAttuale; }
+    public static String getIDBeaconAttuale() { return beaconAttuale.getId(); }
 
-    public static void setBeaconAttuale(String b) { beaconAttuale = b; }
+    public static void setBeaconAttuale(Beacon b) { beaconAttuale = b; }
 }

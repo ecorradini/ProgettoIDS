@@ -50,6 +50,7 @@ public class Server extends GestoreDati
     //private static final String BASE_URL = "http://192.168.1.184:9600";
     //private static final String BASE_URL = "http://172.23.134.169:9600";
     private static final String SERV_PERCORSO = "/percorso";            //URL percorso
+    private static final String SERV_POSIZIONE = "/posizione?";
     private static final String SERV_PIANIEDI = "/pianiedificio?";      //URL piano da edificio
     private static final String SERV_EDIFICIO = "/edificioattuale?";    //URL edificio da idbeacon
     private static final String SERV_BEACON = "/beacontronco?";         //URL beacon da tronco
@@ -314,6 +315,39 @@ public class Server extends GestoreDati
         return attesaPiani.getResult();
     }
 
+    @Override
+    public Beacon richiediPosizione(String beacon) {
+        class ThreadAttesaBeacon extends Thread {
+
+            private Beacon posizione;
+            private String beacon;
+
+            private ThreadAttesaBeacon(String beacon) {
+                super();
+                this.beacon = beacon;
+            }
+
+            @Override
+            public void run() {
+                RichiediPosizioneTask task = new RichiediPosizioneTask();
+                task.execute(beacon);
+                posizione = task.getResult();
+            }
+
+            private Beacon getResult() { return posizione; }
+        }
+
+        ThreadAttesaBeacon attesaBeacon = new ThreadAttesaBeacon(beacon);
+        attesaBeacon.start();
+        try {
+            attesaBeacon.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return attesaBeacon.getResult();
+    }
+
     //AsyncTask che richiede l'edificio in base all'idbeacon connesso dal Server
     private class RichiediEdificioTask extends AsyncTask<String,Void,Boolean> {
 
@@ -366,7 +400,7 @@ public class Server extends GestoreDati
         public Edificio getResult() {
             while(!downloaded) {
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -436,7 +470,7 @@ public class Server extends GestoreDati
         public ArrayList<Piano> getResult() {
             while(!downloaded) {
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -507,7 +541,7 @@ public class Server extends GestoreDati
         public HashMap<String,Beacon> getResult() {
             while(!downloaded) {
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -546,9 +580,7 @@ public class Server extends GestoreDati
                     try {
                         String nomePiano = response.getString("PIANO_ATTUALE");
 
-                        for(int i = 0; i< Posizione.getEdificioAttuale().getPiani().size(); i++) {
-                            if(nomePiano.equals(Posizione.getEdificioAttuale().getPiano(i).toString())) piano = Posizione.getEdificioAttuale().getPiano(i);
-                        }
+                        piano = new Piano(nomePiano);
 
                         downloaded = true;
 
@@ -573,7 +605,7 @@ public class Server extends GestoreDati
         public Piano getResult() {
             while(!downloaded) {
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -644,7 +676,7 @@ public class Server extends GestoreDati
         public ArrayList<Aula> getResult() {
             while(!downloaded) {
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -714,7 +746,7 @@ public class Server extends GestoreDati
         public ArrayList<Tronco> getResult() {
             while(!downloaded) {
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -754,7 +786,7 @@ public class Server extends GestoreDati
         public Bitmap getResult() {
             while(!downloaded) {
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -763,4 +795,68 @@ public class Server extends GestoreDati
         }
     }
 
+    //AsyncTask che richiede il piano in base all'idbeacon connesso dal Server (PIANOATTUALE)
+    private class RichiediPosizioneTask extends AsyncTask<String,Void,Boolean> {
+
+        private String idbeacon;
+        private Beacon posizione;
+        private boolean downloaded;
+
+        @Override
+        protected Boolean doInBackground(String...beacon) {
+            downloaded = false;
+            idbeacon = beacon[0];
+            //La variabile da restituire
+            posizione = null;
+            RequestQueue mRequestQueue;
+            //Metodi per il cache delle richieste JSON (Sembra che servano altrimenti non funziona)
+            Cache cache = new DiskBasedCache(context.getCacheDir(), 1024 * 1024);
+            Network network = new BasicNetwork(new HurlStack());
+            mRequestQueue = new RequestQueue(cache, network);
+            mRequestQueue.start();
+            //Url per la richiesta del percorso
+            String url = BASE_URL + SERV_POSIZIONE + idbeacon;
+            //Instanzio la richiesta JSON
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+                //Alla risposta
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        JSONObject beacon = response.getJSONObject("BEACON");
+                        float x = Float.parseFloat(String.valueOf(beacon.getDouble("X")));
+                        float y = Float.parseFloat(String.valueOf(beacon.getDouble("Y")));
+
+                        posizione = new Beacon(idbeacon,new PointF(x,y));
+
+                        downloaded = true;
+
+                    } catch (JSONException e) {
+                        Log.d("ECCEZIONE PIANO",e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            });
+
+            //Aggiungo la richiesta alla coda
+            mRequestQueue.add(jsonObjectRequest);
+
+            return true;
+        }
+
+        public Beacon getResult() {
+            while(!downloaded) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            return posizione;
+        }
+    }
 }

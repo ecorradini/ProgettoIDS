@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +28,7 @@ public class Client extends AppCompatActivity {
     private final int PERMESSO_LOCATION = 1;
 
     private CardView loading;
+    private CardView loadingPhase2;
     private GestoreEntita gestore;
     private MappaFragment mappaFragment;
 
@@ -36,6 +38,7 @@ public class Client extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         loading = findViewById(R.id.cv_loading);
+        loadingPhase2 = findViewById(R.id.cv_loading_phase2);
 
         gestore = new GestoreEntita(this);
 
@@ -82,6 +85,30 @@ public class Client extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_main, emergenza).commit();
 
                         stopLoading();
+                    }
+                });
+            }
+        }.start();
+
+        new Thread() {
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadingPhase2.setVisibility(View.VISIBLE);
+                    }
+                });
+                while(!gestore.isDownloadFinished()) {
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadingPhase2.setVisibility(View.GONE);
                     }
                 });
             }

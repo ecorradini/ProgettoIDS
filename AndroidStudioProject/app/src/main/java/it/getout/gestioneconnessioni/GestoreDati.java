@@ -27,4 +27,6 @@ public abstract class GestoreDati {
 
     public abstract ArrayList<Piano> richiediPianiEdificio(String edificio);
 
+    public abstract Beacon richiediPosizione(String beacon);
+
 }

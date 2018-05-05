@@ -24,6 +24,7 @@ public class GestoreEntita {
     private GestoreDati reader;
     private String beacon;
     private Bluetooth bluetooth;
+    private boolean downloadFinished;
 
     public GestoreEntita(Context c) {
         context = c;
@@ -31,6 +32,7 @@ public class GestoreEntita {
             reader = new Server(context);
         }
         else reader = new Database(context);
+        downloadFinished = false;
     }
 
     public void coordinaPopolamentoDati() {
@@ -38,8 +40,31 @@ public class GestoreEntita {
     }
 
     private void scaricaDati() {
+        //All'inizio scarico solo i dati che mi servono immediatamente
         Edificio edificioAttuale = reader.richiediEdificioAttuale(beacon);
-        ArrayList<Piano> pianiEdificio = reader.richiediPianiEdificio(edificioAttuale.toString());
+        Piano pianoAttuale = reader.richiediPianoAttuale(beacon);
+        Beacon posizione = reader.richiediPosizione(beacon);
+        Posizione.setEdificioAttuale(edificioAttuale);
+        Posizione.setPianoAttuale(pianoAttuale);
+        Posizione.setBeaconAttuale(posizione);
+
+        Mappa.setMappa(reader.richiediMappaPiano(Posizione.getPianoAttuale().toString()));
+
+        //Avvio comunque l'app
+        ((Client)context).inizializzaFragment();
+
+        ArrayList<Piano> pianiEdificio = new ArrayList<>();
+        pianiEdificio.add(pianoAttuale);
+        edificioAttuale.setPiani(pianiEdificio);
+        //Poi scarico tutto il resto
+        scaricaDatiRimanenti(pianiEdificio);
+    }
+
+    private void scaricaDatiRimanenti(ArrayList<Piano> pianiEdificio) {
+
+        ArrayList<Piano> altriPiani = reader.richiediPianiEdificio(Posizione.getEdificioAttuale().toString());
+        altriPiani.remove(pianiEdificio.get(0));
+        pianiEdificio.addAll(altriPiani);
 
         final ArrayList<Thread> threadsParalleli = new ArrayList<>();
 
@@ -124,14 +149,21 @@ public class GestoreEntita {
             e.printStackTrace();
         }
 
-        edificioAttuale.setPiani(pianiEdificio);
 
-        Posizione.setEdificioAttuale(edificioAttuale);
-        Posizione.setPianoAttuale(reader.richiediPianoAttuale(beacon));
+        boolean done = false;
+        for(int i=0;i<Posizione.getEdificioAttuale().getPiani().size(); i++) {
+            Piano pianoAttuale = Posizione.getEdificioAttuale().getPiano(i);
+            for(int j=0; j<pianoAttuale.getTronchi().size(); j++) {
+                if(pianoAttuale.getTronchi().get(j).getBeacons().containsKey(Posizione.getIDBeaconAttuale())) {
+                    Posizione.setBeaconAttuale(pianoAttuale.getTronchi().get(j).getBeacons().get(Posizione.getIDBeaconAttuale()));
+                    done = true;
+                    break;
+                }
+            }
+            if(done) break;
+        }
 
-        Mappa.setMappa(reader.richiediMappaPiano(Posizione.getPianoAttuale().toString()));
-
-        ((Client)context).inizializzaFragment();
+        downloadFinished = true;
     }
 
     private void initBluetooth(Context c) {
@@ -162,7 +194,6 @@ public class GestoreEntita {
 
                         Log.e("Mi sono connesso",device.getAddress());
 
-                        Posizione.setBeaconAttuale(device.getAddress());
                         beacon = device.getAddress();
 
                         scaricaDati();
@@ -178,6 +209,8 @@ public class GestoreEntita {
             e.printStackTrace();
         }
     }
+
+    public boolean isDownloadFinished() { return downloadFinished;}
 
     private boolean checkInternet() {
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);

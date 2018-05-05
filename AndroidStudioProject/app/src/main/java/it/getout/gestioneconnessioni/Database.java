@@ -66,17 +66,7 @@ public class Database extends GestoreDati {
         res.close();
         db.close();
 
-        Piano attuale = null;
-        int index = 0;
-        do {
-            if(Posizione.getEdificioAttuale().getPiani().get(index).toString().equals(nPiano)) {
-                attuale = Posizione.getEdificioAttuale().getPiani().get(index);
-            }
-            index++;
-        } while(attuale==null && index < Posizione.getEdificioAttuale().getPiani().size());
-
-
-        return attuale;
+        return new Piano(nPiano);
     }
 
     //passandogli un edificio ed un piano mi deve restituire la stringa in base64 dell'immagine del piano
@@ -196,5 +186,20 @@ public class Database extends GestoreDati {
 
     }
 
+    @Override
+    public Beacon richiediPosizione(String idBeacon) {
+        SQLiteDatabase db = connessione.getReadableDatabase();
+
+        String query =  "SELECT "+DBStrings.COL_ID+","+DBStrings.COL_X+","+DBStrings.COL_Y+" FROM "+DBStrings.TABLE_BEACON+" WHERE "+DBStrings.COL_ID+"=\'"+idBeacon+"\'";
+
+        Cursor res = db.rawQuery(query,null);
+        res.moveToFirst();
+        String x = res.getString(res.getColumnIndex(DBStrings.COL_X));
+        String y = res.getString(res.getColumnIndex(DBStrings.COL_Y));
+        res.close();
+        db.close();
+
+        return new Beacon(idBeacon,new PointF(Float.parseFloat(x),Float.parseFloat(y)));
+    }
 }
 

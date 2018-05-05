@@ -17,27 +17,25 @@ public class DAOBeacon {
 
     public static String selectPosizioneById(String idBeacon) {
         Connection conn = DatabaseConnection.getConn();
-        String xPos = "", yPos = "";
+        String json="";
 
-        String query =  "SELECT "+X+","+Y+
-                " FROM "+TABLE_BEACON+" WHERE "+TABLE_BEACON+"."+ID+"=\'"+idBeacon+"\'";
+        String query =  "SELECT "+ID+","+X+","+Y+
+                " FROM "+TABLE_BEACON+
+                " WHERE "+ID+"=\'"+idBeacon+"\'";
 
         try {
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(query);
 
             while(rs.next()) {
-                xPos = rs.getString(X);
-                yPos = rs.getString(Y);
+                json = "{\"BEACON\":{\"X\":\""+rs.getFloat(X)+"\",\"Y\":\""+rs.getFloat(Y)+"\",\"ID\":\""+rs.getString(ID)+"\"}}";
             }
 
             rs.close();
             stm.close();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        String json = "{ "+"\"POSIZIONE\":\"{\"X\":\""+xPos+"\",\"Y\":\""+yPos+"\"}}";
 
         System.out.println("RESPONSE: "+json);
 
