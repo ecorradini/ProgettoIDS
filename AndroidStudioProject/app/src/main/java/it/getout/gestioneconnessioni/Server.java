@@ -503,7 +503,7 @@ public class Server extends GestoreDati
             //Url per la richiesta del percorso
             String url = BASE_URL + SERV_BEACON + tronco;
             //Instanzio la richiesta JSON
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 //Alla risposta
                 @Override
                 public void onResponse(JSONObject response) {
@@ -573,7 +573,7 @@ public class Server extends GestoreDati
             //Url per la richiesta del percorso
             String url = BASE_URL + SERV_PIANIATT + idbeacon;
             //Instanzio la richiesta JSON
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 //Alla risposta
                 @Override
                 public void onResponse(JSONObject response) {
@@ -817,7 +817,7 @@ public class Server extends GestoreDati
             //Url per la richiesta del percorso
             String url = BASE_URL + SERV_POSIZIONE + idbeacon;
             //Instanzio la richiesta JSON
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 //Alla risposta
                 @Override
                 public void onResponse(JSONObject response) {

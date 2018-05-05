@@ -50,6 +50,7 @@
         android:id="@+id/cv_loading_phase2"
         app:cardElevation="8dp"
         app:cardUseCompatPadding="true"
+        android:visibility="invisible"
         android:layout_above="@id/fragment_container_main">
         <LinearLayout
             android:layout_width="wrap_content"
