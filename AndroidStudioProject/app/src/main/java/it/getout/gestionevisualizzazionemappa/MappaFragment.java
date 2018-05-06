@@ -106,24 +106,6 @@ public class MappaFragment extends Fragment {
     }*/
 
     public void disegnaPosizione() {
-        /*
-        //Instanzio un Bitmap temporaneo delle dimensioni dell'ImageView che lo conterrà
-        Bitmap tempMappa = Bitmap.createBitmap((int)Mappa.getWidth(),(int)Mappa.getHeight(), Bitmap.Config.RGB_565);
-        Canvas tempCanvas = new Canvas();
-        //Disegno questo Bitmap in un canvas
-        tempCanvas.drawBitmap(tempMappa,0,0,null);
-        //Definisco il Paint di ciascun tronco selezionato
-        Paint paint = new Paint();
-        paint.setColor(Color.BLUE);
-
-        //Definisco le coordinate del punto
-        float x = Posizione.getPosizione().x;
-        float y = Posizione.getPosizione().y;
-
-        //Disegno il punto
-        tempCanvas.drawCircle(x, y, 10, paint);
-
-        immMappa.setImageDrawable(new BitmapDrawable(getResources(),tempMappa));*/
 
         BitmapFactory.Options myOptions = new BitmapFactory.Options();
         myOptions.inDither = true;
@@ -133,7 +115,7 @@ public class MappaFragment extends Fragment {
 
         Paint paint = new Paint();
         paint.setAntiAlias(true);
-        paint.setColor(Color.parseColor("#00c853"));
+        paint.setColor(Color.parseColor("#67c700"));
 
 
         Bitmap workingBitmap = Bitmap.createBitmap(Mappa.getMappa());
@@ -144,10 +126,12 @@ public class MappaFragment extends Fragment {
         float y = Posizione.getPosizione().y;
 
         Canvas canvas = new Canvas(mutableBitmap);
-        canvas.drawCircle(x, y, 25, paint);
+        canvas.drawCircle(x, y, 15, paint);
 
         //immMappa.setAdjustViewBounds(true);
         immMappa.setImageBitmap(mutableBitmap);
-
+        float focusX = x/mutableBitmap.getWidth();
+        float focusY = y/mutableBitmap.getHeight();
+        immMappa.setZoom(3.6f,focusX,focusY);
     }
 }
