@@ -151,6 +151,7 @@ public class JsonServer {
                 }.start();
             }
         });
+
         server.createContext("/mappapiano", new HttpHandler() {
             public void handle(HttpExchange arg0) throws IOException {
                 new Thread(){
@@ -172,9 +173,45 @@ public class JsonServer {
                 }.start();
             }
         });
+
+        server.createContext("/parametri", new HttpHandler() {
+            public void handle(HttpExchange arg0) throws IOException {
+                new Thread(){
+                    public void run()  {
+                        try {
+                            String response = DAOParametri.selectParametri(Integer.getInteger(arg0.getRequestURI().getQuery()));
+                            arg0.sendResponseHeaders(200, response.length());
+                            OutputStream os = arg0.getResponseBody();
+                            os.write(response.getBytes());
+                            os.close();
+                        } catch (IOException e) {
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                }.start();
+            }
+        });
+
+        server.createContext("/controllaEmergenza", new HttpHandler() {
+            public void handle(HttpExchange arg0) throws IOException {
+                new Thread(){
+                    public void run()  {
+                        try {
+                            String response = Boolean.toString(DAOParametri.controllaEmergenza()) ;
+                            arg0.sendResponseHeaders(200, response.length());
+                            OutputStream os = arg0.getResponseBody();
+                            os.write(response.getBytes());
+                            os.close();
+                        } catch (IOException e) {
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                }.start();
+            }
+        });
+
         //Inserisci l'utente nella lista di utenti collegati al beacon
         server.createContext("/sommautente", new com.sun.net.httpserver.HttpHandler() {
-
             @Override
             public void handle(com.sun.net.httpserver.HttpExchange arg0) throws IOException {
                 new Thread(){

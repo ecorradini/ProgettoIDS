@@ -14,7 +14,7 @@ public class DAOParametri {
     static final String PRESENZAFUMO = "PF";
     static final String TABLE_PARAMETRI = "PARAMETRI";
 
-    static final String selectParametri(int tronco){
+    public static final String selectParametri(int tronco){
         Connection conn = DatabaseConnection.getConn();
         String json="{\""+tronco+"\":[";
 
@@ -47,7 +47,7 @@ public class DAOParametri {
         return json;
     }
 
-    static final boolean controllaEmergenza(){
+    public static final boolean controllaEmergenza(){
         boolean emergenza = false;
 
         Connection conn = DatabaseConnection.getConn();
