@@ -52,33 +52,6 @@ public class DAOTronco {
         return json;
     }
 
-    public static Tronco selectPrimoTroncoPiano(String piano) {
-        Connection conn = DatabaseConnection.getConn();
-        Tronco risultato = null;
-
-        String query = "SELECT TOP 1 ID,X,Y,XF,YF" +
-                " FROM TRONCO" +
-                " WHERE PIANO = \'"+piano+"\'";
-
-        try {
-            Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery(query);
-
-            while(rs.next()) {
-            risultato = new Tronco(rs.getInt(DAOTronco.ID),rs.getFloat(DAOTronco.X),rs.getFloat(DAOTronco.Y)
-                        ,rs.getFloat(DAOTronco.XF),rs.getFloat(DAOTronco.YF));
-            }
-
-            rs.close();
-            stm.close();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return risultato;
-    }
-
     public static HashMap<Integer,Tronco> selectTronchiDelPiano(String piano) {
         Connection conn = DatabaseConnection.getConn();
         HashMap<Integer,Tronco> risultato = new HashMap<>();
@@ -116,7 +89,8 @@ public class DAOTronco {
                        " TRONCO.X  as XINIZIO," +
                        " TRONCO.Y  as YINIZIO," +
                        " TRONCO.XF as XFINIZIO," +
-                       " TRONCO.YF as YFINIZIO" +
+                       " TRONCO.YF as YFINIZIO," +
+                       " TRONCO.PIANO as PIANOINIZIO "+
                        " FROM TRONCO" +
                        " WHERE TRONCO.ID = "+ t.getID() +
                        ") AS TRONCOINIZIO" +
@@ -128,14 +102,15 @@ public class DAOTronco {
                        " AND TRONCO.Y=TRONCOINIZIO.YFINIZIO)" +
                        " OR (TRONCO.XF=TRONCOINIZIO.XFINIZIO" +
                        " AND TRONCO.YF=TRONCOINIZIO.YFINIZIO))" +
-                       " AND TRONCO.ID <> TRONCOINIZIO.IDINIZIO";
+                       " AND TRONCO.ID <> TRONCOINIZIO.IDINIZIO" +
+                       " AND TRONCO.PIANO = TRONCOINIZIO.PIANOINIZIO";
 
         try {
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(query);
 
             while(rs.next()) {
-                risultato.add(rs.getInt(DAOTronco.TABLE_TRONCO+"."+DAOTronco.ID));
+                risultato.add(rs.getInt(DAOTronco.ID));
             }
 
             rs.close();
@@ -145,6 +120,9 @@ public class DAOTronco {
             e.printStackTrace();
         }
 
-        return risultato;
+        if(risultato.size()>0) {
+            return risultato;
+        }
+        else return null;
     }
 }

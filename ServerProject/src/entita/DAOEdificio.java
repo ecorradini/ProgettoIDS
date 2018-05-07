@@ -2,10 +2,12 @@ package entita;
 
 import connessioni.DatabaseConnection;
 
+import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class DAOEdificio {
     //Nome della colonna "NOME"
@@ -43,6 +45,52 @@ public class DAOEdificio {
         System.out.println("RESPONSE: "+json);
 
         return json;
+    }
+
+    public static ArrayList<String> selectEdifici() {
+        Connection conn = DatabaseConnection.getConn();
+        ArrayList<String> edifici = new ArrayList<>();
+
+        String query = "SELECT "+NOME+" FROM "+TABLE_EDIFICIO;
+
+        try {
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(query);
+
+            while(rs.next()) {
+                edifici.add(rs.getString(NOME));
+            }
+
+            rs.close();
+            stm.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return edifici;
+    }
+
+    public static int selectCountEdifici() {
+        Connection conn = DatabaseConnection.getConn();
+        int nEdifici=0;
+
+        String query = "SELECT COUNT("+NOME+") AS NUMERO FROM "+TABLE_EDIFICIO;
+
+        try {
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(query);
+
+            while(rs.next()) {
+                nEdifici = rs.getInt("NUMERO");
+            }
+
+            rs.close();
+            stm.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return nEdifici;
     }
 }
 

@@ -46,7 +46,7 @@ import it.getout.gestioneposizione.Tronco;
 public class Server extends GestoreDati
 {
 
-    private static final String BASE_URL = "http://192.168.0.113:9600";
+    private static final String BASE_URL = "http://192.168.0.115:9600";
     //private static final String BASE_URL = "http://192.168.1.184:9600";
     //private static final String BASE_URL = "http://172.23.134.169:9600";
     private static final String SERV_PERCORSO = "/percorso";            //URL percorso

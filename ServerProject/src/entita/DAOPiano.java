@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class DAOPiano {
     static final String NOME = "NOME";
@@ -76,5 +77,51 @@ public class DAOPiano {
         System.out.println("RESPONSE: "+json);
 
         return json;
+    }
+
+    public static ArrayList<String> selectListaPianiByEdificio(String edificio) {
+        Connection conn = DatabaseConnection.getConn();
+        ArrayList<String> piani = new ArrayList<>();
+
+        String query =  "SELECT DISTINCT "+NOME+ " FROM "+TABLE_PIANO+ " WHERE "+DAOEdificio.TABLE_EDIFICIO+"=\'"+edificio+"\'";
+
+        try {
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(query);
+
+            while(rs.next()) {
+                piani.add(rs.getString(NOME));
+            }
+
+            rs.close();
+            stm.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return piani;
+    }
+
+    public static int selectCountPiani() {
+        Connection conn = DatabaseConnection.getConn();
+        int nPiani=0;
+
+        String query = "SELECT COUNT("+NOME+") AS NUMERO FROM "+TABLE_PIANO;
+
+        try {
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(query);
+
+            while(rs.next()) {
+                nPiani = rs.getInt("NUMERO");
+            }
+
+            rs.close();
+            stm.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return nPiani;
     }
 }

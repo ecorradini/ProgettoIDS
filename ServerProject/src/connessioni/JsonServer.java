@@ -12,15 +12,22 @@ import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class JsonServer {
+
+    private HashMap<String,HashMap<String,GrafoTronchi>> grafiPiani;
     private HttpServer server;
     private Thread worker;
 
     public JsonServer() throws IOException {
-        server = HttpServer.create(new InetSocketAddress(9600), 0);
 
+        popolaGrafi();
+        System.out.println("Il server ora accetta richieste. Grazie per l'attesa.");
+
+        server = HttpServer.create(new InetSocketAddress(9600), 0);
         server.createContext("/edificioattuale", new HttpHandler() {
             public void handle(HttpExchange arg0) {
                 new Thread(){
@@ -263,5 +270,38 @@ public class JsonServer {
             }
         });
         worker.start();
+    }
+
+    public void popolaGrafi() {
+        Thread popolamento = new Thread() {
+            public void run() {
+                System.out.println("Avvio il caricamento delle mappe. Attendere per favore.");
+                int nEdifici = DAOEdificio.selectCountEdifici();
+                int nPiani = DAOPiano.selectCountPiani();
+                int numeroTotaleDati = nEdifici*nPiani;
+                int percentualeCompletamento=0;
+                grafiPiani = new HashMap<>();
+                ArrayList<String> edifici = DAOEdificio.selectEdifici();
+                for (int i = 0; i < edifici.size(); i++) {
+                    ArrayList<String> piani = DAOPiano.selectListaPianiByEdificio(edifici.get(i));
+                    HashMap<String, GrafoTronchi> value = new HashMap<>();
+                    for (int j = 0; j < piani.size(); j++) {
+                        value.put(piani.get(j), new GrafoTronchi(piani.get(j)));
+                        percentualeCompletamento += (100/(numeroTotaleDati));
+                        System.out.print("\rPercentuale di completamento: "+percentualeCompletamento+"%\r");
+                    }
+                    grafiPiani.put(edifici.get(i), value);
+                    if(percentualeCompletamento<100) {
+                        System.out.print("\rPercentuale di completamento: 100%\r");
+                    }
+                }
+            }
+        };
+        popolamento.start();
+        try {
+            popolamento.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

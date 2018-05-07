@@ -18,10 +18,13 @@ public class Tronco {
     public ArrayList<Tronco> richiediAdiacenti(HashMap<Integer,Tronco> tronchiPiano) {
         ArrayList<Integer> adiacentiID = DAOTronco.selectTronchiAdiacenti(this);
         ArrayList<Tronco> adiacenti = new ArrayList<>();
-        for(int i=0;i<adiacentiID.size();i++) {
-            adiacenti.add(tronchiPiano.get(adiacenti.get(i)));
+        if( adiacentiID!=null) {
+            for (int i = 0; i < adiacentiID.size(); i++) {
+                adiacenti.add(tronchiPiano.get(adiacentiID.get(i)));
+            }
+            return adiacenti;
         }
-        return adiacenti;
+        else return null;
     }
 
     public int getID() { return id; }

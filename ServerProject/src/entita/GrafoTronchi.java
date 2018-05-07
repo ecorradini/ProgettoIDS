@@ -13,9 +13,9 @@ public class GrafoTronchi {
             dato = t;
         }
 
-        public void addAdiacente(Tronco t) {
+        public void addAdiacente(Nodo n) {
             if(adiacenti==null) adiacenti = new ArrayList<>();
-            adiacenti.add(new Nodo(t));
+            adiacenti.add(n);
         }
 
         public Tronco getTronco() { return dato; }
@@ -30,10 +30,17 @@ public class GrafoTronchi {
         tronchiPiano = DAOTronco.selectTronchiDelPiano(piano);
 
         ArrayList<Nodo> bfs = new ArrayList<>();
-        Tronco rad = DAOTronco.selectPrimoTroncoPiano(piano);
+        HashMap<Tronco,Nodo> fatti = new HashMap<>();
+
+        Tronco rad = null;
+        if(tronchiPiano.size()>0) {
+            rad = tronchiPiano.entrySet().iterator().next().getValue();
+        }
+
         if(rad!=null) {
             radice = new Nodo(rad);
             bfs.add(radice);
+            fatti.put(radice.getTronco(),radice);
         }
 
         while(bfs.size()>0) {
@@ -42,13 +49,22 @@ public class GrafoTronchi {
             if(adiacenti!=null) {
                 nodiAdiacenti = new ArrayList<>();
                 for (int i = 0; i < adiacenti.size(); i++) {
-                    bfs.get(0).addAdiacente(adiacenti.get(i));
-                    Nodo attuale = new Nodo(adiacenti.get(i));
+                    Nodo attuale;
+                    if(fatti.containsKey(adiacenti.get(i))) {
+                        attuale = fatti.get(adiacenti.get(i));
+                    }
+                    else attuale = new Nodo(adiacenti.get(i));
+                    bfs.get(0).addAdiacente(attuale);
                     nodiAdiacenti.add(attuale);
                 }
             }
             if(nodiAdiacenti!=null) {
-                bfs.addAll(nodiAdiacenti);
+                for(int i=0; i<nodiAdiacenti.size(); i++) {
+                    if(!fatti.containsKey(nodiAdiacenti.get(i).getTronco())) {
+                        bfs.add(nodiAdiacenti.get(i));
+                        fatti.put(nodiAdiacenti.get(i).getTronco(),nodiAdiacenti.get(i));
+                    }
+                }
             }
             bfs.remove(0);
         }
