@@ -22,6 +22,5 @@ public class Server {
         }
 
         new JsonServer();
-
     }
 }
