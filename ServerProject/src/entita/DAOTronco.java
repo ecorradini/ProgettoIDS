@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DAOTronco {
     static final String ID = "ID";
@@ -48,5 +50,101 @@ public class DAOTronco {
 
         System.out.println("RESPONSE: " + json);
         return json;
+    }
+
+    public static Tronco selectPrimoTroncoPiano(String piano) {
+        Connection conn = DatabaseConnection.getConn();
+        Tronco risultato = null;
+
+        String query = "SELECT TOP 1 ID,X,Y,XF,YF" +
+                " FROM TRONCO" +
+                " WHERE PIANO = \'"+piano+"\'";
+
+        try {
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(query);
+
+            while(rs.next()) {
+            risultato = new Tronco(rs.getInt(DAOTronco.ID),rs.getFloat(DAOTronco.X),rs.getFloat(DAOTronco.Y)
+                        ,rs.getFloat(DAOTronco.XF),rs.getFloat(DAOTronco.YF));
+            }
+
+            rs.close();
+            stm.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return risultato;
+    }
+
+    public static HashMap<Integer,Tronco> selectTronchiDelPiano(String piano) {
+        Connection conn = DatabaseConnection.getConn();
+        HashMap<Integer,Tronco> risultato = new HashMap<>();
+
+        String query = "SELECT ID,X,Y,XF,YF" +
+                       " FROM TRONCO" +
+                       " WHERE PIANO = \'"+piano+"\'";
+
+        try {
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(query);
+
+            while(rs.next()) {
+                risultato.put(rs.getInt(DAOTronco.ID),new Tronco(rs.getInt(DAOTronco.ID),rs.getFloat(DAOTronco.X),rs.getFloat(DAOTronco.Y)
+                        ,rs.getFloat(DAOTronco.XF),rs.getFloat(DAOTronco.YF)));
+            }
+
+            rs.close();
+            stm.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return risultato;
+    }
+
+    public static ArrayList<Integer> selectTronchiAdiacenti(Tronco t) {
+        Connection conn = DatabaseConnection.getConn();
+        ArrayList<Integer> risultato = new ArrayList<>();
+
+        String query = "SELECT TRONCO.ID" +
+                       " FROM TRONCO," +
+                       "( SELECT TRONCO.ID as IDINIZIO," +
+                       " TRONCO.X  as XINIZIO," +
+                       " TRONCO.Y  as YINIZIO," +
+                       " TRONCO.XF as XFINIZIO," +
+                       " TRONCO.YF as YFINIZIO" +
+                       " FROM TRONCO" +
+                       " WHERE TRONCO.ID = "+ t.getID() +
+                       ") AS TRONCOINIZIO" +
+                       " WHERE ((TRONCO.X=TRONCOINIZIO.XINIZIO" +
+                       " AND TRONCO.Y=TRONCOINIZIO.YINIZIO)" +
+                       " OR (TRONCO.XF=TRONCOINIZIO.XINIZIO" +
+                       " AND TRONCO.YF=TRONCOINIZIO.YINIZIO)" +
+                       " OR (TRONCO.X=TRONCOINIZIO.XFINIZIO" +
+                       " AND TRONCO.Y=TRONCOINIZIO.YFINIZIO)" +
+                       " OR (TRONCO.XF=TRONCOINIZIO.XFINIZIO" +
+                       " AND TRONCO.YF=TRONCOINIZIO.YFINIZIO))" +
+                       " AND TRONCO.ID <> TRONCOINIZIO.IDINIZIO";
+
+        try {
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(query);
+
+            while(rs.next()) {
+                risultato.add(rs.getInt(DAOTronco.TABLE_TRONCO+"."+DAOTronco.ID));
+            }
+
+            rs.close();
+            stm.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return risultato;
     }
 }

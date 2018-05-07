@@ -13,6 +13,7 @@ public class DAOBeacon {
     static final String Y = "Y";
     static final String TRONCO = "TRONCO";
     static final String UTENTI = "UTENTI";
+    static final String USCITA = "USCITA";
     static final String TABLE_BEACON = "BEACON";
 
     public static String selectPosizioneById(String idBeacon) {
