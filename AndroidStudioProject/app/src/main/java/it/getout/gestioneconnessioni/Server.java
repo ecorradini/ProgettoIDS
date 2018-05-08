@@ -27,6 +27,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,10 +62,16 @@ public class Server extends GestoreDati
     private static final String SERV_MAPPAPIANO = "/mappapiano?";       //URL tronchi da piano
     private static final String SERV_SUMUSER = "/sommautente?";         //UTL aggiunta utente
 
+    private static InetAddress IP;
+
     private Context context;
 
     public Server(Context c) {
         context = c;
+    }
+
+    public static void setServerIp(InetAddress Ip){
+        IP = Ip;
     }
 
     @Override
