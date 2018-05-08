@@ -111,4 +111,26 @@ public class DAOBeacon {
             return false;
         }
     }
+
+    public static int getNumeroPersoneByTroncoId(int tronco){
+        int persone=0;
+
+        Connection conn = DatabaseConnection.getConn();
+        String query = "SELECT SUM("+UTENTI+") FROM "+TABLE_BEACON+" WHERE "+TRONCO+" = "+tronco;
+
+        try {
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(query);
+
+            persone = rs.getRow();
+
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return persone;
+
+    }
+
 }

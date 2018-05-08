@@ -2,48 +2,50 @@ package entita;
 
 import connessioni.DatabaseConnection;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import javax.print.attribute.standard.PresentationDirection;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DAOParametri {
-    static final String TRONCO = "TRONCO";
-    static final String VULNERABILITA = "VULN";
-    static final String RISCHIOSITA = "RV";
-    static final String PRESENZAFUMO = "PF";
+    static final String TRONCO = "TRONCO";  //id del tronco di riferimento
+    static final String VULNERABILITA = "VULN"; //parametro reale (probabilità di incendio per quel tronco)
+    static final String RISCHIOVITA = "RV"; // parametro reale
+    static final String PRESENZAFUMO = "PF"; // parametro di tipo boolean
     static final String TABLE_PARAMETRI = "PARAMETRI";
 
-    public static String selectParametri(int tronco){
+    public static ArrayList<Float> selectParametri(int tronco){
         Connection conn = DatabaseConnection.getConn();
-        String json="{\""+tronco+"\":[";
 
-        String query =  "SELECT "+VULNERABILITA+","+RISCHIOSITA+","+PRESENZAFUMO+","+
-                " FROM "+TABLE_PARAMETRI+ " WHERE "+TRONCO+"=\'"+tronco+"\'";
+        ArrayList<Float> tronchi;
+
+        String query =  "SELECT "+VULNERABILITA+","+RISCHIOVITA+","+PRESENZAFUMO+","+
+                " FROM "+TABLE_PARAMETRI+" WHERE "+TRONCO+"="+tronco;
 
         try {
+            tronchi = new ArrayList<>();
+
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(query);
 
             while(rs.next()) {
-                json = json + "{\"PARAMETRI\":{\"VULN\":\""+rs.getInt(VULNERABILITA)+"\",\"RV\":\""+rs.getFloat(RISCHIOSITA)+"\",\"PF\":\""+rs.getFloat(PRESENZAFUMO)+"\",}},";
+
+                tronchi.add(rs.getFloat(VULNERABILITA));
+                tronchi.add(rs.getFloat(RISCHIOVITA));
+                tronchi.add(rs.getFloat(PRESENZAFUMO));
+
             }
 
             rs.close();
             stm.close();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
+            tronchi=null;
             e.printStackTrace();
         }
-        finally {
-            //Eliminare la virgola finale
-            if(json.substring(json.length() - 1,json.length()).equals(",")) {
-                json = json.substring(0, json.length() - 1);
-            }
-            json = json + "]}";
-        }
 
-        return json;
+
+        return tronchi;
     }
 
     public static boolean controllaEmergenza(){
@@ -51,7 +53,7 @@ public class DAOParametri {
 
         Connection conn = DatabaseConnection.getConn();
 
-        String query =  "SELECT "+RISCHIOSITA+
+        String query =  "SELECT "+RISCHIOVITA+
                 " FROM "+TABLE_PARAMETRI;
 
         try {
@@ -59,7 +61,7 @@ public class DAOParametri {
             ResultSet rs = stm.executeQuery(query);
 
             while(rs.next() || !emergenza) {
-                if(rs.getFloat(RISCHIOSITA)==1){
+                if(rs.getFloat(RISCHIOVITA)==1){
                     emergenza = true;
                 }
             }
