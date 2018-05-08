@@ -157,4 +157,8 @@ public class Client extends AppCompatActivity {
             }
         }.start();
     }
+
+
+    //aggiunto per la notifica richiamato in httpreceiverthread
+    public static void launchNotification(){}
 }
