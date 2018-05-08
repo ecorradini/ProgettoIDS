@@ -21,6 +21,9 @@ public class Server {
             e.printStackTrace();
         }
 
+        Thread discoveryThread = new Thread(DiscoveryIP.getInstance());
+        discoveryThread.start();
+
         new JsonServer();
     }
 }
