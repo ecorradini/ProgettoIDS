@@ -1,5 +1,7 @@
 package connessioni;
 
+import entita.DAOUtente;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -33,6 +35,8 @@ public class DiscoveryIP implements Runnable{
                     //Send a response
                     DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, packet.getAddress(), packet.getPort());
                     socket.send(sendPacket);
+
+                    DAOUtente.insertUtente(sendPacket.getAddress().getHostAddress());
                 }
             }
         } catch (IOException ex) {
