@@ -53,7 +53,7 @@ import it.getout.gestioneposizione.Tronco;
 public class Server extends GestoreDati
 {
 
-    private static final String BASE_URL = "http://192.168.0.115:9600";
+    //private static final String BASE_URL = "http://192.168.0.115:9600";
     //private static final String BASE_URL = "http://192.168.1.184:9600";
     //private static final String BASE_URL = "http://172.23.134.169:9600";
     private static final String SERV_PERCORSO = "/percorso";            //URL percorso
@@ -67,7 +67,7 @@ public class Server extends GestoreDati
     private static final String SERV_MAPPAPIANO = "/mappapiano?";       //URL tronchi da piano
     private static final String SERV_SUMUSER = "/sommautente?";         //UTL aggiunta utente
 
-    private static InetAddress IP;
+    private static String BASE_URL;
 
     private DatagramSocket c;
 
@@ -76,12 +76,91 @@ public class Server extends GestoreDati
     public Server(Context c) {
         context = c;
 
-        DiscoverIP();
+        Thread discovery = new Thread(){
+            public void run(){
+                discoverIP();
+            }
+        };
+
+        discovery.start();
+        try {
+            discovery.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
-    public static void setServerIp(InetAddress Ip){
-        IP = Ip;
+
+    public void discoverIP(){
+
+        // Find the server using UDP broadcast
+        try {
+            //Open a random port to send the package
+            c = new DatagramSocket();
+            c.setBroadcast(true);
+
+            byte[] sendData = "GETOUT".getBytes();
+
+            //Try the 255.255.255.255 first-
+            try {
+                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("255.255.255.255"), 9600);
+                c.send(sendPacket);
+                System.out.println(getClass().getName() + ">>> Request packet sent to: 255.255.255.255 (DEFAULT)");
+            } catch (Exception e) {
+            }
+
+            // Broadcast the message over all the network interfaces
+            Enumeration interfaces = NetworkInterface.getNetworkInterfaces();
+            while (interfaces.hasMoreElements()) {
+                NetworkInterface networkInterface = (NetworkInterface) interfaces.nextElement();
+
+                if (networkInterface.isLoopback() || !networkInterface.isUp()) {
+                    continue; // Don't want to broadcast to the loopback interface
+                }
+
+                for (InterfaceAddress interfaceAddress : networkInterface.getInterfaceAddresses()) {
+                    InetAddress broadcast = interfaceAddress.getBroadcast();
+                    if (broadcast == null) {
+                        continue;
+                    }
+
+                    // Send the broadcast package!
+                    try {
+                        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, broadcast, 9600);
+                        c.send(sendPacket);
+                    } catch (Exception e) {
+                    }
+
+                    System.out.println(getClass().getName() + ">>> Request packet sent to: " + broadcast.getHostAddress() + "; Interface: " + networkInterface.getDisplayName());
+                }
+            }
+
+            System.out.println(getClass().getName() + ">>> Done looping over all network interfaces. Now waiting for a reply!");
+
+            //Wait for a response
+            byte[] recvBuf = new byte[15];
+            DatagramPacket receivePacket = new DatagramPacket(recvBuf, recvBuf.length);
+            c.receive(receivePacket);
+
+            //We have a response
+            System.out.println(getClass().getName() + ">>> Broadcast response from server: " + receivePacket.getAddress().getHostAddress());
+
+            //Check if the message is correct
+            String message = new String(receivePacket.getData()).trim();
+            Log.e("message",message);
+            if(message.equals("GETOUT_R")) {
+                //DO SOMETHING WITH THE SERVER'S IP (for example, store it in your controller)
+                BASE_URL = "http:/"+receivePacket.getAddress()+":9600";
+            }
+
+            //Close the port!
+            c.close();
+        } catch (IOException ex) {
+            Log.i("IP","problema nel ricercare server");
+
+        }
     }
+
 
     @Override
     public Edificio richiediEdificioAttuale(String beacon) {
@@ -877,73 +956,5 @@ public class Server extends GestoreDati
         }
     }
 
-    public void DiscoverIP(){
 
-        // Find the server using UDP broadcast
-        try {
-            //Open a random port to send the package
-            c = new DatagramSocket();
-            c.setBroadcast(true);
-
-            byte[] sendData = "DISCOVER_FUIFSERVER_REQUEST".getBytes();
-
-            //Try the 255.255.255.255 first-
-            try {
-                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("255.255.255.255"), 9600);
-                c.send(sendPacket);
-                System.out.println(getClass().getName() + ">>> Request packet sent to: 255.255.255.255 (DEFAULT)");
-            } catch (Exception e) {
-            }
-
-            // Broadcast the message over all the network interfaces
-            Enumeration interfaces = NetworkInterface.getNetworkInterfaces();
-            while (interfaces.hasMoreElements()) {
-                NetworkInterface networkInterface = (NetworkInterface) interfaces.nextElement();
-
-                if (networkInterface.isLoopback() || !networkInterface.isUp()) {
-                    continue; // Don't want to broadcast to the loopback interface
-                }
-
-                for (InterfaceAddress interfaceAddress : networkInterface.getInterfaceAddresses()) {
-                    InetAddress broadcast = interfaceAddress.getBroadcast();
-                    if (broadcast == null) {
-                        continue;
-                    }
-
-                    // Send the broadcast package!
-                    try {
-                        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, broadcast, 9600);
-                        c.send(sendPacket);
-                    } catch (Exception e) {
-                    }
-
-                    System.out.println(getClass().getName() + ">>> Request packet sent to: " + broadcast.getHostAddress() + "; Interface: " + networkInterface.getDisplayName());
-                }
-            }
-
-            System.out.println(getClass().getName() + ">>> Done looping over all network interfaces. Now waiting for a reply!");
-
-            //Wait for a response
-            byte[] recvBuf = new byte[15];
-            DatagramPacket receivePacket = new DatagramPacket(recvBuf, recvBuf.length);
-            c.receive(receivePacket);
-
-            //We have a response
-            System.out.println(getClass().getName() + ">>> Broadcast response from server: " + receivePacket.getAddress().getHostAddress());
-
-            //Check if the message is correct
-            String message = new String(receivePacket.getData()).trim();
-            if(message.equals("DISCOVER_FUIFSERVER_RESPONSE")) {
-                //DO SOMETHING WITH THE SERVER'S IP (for example, store it in your controller)
-                IP = receivePacket.getAddress();
-                Log.e("IP",receivePacket.getAddress().toString());
-            }
-
-            //Close the port!
-            c.close();
-        } catch (IOException ex) {
-            Log.i("IP","problema nel ricercare server");
-
-        }
-    }
 }
