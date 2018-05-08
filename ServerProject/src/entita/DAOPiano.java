@@ -41,8 +41,6 @@ public class DAOPiano {
 
         String json = "{"+"\"PIANO_ATTUALE\":\""+nomePiano+"\""+"}";
 
-        System.out.println("RESPONSE: "+json);
-
         return json;
     }
 

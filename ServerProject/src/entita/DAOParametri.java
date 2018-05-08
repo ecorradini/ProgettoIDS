@@ -43,7 +43,6 @@ public class DAOParametri {
             json = json + "]}";
         }
 
-        System.out.println("RESPONSE: " + json);
         return json;
     }
 

@@ -44,7 +44,6 @@ public class DAOAula {
             json = json + "]}";
         }
 
-        System.out.println("RESPONSE: " + json);
         return json;
     }
 }

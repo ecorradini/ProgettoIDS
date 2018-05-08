@@ -164,7 +164,6 @@ public class JsonServer {
                         try {
                             String path = Server.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("/ServerProject.jar","");
                             String link = DAOMappa.selectMappaByPiano(arg0.getRequestURI().getQuery());
-                            System.out.println(path+link);
 
                             File file = new File(path+link);
                             arg0.sendResponseHeaders(200, file.length());

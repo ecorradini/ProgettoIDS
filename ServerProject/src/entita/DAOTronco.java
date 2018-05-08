@@ -48,7 +48,6 @@ public class DAOTronco {
             json = json + "]}";
         }
 
-        System.out.println("RESPONSE: " + json);
         return json;
     }
 

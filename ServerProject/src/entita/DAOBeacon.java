@@ -38,8 +38,6 @@ public class DAOBeacon {
             e.printStackTrace();
         }
 
-        System.out.println("RESPONSE: "+json);
-
         return json;
     }
 

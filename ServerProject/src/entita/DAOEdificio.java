@@ -42,7 +42,6 @@ public class DAOEdificio {
 
         String json = "{"+"\"EDIFICIO_ATTUALE\":\""+nomeEdificio+"\""+"}";
 
-        System.out.println("RESPONSE: "+json);
 
         return json;
     }
