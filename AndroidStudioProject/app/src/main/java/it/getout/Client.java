@@ -10,7 +10,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,9 +18,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import it.getout.fragments.FragmentEmergenza;
-import it.getout.gestioneconnessioni.DiscoverIP;
 import it.getout.gestioneposizione.GestoreEntita;
-import it.getout.gestioneposizione.Posizione;
 import it.getout.gestionevisualizzazionemappa.MappaFragment;
 
 public class Client extends AppCompatActivity {
@@ -44,8 +41,6 @@ public class Client extends AppCompatActivity {
         gestore = new GestoreEntita(this);
 
         startLoading();
-
-        DiscoverIP IP = new DiscoverIP();
 
         if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMESSO_LOCATION);
