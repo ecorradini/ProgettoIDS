@@ -14,12 +14,12 @@ public class DAOUtente {
         Connection conn = DatabaseConnection.getConn();
 
         String query = "INSERT INTO "+TABLE_UTENTE+" VALUES(\'"+ip+"\')";
-        System.out.println(ip);
 
         try {
             Statement stm = conn.createStatement();
-            stm.executeQuery(query);
+            ResultSet rs = stm.executeQuery(query);
 
+            rs.close();
             stm.close();
 
         } catch (SQLException e) {
