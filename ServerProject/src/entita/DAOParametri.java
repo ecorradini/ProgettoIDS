@@ -14,7 +14,7 @@ public class DAOParametri {
     static final String PRESENZAFUMO = "PF";
     static final String TABLE_PARAMETRI = "PARAMETRI";
 
-    public static final String selectParametri(int tronco){
+    public static String selectParametri(int tronco){
         Connection conn = DatabaseConnection.getConn();
         String json="{\""+tronco+"\":[";
 
@@ -46,19 +46,19 @@ public class DAOParametri {
         return json;
     }
 
-    public static final boolean controllaEmergenza(){
+    public static boolean controllaEmergenza(){
         boolean emergenza = false;
 
         Connection conn = DatabaseConnection.getConn();
 
-        String query =  "SELECT "+RISCHIOSITA+","+
+        String query =  "SELECT "+RISCHIOSITA+
                 " FROM "+TABLE_PARAMETRI;
 
         try {
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(query);
 
-            while(rs.next() || emergenza!= true) {
+            while(rs.next() || !emergenza) {
                 if(rs.getFloat(RISCHIOSITA)==1){
                     emergenza = true;
                 }

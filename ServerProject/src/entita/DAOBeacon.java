@@ -93,4 +93,22 @@ public class DAOBeacon {
             return false;
         }
     }
+
+    public static boolean removeUser(String beaconID) {
+        Connection conn = DatabaseConnection.getConn();
+        String query = "UPDATE "+TABLE_BEACON+" SET "+UTENTI+" = (SELECT "+UTENTI+" FROM"+ TABLE_BEACON+" WHERE "+ID+" =\'"+beaconID+"\')-1 WHERE "+ID+" = \'"+beaconID+"\'";
+
+        try {
+            Statement stm = conn.createStatement();
+            stm.executeUpdate(query);
+
+            stm.close();
+
+            return true;
+
+        } catch(SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

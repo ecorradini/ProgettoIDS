@@ -67,4 +67,6 @@ public class Server {
             e.printStackTrace();
         }
     }
+
+    public static HashMap<String,HashMap<String,GrafoTronchi>> getGrafiPiani() { return grafiPiani; }
 }
