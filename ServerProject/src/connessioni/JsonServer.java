@@ -178,7 +178,7 @@ public class JsonServer {
             }
         });
 
-        server.createContext("/parametri", new HttpHandler() {
+        /*server.createContext("/parametri", new HttpHandler() {
             public void handle(HttpExchange arg0) throws IOException {
                 new Thread(){
                     public void run()  {
@@ -194,7 +194,7 @@ public class JsonServer {
                     }
                 }.start();
             }
-        });
+        });*/
 
         server.createContext("/controllaEmergenza", new HttpHandler() {
             public void handle(HttpExchange arg0) throws IOException {

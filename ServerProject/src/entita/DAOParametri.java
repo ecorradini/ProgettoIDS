@@ -53,17 +53,16 @@ public class DAOParametri {
 
         Connection conn = DatabaseConnection.getConn();
 
-        String query =  "SELECT "+RISCHIOVITA+
-                " FROM "+TABLE_PARAMETRI;
+        String query =  "SELECT COUNT("+RISCHIOVITA+") AS EMERGENZE"+
+                " FROM "+TABLE_PARAMETRI+" WHERE "+RISCHIOVITA+"=1";
 
         try {
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(query);
 
-            while(rs.next() || !emergenza) {
-                if(rs.getFloat(RISCHIOVITA)==1){
-                    emergenza = true;
-                }
+            while (rs.next()) {
+                int countRischio = rs.getInt("EMERGENZE");
+                if (countRischio > 0) emergenza = true;
             }
 
             rs.close();

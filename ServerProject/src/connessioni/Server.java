@@ -4,6 +4,7 @@ package connessioni;
 import entita.DAOEdificio;
 import entita.DAOPiano;
 import entita.GrafoTronchi;
+import utilita.Emergenza;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -66,6 +67,9 @@ public class Server {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        //TEST
+        new Emergenza();
     }
 
     public static HashMap<String,HashMap<String,GrafoTronchi>> getGrafiPiani() { return grafiPiani; }
