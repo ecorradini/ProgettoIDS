@@ -19,7 +19,7 @@ public class DAOParametri {
 
         ArrayList<Float> tronchi;
 
-        String query =  "SELECT "+VULNERABILITA+","+RISCHIOVITA+","+PRESENZAFUMO+","+
+        String query =  "SELECT "+VULNERABILITA+","+RISCHIOVITA+","+PRESENZAFUMO+
                 " FROM "+TABLE_PARAMETRI+" WHERE "+TRONCO+"="+tronco;
 
         try {
@@ -43,7 +43,6 @@ public class DAOParametri {
             tronchi=null;
             e.printStackTrace();
         }
-
 
         return tronchi;
     }

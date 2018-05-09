@@ -7,14 +7,15 @@ import java.lang.Math;
 public class Tronco {
     private int id;
     private float x,y,xf,yf,larghezza;
-    private final float[] weight={0.2f,0.2f,0.2f,0.2f,0.2f}; // supponiamo che i primi tre valori siano legati ai "parametri", gli altri due alla "lunghezza" e "los"
+    private final float[] weight={0.2f,0.2f,0.2f,0.2f,0.2f}; // supponendo che i primi tre valori siano legati ai "parametri", gli altri due alla "lunghezza" e "los"
 
-    public Tronco(int id, float x, float y, float xf, float yf) {
+    public Tronco(int id, float x, float y, float xf, float yf, float larghezza) {
         this.id = id;
         this.x = x;
         this.y = y;
         this.xf = xf;
         this.yf = yf;
+        this.larghezza = larghezza;
     }
 
     public ArrayList<Tronco> richiediAdiacenti(HashMap<Integer,Tronco> tronchiPiano) {
@@ -35,20 +36,23 @@ public class Tronco {
         int numeroPersone;
 
         ArrayList<Float> parametri;  //1.VULNERABILITA  2.RISCHIOVITA  3.PRESENZAFUMO
-        parametri = new ArrayList<>(DAOParametri.selectParametri(id));
+        parametri = DAOParametri.selectParametri(id);
 
+        //calcolo peso con parametri 1, 2 e 3.
         for(int i=0; i<parametri.size(); i++){
             peso += parametri.get(i)*(weight[i]);
         }
 
-        numeroPersone = DAOBeacon.getNumeroPersoneByTroncoId(id);
+        numeroPersone = DAOBeacon.getNumeroPersoneInTronco(id);
         lunghezza = calcolaLunghezzaTronco();
-        peso  += lunghezza*weight[4]+(numeroPersone/(lunghezza*larghezza))*weight[5];
+
+        // aggiunta al peso le componenti di lunghezza e los (C'È DA NORMALIZZARE: PORTARE TUTTE LE VARIE COMPONENTI A VALORI COMPRESI TRA 0 E 1)
+        peso  += lunghezza*weight[3]+(numeroPersone/(lunghezza*larghezza))*weight[4];
 
         return peso;
     }
 
-    private float calcolaLunghezzaTronco(){
+    public float calcolaLunghezzaTronco(){
 
         float dx,dy;
         if (x==xf)
@@ -69,4 +73,5 @@ public class Tronco {
     public float getY() { return y; }
     public float getXF() { return xf; }
     public float getYF() { return yf; }
+    public float getLarghezza() { return larghezza; }
 }

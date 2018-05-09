@@ -10,9 +10,12 @@ public class GrafoTronchi {
 
         Tronco dato;
         ArrayList<Nodo> adiacenti;
+        float peso;
 
         Nodo(Tronco t) {
             dato = t;
+            peso = t.calcolaPesoTronco();
+            System.out.println("TRONCO "+t.getID()+" "+peso);
         }
 
         void addAdiacente(Nodo n) {
