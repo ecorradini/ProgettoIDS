@@ -817,8 +817,9 @@ public class Server extends GestoreDati
                             PointF inizio = new PointF(Float.parseFloat(current.getString("X")),Float.parseFloat(current.getString("Y")));
                             PointF fine = new PointF(Float.parseFloat(current.getString("XF")),Float.parseFloat(current.getString("YF")));
                             float larghezza = Float.parseFloat(current.getString("LARGHEZZA"));
+                            float lunghezza = Float.parseFloat(current.getString("LUNGHEZZA"));
 
-                            tronchi.add(new Tronco(id,inizio, fine, larghezza));
+                            tronchi.add(new Tronco(id,inizio, fine, larghezza, lunghezza));
                         }
 
                         downloaded = true;
