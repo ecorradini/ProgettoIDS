@@ -1,11 +1,13 @@
 package entita;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GrafoTronchi {
 
     class Nodo {
+
         Tronco dato;
         ArrayList<Nodo> adiacenti;
 
@@ -13,12 +15,14 @@ public class GrafoTronchi {
             dato = t;
         }
 
-        public void addAdiacente(Nodo n) {
+        void addAdiacente(Nodo n) {
             if(adiacenti==null) adiacenti = new ArrayList<>();
             adiacenti.add(n);
         }
 
-        public Tronco getTronco() { return dato; }
+        Tronco getTronco() { return dato; }
+
+        ArrayList<Nodo> getAdiacenti() { return adiacenti; }
     }
 
     private HashMap<Integer,Tronco> tronchiPiano;
