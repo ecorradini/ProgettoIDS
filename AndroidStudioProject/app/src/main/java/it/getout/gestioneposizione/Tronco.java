@@ -14,13 +14,15 @@ public class Tronco {
     private PointF inizio;
     private PointF fine;
     private float larghezza;
+    private float lunghezza;
     private HashMap<String,Beacon> beacons;
 
-    public Tronco(int id, PointF inizio, PointF fine, float larghezza){
+    public Tronco(int id, PointF inizio, PointF fine, float larghezza, float lunghezza){
         this.id = id;
         this.inizio = inizio;
         this.fine = fine;
         this.larghezza = larghezza;
+        this.lunghezza = lunghezza;
     }
 
     public int getId() { return id; }
@@ -35,6 +37,10 @@ public class Tronco {
 
     public float getLarghezza(){
         return larghezza;
+    }
+
+    public float getLunghezza(){
+        return lunghezza;
     }
 
     public Beacon getBeaconByID(String id){

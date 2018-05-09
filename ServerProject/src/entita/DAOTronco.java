@@ -16,6 +16,7 @@ public class DAOTronco {
     static final String XF = "XF";
     static final String YF = "YF";
     static final String LARGHEZZA = "LARGHEZZA";
+    static final String LUNGHEZZA = "LUNGHEZZA";
     static final String PIANO = "PIANO";
     static final String TABLE_TRONCO = "TRONCO";
 
@@ -23,7 +24,7 @@ public class DAOTronco {
         Connection conn = DatabaseConnection.getConn();
         String json="{\""+piano+"\":[";
 
-        String query =  "SELECT "+ID+","+LARGHEZZA+","+X+","+Y+","+XF+","+YF+
+        String query =  "SELECT "+ID+","+LARGHEZZA+","+LUNGHEZZA+","+X+","+Y+","+XF+","+YF+
                 " FROM "+TABLE_TRONCO+ " WHERE "+PIANO+"=\'"+piano+"\'";
 
         try {
@@ -31,7 +32,7 @@ public class DAOTronco {
             ResultSet rs = stm.executeQuery(query);
 
             while(rs.next()) {
-                json = json + "{\"TRONCO\":{\"ID\":\""+rs.getInt(ID)+"\",\"X\":\""+rs.getFloat(X)+"\",\"Y\":\""+rs.getFloat(Y)+"\",\"XF\":\""+rs.getFloat(XF)+"\",\"YF\":\""+rs.getFloat(YF)+"\",\"LARGHEZZA\":\""+rs.getFloat(LARGHEZZA)+"\"}},";
+                json = json + "{\"TRONCO\":{\"ID\":\""+rs.getInt(ID)+"\",\"X\":\""+rs.getFloat(X)+"\",\"Y\":\""+rs.getFloat(Y)+"\",\"XF\":\""+rs.getFloat(XF)+"\",\"YF\":\""+rs.getFloat(YF)+"\",\"LARGHEZZA\":\""+rs.getFloat(LARGHEZZA)+"\",\"LUNGHEZZA\":\""+rs.getFloat(LUNGHEZZA)+"\"}}";
             }
 
             rs.close();
@@ -55,7 +56,7 @@ public class DAOTronco {
         Connection conn = DatabaseConnection.getConn();
         HashMap<Integer,Tronco> risultato = new HashMap<>();
 
-        String query = "SELECT ID,X,Y,XF,YF,LARGHEZZA" +
+        String query = "SELECT ID,X,Y,XF,YF,LARGHEZZA,LUNGHEZZA" +
                        " FROM TRONCO" +
                        " WHERE PIANO = \'"+piano+"\'";
 
@@ -65,7 +66,7 @@ public class DAOTronco {
 
             while(rs.next()) {
                 risultato.put(rs.getInt(DAOTronco.ID),new Tronco(rs.getInt(DAOTronco.ID),rs.getFloat(DAOTronco.X),rs.getFloat(DAOTronco.Y)
-                        ,rs.getFloat(DAOTronco.XF),rs.getFloat(DAOTronco.YF), rs.getFloat(LARGHEZZA)));
+                        ,rs.getFloat(DAOTronco.XF),rs.getFloat(DAOTronco.YF), rs.getFloat(LARGHEZZA), rs.getFloat(LUNGHEZZA)));
             }
 
             rs.close();

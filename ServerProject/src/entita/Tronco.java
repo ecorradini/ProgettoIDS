@@ -6,16 +6,17 @@ import java.lang.Math;
 
 public class Tronco {
     private int id;
-    private float x,y,xf,yf,larghezza;
+    private float x,y,xf,yf,larghezza, lunghezza;
     private final float[] weight={0.2f,0.2f,0.2f,0.2f,0.2f}; // supponendo che i primi tre valori siano legati ai "parametri", gli altri due alla "lunghezza" e "los"
 
-    public Tronco(int id, float x, float y, float xf, float yf, float larghezza) {
+    public Tronco(int id, float x, float y, float xf, float yf, float larghezza, float lunghezza) {
         this.id = id;
         this.x = x;
         this.y = y;
         this.xf = xf;
         this.yf = yf;
         this.larghezza = larghezza;
+        this.lunghezza = lunghezza;
     }
 
     public ArrayList<Tronco> richiediAdiacenti(HashMap<Integer,Tronco> tronchiPiano) {
@@ -74,4 +75,5 @@ public class Tronco {
     public float getXF() { return xf; }
     public float getYF() { return yf; }
     public float getLarghezza() { return larghezza; }
+    public float getLunghezza() { return lunghezza; }
 }
