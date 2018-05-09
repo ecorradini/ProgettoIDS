@@ -52,10 +52,6 @@ import it.getout.gestioneposizione.Tronco;
 
 public class Server extends GestoreDati
 {
-
-    //private static final String BASE_URL = "http://192.168.0.115:9600";
-    //private static final String BASE_URL = "http://192.168.1.184:9600";
-    //private static final String BASE_URL = "http://172.23.134.169:9600";
     private static final String SERV_PERCORSO = "/percorso";            //URL percorso
     private static final String SERV_POSIZIONE = "/posizione?";
     private static final String SERV_PIANIEDI = "/pianiedificio?";      //URL piano da edificio
@@ -91,7 +87,7 @@ public class Server extends GestoreDati
     }
 
 
-    public void discoverIP(){
+    private void discoverIP(){
 
         // Find the server using UDP broadcast
         try {
@@ -442,6 +438,40 @@ public class Server extends GestoreDati
         }
 
         return attesaBeacon.getResult();
+    }
+
+    @Override
+    public ArrayList<Tronco> richiediPercorsoFuga(String beacon) {
+
+        class ThreadAttesaPercorso extends Thread {
+
+            private ArrayList<Tronco> percorso;
+            private String beacon;
+
+            private ThreadAttesaPercorso(String beacon) {
+                super();
+                this.beacon = beacon;
+            }
+
+            @Override
+            public void run() {
+                RichiediPercorsoTask task = new RichiediPercorsoTask();
+                task.execute(beacon);
+                percorso = task.getResult();
+            }
+
+            private ArrayList<Tronco> getResult() { return percorso; }
+        }
+
+        ThreadAttesaPercorso attesaPercorso = new ThreadAttesaPercorso(beacon);
+        attesaPercorso.start();
+        try {
+            attesaPercorso.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return attesaPercorso.getResult();
     }
 
     //AsyncTask che richiede l'edificio in base all'idbeacon connesso dal Server
@@ -957,5 +987,76 @@ public class Server extends GestoreDati
         }
     }
 
+    private class RichiediPercorsoTask extends AsyncTask<String,Void,Boolean> {
+
+        private String idBeacon;
+        private ArrayList<Tronco> percorso;
+        private boolean downloaded;
+
+        @Override
+        protected Boolean doInBackground(String... idbeacon)
+        {
+            Log.e("INIZIO TASK","PERCORSO");
+            downloaded = false;
+            idBeacon = idbeacon[0];
+            percorso = new ArrayList<>();
+            RequestQueue mRequestQueue;
+            //Metodi per il cache delle richieste JSON (Sembra che servano altrimenti non funziona)
+            Cache cache = new DiskBasedCache(context.getCacheDir(), 1024 * 1024);
+            Network network = new BasicNetwork(new HurlStack());
+            mRequestQueue = new RequestQueue(cache, network);
+            mRequestQueue.start();
+            //Url per la richiesta del percorso
+            String url = BASE_URL + SERV_PERCORSO + idBeacon;
+            //Instanzio la richiesta JSON
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                //Alla risposta
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        JSONArray arrayR = response.getJSONArray("PERCORSO");
+                        for(int i=0; i<arrayR.length(); i++) {
+                            int id = arrayR.getInt(i);
+                            Log.e("TRONCO FUGA",id+"");
+                            Tronco attuale = null;
+                            for(int j=0; j<Posizione.getPianoAttuale().getTronchi().size() && attuale==null; j++) {
+                                if(Posizione.getPianoAttuale().getTronchi().get(j).getId()==id) {
+                                    attuale = Posizione.getPianoAttuale().getTronchi().get(j);
+
+                                }
+                            }
+                            percorso.add(attuale);
+                        }
+                        downloaded = true;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("JSON ED ATTUALE ERROR", error.toString());
+                }
+            });
+            //Aggiungo la richiesta alla coda
+            mRequestQueue.add(jsonObjectRequest);
+
+            Log.e("FINE TASK","PERCORSO");
+
+            return true;
+        }
+
+        public ArrayList<Tronco> getResult() {
+            while(!downloaded) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return percorso;
+        }
+    }
 
 }

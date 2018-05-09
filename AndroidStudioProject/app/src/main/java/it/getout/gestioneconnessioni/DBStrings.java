@@ -45,6 +45,7 @@ public class DBStrings {
     public static final String COL_IMMAGINE="IMMAGINE";
     public static final String COL_TRONCO="TRONCO";
     public static final String COL_ENTRATA="ENTRATA";
+    public static final String COL_LUNGHEZZA="LUNGHEZZA";
 
 }
 

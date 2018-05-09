@@ -58,112 +58,119 @@ public class GestoreEntita {
         edificioAttuale.setPiani(pianiEdificio);
         //Poi scarico tutto il resto
         scaricaDatiRimanenti(pianiEdificio);
+
     }
 
     private void scaricaDatiRimanenti(ArrayList<Piano> pianiEdificio) {
 
-        ArrayList<Piano> altriPiani = reader.richiediPianiEdificio(Posizione.getEdificioAttuale().toString());
-        altriPiani.remove(pianiEdificio.get(0));
-        pianiEdificio.addAll(altriPiani);
+        try {
 
-        final ArrayList<Thread> threadsParalleli = new ArrayList<>();
+            ArrayList<Piano> altriPiani = reader.richiediPianiEdificio(Posizione.getEdificioAttuale().toString());
+            altriPiani.remove(pianiEdificio.get(0));
+            pianiEdificio.addAll(altriPiani);
 
-        class ThreadParallelo extends Thread {
+            final ArrayList<Thread> threadsParalleli = new ArrayList<>();
 
-            final ArrayList<Thread> threadsParalleliTronco = new ArrayList<>();
+            class ThreadParallelo extends Thread {
 
-            class ThreadParalleloTronco extends Thread {
-                private Tronco troncoAttuale;
+                final ArrayList<Thread> threadsParalleliTronco = new ArrayList<>();
 
-                private ThreadParalleloTronco(Tronco troncoAttuale) {
-                    this.troncoAttuale = troncoAttuale;
-                    threadsParalleliTronco.add(this);
+                class ThreadParalleloTronco extends Thread {
+                    private Tronco troncoAttuale;
+
+                    private ThreadParalleloTronco(Tronco troncoAttuale) {
+                        this.troncoAttuale = troncoAttuale;
+                        threadsParalleliTronco.add(this);
+                        start();
+                    }
+
+                    public void run() {
+                        HashMap<String, Beacon> beaconsTronco = reader.richiediBeaconTronco(troncoAttuale.getId());
+                        troncoAttuale.setBeacons(beaconsTronco);
+
+                        threadsParalleliTronco.remove(this);
+                    }
+                }
+
+                private Piano pianoAttuale;
+
+                private ThreadParallelo(Piano pianoAttuale) {
+                    this.pianoAttuale = pianoAttuale;
+                    threadsParalleli.add(this);
                     start();
                 }
 
                 public void run() {
-                    HashMap<String,Beacon> beaconsTronco = reader.richiediBeaconTronco(troncoAttuale.getId());
-                    troncoAttuale.setBeacons(beaconsTronco);
-
-                    threadsParalleliTronco.remove(this);
-                }
-            }
-
-            private Piano pianoAttuale;
-
-            private ThreadParallelo(Piano pianoAttuale) {
-                this.pianoAttuale = pianoAttuale;
-                threadsParalleli.add(this);
-                start();
-            }
-
-            public void run() {
-                ArrayList<Aula> aulePiano = reader.richiediAulePiano(pianoAttuale.toString());
-                pianoAttuale.setAule(aulePiano);
-                ArrayList<Tronco> tronchiPiano = reader.richiediTronchiPiano(pianoAttuale.toString());
-                for(int j=0; j<tronchiPiano.size(); j++) {
-                    new ThreadParalleloTronco(tronchiPiano.get(j));
-                }
-                Thread attesa = new Thread() {
-                    public void run() {
-                        while(threadsParalleliTronco.size()>0) {
-                            try {
-                                Thread.sleep(100);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
+                    ArrayList<Aula> aulePiano = reader.richiediAulePiano(pianoAttuale.toString());
+                    pianoAttuale.setAule(aulePiano);
+                    ArrayList<Tronco> tronchiPiano = reader.richiediTronchiPiano(pianoAttuale.toString());
+                    for (int j = 0; j < tronchiPiano.size(); j++) {
+                        new ThreadParalleloTronco(tronchiPiano.get(j));
+                    }
+                    Thread attesa = new Thread() {
+                        public void run() {
+                            while (threadsParalleliTronco.size() > 0) {
+                                try {
+                                    Thread.sleep(100);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
-                    }
-                };
-                attesa.start();
-                try {
-                    attesa.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                pianoAttuale.setTronchi(tronchiPiano);
-
-                threadsParalleli.remove(this);
-            }
-        }
-
-        for(int i=0; i<pianiEdificio.size(); i++) {
-            new ThreadParallelo(pianiEdificio.get(i));
-        }
-
-        Thread attesa = new Thread() {
-            public void run() {
-                while(threadsParalleli.size()>0) {
+                    };
+                    attesa.start();
                     try {
-                        Thread.sleep(100);
+                        attesa.join();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                    pianoAttuale.setTronchi(tronchiPiano);
+
+                    threadsParalleli.remove(this);
                 }
             }
-        };
-        attesa.start();
-        try {
-            attesa.join();
-        } catch (InterruptedException e) {
+
+            for (int i = 0; i < pianiEdificio.size(); i++) {
+                new ThreadParallelo(pianiEdificio.get(i));
+            }
+
+            Thread attesa = new Thread() {
+                public void run() {
+                    while (threadsParalleli.size() > 0) {
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            };
+            attesa.start();
+            try {
+                attesa.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+
+            boolean done = false;
+            for (int i = 0; i < Posizione.getEdificioAttuale().getPiani().size(); i++) {
+                Piano pianoAttuale = Posizione.getEdificioAttuale().getPiano(i);
+                for (int j = 0; j < pianoAttuale.getTronchi().size(); j++) {
+                    if (pianoAttuale.getTronchi().get(j).getBeacons().containsKey(Posizione.getIDBeaconAttuale())) {
+                        Posizione.setBeaconAttuale(pianoAttuale.getTronchi().get(j).getBeacons().get(Posizione.getIDBeaconAttuale()));
+                        done = true;
+                        break;
+                    }
+                }
+                if (done) break;
+            }
+        } catch (Exception e) {
+            Log.e(e.getCause().toString(),e.getMessage());
             e.printStackTrace();
+        } finally {
+            downloadFinished = true;
         }
-
-
-        boolean done = false;
-        for(int i=0;i<Posizione.getEdificioAttuale().getPiani().size(); i++) {
-            Piano pianoAttuale = Posizione.getEdificioAttuale().getPiano(i);
-            for(int j=0; j<pianoAttuale.getTronchi().size(); j++) {
-                if(pianoAttuale.getTronchi().get(j).getBeacons().containsKey(Posizione.getIDBeaconAttuale())) {
-                    Posizione.setBeaconAttuale(pianoAttuale.getTronchi().get(j).getBeacons().get(Posizione.getIDBeaconAttuale()));
-                    done = true;
-                    break;
-                }
-            }
-            if(done) break;
-        }
-
-        downloadFinished = true;
     }
 
     private void initBluetooth(Context c) {

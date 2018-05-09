@@ -124,7 +124,7 @@ public class Database extends GestoreDati {
     public ArrayList<Tronco> richiediTronchiPiano(String nomePiano) {
         SQLiteDatabase db = connessione.getReadableDatabase();
 
-        String sql = " SELECT "+DBStrings.COL_ID+","+DBStrings.COL_LARGHEZZA+","+DBStrings.COL_X+","+DBStrings.COL_Y+","+DBStrings.COL_XF+","+DBStrings.COL_YF+
+        String sql = " SELECT "+DBStrings.COL_ID+","+DBStrings.COL_LARGHEZZA+","+DBStrings.COL_LUNGHEZZA+","+DBStrings.COL_X+","+DBStrings.COL_Y+","+DBStrings.COL_XF+","+DBStrings.COL_YF+
                 " FROM "+DBStrings.TABLE_TRONCO+ " WHERE "+DBStrings.COL_PIANO+"="+nomePiano;
 
         Cursor res = db.rawQuery(sql,null);
@@ -135,7 +135,8 @@ public class Database extends GestoreDati {
                     res.getInt(res.getColumnIndex(DBStrings.COL_ID)),
                     new PointF(res.getFloat(res.getColumnIndex(DBStrings.COL_X)), res.getFloat(res.getColumnIndex(DBStrings.COL_Y))),
                     new PointF(res.getFloat(res.getColumnIndex(DBStrings.COL_XF)), res.getFloat(res.getColumnIndex(DBStrings.COL_YF))),
-                    res.getFloat(res.getColumnIndex(DBStrings.COL_LARGHEZZA))));
+                    res.getFloat(res.getColumnIndex(DBStrings.COL_LARGHEZZA)),
+                    res.getFloat(res.getColumnIndex(DBStrings.COL_LUNGHEZZA))));
         }
         res.close();
         db.close();
@@ -200,6 +201,12 @@ public class Database extends GestoreDati {
         db.close();
 
         return new Beacon(idBeacon,new PointF(Float.parseFloat(x),Float.parseFloat(y)));
+    }
+
+    @Override
+    public ArrayList<Tronco> richiediPercorsoFuga(String idBeacon) {
+        //TODO: BISOGNA CALCOLARE IL PERCORSO OFFLINE
+        return new ArrayList<>();
     }
 }
 

@@ -56,18 +56,23 @@ public class MappaFragment extends Fragment {
     }
 
 
-    /*public void disegnaPercorso() {
-        ArrayList<Tronco> percorso = Posizione.getPercorso().getTronchi();
-        //Instanzio un Bitmap temporaneo delle dimensioni dell'ImageView che lo conterrà
-        Bitmap tempMappa = Bitmap.createBitmap(immMappa.getMeasuredWidth(),immMappa.getMeasuredHeight(), Bitmap.Config.RGB_565);
-        Canvas tempCanvas = new Canvas(tempMappa);
-        //Disegno questo Bitmap in un canvas
-        tempCanvas.drawBitmap(tempMappa,0,0,null);
-        //Definisco il Paint di ciascun tronco selezionato
+    public void disegnaPercorso(ArrayList<Tronco> percorso) {
+
+        BitmapFactory.Options myOptions = new BitmapFactory.Options();
+        myOptions.inDither = true;
+        myOptions.inScaled = false;
+        myOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;// important
+        myOptions.inPurgeable = true;
+
         Paint paint = new Paint();
-        paint.setColor(Color.RED);
-        //Disegno il rettangolo per ogni tronco
-        for(int i=0; i<percorso.size(); i++) {
+        paint.setAntiAlias(true);
+        paint.setColor(Color.parseColor("#67c700"));
+
+
+        Bitmap workingBitmap = Bitmap.createBitmap(Mappa.getMappa());
+        Bitmap mutableBitmap = workingBitmap.copy(Bitmap.Config.ARGB_8888, true);
+
+        for(int i=0; i<percorso.size();i++) {
             /*
 
                 *------T------*
@@ -82,9 +87,8 @@ public class MappaFragment extends Fragment {
                 |             |
                 *------B------*
 
-             */
-
-         /*   //La coordinata left è la distanza del lato L dalla parte sinistra del canvas:
+            */
+            //La coordinata left è la distanza del lato L dalla parte sinistra del canvas:
             //quindi è dato dalla cordinata X di inizio del tronco - metà della larghezza
             float left = percorso.get(i).getInizio().x - (percorso.get(i).getLarghezza()/2);
             //La coordinata right è la distanza del lato R dalla parte sinistra del canvas:
@@ -97,13 +101,12 @@ public class MappaFragment extends Fragment {
             //quindi è la coordinata y di fine del tronco
             float bottom = percorso.get(i).getFine().y;
 
-            //Posso ora disegnare il rettangolo
-            tempCanvas.drawRect(new RectF(left,top,right,bottom),paint);
-
-            immMappa.setImageDrawable(new BitmapDrawable(getResources(),tempMappa));
+            Canvas canvas = new Canvas(mutableBitmap);
+            canvas.drawRect(new RectF(left,top,right,bottom),paint);
         }
 
-    }*/
+        immMappa.setImageBitmap(mutableBitmap);
+    }
 
     public void disegnaPosizione() {
 

@@ -29,4 +29,6 @@ public abstract class GestoreDati {
 
     public abstract Beacon richiediPosizione(String beacon);
 
+    public abstract ArrayList<Tronco> richiediPercorsoFuga(String beacon);
+
 }
