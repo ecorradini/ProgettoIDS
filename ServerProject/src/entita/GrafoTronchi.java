@@ -15,7 +15,6 @@ public class GrafoTronchi {
         Nodo(Tronco t) {
             dato = t;
             peso = t.calcolaPesoTronco();
-            System.out.println("TRONCO "+t.getID()+" "+peso);
         }
 
         void addAdiacente(Nodo n) {
@@ -26,6 +25,8 @@ public class GrafoTronchi {
         Tronco getTronco() { return dato; }
 
         ArrayList<Nodo> getAdiacenti() { return adiacenti; }
+
+        public float getPeso() { return peso; }
     }
 
     private HashMap<Integer,Tronco> tronchiPiano;
@@ -78,4 +79,8 @@ public class GrafoTronchi {
     }
 
     public String getPiano() { return piano; }
+
+    public HashMap<Integer,Tronco> getTronchiPiano() { return tronchiPiano; }
+
+    public Nodo getRadice() { return radice; }
 }

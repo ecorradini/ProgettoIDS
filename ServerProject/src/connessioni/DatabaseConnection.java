@@ -15,6 +15,7 @@ public class DatabaseConnection {
     public static void init() throws ClassNotFoundException, SQLException {
 
         try {
+
             //Chiedo la password del Server
             Console console = System.console();
             if (console == null) {
@@ -24,6 +25,7 @@ public class DatabaseConnection {
             console.printf("%n");
             char passwordArray[] = console.readPassword("Password del database: ");
             String password = new String(passwordArray);
+
 
             //String password = "getout2018@";
 

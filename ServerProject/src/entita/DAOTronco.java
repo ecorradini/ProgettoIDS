@@ -1,6 +1,7 @@
 package entita;
 
 import connessioni.DatabaseConnection;
+import connessioni.Server;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -124,5 +125,50 @@ public class DAOTronco {
             return risultato;
         }
         else return null;
+    }
+
+    public static GrafoTronchi.Nodo selectNodoByBeacon(String beacon, String edificio, String piano) {
+        Connection conn = DatabaseConnection.getConn();
+        String query = "SELECT TRONCO" +
+                " FROM BEACON" +
+                " WHERE BEACON.ID = \'"+beacon+"\'";
+
+        int tronco=0;
+
+        try {
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(query);
+
+            while(rs.next()) {
+                tronco = rs.getInt("TRONCO");
+            }
+
+            rs.close();
+            stm.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<GrafoTronchi.Nodo> visitati = new ArrayList<>();
+        ArrayList<GrafoTronchi.Nodo> daVisitare = new ArrayList<>();
+        daVisitare.add(Server.getGrafiPiani().get(edificio).get(piano).getRadice());
+
+        GrafoTronchi.Nodo risultato = null;
+
+        while(daVisitare.size()>0 && risultato==null) {
+            if(daVisitare.get(0).getTronco().getID()==tronco) {
+                risultato = daVisitare.get(0);
+            }
+            else {
+                if(!visitati.contains(daVisitare.get(0))) {
+                    daVisitare.addAll(daVisitare.get(0).getAdiacenti());
+                    visitati.add(daVisitare.get(0));
+                }
+                daVisitare.remove(0);
+            }
+        }
+
+        return risultato;
     }
 }

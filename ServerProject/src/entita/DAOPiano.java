@@ -44,6 +44,34 @@ public class DAOPiano {
         return json;
     }
 
+    public static String selectNomePiano(String idBeacon) {
+        Connection conn = DatabaseConnection.getConn();
+        String nomePiano = "";
+
+        String query =  "SELECT "+TABLE_PIANO+"."+NOME+" AS NOME_PIANO"+
+                " FROM "+DAOBeacon.TABLE_BEACON+","+DAOTronco.TABLE_TRONCO+","+TABLE_PIANO+","+DAOEdificio.TABLE_EDIFICIO+
+                " WHERE "+DAOBeacon.TABLE_BEACON+"."+DAOBeacon.ID+"=\'"+idBeacon+"\' AND "+
+                DAOBeacon.TABLE_BEACON+"."+DAOBeacon.TRONCO+"="+DAOTronco.TABLE_TRONCO+"."+DAOTronco.ID+" AND "+
+                TABLE_PIANO+"."+NOME+"="+DAOTronco.TABLE_TRONCO+"."+DAOTronco.PIANO+" AND "+TABLE_PIANO+
+                "."+EDIFICIO+" = "+DAOEdificio.TABLE_EDIFICIO+"."+DAOEdificio.NOME;
+
+        try {
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(query);
+
+            while(rs.next()) {
+                nomePiano = rs.getString("NOME_PIANO");
+            }
+
+            rs.close();
+            stm.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return nomePiano;
+    }
+
     public static String selectAllPianiByEdificio(String edificio) {
         Connection conn = DatabaseConnection.getConn();
         String json="{\""+edificio+"\":[";

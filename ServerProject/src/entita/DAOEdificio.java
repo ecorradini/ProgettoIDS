@@ -46,6 +46,36 @@ public class DAOEdificio {
         return json;
     }
 
+    public static String selectNomeEdificio(String idBeacon) {
+        Connection conn = DatabaseConnection.getConn();
+        String nomeEdificio = "";
+
+        String query = "SELECT "+TABLE_EDIFICIO+"."+NOME+" AS NOME_EDIFICIO"+
+                " FROM "+TABLE_EDIFICIO+","+DAOPiano.TABLE_PIANO+","+DAOTronco.TABLE_TRONCO+","+DAOBeacon.TABLE_BEACON+
+                " WHERE "+DAOBeacon.TABLE_BEACON+"."+DAOBeacon.TRONCO+"="+DAOTronco.TABLE_TRONCO+"."+DAOTronco.ID+" AND "+
+                DAOTronco.TABLE_TRONCO+"."+DAOTronco.PIANO+"="+DAOPiano.TABLE_PIANO+"."+DAOPiano.NOME+" AND "+
+                DAOPiano.TABLE_PIANO+"."+DAOPiano.EDIFICIO+"="+TABLE_EDIFICIO+"."+NOME+" AND "+
+                DAOBeacon.TABLE_BEACON+"."+DAOBeacon.ID+"=\'"+idBeacon+"\'";
+
+        try {
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(query);
+
+            while(rs.next()) {
+                nomeEdificio = rs.getString("NOME_EDIFICIO");
+            }
+
+            rs.close();
+            stm.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
+        return nomeEdificio;
+    }
+
     public static ArrayList<String> selectEdifici() {
         Connection conn = DatabaseConnection.getConn();
         ArrayList<String> edifici = new ArrayList<>();

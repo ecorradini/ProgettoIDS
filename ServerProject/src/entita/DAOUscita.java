@@ -1,21 +1,24 @@
 package entita;
 
 import connessioni.DatabaseConnection;
+import connessioni.Server;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DAOUscita {
 
-    public static ArrayList<String> getAllUscite(String beacon) {
+    public static ArrayList<Tronco> getTronchiUscita(String beacon,String edificio,String piano) {
         Connection conn = DatabaseConnection.getConn();
-        ArrayList<String> tronchiDaAttraversare = new ArrayList<>();
-        String query = "SELECT BEACONPIANO."+DAOBeacon.ID+" AS "+DAOBeacon.ID+
+        ArrayList<Tronco> tronchiDaAttraversare = new ArrayList<>();
+
+        String query = "SELECT BEACONPIANO."+DAOBeacon.TRONCO+" AS "+DAOBeacon.TRONCO+
                        " FROM "+
-                            "( SELECT "+DAOBeacon.TABLE_BEACON+"."+DAOBeacon.ID+" AS "+DAOBeacon.ID+","+
+                            "( SELECT "+DAOBeacon.TABLE_BEACON+"."+DAOBeacon.TRONCO+" AS "+DAOBeacon.TRONCO+","+
                                 DAOTronco.TABLE_TRONCO+"."+DAOTronco.PIANO+" AS "+DAOTronco.PIANO+","+DAOBeacon.TABLE_BEACON+"."+DAOBeacon.USCITA+" AS "+DAOBeacon.USCITA+
                             " FROM "+DAOBeacon.TABLE_BEACON+
                             " JOIN "+DAOTronco.TABLE_TRONCO+
@@ -34,8 +37,10 @@ public class DAOUscita {
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(query);
 
+            HashMap<Integer,Tronco> tronchiPiano = Server.getGrafiPiani().get(edificio).get(piano).getTronchiPiano();
+
             while(rs.next()) {
-                tronchiDaAttraversare.add(rs.getString(DAOBeacon.ID));
+                tronchiDaAttraversare.add(tronchiPiano.get(rs.getInt(DAOBeacon.TRONCO)));
             }
 
             rs.close();
