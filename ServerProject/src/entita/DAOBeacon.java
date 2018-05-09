@@ -112,7 +112,7 @@ public class DAOBeacon {
         }
     }
 
-    public static int getNumeroPersoneByTroncoId(int tronco){
+    public static int getNumeroPersoneInTronco(int tronco){
         int persone=0;
 
         Connection conn = DatabaseConnection.getConn();

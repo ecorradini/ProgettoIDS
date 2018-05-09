@@ -55,7 +55,7 @@ public class DAOTronco {
         Connection conn = DatabaseConnection.getConn();
         HashMap<Integer,Tronco> risultato = new HashMap<>();
 
-        String query = "SELECT ID,X,Y,XF,YF" +
+        String query = "SELECT ID,X,Y,XF,YF,LARGHEZZA" +
                        " FROM TRONCO" +
                        " WHERE PIANO = \'"+piano+"\'";
 
@@ -65,7 +65,7 @@ public class DAOTronco {
 
             while(rs.next()) {
                 risultato.put(rs.getInt(DAOTronco.ID),new Tronco(rs.getInt(DAOTronco.ID),rs.getFloat(DAOTronco.X),rs.getFloat(DAOTronco.Y)
-                        ,rs.getFloat(DAOTronco.XF),rs.getFloat(DAOTronco.YF)));
+                        ,rs.getFloat(DAOTronco.XF),rs.getFloat(DAOTronco.YF), rs.getFloat(LARGHEZZA)));
             }
 
             rs.close();
