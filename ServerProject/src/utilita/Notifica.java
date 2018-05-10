@@ -21,16 +21,20 @@ public class Notifica {
     private static int count;
 
 
-    public static Runnable notificationThread(String msg){
+    public static Runnable notificationThread(boolean stop, String msg){
         r = new Runnable() {
 
             @Override
             public void run() {
-                while(running){
-                    ArrayList<String> ipList = DAOUtente.getAllUtenti();
+                ArrayList<String> ipList = DAOUtente.getAllUtenti();
 
+                while(running){
                     String json =  "{ "
                             +"\"msg\" :" + "\""+ msg+"\" }";
+
+
+                    System.out.println(json);
+
 
                     count = 0;
                     for(int i=0;i<ipList.size();i++){
@@ -53,6 +57,9 @@ public class Notifica {
                             e.printStackTrace();
 
                         }
+
+
+                        //running=false;
 
                     }
                     //we have to reblock sending of messages
@@ -125,16 +132,16 @@ public class Notifica {
 
     }
 
-    public static void startThread(String msg){
+    public static void startThread(boolean s,String msg){
         if(t != null){
             if(!t.isAlive()){
-                notificationThread(msg);
+                notificationThread(s,msg);
                 t = new Thread(r);
                 running = true;
                 t.start();
             }
         }else{
-            Runnable r = notificationThread(msg);
+            Runnable r = notificationThread(s,msg);
             t = new Thread(r);
             t.start();
         }

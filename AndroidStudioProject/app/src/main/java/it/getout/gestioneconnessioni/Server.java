@@ -63,6 +63,8 @@ public class Server extends GestoreDati
     private static final String SERV_MAPPAPIANO = "/mappapiano?";       //URL tronchi da piano
     private static final String SERV_SUMUSER = "/sommautente?";         //UTL aggiunta utente
 
+    private static final String SERV_NOTIFICA ="/notifica?";
+
     private static String BASE_URL;
 
     private DatagramSocket c;
@@ -1058,5 +1060,85 @@ public class Server extends GestoreDati
             return percorso;
         }
     }
+
+
+
+
+    // notifica edoooo
+
+
+    private class RichiediNotificaTask extends AsyncTask<Void,Void,String> {
+
+        private String notifica;
+        private boolean downloaded;
+        //ArrayList<Piano> piani;
+
+        @Override
+        protected String doInBackground(Void...e) {
+
+            //La variabile da restituire
+            //risposta = new String();
+
+            piani = new ArrayList<>();
+            RequestQueue mRequestQueue;
+
+            //Metodi per il cache delle richieste JSON (Sembra che servano altrimenti non funziona)
+            Cache cache = new DiskBasedCache(context.getCacheDir(), 1024 * 1024);
+            Network network = new BasicNetwork(new HurlStack());
+            mRequestQueue = new RequestQueue(cache, network);
+            mRequestQueue.start();
+            //Url per la richiesta notifica
+            String url = BASE_URL + SERV_NOTIFICA;
+            //downloaded = false;
+
+            //Instanzio la richiesta JSON
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                //Alla risposta
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        //Prendo l'array "piani"
+                        JSONArray array = response.getJSONArray(edificio);
+                        if(array.length()>0) {
+                            for (int j = 0; j < array.length(); j++) {
+
+                                JSONObject current = array.getJSONObject(j);
+
+                                String nomePiano = current.getString("PIANO");
+                                //per ogni elemento di array, ricavo il nome del piano e inserisco il piano nell'arraylist
+                                //piani.add(new Piano(current.getString("nome")));
+                                piani.add(new Piano(nomePiano));
+                            }
+                        }
+                        downloaded = true;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            });
+            //Aggiungo la richiesta alla coda
+            mRequestQueue.add(jsonObjectRequest);
+
+            return true;
+        }
+
+        public ArrayList<Piano> getResult() {
+            while(!downloaded) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return piani;
+        }
+    }
+
 
 }

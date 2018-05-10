@@ -1,6 +1,8 @@
 package it.getout;
 
 import android.Manifest;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -18,8 +20,11 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import it.getout.fragments.FragmentEmergenza;
+import it.getout.gestioneconnessioni.Notifica;
 import it.getout.gestioneposizione.GestoreEntita;
 import it.getout.gestionevisualizzazionemappa.MappaFragment;
+
+
 
 public class Client extends AppCompatActivity {
 
@@ -30,10 +35,18 @@ public class Client extends AppCompatActivity {
     private GestoreEntita gestore;
     private MappaFragment mappaFragment;
 
+    private PendingIntent intentNotifica;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Intent intent = new Intent(this, Notifica.class);
+        intentNotifica = PendingIntent.getBroadcast(this, 0, intent, 0);
+
+
 
         loading = findViewById(R.id.cv_loading);
         loadingPhase2 = findViewById(R.id.cv_loading_phase2);
@@ -53,6 +66,8 @@ public class Client extends AppCompatActivity {
         }
 
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -159,6 +174,7 @@ public class Client extends AppCompatActivity {
     }
 
 
-    //aggiunto per la notifica richiamato in httpreceiverthread
-    public static void launchNotification(){}
+
+
+
 }
