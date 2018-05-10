@@ -52,7 +52,7 @@ import it.getout.gestioneposizione.Tronco;
 
 public class Server extends GestoreDati
 {
-    private static final String SERV_PERCORSO = "/percorso";            //URL percorso
+    private static final String SERV_PERCORSO = "/percorso?";            //URL percorso
     private static final String SERV_POSIZIONE = "/posizione?";
     private static final String SERV_PIANIEDI = "/pianiedificio?";      //URL piano da edificio
     private static final String SERV_EDIFICIO = "/edificioattuale?";    //URL edificio da idbeacon
@@ -1010,12 +1010,14 @@ public class Server extends GestoreDati
             mRequestQueue.start();
             //Url per la richiesta del percorso
             String url = BASE_URL + SERV_PERCORSO + idBeacon;
+            Log.e("PERCORSO URL",url);
             //Instanzio la richiesta JSON
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 //Alla risposta
                 @Override
                 public void onResponse(JSONObject response) {
                     try {
+                        Log.e("RISPOSTA PERCORSO",response.toString());
                         JSONArray arrayR = response.getJSONArray("PERCORSO");
                         for(int i=0; i<arrayR.length(); i++) {
                             int id = arrayR.getInt(i);
@@ -1037,7 +1039,7 @@ public class Server extends GestoreDati
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.d("JSON ED ATTUALE ERROR", error.toString());
+                    Log.d("JSON ERRORE PERCORSO", error.toString());
                 }
             });
             //Aggiungo la richiesta alla coda
@@ -1060,85 +1062,4 @@ public class Server extends GestoreDati
             return percorso;
         }
     }
-
-
-
-
-    // notifica edoooo
-
-
-    private class RichiediNotificaTask extends AsyncTask<Void,Void,String> {
-
-        private String notifica;
-        private boolean downloaded;
-        //ArrayList<Piano> piani;
-
-        @Override
-        protected String doInBackground(Void...e) {
-
-            //La variabile da restituire
-            //risposta = new String();
-
-            piani = new ArrayList<>();
-            RequestQueue mRequestQueue;
-
-            //Metodi per il cache delle richieste JSON (Sembra che servano altrimenti non funziona)
-            Cache cache = new DiskBasedCache(context.getCacheDir(), 1024 * 1024);
-            Network network = new BasicNetwork(new HurlStack());
-            mRequestQueue = new RequestQueue(cache, network);
-            mRequestQueue.start();
-            //Url per la richiesta notifica
-            String url = BASE_URL + SERV_NOTIFICA;
-            //downloaded = false;
-
-            //Instanzio la richiesta JSON
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-                //Alla risposta
-                @Override
-                public void onResponse(JSONObject response) {
-                    try {
-                        //Prendo l'array "piani"
-                        JSONArray array = response.getJSONArray(edificio);
-                        if(array.length()>0) {
-                            for (int j = 0; j < array.length(); j++) {
-
-                                JSONObject current = array.getJSONObject(j);
-
-                                String nomePiano = current.getString("PIANO");
-                                //per ogni elemento di array, ricavo il nome del piano e inserisco il piano nell'arraylist
-                                //piani.add(new Piano(current.getString("nome")));
-                                piani.add(new Piano(nomePiano));
-                            }
-                        }
-                        downloaded = true;
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-
-                }
-            });
-            //Aggiungo la richiesta alla coda
-            mRequestQueue.add(jsonObjectRequest);
-
-            return true;
-        }
-
-        public ArrayList<Piano> getResult() {
-            while(!downloaded) {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            return piani;
-        }
-    }
-
-
 }

@@ -10,8 +10,12 @@ import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import it.getout.Client;
 import it.getout.R;
+import it.getout.gestioneposizione.GestoreEntita;
+import it.getout.gestioneposizione.Tronco;
 
 public class FragmentEmergenza extends Fragment {
 
@@ -35,6 +39,23 @@ public class FragmentEmergenza extends Fragment {
             //textEmergenza.startAnimation(getBlinkAnimation());
 
             getFragmentManager().beginTransaction().replace(R.id.mappa_container, ((Client)getActivity()).getMappaFragment()).commit();
+
+            //((Client)getActivity()).getMappaFragment().disegnaPosizione();
+
+            new Thread() {
+                public void run() {
+                    GestoreEntita gestoreEntita = ((Client)getActivity()).getGestore();
+                    while(!gestoreEntita.isDownloadFinished()) {
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    ((Client)getActivity()).getMappaFragment().disegnaPercorso(gestoreEntita.scaricaPercorso());
+                }
+            }.start();
+
 
         }
         return view;

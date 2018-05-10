@@ -173,6 +173,10 @@ public class GestoreEntita {
         }
     }
 
+    public ArrayList<Tronco> scaricaPercorso() {
+        return reader.richiediPercorsoFuga(Posizione.getIDBeaconAttuale());
+    }
+
     private void initBluetooth(Context c) {
 
         BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();  // Local Bluetooth adapter

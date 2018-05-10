@@ -71,8 +71,6 @@ public class DAOBeacon {
             json = json + "]}";
         }
 
-        System.out.println("RESPONSE: "+json);
-
         return json;
     }
 

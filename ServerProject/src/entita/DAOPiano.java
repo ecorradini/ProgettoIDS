@@ -100,8 +100,6 @@ public class DAOPiano {
             json = json + "]}";
         }
 
-        System.out.println("RESPONSE: "+json);
-
         return json;
     }
 

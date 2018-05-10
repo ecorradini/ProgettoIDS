@@ -42,17 +42,16 @@ public class MappaFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.mappa_fragment, container, false);
+        if(view==null) {
+            view = inflater.inflate(R.layout.mappa_fragment, container, false);
 
-        immMappa = (TouchImageView)view.findViewById(R.id.image_mappa);
-        immMappa.setMaxZoom(4f);
-        return view;
-    }
+            immMappa = view.findViewById(R.id.image_mappa);
+            immMappa.setMaxZoom(4f);
+        }
 
-    @Override
-    public void onStart() {
-        super.onStart();
         disegnaPosizione();
+
+        return view;
     }
 
 
@@ -66,7 +65,7 @@ public class MappaFragment extends Fragment {
 
         Paint paint = new Paint();
         paint.setAntiAlias(true);
-        paint.setColor(Color.parseColor("#67c700"));
+        paint.setColor(Color.parseColor("#FF5252"));
 
 
         Bitmap workingBitmap = Bitmap.createBitmap(Mappa.getMappa());
@@ -90,19 +89,21 @@ public class MappaFragment extends Fragment {
             */
             //La coordinata left è la distanza del lato L dalla parte sinistra del canvas:
             //quindi è dato dalla cordinata X di inizio del tronco - metà della larghezza
-            float left = percorso.get(i).getInizio().x - (percorso.get(i).getLarghezza()/2);
+            float left = percorso.get(i).getInizio().x - 10;
             //La coordinata right è la distanza del lato R dalla parte sinistra del canvas:
             //quindi è dato da left + larghezza
-            float right = left + percorso.get(i).getLarghezza();
+            float right = left + 20;
             //La coordinata top è la distanza del lato T dalla parte superiore del canvas:
             //quindi è la coordinata y di inizio del tronco
             float top = percorso.get(i).getInizio().y;
             //La coorinata bottom è la distanza del lato B dalla parte superiore del canvas:
             //quindi è la coordinata y di fine del tronco
-            float bottom = percorso.get(i).getFine().y;
+            float bottom = percorso.get(i).getFine().y + 20;
 
             Canvas canvas = new Canvas(mutableBitmap);
             canvas.drawRect(new RectF(left,top,right,bottom),paint);
+
+            Log.d("DISEGNO RETTANGOLO:","("+left+","+top+","+right+","+bottom+")");
         }
 
         immMappa.setImageBitmap(mutableBitmap);

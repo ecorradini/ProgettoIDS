@@ -46,7 +46,7 @@ public class Client extends AppCompatActivity {
         Intent intent = new Intent(this, Notifica.class);
         intentNotifica = PendingIntent.getBroadcast(this, 0, intent, 0);
 
-
+        mappaFragment = MappaFragment.newInstance();
 
         loading = findViewById(R.id.cv_loading);
         loadingPhase2 = findViewById(R.id.cv_loading_phase2);
@@ -91,8 +91,6 @@ public class Client extends AppCompatActivity {
                         ActionBar bar = getSupportActionBar();
                         bar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryEmergenza)));
                         bar.setTitle("Modalità Emergenza");
-
-                        mappaFragment = MappaFragment.newInstance();
 
                         FragmentEmergenza emergenza = FragmentEmergenza.newInstance();
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_main, emergenza).commit();
@@ -174,7 +172,7 @@ public class Client extends AppCompatActivity {
     }
 
 
-
-
-
+    public GestoreEntita getGestore() {
+        return gestore;
+    }
 }

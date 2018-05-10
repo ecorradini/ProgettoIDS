@@ -33,7 +33,7 @@ public class DAOTronco {
             ResultSet rs = stm.executeQuery(query);
 
             while(rs.next()) {
-                json = json + "{\"TRONCO\":{\"ID\":\""+rs.getInt(ID)+"\",\"X\":\""+rs.getFloat(X)+"\",\"Y\":\""+rs.getFloat(Y)+"\",\"XF\":\""+rs.getFloat(XF)+"\",\"YF\":\""+rs.getFloat(YF)+"\",\"LARGHEZZA\":\""+rs.getFloat(LARGHEZZA)+"\",\"LUNGHEZZA\":\""+rs.getFloat(LUNGHEZZA)+"\"}}";
+                json = json + "{\"TRONCO\":{\"ID\":\""+rs.getInt(ID)+"\",\"X\":\""+rs.getFloat(X)+"\",\"Y\":\""+rs.getFloat(Y)+"\",\"XF\":\""+rs.getFloat(XF)+"\",\"YF\":\""+rs.getFloat(YF)+"\",\"LARGHEZZA\":\""+rs.getFloat(LARGHEZZA)+"\",\"LUNGHEZZA\":\""+rs.getFloat(LUNGHEZZA)+"\"}},";
             }
 
             rs.close();
@@ -129,6 +129,7 @@ public class DAOTronco {
 
     public static GrafoTronchi.Nodo selectNodoByBeacon(String beacon, String edificio, String piano) {
         Connection conn = DatabaseConnection.getConn();
+        System.out.println("PERCORSO PER "+beacon+" "+edificio+" "+piano);
         String query = "SELECT TRONCO" +
                 " FROM BEACON" +
                 " WHERE BEACON.ID = \'"+beacon+"\'";
@@ -141,6 +142,7 @@ public class DAOTronco {
 
             while(rs.next()) {
                 tronco = rs.getInt("TRONCO");
+                System.out.println("TRONCO DEL BEACON "+tronco);
             }
 
             rs.close();
