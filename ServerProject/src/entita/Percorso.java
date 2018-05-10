@@ -21,8 +21,9 @@ public class Percorso extends Thread {
     }
 
     public void run() {
-        Connection conn = DatabaseConnection.getConn();
         String json = "{PERCORSO:[";
+
+        System.out.println(beacon);
 
         String edificio = DAOEdificio.selectNomeEdificio(beacon);
         String piano = DAOPiano.selectNomePiano(beacon);

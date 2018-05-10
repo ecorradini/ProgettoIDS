@@ -53,7 +53,7 @@ import it.getout.gestioneposizione.Tronco;
 
 public class Server extends GestoreDati
 {
-    private static final String SERV_PERCORSO = "/percorso";            //URL percorso
+    private static final String SERV_PERCORSO = "/percorso?";            //URL percorso
     private static final String SERV_POSIZIONE = "/posizione?";
     private static final String SERV_PIANIEDI = "/pianiedificio?";      //URL piano da edificio
     private static final String SERV_EDIFICIO = "/edificioattuale?";    //URL edificio da idbeacon
