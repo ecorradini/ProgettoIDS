@@ -33,19 +33,21 @@ public class Tronco {
 
     public float calcolaPesoTronco(){
         float peso=0;
-        float lunghezza;
         int numeroPersone;
 
-        ArrayList<Float> parametri;  //1.VULNERABILITA  2.RISCHIOVITA  3.PRESENZAFUMO
+        ArrayList<Float> parametri;  //0.VULNERABILITA  1.RISCHIOVITA  2.PRESENZAFUMO
         parametri = DAOParametri.selectParametri(id);
 
         //calcolo peso con parametri 1, 2 e 3.
         for(int i=0; i<parametri.size(); i++){
-            peso += parametri.get(i)*(weight[i]);
+            if(i==1)
+                peso += parametri.get(i)*100*weight[i];
+            else {
+                peso += parametri.get(i) * weight[i];
+            }
         }
 
         numeroPersone = DAOBeacon.getNumeroPersoneInTronco(id);
-        lunghezza = calcolaLunghezzaTronco();
 
         // aggiunta al peso le componenti di lunghezza e los (C'È DA NORMALIZZARE: PORTARE TUTTE LE VARIE COMPONENTI A VALORI COMPRESI TRA 0 E 1)
         peso  += lunghezza*weight[3]+(numeroPersone/(lunghezza*larghezza))*weight[4];
@@ -53,20 +55,7 @@ public class Tronco {
         return peso;
     }
 
-    public float calcolaLunghezzaTronco(){
 
-        float dx,dy;
-        if (x==xf)
-            return Math.abs(yf-y);
-        else if(y==yf)
-            return Math.abs(xf-x);
-        else{
-            dx = Math.abs(xf-x);
-            dy = Math.abs(yf-y);
-            return (float)Math.sqrt(dx*dx+dy*dy);
-        }
-
-    }
 
 
     public int getID() { return id; }
