@@ -23,8 +23,6 @@ public class Percorso extends Thread {
     public void run() {
         String json = "{PERCORSO:[";
 
-        System.out.println(beacon);
-
         String edificio = DAOEdificio.selectNomeEdificio(beacon);
         String piano = DAOPiano.selectNomePiano(beacon);
         GrafoTronchi.Nodo partenza = DAOTronco.selectNodoByBeacon(beacon,edificio,piano);

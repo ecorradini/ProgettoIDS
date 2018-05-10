@@ -35,12 +35,7 @@ public class FragmentEmergenza extends Fragment {
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_emergenza, container, false);
 
-            //TextView textEmergenza = (TextView)view.findViewById(R.id.textEmergenza);
-            //textEmergenza.startAnimation(getBlinkAnimation());
-
             getFragmentManager().beginTransaction().replace(R.id.mappa_container, ((Client)getActivity()).getMappaFragment()).commit();
-
-            //((Client)getActivity()).getMappaFragment().disegnaPosizione();
 
             new Thread() {
                 public void run() {

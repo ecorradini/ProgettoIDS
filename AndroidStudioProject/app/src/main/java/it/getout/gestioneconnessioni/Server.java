@@ -1019,7 +1019,6 @@ public class Server extends GestoreDati
                         JSONArray arrayR = response.getJSONArray("PERCORSO");
                         for(int i=0; i<arrayR.length(); i++) {
                             int id = arrayR.getInt(i);
-                            Log.e("TRONCO FUGA",id+"");
                             Tronco attuale = null;
                             for(int j=0; j<Posizione.getPianoAttuale().getTronchi().size() && attuale==null; j++) {
                                 if(Posizione.getPianoAttuale().getTronchi().get(j).getId()==id) {
