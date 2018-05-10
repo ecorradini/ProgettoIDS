@@ -16,16 +16,16 @@ public class Emergenza {
                     //COSA DEVE FARE QUI:
                     //1. AGGIORNARE TUTTI I PARAMETRI DEI TRONCHI (PESI SU TUTTI I GRAFI)
                     //2. SE DAOParametri.controllaEmergenza==true allora invia notifica
-/*
-                    if(DAOParametri.controllaEmergenza() && !Notifica.isWorking()) {
-                        Notifica.startThread("EMERGENZA AIUTO AIUTO CIAOCIAO");
+
+                    if(DAOParametri.controllaEmergenza() && !NotificaServer.isWorking()) {
+                        //Notifica.startThread(true,"EMERGENZA AIUTO AIUTO CIAOCIAO");
+                        NotificaServer.getInstance();
                         System.out.println("EMERGENZA");
                     }
-                    else if(!DAOParametri.controllaEmergenza() && Notifica.isWorking()) {
-                        Notifica.stopThread();
+                    else if(!DAOParametri.controllaEmergenza() && NotificaServer.isWorking()) {
                         System.out.println("FINE EMERGENZA");
                     }
-*/
+
                     try {
                         Thread.sleep(30*1000);
                     } catch (InterruptedException e) {
