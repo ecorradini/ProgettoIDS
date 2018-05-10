@@ -226,6 +226,7 @@ public class JsonServer {
                         try {
                             Percorso percorso = new Percorso(arg0.getRequestURI().getQuery());
                             String response = percorso.getResult();
+                            System.out.println(response);
                             arg0.sendResponseHeaders(200, response.length());
                             OutputStream os = arg0.getResponseBody();
                             os.write(response.getBytes());

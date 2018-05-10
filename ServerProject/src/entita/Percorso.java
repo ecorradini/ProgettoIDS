@@ -111,15 +111,16 @@ public class Percorso extends Thread {
             ArrayList<GrafoTronchi.Nodo> adiacenti;
             PercorsoConCosto minore = frontiera.get(0);
             for(int j=0; j<frontiera.size(); j++) {
-                if(frontiera.get(j).getCosto() < frontiera.get(0).getCosto()) {
+                if(frontiera.get(j).getCosto() < minore.getCosto()) {
                     minore = frontiera.get(j);
                 }
             }
             adiacenti = minore.getUltimoNodo().getAdiacenti();
 
-            for (int i = 1; i < adiacenti.size(); i++) {
+            for (int i = 0; i < adiacenti.size(); i++) {
                 PercorsoConCosto daAggiungere = new PercorsoConCosto();
                 daAggiungere.aggiungiPadre(minore);
+                daAggiungere.sommaCosto(minore.getCosto());
                 daAggiungere.aggiungiNodo(adiacenti.get(i));
                 daAggiungere.sommaCosto(adiacenti.get(i).getPeso());
                 frontiera.add(daAggiungere);
