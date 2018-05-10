@@ -66,45 +66,50 @@ public class MappaFragment extends Fragment {
         Paint paint = new Paint();
         paint.setAntiAlias(true);
         paint.setColor(Color.parseColor("#FF5252"));
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(10);
 
 
         Bitmap workingBitmap = Bitmap.createBitmap(Mappa.getMappa());
         Bitmap mutableBitmap = workingBitmap.copy(Bitmap.Config.ARGB_8888, true);
 
-        for(int i=0; i<percorso.size();i++) {
-            /*
+        //Il primo lo disegno a partire dal beacon
+        Canvas canvas = new Canvas(mutableBitmap);
+        float startX0 = Posizione.getBeaconAttuale().getPosizione().x;
+        float starty0 = Posizione.getBeaconAttuale().getPosizione().y;
+        float endx0 = percorso.get(1).getInizio().x;
+        float endy0 = percorso.get(1).getInizio().y;
 
-                *------T------*
-                |             |
-                |             |
-                |             |
-                |             |
-                L             R
-                |             |
-                |             |
-                |             |
-                |             |
-                *------B------*
+        canvas.drawLine(startX0,starty0,endx0,endy0,paint);
 
-            */
+        for(int i=1; i<percorso.size();i++) {
+
             //La coordinata left è la distanza del lato L dalla parte sinistra del canvas:
             //quindi è dato dalla cordinata X di inizio del tronco - metà della larghezza
-            float left = percorso.get(i).getInizio().x - 10;
+            float startX = percorso.get(i).getInizio().x;
             //La coordinata right è la distanza del lato R dalla parte sinistra del canvas:
             //quindi è dato da left + larghezza
-            float right = left + 20;
+            float startY = percorso.get(i).getInizio().y;
             //La coordinata top è la distanza del lato T dalla parte superiore del canvas:
             //quindi è la coordinata y di inizio del tronco
-            float top = percorso.get(i).getInizio().y;
+            float stopX = percorso.get(i).getFine().x;
             //La coorinata bottom è la distanza del lato B dalla parte superiore del canvas:
             //quindi è la coordinata y di fine del tronco
-            float bottom = percorso.get(i).getFine().y + 20;
+            float stopY = percorso.get(i).getFine().y;
 
-            Canvas canvas = new Canvas(mutableBitmap);
-            canvas.drawRect(new RectF(left,top,right,bottom),paint);
 
-            Log.d("DISEGNO RETTANGOLO:","("+left+","+top+","+right+","+bottom+")");
+            canvas.drawLine(startX,startY,stopX,stopY,paint);
+
         }
+
+        Paint paintP = new Paint();
+        paintP.setAntiAlias(true);
+        paintP.setColor(Color.parseColor("#67c700"));
+
+        //Definisco le coordinate del punto
+        float x = Posizione.getPosizione().x;
+        float y = Posizione.getPosizione().y;
+        canvas.drawCircle(x, y, 15, paintP);
 
         immMappa.setImageBitmap(mutableBitmap);
     }

@@ -45,14 +45,15 @@ public class FragmentEmergenza extends Fragment {
             new Thread() {
                 public void run() {
                     GestoreEntita gestoreEntita = ((Client)getActivity()).getGestore();
-                    while(!gestoreEntita.isDownloadFinished()) {
+                    while(!gestoreEntita.isDownloadNecessariFinished()) {
                         try {
                             Thread.sleep(100);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
-                    ((Client)getActivity()).getMappaFragment().disegnaPercorso(gestoreEntita.scaricaPercorso());
+                    ArrayList<Tronco> percorso = gestoreEntita.scaricaPercorso();
+                    ((Client) getActivity()).getMappaFragment().disegnaPercorso(percorso);
                 }
             }.start();
 

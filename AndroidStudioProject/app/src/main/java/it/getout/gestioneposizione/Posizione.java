@@ -32,5 +32,7 @@ public class Posizione {
 
     public static String getIDBeaconAttuale() { return beaconAttuale.getId(); }
 
+    public static Beacon getBeaconAttuale() { return beaconAttuale; }
+
     public static void setBeaconAttuale(Beacon b) { beaconAttuale = b; }
 }

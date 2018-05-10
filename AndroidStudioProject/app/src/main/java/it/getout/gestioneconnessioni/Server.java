@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.android.volley.Cache;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Network;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -1039,6 +1040,7 @@ public class Server extends GestoreDati
                     Log.d("JSON ED ATTUALE ERROR", error.toString());
                 }
             });
+            jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy( 10000, 5, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             //Aggiungo la richiesta alla coda
             mRequestQueue.add(jsonObjectRequest);
 

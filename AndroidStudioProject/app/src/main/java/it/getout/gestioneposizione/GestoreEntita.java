@@ -25,6 +25,7 @@ public class GestoreEntita {
     private String beacon;
     private Bluetooth bluetooth;
     private boolean downloadFinished;
+    private boolean downloadNecessariFinished;
 
     public GestoreEntita(Context c) {
         context = c;
@@ -33,6 +34,7 @@ public class GestoreEntita {
         }
         else reader = new Database(context);
         downloadFinished = false;
+        downloadNecessariFinished = false;
     }
 
     public void coordinaPopolamentoDati() {
@@ -43,6 +45,15 @@ public class GestoreEntita {
         //All'inizio scarico solo i dati che mi servono immediatamente
         Edificio edificioAttuale = reader.richiediEdificioAttuale(beacon);
         Piano pianoAttuale = reader.richiediPianoAttuale(beacon);
+
+        //Popolo il piano attuale
+        ArrayList<Tronco> tronchiPiano = reader.richiediTronchiPiano(pianoAttuale.toString());
+        pianoAttuale.setAule(reader.richiediAulePiano(pianoAttuale.toString()));
+        for(int i=0; i<tronchiPiano.size(); i++) {
+            tronchiPiano.get(i).setBeacons(reader.richiediBeaconTronco(tronchiPiano.get(i).getId()));
+        }
+        pianoAttuale.setTronchi(tronchiPiano);
+
         Beacon posizione = reader.richiediPosizione(beacon);
         Posizione.setEdificioAttuale(edificioAttuale);
         Posizione.setPianoAttuale(pianoAttuale);
@@ -53,6 +64,8 @@ public class GestoreEntita {
         //Avvio comunque l'app
         ((Client)context).inizializzaFragment();
 
+        downloadNecessariFinished = true;
+
         ArrayList<Piano> pianiEdificio = new ArrayList<>();
         pianiEdificio.add(pianoAttuale);
         edificioAttuale.setPiani(pianiEdificio);
@@ -62,6 +75,8 @@ public class GestoreEntita {
     }
 
     private void scaricaDatiRimanenti(ArrayList<Piano> pianiEdificio) {
+        ArrayList<Piano> pianiEdificioApp = new ArrayList<>(pianiEdificio);
+        pianiEdificioApp.remove(0);
 
         try {
 
@@ -169,6 +184,7 @@ public class GestoreEntita {
             Log.e(e.getCause().toString(),e.getMessage());
             e.printStackTrace();
         } finally {
+            pianiEdificio.addAll(pianiEdificioApp);
             downloadFinished = true;
         }
     }
@@ -222,6 +238,8 @@ public class GestoreEntita {
     }
 
     public boolean isDownloadFinished() { return downloadFinished;}
+
+    public boolean isDownloadNecessariFinished() { return downloadNecessariFinished; }
 
     private boolean checkInternet() {
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
