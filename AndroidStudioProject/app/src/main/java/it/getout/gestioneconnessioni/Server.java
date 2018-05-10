@@ -52,7 +52,7 @@ import it.getout.gestioneposizione.Tronco;
 
 public class Server extends GestoreDati
 {
-    private static final String SERV_PERCORSO = "/percorso?";            //URL percorso
+    private static final String SERV_PERCORSO = "/percorso";            //URL percorso
     private static final String SERV_POSIZIONE = "/posizione?";
     private static final String SERV_PIANIEDI = "/pianiedificio?";      //URL piano da edificio
     private static final String SERV_EDIFICIO = "/edificioattuale?";    //URL edificio da idbeacon
@@ -63,7 +63,6 @@ public class Server extends GestoreDati
     private static final String SERV_MAPPAPIANO = "/mappapiano?";       //URL tronchi da piano
     private static final String SERV_SUMUSER = "/sommautente?";         //UTL aggiunta utente
 
-    private static final String SERV_NOTIFICA ="/notifica?";
 
     private static String BASE_URL;
 
@@ -1010,14 +1009,12 @@ public class Server extends GestoreDati
             mRequestQueue.start();
             //Url per la richiesta del percorso
             String url = BASE_URL + SERV_PERCORSO + idBeacon;
-            Log.e("PERCORSO URL",url);
             //Instanzio la richiesta JSON
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 //Alla risposta
                 @Override
                 public void onResponse(JSONObject response) {
                     try {
-                        Log.e("RISPOSTA PERCORSO",response.toString());
                         JSONArray arrayR = response.getJSONArray("PERCORSO");
                         for(int i=0; i<arrayR.length(); i++) {
                             int id = arrayR.getInt(i);
@@ -1039,7 +1036,7 @@ public class Server extends GestoreDati
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.d("JSON ERRORE PERCORSO", error.toString());
+                    Log.d("JSON ED ATTUALE ERROR", error.toString());
                 }
             });
             //Aggiungo la richiesta alla coda
@@ -1062,4 +1059,13 @@ public class Server extends GestoreDati
             return percorso;
         }
     }
+
+
+
+
+    // notifica edoooo
+
+
+
+
 }

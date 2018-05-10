@@ -15,14 +15,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".Client">
+        <service
+            android:name=".gestioneconnessioni.NotificaService"
+            android:label="NotificaService">
+        </service>
 
+        <activity android:name=".Client">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

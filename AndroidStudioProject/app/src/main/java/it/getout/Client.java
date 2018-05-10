@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import it.getout.fragments.FragmentEmergenza;
 import it.getout.gestioneconnessioni.Notifica;
+import it.getout.gestioneconnessioni.NotificaService;
 import it.getout.gestioneposizione.GestoreEntita;
 import it.getout.gestionevisualizzazionemappa.MappaFragment;
 
@@ -43,8 +44,8 @@ public class Client extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent intent = new Intent(this, Notifica.class);
-        intentNotifica = PendingIntent.getBroadcast(this, 0, intent, 0);
+
+        startService(new Intent(Client.this, NotificaService.class));
 
         mappaFragment = MappaFragment.newInstance();
 
