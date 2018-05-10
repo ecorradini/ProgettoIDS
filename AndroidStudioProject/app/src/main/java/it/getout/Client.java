@@ -20,7 +20,6 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import it.getout.fragments.FragmentEmergenza;
-import it.getout.gestioneconnessioni.Notifica;
 import it.getout.gestioneconnessioni.NotificaService;
 import it.getout.gestioneposizione.GestoreEntita;
 import it.getout.gestionevisualizzazionemappa.MappaFragment;
