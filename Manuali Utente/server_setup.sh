@@ -1,5 +1,8 @@
 #!/bin/bash
+echo "CERCO IL SISTEMA OPERATIVO"
 DISTRO=`lsb_release -i | cut -f 2-`
+echo "TROVATO $DISTRO"
+echo "INSTALLO MYSQL"
 if [ $DISTRO="Ubuntu" ] 
 then
 	wget http://dev.mysql.com/get/mysql-apt-config_0.8.9-1_all.deb
@@ -25,3 +28,13 @@ then
 	dnf -y install mysql-community-server
 	service mysqld start
 fi
+mysql_secure_installation
+mysqld --initialize
+echo "Inserisci la password del database (che hai inserito prima) e poi INVIO:"
+read password
+mysql -u root -p$password -e "CREATE USER 'getoutdb'@'localhost' IDENTIFIED BY '$password';"
+mysql -u root -p$password -e "CREATE DATABASE getoutdb;"
+mysql -u root -p$password -e "GRANT ALL PRIVILEGES ON getoutdb TO getoutdb;"
+mysql -u getoutdb -p$password getoutdb < getout_dump.sql
+
+
