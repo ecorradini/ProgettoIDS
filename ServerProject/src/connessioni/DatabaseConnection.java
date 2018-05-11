@@ -28,6 +28,7 @@ public class DatabaseConnection {
 
 
             //String password = "getout2018@";
+            //try{
 
             //Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(dbUrl, "getoutdb", password);

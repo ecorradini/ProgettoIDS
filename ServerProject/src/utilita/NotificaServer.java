@@ -16,18 +16,25 @@ import java.util.logging.Logger;
 
 import static entita.DAOParametri.selectEdificioParametro;
 
-public class NotificaServer implements Runnable{
+public class NotificaServer extends Thread {
 
-    private static DatagramSocket socket;
-    private static int count;
-    private static boolean working = false;
+    private DatagramSocket socket;
+    private int count;
+    private boolean working = false;
+
+    public NotificaServer() {
+        super();
+    }
 
     @Override
     public void run() {
         try {
 
-            //Keep a socket open to listen to all the UDP trafic that is destined for this port
-            socket = new DatagramSocket(9600, InetAddress.getByName("0.0.0.0"));
+            working = true;
+
+            System.out.println("INVIA NOTIFICA EMERGENZA3");
+
+            socket = new DatagramSocket(9601);
             ArrayList<String> ipList = DAOUtente.getAllUtenti();
 
             String edificio;
@@ -41,26 +48,19 @@ public class NotificaServer implements Runnable{
 
                 byte[] sendData = edificio.getBytes();
                 //Send a response
-                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName(ip), socket.getPort());
+                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName(ip), 8080);
                 socket.send(sendPacket);
             }
+            System.out.println("FINE INVIO NOTIFICA EMERGENZA");
         }
         catch (IOException ex) {
             Logger.getLogger(NotificaServer.class.getName()).log(Level.SEVERE, null, ex);
         }
+        socket.close();
         working = false;
     }
 
-    public static NotificaServer getInstance() {
-        working = true;
-        return NotificaServer.NotificaServerHolder.INSTANCE;
-    }
-
-    private static class NotificaServerHolder {
-        private static final NotificaServer INSTANCE = new NotificaServer();
-    }
-
-    public static boolean isWorking() {
+    public boolean isWorking() {
         return working;
     }
 }

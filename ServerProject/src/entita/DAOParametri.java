@@ -101,20 +101,21 @@ public class DAOParametri {
     public static String selectEdificioParametro(){
         Connection conn = DatabaseConnection.getConn();
         String edificio = null;
-        String query2 = "select distinct EDIFICIO from PIANO\n" +
-                        "where NOME = (\n" +
-                        "      select TRONCO.PIANO\n" +
-                        "      from PARAMETRI\n" +
-                        "            JOIN TRONCO\n" +
-                        "            ON PARAMETRI.TRONCO = TRONCO.ID\n" +
-                        "      where RV=1\n" +
-                        ");";
+        String query2 = "select distinct EDIFICIO from PIANO" +
+                        " where NOME = (" +
+                        "select TRONCO.PIANO" +
+                        " from PARAMETRI" +
+                        " JOIN TRONCO" +
+                        " ON PARAMETRI.TRONCO = TRONCO.ID" +
+                        " where RV=1)";
 
         try {
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(query2);
 
-            edificio = rs.getString("EDIFICIO");
+            while(rs.next()) {
+                edificio = rs.getString("EDIFICIO");
+            }
 
             rs.close();
             stm.close();

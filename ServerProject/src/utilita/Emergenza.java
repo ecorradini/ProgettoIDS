@@ -6,6 +6,7 @@ import entita.DAOParametri;
 public class Emergenza {
 
     private Thread controllo;
+    private NotificaServer n;
 
     public Emergenza() {
         controllo = new Thread(new Runnable() {
@@ -16,18 +17,17 @@ public class Emergenza {
                     //COSA DEVE FARE QUI:
                     //1. AGGIORNARE TUTTI I PARAMETRI DEI TRONCHI (PESI SU TUTTI I GRAFI)
                     //2. SE DAOParametri.controllaEmergenza==true allora invia notifica
-
-                    if(DAOParametri.controllaEmergenza() && !NotificaServer.isWorking()) {
-                        //Notifica.startThread(true,"EMERGENZA AIUTO AIUTO CIAOCIAO");
-                        NotificaServer.getInstance();
+                    NotificaServer notifica = new NotificaServer();
+                    if(DAOParametri.controllaEmergenza() && !notifica.isWorking()) {
+                        notifica.start();
                         System.out.println("EMERGENZA");
                     }
-                    else if(!DAOParametri.controllaEmergenza() && NotificaServer.isWorking()) {
+                    else if(!DAOParametri.controllaEmergenza() && notifica.isWorking()) {
                         System.out.println("FINE EMERGENZA");
                     }
 
                     try {
-                        Thread.sleep(30*1000);
+                        Thread.sleep(30*100);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
