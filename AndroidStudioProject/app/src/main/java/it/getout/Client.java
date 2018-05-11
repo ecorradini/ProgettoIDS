@@ -35,7 +35,7 @@ public class Client extends AppCompatActivity {
     private GestoreEntita gestore;
     private MappaFragment mappaFragment;
 
-    private PendingIntent intentNotifica;
+
 
 
     @Override

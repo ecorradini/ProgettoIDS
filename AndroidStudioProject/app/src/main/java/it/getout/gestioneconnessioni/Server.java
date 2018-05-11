@@ -88,6 +88,27 @@ public class Server extends GestoreDati
         }
     }
 
+    public String discoverEmergenza() throws IOException {
+
+        //Wait for a response
+        byte[] recvBuf = new byte[15];
+        DatagramPacket receivePacket = new DatagramPacket(recvBuf, recvBuf.length);
+        c.receive(receivePacket);
+
+        //Check if the message is correct
+        //QUESTA è DA MODIFICARE PER LEGGERE IL JSON CHE FARà PARTIRE EMERGENZA
+        String message = new String(receivePacket.getData()).trim();
+        Log.e("message",message);
+        if(!message.equals("GETOUT_NOTIFICA")) {
+            //DO SOMETHING WITH THE SERVER'S IP (for example, store it in your controller)
+            message=null;
+        }
+        //Close the port!
+        c.close();
+
+        return  message;
+    }
+
 
     private void discoverIP(){
 

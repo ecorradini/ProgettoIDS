@@ -1,6 +1,5 @@
 package it.getout.gestioneconnessioni;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -13,6 +12,9 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -26,6 +28,10 @@ public class NotificaService extends Service {
     private static final int NOTIFICATION_EX = 1;
     private NotificationManager notificationManager;
 
+    public Server server;
+    private Context context;
+    private DatagramSocket c;
+
     public NotificaService() {}
 
     @Override
@@ -37,28 +43,30 @@ public class NotificaService extends Service {
     @Override
     public void onCreate() {
         Log.i("dio","madonna");
+        context = getApplicationContext();
+        server = new Server(context);
         // Code to execute when the service is first created
     }
 
+   /*
     @Override
     public void onDestroy() {
         if (timer != null) {
             timer.cancel();
         }
     }
+    */
+
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startid) {
 
         Log.i("dio cane","cagna madonna");
 
-        notificationManager = (NotificationManager)
-                getSystemService(Context.NOTIFICATION_SERVICE);
-        int icon = android.R.drawable.stat_notify_sync;
-        CharSequence tickerText = "Hello";
-        long when = System.currentTimeMillis();
 
-        Context context = getApplicationContext();
+        notificationManager = (NotificationManager)
+        getSystemService(Context.NOTIFICATION_SERVICE);
+
 
         Intent actionIntent = new Intent(context, Client.class);
 
@@ -70,22 +78,31 @@ public class NotificaService extends Service {
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
 
-        NotificationCompat.Builder builder;
+
+        NotificationCompat.Builder builder = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            builder =
-                    new NotificationCompat.Builder(context.getApplicationContext(), NotificationChannel.DEFAULT_CHANNEL_ID)
-                            .setSmallIcon(R.mipmap.ic_launcher)
-                            .setContentTitle("EMERGENZA: SCAPPA")
-                            .setContentIntent(pending)
-                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+            try {
+                builder =
+                        new NotificationCompat.Builder(context, NotificationChannel.DEFAULT_CHANNEL_ID)
+                                .setSmallIcon(R.mipmap.ic_launcher)
+                                .setContentTitle(server.discoverEmergenza())
+                                .setContentIntent(pending)
+                                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         else {
-            builder =
-                    new NotificationCompat.Builder(context.getApplicationContext())
-                            .setSmallIcon(R.mipmap.ic_launcher)
-                            .setContentTitle("EMERGENZA: SCAPPA")
-                            .setContentIntent(pending)
-                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+            try {
+                builder =
+                        new NotificationCompat.Builder(context)
+                                .setSmallIcon(R.mipmap.ic_launcher)
+                                .setContentTitle(server.discoverEmergenza())
+                                .setContentIntent(pending)
+                                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
 
@@ -109,4 +126,6 @@ public class NotificaService extends Service {
     private void stopService() {
         if (timer != null) timer.cancel();
     }
+
+
 }
