@@ -2,8 +2,8 @@
 echo "CERCO IL SISTEMA OPERATIVO"
 DISTRO=`lsb_release -i | cut -f 2-`
 echo "TROVATO $DISTRO"
-dbname = "getoutdb";
-username = "getoutdb"
+dbname="getoutdb";
+username="getoutdb"
 echo "INSTALLO MYSQL"
 if [ $DISTRO="Ubuntu" ] 
 then
@@ -33,16 +33,16 @@ mysqld --initialize
 echo "Inserisci la password del database (che hai inserito prima) e poi INVIO:"
 read rootpasswd
 echo "Creo il database..."
-mysql -uroot -p$rootpasswd -e "CREATE DATABASE $dbname /*\!40100 DEFAULT CHARACTER SET utf8 */;"
+mysql -uroot -p$rootpasswd -e "CREATE DATABASE $dbname;"
 echo "Database creato con successo!"
 echo "Creo l'utente..."
-mysql -uroot -p$rootpasswd -e "CREATE USER $username@localhost IDENTIFIED BY '${userpass}';"
+mysql -uroot -p$rootpasswd -e "CREATE USER '$username'@'localhost' IDENTIFIED BY '$rootpasswd';"
 echo "Utente creato con successo!"
 echo ""
 echo "Granting ALL privileges on $dbname to $username!"
 mysql -uroot -p$rootpasswd -e "GRANT ALL PRIVILEGES ON $dbname.* TO '$username'@'localhost';"
 mysql -uroot -p$rootpasswd -e "FLUSH PRIVILEGES;"
-mysql -u $username -p$password getoutdb < getout_dump.sql
+mysql -u$username -p$password getoutdb < getout_dump.sql
 echo "FATTO."
 exit
 
