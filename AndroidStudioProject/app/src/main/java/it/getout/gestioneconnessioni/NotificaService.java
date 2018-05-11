@@ -15,6 +15,9 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -27,10 +30,11 @@ public class NotificaService extends Service {
     private Timer timer = new Timer();
     private static final int NOTIFICATION_EX = 1;
     private NotificationManager notificationManager;
+    private String message;
 
     public Server server;
     private Context context;
-    private DatagramSocket c;
+    private DatagramSocket d;
 
     public NotificaService() {}
 
@@ -42,27 +46,129 @@ public class NotificaService extends Service {
 
     @Override
     public void onCreate() {
-        Log.i("dio","madonna");
+        Log.i("edo1","edo1");
         context = getApplicationContext();
-        server = new Server(context);
+
         // Code to execute when the service is first created
     }
 
-   /*
+
     @Override
     public void onDestroy() {
         if (timer != null) {
             timer.cancel();
         }
     }
-    */
+
 
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startid) {
 
-        Log.i("dio cane","cagna madonna");
+        Thread inizioNotifica = new Thread() {
+            public void run() {
 
+
+                try {
+                    d = new DatagramSocket(9601, InetAddress.getByName("0.0.0.0"));
+                    //Wait for a response
+                    byte[] recvBuf = new byte[15000];
+                    DatagramPacket receivePacket = new DatagramPacket(recvBuf, recvBuf.length);
+
+                    Log.e("edo3", "edo3");
+
+                    d.receive(receivePacket);
+
+                    Log.e("edo4", "edo4");
+
+                    //Check if the message is correct
+                    //QUESTA è DA MODIFICARE PER LEGGERE IL JSON CHE FARà PARTIRE EMERGENZA
+                    message = new String(receivePacket.getData()).trim();
+
+                    Log.e("message", message);
+
+                    /*if (!message.equals("GETOUT EMERGENZA A: Ingegneria")) {
+                        //DO SOMETHING WITH THE SERVER'S IP (for example, store it in your controller)
+                        message[0] = null;
+                    }*/
+                    //Close the port!
+                    d.close();
+
+                    //return message;
+
+                }catch (IOException ex) {
+                    Log.i("IP","problema nel ricercare server");
+                }
+
+                //return message;
+
+            /*
+                try {
+                    Thread.sleep(10000);
+                    try {
+                        d = new DatagramSocket(8080, InetAddress.getByName("0.0.0.0"));
+                    } catch (SocketException e) {
+                        e.printStackTrace();
+                    } catch (UnknownHostException e) {
+                        e.printStackTrace();
+                    }
+                    //Wait for a response
+                    byte[] recvBuf = new byte[15];
+                    DatagramPacket receivePacket = new DatagramPacket(recvBuf, recvBuf.length);
+
+                    Log.e("edo3", "edo3");
+
+                    try {
+
+                        d.receive(receivePacket);
+                        Log.e("try","try");
+                    } catch (IOException e) {
+
+                        e.printStackTrace();
+                        Log.e("try54","try54");
+                    }
+
+                    Log.e("edo4", "edo4");
+
+                    //Check if the message is correct
+                    //QUESTA è DA MODIFICARE PER LEGGERE IL JSON CHE FARà PARTIRE EMERGENZA
+                    String m = new String(receivePacket.getData()).trim();
+
+                    message[0] = m;
+                    Log.e("message", m);
+
+                    if (!m.equals("GETOUT EMERGENZA A: Ingegneria")) {
+                        //DO SOMETHING WITH THE SERVER'S IP (for example, store it in your controller)
+                        m = null;
+                    }
+                    //Close the port!
+                    d.close();
+
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            */
+            }
+        };
+
+        inizioNotifica.start();
+
+
+        //try {
+        //    inizioNotifica.join();
+        //}catch (InterruptedException e){
+        //    e.printStackTrace();
+        //}
+
+
+        Log.i("edo2","edo2");
+
+
+
+
+
+        //creazione notifica funziona !!!
 
         notificationManager = (NotificationManager)
         getSystemService(Context.NOTIFICATION_SERVICE);
@@ -81,28 +187,20 @@ public class NotificaService extends Service {
 
         NotificationCompat.Builder builder = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            try {
-                builder =
-                        new NotificationCompat.Builder(context, NotificationChannel.DEFAULT_CHANNEL_ID)
-                                .setSmallIcon(R.mipmap.ic_launcher)
-                                .setContentTitle(server.discoverEmergenza())
-                                .setContentIntent(pending)
-                                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            builder =
+                    new NotificationCompat.Builder(context, NotificationChannel.DEFAULT_CHANNEL_ID)
+                            .setSmallIcon(R.mipmap.ic_launcher)
+                            .setContentTitle(message)
+                            .setContentIntent(pending)
+                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
         }
         else {
-            try {
-                builder =
-                        new NotificationCompat.Builder(context)
-                                .setSmallIcon(R.mipmap.ic_launcher)
-                                .setContentTitle(server.discoverEmergenza())
-                                .setContentIntent(pending)
-                                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            builder =
+                    new NotificationCompat.Builder(context)
+                            .setSmallIcon(R.mipmap.ic_launcher)
+                            .setContentTitle(message)
+                            .setContentIntent(pending)
+                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
         }
 
 
@@ -122,6 +220,7 @@ public class NotificaService extends Service {
         }, 0, UPDATE_INTERVAL);
         return START_STICKY;
     }
+
 
     private void stopService() {
         if (timer != null) timer.cancel();

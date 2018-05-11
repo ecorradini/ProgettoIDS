@@ -68,8 +68,9 @@ public class Server extends GestoreDati
     private static String BASE_URL;
 
     private DatagramSocket c;
-
+    private DatagramSocket d;
     private Context context;
+
 
     public Server(Context c) {
         context = c;
@@ -88,26 +89,47 @@ public class Server extends GestoreDati
         }
     }
 
+    /*
+
     public String discoverEmergenza() throws IOException {
 
-        //Wait for a response
-        byte[] recvBuf = new byte[15];
-        DatagramPacket receivePacket = new DatagramPacket(recvBuf, recvBuf.length);
-        c.receive(receivePacket);
+        String message = null;
+        try {
+            d = new DatagramSocket(8080, InetAddress.getByName("0.0.0.0"));
+            //Wait for a response
+            byte[] recvBuf = new byte[15000];
+            DatagramPacket receivePacket = new DatagramPacket(recvBuf, recvBuf.length);
 
-        //Check if the message is correct
-        //QUESTA è DA MODIFICARE PER LEGGERE IL JSON CHE FARà PARTIRE EMERGENZA
-        String message = new String(receivePacket.getData()).trim();
-        Log.e("message",message);
-        if(!message.equals("GETOUT_NOTIFICA")) {
-            //DO SOMETHING WITH THE SERVER'S IP (for example, store it in your controller)
-            message=null;
+            Log.e("edo3", "edo3");
+
+            d.receive(receivePacket);
+
+            Log.e("edo4", "edo4");
+
+            //Check if the message is correct
+            //QUESTA è DA MODIFICARE PER LEGGERE IL JSON CHE FARà PARTIRE EMERGENZA
+            message = new String(receivePacket.getData()).trim();
+
+            Log.e("message", message);
+
+            if (!message.equals("GETOUT EMERGENZA A: Ingegneria")) {
+                //DO SOMETHING WITH THE SERVER'S IP (for example, store it in your controller)
+                message = null;
+            }
+            //Close the port!
+            d.close();
+
+            return message;
+
+        }catch (IOException ex) {
+                Log.i("IP","problema nel ricercare server");
         }
-        //Close the port!
-        c.close();
 
-        return  message;
+        return message;
+
     }
+
+*/
 
 
     private void discoverIP(){

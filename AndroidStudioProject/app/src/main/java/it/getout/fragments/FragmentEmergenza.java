@@ -48,21 +48,27 @@ public class FragmentEmergenza extends Fragment {
                             e.printStackTrace();
                         }
                     }
-                    ArrayList<Tronco> percorso = gestoreEntita.scaricaPercorso();
-                    ((Client) getActivity()).getMappaFragment().disegnaPercorso(percorso);
+                    final ArrayList<Tronco> percorso = gestoreEntita.scaricaPercorso();
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((Client) getActivity()).getMappaFragment().disegnaPercorso(percorso);
+                            /*
+                            while(true) {
+                                String beaconA = Posizione.getIDBeaconAttuale();
+                                try {
+                                    Thread.sleep(300);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                if(!beaconA.equals(Posizione.getIDBeaconAttuale())) {
+                                    ArrayList<Tronco> percorsoN = gestoreEntita.scaricaPercorso();
+                                    ((Client) getActivity()).getMappaFragment().disegnaPercorso(percorsoN);
+                                }
+                            }*/
+                        }
+                    });
 
-                    while(true) {
-                        String beaconA = Posizione.getIDBeaconAttuale();
-                        try {
-                            Thread.sleep(300);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        if(!beaconA.equals(Posizione.getIDBeaconAttuale())) {
-                            ArrayList<Tronco> percorsoN = gestoreEntita.scaricaPercorso();
-                            ((Client) getActivity()).getMappaFragment().disegnaPercorso(percorsoN);
-                        }
-                    }
                 }
             }.start();
 

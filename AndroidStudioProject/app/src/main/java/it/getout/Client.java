@@ -44,7 +44,7 @@ public class Client extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        //startService(new Intent(Client.this, NotificaService.class));
+
 
         mappaFragment = MappaFragment.newInstance();
 
@@ -65,6 +65,9 @@ public class Client extends AppCompatActivity {
             gestore.coordinaPopolamentoDati();
         }
 
+
+
+        startService(new Intent(Client.this, NotificaService.class));
     }
 
 
