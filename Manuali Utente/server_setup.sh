@@ -33,16 +33,16 @@ mysqld --initialize
 echo "Inserisci la password del database (che hai inserito prima) e poi INVIO:"
 read rootpasswd
 echo "Creo il database..."
-mysql -uroot -p${rootpasswd} -e "CREATE DATABASE ${dbname} /*\!40100 DEFAULT CHARACTER SET utf8 */;"
+mysql -uroot -p$rootpasswd -e "CREATE DATABASE $dbname /*\!40100 DEFAULT CHARACTER SET utf8 */;"
 echo "Database creato con successo!"
 echo "Creo l'utente..."
-mysql -uroot -p${rootpasswd} -e "CREATE USER ${username}@localhost IDENTIFIED BY '${userpass}';"
+mysql -uroot -p$rootpasswd -e "CREATE USER $username@localhost IDENTIFIED BY '${userpass}';"
 echo "Utente creato con successo!"
 echo ""
-echo "Granting ALL privileges on ${dbname} to ${username}!"
-mysql -uroot -p${rootpasswd} -e "GRANT ALL PRIVILEGES ON ${dbname}.* TO '${username}'@'localhost';"
-mysql -uroot -p${rootpasswd} -e "FLUSH PRIVILEGES;"
-mysql -u ${username} -p${password} getoutdb < getout_dump.sql
+echo "Granting ALL privileges on $dbname to $username!"
+mysql -uroot -p$rootpasswd -e "GRANT ALL PRIVILEGES ON $dbname.* TO '$username'@'localhost';"
+mysql -uroot -p$rootpasswd -e "FLUSH PRIVILEGES;"
+mysql -u $username -p$password getoutdb < getout_dump.sql
 echo "FATTO."
 exit
 
