@@ -2,6 +2,8 @@
 echo "CERCO IL SISTEMA OPERATIVO"
 DISTRO=`lsb_release -i | cut -f 2-`
 echo "TROVATO $DISTRO"
+dbname = "getoutdb";
+username = "getoutdb"
 echo "INSTALLO MYSQL"
 if [ $DISTRO="Ubuntu" ] 
 then
@@ -10,8 +12,6 @@ then
 	rm mysql-apt-config_0.8.9-1_all.deb
 	apt-get update
 	apt-get -y install mysql-server
-	mysql_secure_installation
-	mysql_install_db
 	service mysqld start
 elif [ $DISTRO=="CentOS" ] 
 then
@@ -31,10 +31,19 @@ fi
 mysql_secure_installation
 mysqld --initialize
 echo "Inserisci la password del database (che hai inserito prima) e poi INVIO:"
-read password
-mysql -u root -p$password -e "CREATE USER 'getoutdb'@'localhost' IDENTIFIED BY '$password';"
-mysql -u root -p$password -e "CREATE DATABASE getoutdb;"
-mysql -u root -p$password -e "GRANT ALL PRIVILEGES ON getoutdb TO getoutdb;"
-mysql -u getoutdb -p$password getoutdb < getout_dump.sql
+read rootpasswd
+echo "Creo il database..."
+mysql -uroot -p${rootpasswd} -e "CREATE DATABASE ${dbname} /*\!40100 DEFAULT CHARACTER SET utf8 */;"
+echo "Database creato con successo!"
+echo "Creo l'utente..."
+mysql -uroot -p${rootpasswd} -e "CREATE USER ${username}@localhost IDENTIFIED BY '${userpass}';"
+echo "Utente creato con successo!"
+echo ""
+echo "Granting ALL privileges on ${dbname} to ${username}!"
+mysql -uroot -p${rootpasswd} -e "GRANT ALL PRIVILEGES ON ${dbname}.* TO '${username}'@'localhost';"
+mysql -uroot -p${rootpasswd} -e "FLUSH PRIVILEGES;"
+mysql -u ${username} -p${password} getoutdb < getout_dump.sql
+echo "FATTO."
+exit
 
 
