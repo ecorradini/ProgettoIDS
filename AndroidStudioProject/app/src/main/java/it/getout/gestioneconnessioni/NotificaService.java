@@ -10,29 +10,24 @@ import android.os.Build;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.util.Timer;
-import java.util.TimerTask;
+
 
 import it.getout.Client;
 import it.getout.R;
 
 public class NotificaService extends Service {
 
-    private final int UPDATE_INTERVAL = 60 * 1000;
+    //private final int UPDATE_INTERVAL = 60 * 1000;
     private Timer timer = new Timer();
     private static final int NOTIFICATION_EX = 1;
     private NotificationManager notificationManager;
     private String message;
-
-    public Server server;
     private Context context;
     private DatagramSocket d;
 
@@ -46,12 +41,9 @@ public class NotificaService extends Service {
 
     @Override
     public void onCreate() {
-        Log.i("edo1","edo1");
         context = getApplicationContext();
-
         // Code to execute when the service is first created
     }
-
 
     @Override
     public void onDestroy() {
@@ -60,47 +52,51 @@ public class NotificaService extends Service {
         }
     }
 
-
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startid) {
 
         Thread inizioNotifica = new Thread() {
             public void run() {
 
-
                 try {
-                    d = new DatagramSocket(9601, InetAddress.getByName("0.0.0.0"));
+                    d = new DatagramSocket(9601);
                     //Wait for a response
-                    byte[] recvBuf = new byte[15000];
+                    byte[] recvBuf = new byte[500];    //DA CONTROLLARE VALORE 500
                     DatagramPacket receivePacket = new DatagramPacket(recvBuf, recvBuf.length);
 
-                    Log.e("edo3", "edo3");
+                    Log.e("edo1", "edo1");
 
                     d.receive(receivePacket);
 
-                    Log.e("edo4", "edo4");
+                    Log.e("edo2", "edo2");
 
                     //Check if the message is correct
-                    //QUESTA è DA MODIFICARE PER LEGGERE IL JSON CHE FARà PARTIRE EMERGENZA
+
                     message = new String(receivePacket.getData()).trim();
 
                     Log.e("message", message);
 
-                    /*if (!message.equals("GETOUT EMERGENZA A: Ingegneria")) {
-                        //DO SOMETHING WITH THE SERVER'S IP (for example, store it in your controller)
-                        message[0] = null;
-                    }*/
+                    if (message.equals("GETOUT EMERGENZA A: Ingegneria")) {
+                        message = "EDOARDOOOO";
+                    }
                     //Close the port!
                     d.close();
-
-                    //return message;
 
                 }catch (IOException ex) {
                     Log.i("IP","problema nel ricercare server");
                 }
+            }
+        };
+        //try {
+        //    inizioNotifica.join();
+        //}catch (InterruptedException e){
+        //    e.printStackTrace();
+        //}
 
-                //return message;
+        Log.i("edo3","edo3");
+
+        inizioNotifica.start();
+
 
             /*
                 try {
@@ -116,26 +112,16 @@ public class NotificaService extends Service {
                     byte[] recvBuf = new byte[15];
                     DatagramPacket receivePacket = new DatagramPacket(recvBuf, recvBuf.length);
 
-                    Log.e("edo3", "edo3");
-
                     try {
 
                         d.receive(receivePacket);
-                        Log.e("try","try");
                     } catch (IOException e) {
 
                         e.printStackTrace();
-                        Log.e("try54","try54");
                     }
 
-                    Log.e("edo4", "edo4");
-
-                    //Check if the message is correct
-                    //QUESTA è DA MODIFICARE PER LEGGERE IL JSON CHE FARà PARTIRE EMERGENZA
                     String m = new String(receivePacket.getData()).trim();
-
                     message[0] = m;
-                    Log.e("message", m);
 
                     if (!m.equals("GETOUT EMERGENZA A: Ingegneria")) {
                         //DO SOMETHING WITH THE SERVER'S IP (for example, store it in your controller)
@@ -143,36 +129,15 @@ public class NotificaService extends Service {
                     }
                     //Close the port!
                     d.close();
-
-
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             */
-            }
-        };
-
-        inizioNotifica.start();
-
-
-        //try {
-        //    inizioNotifica.join();
-        //}catch (InterruptedException e){
-        //    e.printStackTrace();
-        //}
-
-
-        Log.i("edo2","edo2");
-
-
-
-
 
         //creazione notifica funziona !!!
 
         notificationManager = (NotificationManager)
         getSystemService(Context.NOTIFICATION_SERVICE);
-
 
         Intent actionIntent = new Intent(context, Client.class);
 
@@ -184,13 +149,12 @@ public class NotificaService extends Service {
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
 
-
-        NotificationCompat.Builder builder = null;
+        NotificationCompat.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder =
                     new NotificationCompat.Builder(context, NotificationChannel.DEFAULT_CHANNEL_ID)
                             .setSmallIcon(R.mipmap.ic_launcher)
-                            .setContentTitle(message)
+                            .setContentTitle(message+"ENRIMERDA")
                             .setContentIntent(pending)
                             .setPriority(NotificationCompat.PRIORITY_DEFAULT);
         }
@@ -198,19 +162,21 @@ public class NotificaService extends Service {
             builder =
                     new NotificationCompat.Builder(context)
                             .setSmallIcon(R.mipmap.ic_launcher)
-                            .setContentTitle(message)
+                            .setContentTitle(message+"ENRIMERDA")
                             .setContentIntent(pending)
                             .setPriority(NotificationCompat.PRIORITY_DEFAULT);
         }
 
 
-
         Intent notificationIntent = new Intent(this, Client.class);
+        /*
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
                 notificationIntent, 0);
+        */
 
-       notificationManager.notify(NOTIFICATION_EX, builder.build());
-        Toast.makeText(this, "Started!", Toast.LENGTH_LONG);
+       notificationManager.notify(NOTIFICATION_EX, builder.build());  //MOSTRA LA NOTIFICA
+        //Toast.makeText(this, "Started!", Toast.LENGTH_LONG);
+        /*
         timer.scheduleAtFixedRate(new TimerTask() {
 
             @Override
@@ -218,7 +184,9 @@ public class NotificaService extends Service {
                 // Check if there are updates here and notify if true
             }
         }, 0, UPDATE_INTERVAL);
+        */
         return START_STICKY;
+
     }
 
 

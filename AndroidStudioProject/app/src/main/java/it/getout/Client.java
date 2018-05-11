@@ -65,8 +65,7 @@ public class Client extends AppCompatActivity {
             gestore.coordinaPopolamentoDati();
         }
 
-
-
+        //NOTIFICA
         startService(new Intent(Client.this, NotificaService.class));
     }
 

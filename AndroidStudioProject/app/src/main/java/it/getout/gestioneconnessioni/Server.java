@@ -89,48 +89,6 @@ public class Server extends GestoreDati
         }
     }
 
-    /*
-
-    public String discoverEmergenza() throws IOException {
-
-        String message = null;
-        try {
-            d = new DatagramSocket(8080, InetAddress.getByName("0.0.0.0"));
-            //Wait for a response
-            byte[] recvBuf = new byte[15000];
-            DatagramPacket receivePacket = new DatagramPacket(recvBuf, recvBuf.length);
-
-            Log.e("edo3", "edo3");
-
-            d.receive(receivePacket);
-
-            Log.e("edo4", "edo4");
-
-            //Check if the message is correct
-            //QUESTA è DA MODIFICARE PER LEGGERE IL JSON CHE FARà PARTIRE EMERGENZA
-            message = new String(receivePacket.getData()).trim();
-
-            Log.e("message", message);
-
-            if (!message.equals("GETOUT EMERGENZA A: Ingegneria")) {
-                //DO SOMETHING WITH THE SERVER'S IP (for example, store it in your controller)
-                message = null;
-            }
-            //Close the port!
-            d.close();
-
-            return message;
-
-        }catch (IOException ex) {
-                Log.i("IP","problema nel ricercare server");
-        }
-
-        return message;
-
-    }
-
-*/
-
 
     private void discoverIP(){
 
