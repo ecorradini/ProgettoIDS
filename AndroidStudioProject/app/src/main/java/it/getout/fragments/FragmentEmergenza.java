@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import it.getout.Client;
 import it.getout.R;
 import it.getout.gestioneposizione.GestoreEntita;
+import it.getout.gestioneposizione.Posizione;
 import it.getout.gestioneposizione.Tronco;
 
 public class FragmentEmergenza extends Fragment {
@@ -49,6 +50,19 @@ public class FragmentEmergenza extends Fragment {
                     }
                     ArrayList<Tronco> percorso = gestoreEntita.scaricaPercorso();
                     ((Client) getActivity()).getMappaFragment().disegnaPercorso(percorso);
+
+                    while(true) {
+                        String beaconA = Posizione.getIDBeaconAttuale();
+                        try {
+                            Thread.sleep(300);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        if(!beaconA.equals(Posizione.getIDBeaconAttuale())) {
+                            ArrayList<Tronco> percorsoN = gestoreEntita.scaricaPercorso();
+                            ((Client) getActivity()).getMappaFragment().disegnaPercorso(percorsoN);
+                        }
+                    }
                 }
             }.start();
 

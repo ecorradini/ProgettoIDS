@@ -39,4 +39,8 @@ public class Piano {
     public String toString(){
         return nome;
     }
+
+    public boolean equals(Piano p) {
+        return nome.equals(p.toString());
+    }
 }

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -43,7 +44,7 @@ public class GestoreEntita {
         initBluetooth(context);
     }
 
-    private void scaricaDati() {
+    private void scaricaDati(String beacon) {
         //All'inizio scarico solo i dati che mi servono immediatamente
         Edificio edificioAttuale = reader.richiediEdificioAttuale(beacon);
         Piano pianoAttuale = reader.richiediPianoAttuale(beacon);
@@ -195,6 +196,38 @@ public class GestoreEntita {
         return reader.richiediPercorsoFuga(Posizione.getIDBeaconAttuale());
     }
 
+    private void aggiornaDati(String beacon) {
+        if(!beacon.equals(this.beacon)) {
+            Piano pianoAttuale = reader.richiediPianoAttuale(beacon);
+            if (pianoAttuale.equals(Posizione.getPianoAttuale())) {
+                boolean done = false;
+                //Ciclo i tronchi del piano alla ricerca del beacon
+                for (int i = 0; i < Posizione.getPianoAttuale().getTronchi().size() && !done; i++) {
+                    if (Posizione.getPianoAttuale().getTronchi().get(i).getBeacons().containsKey(beacon)) {
+                        Posizione.setBeaconAttuale(Posizione.getPianoAttuale().getTronchi().get(i).getBeacons().get(beacon));
+                        ((Client) context).getMappaFragment().disegnaPosizione();
+                        done = true;
+                    }
+                }
+            } else {
+                boolean done = false;
+                //Ciclo fra tutti i tronchi di tutti i piani alla ricerca del beacon
+                for (int i = 0; i < Posizione.getEdificioAttuale().getPiani().size() && !done; i++) {
+                    Piano corrente = Posizione.getEdificioAttuale().getPiani().get(i);
+                    for (int j = 0; j < corrente.getTronchi().size(); j++) {
+                        if (corrente.getTronchi().get(i).getBeacons().containsKey(beacon)) {
+                            Posizione.setBeaconAttuale(corrente.getTronchi().get(i).getBeacons().get(beacon));
+                            Posizione.setPianoAttuale(corrente);
+                            Mappa.setMappa(reader.richiediMappaPiano(Posizione.getPianoAttuale().toString()));
+                            ((Client) context).getMappaFragment().disegnaPosizione();
+                            done = true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private void initBluetooth(Context c) {
 
         BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();  // Local Bluetooth adapter
@@ -223,9 +256,15 @@ public class GestoreEntita {
 
                         Log.e("Mi sono connesso",device.getAddress());
 
-                        beacon = device.getAddress();
+                        if(beacon==null) {
+                            scaricaDati(device.getAddress());
+                            new ThreadBluetooth(context);
+                        }
+                        else {
+                            aggiornaDati(device.getAddress());
+                        }
 
-                        scaricaDati();
+                        beacon = device.getAddress();
 
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -247,5 +286,35 @@ public class GestoreEntita {
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+    }
+
+    class ThreadBluetooth extends Thread {
+
+        private Context context;
+
+        public ThreadBluetooth(Context c) {
+            super();
+            context = c;
+            start();
+        }
+
+        public void run() {
+
+            Looper.prepare();
+            
+            while(true) {
+
+                //Mi collego ad un nuovo device ogni 30 secondi
+                initBluetooth(context);
+
+                Log.e("BEACON ATTUALE",beacon);
+
+                try {
+                    Thread.sleep(15000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

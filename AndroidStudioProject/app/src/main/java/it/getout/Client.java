@@ -44,7 +44,7 @@ public class Client extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        startService(new Intent(Client.this, NotificaService.class));
+        //startService(new Intent(Client.this, NotificaService.class));
 
         mappaFragment = MappaFragment.newInstance();
 
