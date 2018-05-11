@@ -37,7 +37,7 @@ public class NotificaServer implements Runnable{
                 String ip = ipList.get(i);
 
                 //edificio
-                edificio = "GETOUT_EMERGENZA A: "+DAOParametri.selectEdificioParametro();
+                edificio = "GETOUT EMERGENZA A: "+DAOParametri.selectEdificioParametro();
 
                 byte[] sendData = edificio.getBytes();
                 //Send a response
