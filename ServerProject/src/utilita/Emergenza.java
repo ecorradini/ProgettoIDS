@@ -12,18 +12,19 @@ public class Emergenza {
         controllo = new Thread(new Runnable() {
             @Override
             public void run() {
+                NotificaServer notifica = null;
                 while(true) {
 
                     //COSA DEVE FARE QUI:
                     //1. AGGIORNARE TUTTI I PARAMETRI DEI TRONCHI (PESI SU TUTTI I GRAFI)
                     //2. SE DAOParametri.controllaEmergenza==true allora invia notifica
-                    NotificaServer notifica = new NotificaServer();
-                    if(DAOParametri.controllaEmergenza() && !notifica.isWorking()) {
+
+                    if(DAOParametri.controllaEmergenza() && notifica==null) {
+                        notifica = new NotificaServer();
                         notifica.start();
-                        System.out.println("EMERGENZA");
                     }
-                    else if(!DAOParametri.controllaEmergenza() && notifica.isWorking()) {
-                        System.out.println("FINE EMERGENZA");
+                    else if(!DAOParametri.controllaEmergenza()) {
+                        notifica = null;
                     }
 
                     try {

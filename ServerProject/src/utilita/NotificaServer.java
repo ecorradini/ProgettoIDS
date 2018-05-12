@@ -21,9 +21,11 @@ public class NotificaServer extends Thread {
     private DatagramSocket socket;
     private int count;
     private boolean working = false;
+    private ArrayList<String> giaInviata;
 
     public NotificaServer() {
         super();
+        giaInviata = new ArrayList<>();
     }
 
     @Override
@@ -32,30 +34,27 @@ public class NotificaServer extends Thread {
 
             working = true;
 
-
+            String edificio = "Emergenza a "+DAOParametri.selectEdificioParametro().toUpperCase()+"!";
 
             socket = new DatagramSocket();
             ArrayList<String> ipList = DAOUtente.getAllUtenti();
 
-            String edificio;
-
             count = 0;
             for(int i=0;i<ipList.size();i++) {
-                String ip = ipList.get(i);
-                System.out.println("INVIA NOTIFICA"+ip);
-                //edificio
-                edificio = "GETOUT EMERGENZA A: "+DAOParametri.selectEdificioParametro();
+                if(!giaInviata.contains(ipList.get(i))) {
+                    String ip = ipList.get(i);
 
-                byte[] sendData = edificio.getBytes();
-                //Send a response
+                    //edificio
 
-                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName(ip), 9601);
-                socket.send(sendPacket);
-                if(sendPacket.getPort() == 9601){
-                    System.out.println("CONNESSO");
+                    byte[] sendData = edificio.getBytes();
+                    //Send a response
+
+                    DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName(ip), 9601);
+                    socket.send(sendPacket);
+
+                    giaInviata.add(ip);
                 }
             }
-            System.out.println("FINE INVIO NOTIFICA EMERGENZA");
             socket.close();
         }
         catch (IOException ex) {

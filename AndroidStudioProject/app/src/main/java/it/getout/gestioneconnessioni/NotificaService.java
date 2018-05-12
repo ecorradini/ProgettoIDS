@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.Looper;
@@ -88,11 +89,12 @@ public class NotificaService extends Service {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "getout")
                             .setSmallIcon(R.mipmap.ic_launcher)
-                            .setContentTitle("GetOut")
-                            .setContentText(message)
+                            //.setStyle(new NotificationCompat.BigTextStyle().setBigContentTitle("Emergenza!").setSummaryText("Emergenza!").bigText(message))
+                            .setContentText("Evacuare immediatamente.")
+                            .setContentTitle(message)
                             .setContentIntent(pendingIntent)
                             .setAutoCancel(true)
-                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                            .setPriority(NotificationCompat.PRIORITY_MAX);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(NOTIFICATION_EX, builder.build());
