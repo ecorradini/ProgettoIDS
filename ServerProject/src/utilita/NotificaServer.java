@@ -32,9 +32,9 @@ public class NotificaServer extends Thread {
 
             working = true;
 
-            System.out.println("INVIA NOTIFICA EMERGENZA3");
 
-            socket = new DatagramSocket(9601);
+
+            socket = new DatagramSocket();
             ArrayList<String> ipList = DAOUtente.getAllUtenti();
 
             String edificio;
@@ -42,21 +42,26 @@ public class NotificaServer extends Thread {
             count = 0;
             for(int i=0;i<ipList.size();i++) {
                 String ip = ipList.get(i);
-
+                System.out.println("INVIA NOTIFICA"+ip);
                 //edificio
                 edificio = "GETOUT EMERGENZA A: "+DAOParametri.selectEdificioParametro();
 
                 byte[] sendData = edificio.getBytes();
                 //Send a response
-                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName(ip), 8080);
+
+                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName(ip), 9601);
                 socket.send(sendPacket);
+                if(sendPacket.getPort() == 9601){
+                    System.out.println("CONNESSO");
+                }
             }
             System.out.println("FINE INVIO NOTIFICA EMERGENZA");
+            socket.close();
         }
         catch (IOException ex) {
             Logger.getLogger(NotificaServer.class.getName()).log(Level.SEVERE, null, ex);
         }
-        socket.close();
+
         working = false;
     }
 

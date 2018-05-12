@@ -27,7 +27,7 @@ public class Emergenza {
                     }
 
                     try {
-                        Thread.sleep(30*100);
+                        Thread.sleep(15*1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
