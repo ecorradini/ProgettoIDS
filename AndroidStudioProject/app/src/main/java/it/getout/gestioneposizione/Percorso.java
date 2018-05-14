@@ -1,6 +1,9 @@
 package it.getout.gestioneposizione;
 
+import android.provider.ContactsContract;
+
 import connessioni.DatabaseConnection;
+import it.getout.gestioneconnessioni.Database;
 
 import java.sql.Array;
 import java.sql.Connection;
@@ -12,34 +15,25 @@ public class Percorso extends Thread {
     private String percorso;
     private String beacon;
     private boolean finished;
+    private Database reader;
 
-    public Percorso(String beacon) {
+    public Percorso(String beacon, Database reader) {
         percorso = "";
         this.beacon = beacon;
+        this.reader = reader;
         finished=false;
         start();
     }
 
     public void run() {
-        String json = "{PERCORSO:[";
 
-        String edificio = DAOEdificio.selectNomeEdificio(beacon);
-        String piano = DAOPiano.selectNomePiano(beacon);
-        GrafoTronchi.Nodo partenza = DAOTronco.selectNodoByBeacon(beacon,edificio,piano);
-        ArrayList<Tronco> uscite = DAOUscita.getTronchiUscita(beacon,edificio,piano);
+
+        String edificio = Posizione.getEdificioAttuale().toString();
+        String piano = Posizione.getPianoAttuale().toString();
+        GrafoTronchi.Nodo partenza = reader.selectNodoByBeacon(beacon,edificio,piano);
+        ArrayList<Tronco> uscite = reader.getTronchiUscita(beacon,edificio,piano);
 
         ArrayList<GrafoTronchi.Nodo> listaNodi = calcoloPercorso(partenza,uscite);
-
-        for(int i=0; i<listaNodi.size();i++) {
-            json = json + "\""+listaNodi.get(i).getTronco().getID()+"\",";
-        }
-        if(json.charAt(json.length()-1)==',') {
-            json = json.substring(0,json.length()-1);
-        }
-
-        json = json + "]}";
-
-        percorso = json;
 
         finished = true;
     }

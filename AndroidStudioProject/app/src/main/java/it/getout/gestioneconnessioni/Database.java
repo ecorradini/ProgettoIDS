@@ -19,6 +19,7 @@ import java.util.HashMap;
 import it.getout.gestioneposizione.Aula;
 import it.getout.gestioneposizione.Beacon;
 import it.getout.gestioneposizione.Edificio;
+import it.getout.gestioneposizione.GrafoTronchi;
 import it.getout.gestioneposizione.Piano;
 import it.getout.gestioneposizione.Posizione;
 import it.getout.gestioneposizione.Tronco;
@@ -282,6 +283,42 @@ public class Database extends GestoreDati {
     public ArrayList<Tronco> richiediPercorsoFuga(String idBeacon) {
         //TODO: BISOGNA CALCOLARE IL PERCORSO OFFLINE
         return new ArrayList<>();
+    }
+
+    public GrafoTronchi.Nodo selectNodoByBeacon(String beacon, String edificio, String piano, GrafoTronchi grafo) {
+        SQLiteDatabase db = connessione.getReadableDatabase();
+        String query = "SELECT TRONCO" +
+                " FROM BEACON" +
+                " WHERE BEACON.ID = \'"+beacon+"\'";
+
+        int tronco=0;
+
+        Cursor res = db.rawQuery(query,null);
+        res.moveToFirst();
+        tronco = res.getInt(res.getColumnIndex("TRONCO"));
+        res.close();
+        db.close();
+
+        ArrayList<GrafoTronchi.Nodo> visitati = new ArrayList<>();
+        ArrayList<GrafoTronchi.Nodo> daVisitare = new ArrayList<>();
+        daVisitare.add(grafo.getRadice());
+
+        GrafoTronchi.Nodo risultato = null;
+
+        while(daVisitare.size()>0 && risultato==null) {
+            if(daVisitare.get(0).getTronco().getID()==tronco) {
+                risultato = daVisitare.get(0);
+            }
+            else {
+                if(!visitati.contains(daVisitare.get(0))) {
+                    daVisitare.addAll(daVisitare.get(0).getAdiacenti());
+                    visitati.add(daVisitare.get(0));
+                }
+                daVisitare.remove(0);
+            }
+        }
+
+        return risultato;
     }
 }
 
