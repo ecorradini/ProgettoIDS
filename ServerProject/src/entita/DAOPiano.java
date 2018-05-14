@@ -1,6 +1,6 @@
 package entita;
 
-import connessioni.DatabaseConnection;
+import connessioni.Database;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -14,7 +14,7 @@ public class DAOPiano {
     static final String TABLE_PIANO = "PIANO";
 
     public static String selectPianoByBeacon(String idBeacon) {
-        Connection conn = DatabaseConnection.getConn();
+        Connection conn = Database.getConn();
         String nomePiano = "";
 
         String query =  "SELECT "+TABLE_PIANO+"."+NOME+" AS NOME_PIANO"+
@@ -45,7 +45,7 @@ public class DAOPiano {
     }
 
     public static String selectNomePiano(String idBeacon) {
-        Connection conn = DatabaseConnection.getConn();
+        Connection conn = Database.getConn();
         String nomePiano = "";
 
         String query =  "SELECT "+TABLE_PIANO+"."+NOME+" AS NOME_PIANO"+
@@ -73,7 +73,7 @@ public class DAOPiano {
     }
 
     public static String selectAllPianiByEdificio(String edificio) {
-        Connection conn = DatabaseConnection.getConn();
+        Connection conn = Database.getConn();
         String json="{\""+edificio+"\":[";
 
         String query =  "SELECT "+NOME+ " FROM "+TABLE_PIANO+ " WHERE "+DAOEdificio.TABLE_EDIFICIO+"=\'"+edificio+"\'";
@@ -104,7 +104,7 @@ public class DAOPiano {
     }
 
     public static ArrayList<String> selectListaPianiByEdificio(String edificio) {
-        Connection conn = DatabaseConnection.getConn();
+        Connection conn = Database.getConn();
         ArrayList<String> piani = new ArrayList<>();
 
         String query =  "SELECT DISTINCT "+NOME+ " FROM "+TABLE_PIANO+ " WHERE "+DAOEdificio.TABLE_EDIFICIO+"=\'"+edificio+"\'";
@@ -127,7 +127,7 @@ public class DAOPiano {
     }
 
     public static int selectCountPiani() {
-        Connection conn = DatabaseConnection.getConn();
+        Connection conn = Database.getConn();
         int nPiani=0;
 
         String query = "SELECT COUNT("+NOME+") AS NUMERO FROM "+TABLE_PIANO;

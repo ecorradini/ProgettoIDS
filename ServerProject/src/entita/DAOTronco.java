@@ -1,6 +1,6 @@
 package entita;
 
-import connessioni.DatabaseConnection;
+import connessioni.Database;
 import connessioni.Server;
 
 import java.sql.Connection;
@@ -22,7 +22,7 @@ public class DAOTronco {
     static final String TABLE_TRONCO = "TRONCO";
 
     public static String selectAllTronchiByPiano(String piano) {
-        Connection conn = DatabaseConnection.getConn();
+        Connection conn = Database.getConn();
         String json="{\""+piano+"\":[";
 
         String query =  "SELECT "+ID+","+LARGHEZZA+","+LUNGHEZZA+","+X+","+Y+","+XF+","+YF+
@@ -54,7 +54,7 @@ public class DAOTronco {
     }
 
     public static HashMap<Integer,Tronco> selectTronchiDelPiano(String piano) {
-        Connection conn = DatabaseConnection.getConn();
+        Connection conn = Database.getConn();
         HashMap<Integer,Tronco> risultato = new HashMap<>();
 
         String query = "SELECT ID,X,Y,XF,YF,LARGHEZZA,LUNGHEZZA" +
@@ -81,7 +81,7 @@ public class DAOTronco {
     }
 
     public static ArrayList<Integer> selectTronchiAdiacenti(Tronco t) {
-        Connection conn = DatabaseConnection.getConn();
+        Connection conn = Database.getConn();
         ArrayList<Integer> risultato = new ArrayList<>();
 
         String query = "SELECT TRONCO.ID" +
@@ -128,7 +128,7 @@ public class DAOTronco {
     }
 
     public static GrafoTronchi.Nodo selectNodoByBeacon(String beacon, String edificio, String piano) {
-        Connection conn = DatabaseConnection.getConn();
+        Connection conn = Database.getConn();
         String query = "SELECT TRONCO" +
                 " FROM BEACON" +
                 " WHERE BEACON.ID = \'"+beacon+"\'";

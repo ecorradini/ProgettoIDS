@@ -1,8 +1,7 @@
 package entita;
 
-import connessioni.DatabaseConnection;
+import connessioni.Database;
 
-import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,7 +15,7 @@ public class DAOEdificio {
     static final String TABLE_EDIFICIO = "EDIFICIO";
 
     public static String selectEdificioByBeacon(String idBeacon) {
-        Connection conn = DatabaseConnection.getConn();
+        Connection conn = Database.getConn();
         String nomeEdificio = "";
 
         String query = "SELECT "+TABLE_EDIFICIO+"."+NOME+" AS NOME_EDIFICIO"+
@@ -47,7 +46,7 @@ public class DAOEdificio {
     }
 
     public static String selectNomeEdificio(String idBeacon) {
-        Connection conn = DatabaseConnection.getConn();
+        Connection conn = Database.getConn();
         String nomeEdificio = "";
 
         String query = "SELECT "+TABLE_EDIFICIO+"."+NOME+" AS NOME_EDIFICIO"+
@@ -77,7 +76,7 @@ public class DAOEdificio {
     }
 
     public static ArrayList<String> selectEdifici() {
-        Connection conn = DatabaseConnection.getConn();
+        Connection conn = Database.getConn();
         ArrayList<String> edifici = new ArrayList<>();
 
         String query = "SELECT "+NOME+" FROM "+TABLE_EDIFICIO;
@@ -100,7 +99,7 @@ public class DAOEdificio {
     }
 
     public static int selectCountEdifici() {
-        Connection conn = DatabaseConnection.getConn();
+        Connection conn = Database.getConn();
         int nEdifici=0;
 
         String query = "SELECT COUNT("+NOME+") AS NUMERO FROM "+TABLE_EDIFICIO;

@@ -1,6 +1,6 @@
 package entita;
 
-import connessioni.DatabaseConnection;
+import connessioni.Database;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -16,7 +16,7 @@ public class DAOAula {
     static final String TABLE_AULA = "AULA";
 
     public static String selectAllAuleByPiano(String piano) {
-        Connection conn = DatabaseConnection.getConn();
+        Connection conn = Database.getConn();
         String json="{\""+piano+"\":[";
 
         String query =  "SELECT "+NOME+","+X+","+Y+","+ENTRATA+

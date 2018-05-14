@@ -1,11 +1,6 @@
 package entita;
 
-import connessioni.DatabaseConnection;
-
-import java.sql.Array;
-import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Percorso extends Thread {
 

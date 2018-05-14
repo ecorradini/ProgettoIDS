@@ -1,6 +1,6 @@
 package entita;
 
-import connessioni.DatabaseConnection;
+import connessioni.Database;
 import connessioni.Server;
 
 import java.sql.Connection;
@@ -13,7 +13,7 @@ import java.util.HashMap;
 public class DAOUscita {
 
     public static ArrayList<Tronco> getTronchiUscita(String beacon,String edificio,String piano) {
-        Connection conn = DatabaseConnection.getConn();
+        Connection conn = Database.getConn();
         ArrayList<Tronco> tronchiDaAttraversare = new ArrayList<>();
 
         String query = "SELECT BEACONPIANO."+DAOBeacon.TRONCO+" AS "+DAOBeacon.TRONCO+

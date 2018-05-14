@@ -8,7 +8,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DatabaseConnection {
+public class Database {
     private static Connection connection;
     public static final String dbUrl="jdbc:jtds:sqlserver://den1.mssql5.gear.host/getoutdb";
 

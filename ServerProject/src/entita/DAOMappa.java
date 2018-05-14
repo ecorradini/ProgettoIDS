@@ -1,8 +1,7 @@
 package entita;
 
-import connessioni.DatabaseConnection;
+import connessioni.Database;
 
-import javax.management.ImmutableDescriptor;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,7 +13,7 @@ public class DAOMappa {
     static final String TABLE_MAPPA = "MAPPA";
 
     public static String selectMappaByPiano(String piano) {
-        Connection conn = DatabaseConnection.getConn();
+        Connection conn = Database.getConn();
         String link="";
 
         String query =  "SELECT "+ LINK+

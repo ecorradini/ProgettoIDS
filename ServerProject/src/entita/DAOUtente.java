@@ -1,6 +1,6 @@
 package entita;
 
-import connessioni.DatabaseConnection;
+import connessioni.Database;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ public class DAOUtente {
     private static final String TABLE_UTENTE = "UTENTE";
 
     public static void insertUtente(String ip) {
-        Connection conn = DatabaseConnection.getConn();
+        Connection conn = Database.getConn();
 
         String query = "INSERT INTO "+TABLE_UTENTE+" VALUES(\'"+ip+"\')";
 
@@ -28,7 +28,7 @@ public class DAOUtente {
     }
 
     public static ArrayList<String> getAllUtenti() {
-        Connection conn = DatabaseConnection.getConn();
+        Connection conn = Database.getConn();
         ArrayList<String> utenti = new ArrayList<>();
         String query = "SELECT "+IP+" FROM "+TABLE_UTENTE;
 

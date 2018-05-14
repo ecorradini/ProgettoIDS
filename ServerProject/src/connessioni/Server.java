@@ -20,7 +20,7 @@ public class Server {
 
         try {
             System.out.println("Server Start");
-            DatabaseConnection.init();
+            Database.init();
 
         } catch (ClassNotFoundException e) {
             System.out.println("Eccezione Class not found");

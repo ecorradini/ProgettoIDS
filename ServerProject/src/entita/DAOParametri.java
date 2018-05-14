@@ -1,11 +1,9 @@
 package entita;
 
-import connessioni.DatabaseConnection;
+import connessioni.Database;
 
-import javax.print.attribute.standard.PresentationDirection;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class DAOParametri {
     static final String TRONCO = "TRONCO";  //id del tronco di riferimento
@@ -15,7 +13,7 @@ public class DAOParametri {
     static final String TABLE_PARAMETRI = "PARAMETRI";
 
     public static ArrayList<Float> selectParametri(int tronco){
-        Connection conn = DatabaseConnection.getConn();
+        Connection conn = Database.getConn();
 
         ArrayList<Float> tronchi;
 
@@ -50,7 +48,7 @@ public class DAOParametri {
     public static boolean controllaEmergenza(){
         boolean emergenza = false;
 
-        Connection conn = DatabaseConnection.getConn();
+        Connection conn = Database.getConn();
 
         String query =  "SELECT COUNT("+RISCHIOVITA+") AS EMERGENZE"+
                 " FROM "+TABLE_PARAMETRI+" WHERE "+RISCHIOVITA+"=1";
@@ -75,7 +73,7 @@ public class DAOParametri {
     }
 
     public static String selectEdificioParametro(){
-        Connection conn = DatabaseConnection.getConn();
+        Connection conn = Database.getConn();
         String edificio = null;
         String query2 = "select distinct EDIFICIO from PIANO" +
                         " where NOME = (" +

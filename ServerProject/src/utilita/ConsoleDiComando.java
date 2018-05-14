@@ -1,6 +1,6 @@
 package utilita;
 
-import connessioni.DatabaseConnection;
+import connessioni.Database;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,7 +32,7 @@ public class ConsoleDiComando implements Runnable {
     }
 
     private void testaEmergenza() {
-        Connection conn = DatabaseConnection.getConn();
+        Connection conn = Database.getConn();
 
         String query = "update PARAMETRI set RV=1 where TRONCO=3";
 
@@ -49,7 +49,7 @@ public class ConsoleDiComando implements Runnable {
     }
 
     private void fineTestaEmergenza() {
-        Connection conn = DatabaseConnection.getConn();
+        Connection conn = Database.getConn();
 
         String query = "update PARAMETRI set RV=0 where TRONCO=3";
 

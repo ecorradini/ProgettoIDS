@@ -1,6 +1,6 @@
 package entita;
 
-import connessioni.DatabaseConnection;
+import connessioni.Database;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -17,7 +17,7 @@ public class DAOBeacon {
     static final String TABLE_BEACON = "BEACON";
 
     public static String selectPosizioneById(String idBeacon) {
-        Connection conn = DatabaseConnection.getConn();
+        Connection conn = Database.getConn();
         String json="";
 
         String query =  "SELECT "+ID+","+X+","+Y+
@@ -42,7 +42,7 @@ public class DAOBeacon {
     }
 
     public static String selectAllBeaconsByTronco(String tronco) {
-        Connection conn = DatabaseConnection.getConn();
+        Connection conn = Database.getConn();
         String json="{\""+tronco+"\":[";
 
         String query =  "SELECT "+ID+","+X+","+Y+
@@ -75,7 +75,7 @@ public class DAOBeacon {
     }
 
     public static boolean sumUser(String beaconID) {
-        Connection conn = DatabaseConnection.getConn();
+        Connection conn = Database.getConn();
         String query = "UPDATE "+TABLE_BEACON+" SET "+UTENTI+" = (SELECT "+UTENTI+" FROM"+ TABLE_BEACON+" WHERE "+ID+" =\'"+beaconID+"\')+1 WHERE "+ID+" = \'"+beaconID+"\'";
 
         try {
@@ -93,7 +93,7 @@ public class DAOBeacon {
     }
 
     public static boolean removeUser(String beaconID) {
-        Connection conn = DatabaseConnection.getConn();
+        Connection conn = Database.getConn();
         String query = "UPDATE "+TABLE_BEACON+" SET "+UTENTI+" = (SELECT "+UTENTI+" FROM"+ TABLE_BEACON+" WHERE "+ID+" =\'"+beaconID+"\')-1 WHERE "+ID+" = \'"+beaconID+"\'";
 
         try {
@@ -113,7 +113,7 @@ public class DAOBeacon {
     public static int getNumeroPersoneInTronco(int tronco){
         int persone=0;
 
-        Connection conn = DatabaseConnection.getConn();
+        Connection conn = Database.getConn();
         String query = "SELECT SUM("+UTENTI+") FROM "+TABLE_BEACON+" WHERE "+TRONCO+" = "+tronco;
 
         try {
