@@ -26,12 +26,20 @@ public class Percorso extends Thread {
     }
 
     public void run() {
+        GrafoTronchi partenza;
 
+        ArrayList<Piano> piani = Posizione.getEdificioAttuale().getPiani();
+        int tronco = Posizione.richiediTroncoByBeacon(beacon);
+        HashMap<String,GrafoTronchi> grafi = new HashMap<>();
+
+        for(int i = 0; i < piani.size(); i++){
+            grafi.put(piani.get(i).toString(), new GrafoTronchi(piani.get(i).toString(),reader));
+        }
 
         String edificio = Posizione.getEdificioAttuale().toString();
         String piano = Posizione.getPianoAttuale().toString();
-        GrafoTronchi.Nodo partenza = reader.selectNodoByBeacon(beacon,edificio,piano);
-        ArrayList<Tronco> uscite = reader.getTronchiUscita(beacon,edificio,piano);
+
+        ArrayList<Tronco> uscite = reader.getTronchiUscita(beacon);
 
         ArrayList<GrafoTronchi.Nodo> listaNodi = calcoloPercorso(partenza,uscite);
 

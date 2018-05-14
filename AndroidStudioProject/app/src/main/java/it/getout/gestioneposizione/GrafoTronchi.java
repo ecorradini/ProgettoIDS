@@ -52,7 +52,7 @@ public class GrafoTronchi {
     private String piano;
     private Nodo radice;
 
-    public GrafoTronchi(String piano, Database reader) {
+    public GrafoTronchi(String piano, int tronco, Database reader) {
         this.piano = piano;
         for(int i=0; i<Posizione.getPianoAttuale().getTronchi().size(); i++) {
             tronchiPiano.put(Posizione.getPianoAttuale().getTronchi().get(i).getId(),Posizione.getPianoAttuale().getTronco(i));
@@ -63,7 +63,7 @@ public class GrafoTronchi {
 
         Tronco rad = null;
         if(tronchiPiano.size()>0) {
-            rad = tronchiPiano.entrySet().iterator().next().getValue();
+            rad = tronchiPiano.get(tronco);
         }
 
         if(rad!=null) {
