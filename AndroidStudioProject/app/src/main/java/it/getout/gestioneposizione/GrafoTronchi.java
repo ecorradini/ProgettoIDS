@@ -15,7 +15,7 @@ public class GrafoTronchi {
         float peso;
         private final float[] weight={0.2f,0.2f,0.2f,0.2f,0.2f};
 
-        Nodo(Tronco t, Database reader) {
+        public Nodo(Tronco t, Database reader) {
             dato = t;
 
             ArrayList<Float> parametri;  //0.VULNERABILITA  1.RISCHIOVITA  2.PRESENZAFUMO
@@ -36,14 +36,14 @@ public class GrafoTronchi {
             peso  += t.getLunghezza()*weight[3]+(numeroPersone/(t.getLunghezza()*t.getLarghezza()))*weight[4];
         }
 
-        void addAdiacente(Nodo n) {
+        public void addAdiacente(Nodo n) {
             if(adiacenti==null) adiacenti = new ArrayList<>();
             adiacenti.add(n);
         }
 
-        Tronco getTronco() { return dato; }
+        public Tronco getTronco() { return dato; }
 
-        ArrayList<Nodo> getAdiacenti() { return adiacenti; }
+        public ArrayList<Nodo> getAdiacenti() { return adiacenti; }
 
         public float getPeso() { return peso; }
     }
