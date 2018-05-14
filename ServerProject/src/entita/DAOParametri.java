@@ -74,30 +74,6 @@ public class DAOParametri {
         return emergenza;
     }
 
-    public static ArrayList<Integer> selectTroncoEmergenza(){
-        ArrayList<Integer> tronchi = new ArrayList<Integer>();
-        Connection conn = DatabaseConnection.getConn();
-
-        String query =  "SELECT "+TRONCO+
-                " FROM "+TABLE_PARAMETRI+" WHERE "+RISCHIOVITA+"=1";
-
-        try {
-            Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery(query);
-
-            while (rs.next()) {
-                tronchi.add(rs.getInt(TRONCO));
-            }
-
-            rs.close();
-            stm.close();
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return tronchi;
-    }
-
     public static String selectEdificioParametro(){
         Connection conn = DatabaseConnection.getConn();
         String edificio = null;

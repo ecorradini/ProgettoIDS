@@ -206,6 +206,21 @@ public class Database extends GestoreDati {
         return tronchi;
     }
 
+    public int richiediNumeroPersoneInTronco(int tronco){
+        int persone=0;
+
+        SQLiteDatabase db = connessione.getReadableDatabase();
+        String query = "SELECT SUM(UTENTI) AS UTENTI FROM BEACON WHERE TRONCO = "+tronco;
+
+        Cursor res = db.rawQuery(query,null);
+        res.moveToFirst();
+
+        persone = res.getInt(res.getColumnIndex("UTENTI"));
+
+        return persone;
+
+    }
+
     // dato un nome del piano restituisce tutte le sue aule
     @Override
     public ArrayList<Aula> richiediAulePiano(String nomePiano) {

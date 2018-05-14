@@ -30,10 +30,10 @@ public class GrafoTronchi {
                 }
             }
 
-            numeroPersone = DAOBeacon.getNumeroPersoneInTronco(id);
+            int numeroPersone = reader.richiediNumeroPersoneInTronco(t.getId());
 
             // aggiunta al peso le componenti di lunghezza e los (C'È DA NORMALIZZARE: PORTARE TUTTE LE VARIE COMPONENTI A VALORI COMPRESI TRA 0 E 1)
-            peso  += lunghezza*weight[3]+(numeroPersone/(lunghezza*larghezza))*weight[4];
+            peso  += t.getLunghezza()*weight[3]+(numeroPersone/(t.getLunghezza()*t.getLarghezza()))*weight[4];
         }
 
         void addAdiacente(Nodo n) {
@@ -67,7 +67,7 @@ public class GrafoTronchi {
         }
 
         if(rad!=null) {
-            radice = new Nodo(rad);
+            radice = new Nodo(rad,reader);
             bfs.add(radice);
             fatti.put(radice.getTronco(),radice);
         }
@@ -103,7 +103,7 @@ public class GrafoTronchi {
                     if(fatti.containsKey(adiacenti.get(i))) {
                         attuale = fatti.get(adiacenti.get(i));
                     }
-                    else attuale = new Nodo(adiacenti.get(i));
+                    else attuale = new Nodo(adiacenti.get(i),reader);
                     bfs.get(0).addAdiacente(attuale);
                     nodiAdiacenti.add(attuale);
                 }
