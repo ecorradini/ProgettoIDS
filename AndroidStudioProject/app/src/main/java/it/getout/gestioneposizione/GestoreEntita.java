@@ -197,7 +197,9 @@ public class GestoreEntita {
     }
 
     private void aggiornaDati(String beacon) {
+
         if(!beacon.equals(this.beacon)) {
+            Uscita.setBeaconPrecedente(Posizione.getIDBeaconAttuale());
             Piano pianoAttuale = reader.richiediPianoAttuale(beacon);
             if (pianoAttuale.equals(Posizione.getPianoAttuale())) {
                 boolean done = false;
