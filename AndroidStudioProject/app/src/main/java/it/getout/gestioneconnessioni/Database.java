@@ -9,6 +9,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.PointF;
 import android.util.Base64;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -143,6 +147,28 @@ public class Database extends GestoreDati {
 
         return listaTronchi;
 
+    }
+
+    public HashMap<Integer,Tronco> richiediTronchiHashMap(String piano) {
+
+        SQLiteDatabase db = connessione.getReadableDatabase();
+        HashMap<Integer,Tronco> risultato = new HashMap<>();
+
+        String sql = "SELECT ID,X,Y,XF,YF,LARGHEZZA,LUNGHEZZA" +
+                " FROM TRONCO" +
+                " WHERE PIANO = \'"+piano+"\'";
+
+        Cursor res = db.rawQuery(sql,null);
+        res.moveToFirst();
+        while(res.moveToNext()) {
+            risultato.put(res.getInt(res.getColumnIndex("ID")),new Tronco(res.getInt(res.getColumnIndex("ID")),res.getFloat(res.getColumnIndex("X")),
+                    res.getFloat(res.getColumnIndex("Y")),res.getFloat(res.getColumnIndex("XF"),res.getFloat(res.getColumnIndex("Y"), rs.getFloat(LARGHEZZA), rs.getFloat(LUNGHEZZA)));
+        }
+
+        res.close();
+        db.close();
+
+        return risultato;
     }
 
 
