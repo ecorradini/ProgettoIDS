@@ -253,6 +253,7 @@ public class GestoreEntita {
                         }while(!bluetooth.getTerminatedScan());
 
                         device = bluetooth.getCurrentBeacon();
+                        Log.e("BEACON",device!=null ? device.getAddress() : "NULL");
 
                         Log.e("Mi sono connesso",device.getAddress());
 
