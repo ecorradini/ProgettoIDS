@@ -8,7 +8,7 @@ import it.getout.gestioneconnessioni.Database;
 
 public class GrafoTronchi {
 
-    class Nodo {
+    public class Nodo {
 
         Tronco dato;
         ArrayList<Nodo> adiacenti;
