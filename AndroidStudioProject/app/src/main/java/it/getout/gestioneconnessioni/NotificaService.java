@@ -6,7 +6,6 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.Looper;
@@ -89,7 +88,6 @@ public class NotificaService extends Service {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "getout")
                             .setSmallIcon(R.mipmap.ic_launcher)
-                            //.setStyle(new NotificationCompat.BigTextStyle().setBigContentTitle("Emergenza!").setSummaryText("Emergenza!").bigText(message))
                             .setContentText("Evacuare immediatamente.")
                             .setContentTitle(message)
                             .setContentIntent(pendingIntent)
@@ -100,7 +98,6 @@ public class NotificaService extends Service {
         notificationManager.notify(NOTIFICATION_EX, builder.build());
     }
 
-    //Solo per Android >= 8.0
     private void createNotificationChannel() {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "GetOut";
