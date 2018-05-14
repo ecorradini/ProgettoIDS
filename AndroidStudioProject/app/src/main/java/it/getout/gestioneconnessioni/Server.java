@@ -68,7 +68,6 @@ public class Server extends GestoreDati
     private static String BASE_URL;
 
     private DatagramSocket c;
-    private DatagramSocket d;
     private Context context;
 
 
