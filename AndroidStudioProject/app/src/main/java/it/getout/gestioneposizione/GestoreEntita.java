@@ -270,7 +270,9 @@ public class GestoreEntita {
                             beacon = device.getAddress();
                         }
                         else {
-                            Posizione.setBeaconAttuale(new Beacon("",null));
+                            if(!Posizione.getIDBeaconAttuale().equals("")) {
+                                Posizione.setBeaconAttuale(new Beacon("", null));
+                            }
                         }
 
                     } catch (InterruptedException e) {
