@@ -324,5 +324,21 @@ public class Database extends GestoreDati {
 
         return tronchiDaAttraversare;
     }
+
+    public int richiediTroncoByBeacon(String idBeacon){
+        SQLiteDatabase db = connessione.getReadableDatabase();
+
+        String sql = "SELECT TRONCO" +
+                " FROM BEACON" +
+                " WHERE BEACON.ID = \'"+idBeacon+"\'";
+
+        Cursor res = db.rawQuery(sql,null);
+        res.moveToFirst();
+        int tronco = res.getInt(res.getColumnIndex(DBStrings.COL_TRONCO));
+        res.close();
+        db.close();
+
+        return tronco;
+    }
 }
 
