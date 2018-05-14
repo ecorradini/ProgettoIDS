@@ -257,17 +257,21 @@ public class GestoreEntita {
                         device = bluetooth.getCurrentBeacon();
                         Log.e("BEACON",device!=null ? device.getAddress() : "NULL");
 
-                        Log.e("Mi sono connesso",device.getAddress());
+                        if(device!=null) {
+                            Log.e("Mi sono connesso", device.getAddress());
 
-                        if(beacon==null) {
-                            scaricaDati(device.getAddress());
-                            new ThreadBluetooth(context);
+                            if (beacon == null) {
+                                scaricaDati(device.getAddress());
+                                new ThreadBluetooth(context);
+                            } else {
+                                aggiornaDati(device.getAddress());
+                            }
+
+                            beacon = device.getAddress();
                         }
                         else {
-                            aggiornaDati(device.getAddress());
+                            Posizione.setBeaconAttuale(new Beacon("",null));
                         }
-
-                        beacon = device.getAddress();
 
                     } catch (InterruptedException e) {
                         e.printStackTrace();
