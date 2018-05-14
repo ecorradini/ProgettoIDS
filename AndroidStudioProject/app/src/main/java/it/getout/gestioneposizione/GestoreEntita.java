@@ -247,10 +247,12 @@ public class GestoreEntita {
                     BluetoothDevice device = null;
 
                     try {
+                        int contatore = 0;
                         do {
                             bluetooth.discoverBLEDevices();
                             Thread.sleep(1500);
-                        }while(!bluetooth.getTerminatedScan());
+                            contatore++;
+                        }while(!bluetooth.getTerminatedScan() && contatore<5);
 
                         device = bluetooth.getCurrentBeacon();
                         Log.e("BEACON",device!=null ? device.getAddress() : "NULL");
