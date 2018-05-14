@@ -2,7 +2,6 @@ package it.getout.gestioneposizione;
 
 import android.provider.ContactsContract;
 
-import connessioni.DatabaseConnection;
 import it.getout.gestioneconnessioni.Database;
 
 import java.sql.Array;
@@ -66,10 +65,12 @@ public class Percorso extends Thread {
 
             private ArrayList<GrafoTronchi.Nodo> percorso;    //deve partire con una lista vuota
             private float costo;
+            private ArrayList<Tronco> tronchiUscita;
 
-            private PercorsoConCosto() {
+            private PercorsoConCosto(ArrayList<Tronco> tronchiUscita) {
                 percorso = new ArrayList<>();
                 costo = 0;
+                this.tronchiUscita = tronchiUscita;
             }
 
             private ArrayList<GrafoTronchi.Nodo> getPercorso () {return percorso;}
@@ -105,7 +106,7 @@ public class Percorso extends Thread {
         PercorsoConCosto finale = null;
 
         ArrayList<PercorsoConCosto> frontiera = new ArrayList<>();
-        PercorsoConCosto iniziale = new PercorsoConCosto();
+        PercorsoConCosto iniziale = new PercorsoConCosto(tronchiUscita);
         iniziale.aggiungiNodo(partenza);
         iniziale.sommaCosto(partenza.getPeso());
         frontiera.add(iniziale);
@@ -123,7 +124,7 @@ public class Percorso extends Thread {
             adiacenti = minore.getUltimoNodo().getAdiacenti();
 
             for (int i = 0; i < adiacenti.size(); i++) {
-                PercorsoConCosto daAggiungere = new PercorsoConCosto();
+                PercorsoConCosto daAggiungere = new PercorsoConCosto(tronchiUscita);
                 daAggiungere.aggiungiPadre(minore);
                 daAggiungere.sommaCosto(minore.getCosto());
                 daAggiungere.aggiungiNodo(adiacenti.get(i));
