@@ -2,6 +2,7 @@ package it.getout.gestioneposizione;
 
 import android.graphics.PointF;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**

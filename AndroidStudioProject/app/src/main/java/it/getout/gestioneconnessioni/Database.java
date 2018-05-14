@@ -149,28 +149,62 @@ public class Database extends GestoreDati {
 
     }
 
-    public HashMap<Integer,Tronco> richiediTronchiHashMap(String piano) {
-
+    public ArrayList<Integer> richiediTronchiAdiacenti(Tronco t) {
         SQLiteDatabase db = connessione.getReadableDatabase();
-        HashMap<Integer,Tronco> risultato = new HashMap<>();
+        ArrayList<Integer> risultato = new ArrayList<>();
 
-        String sql = "SELECT ID,X,Y,XF,YF,LARGHEZZA,LUNGHEZZA" +
+        String query = "SELECT TRONCO.ID" +
+                " FROM TRONCO," +
+                "( SELECT TRONCO.ID as IDINIZIO," +
+                " TRONCO.X  as XINIZIO," +
+                " TRONCO.Y  as YINIZIO," +
+                " TRONCO.XF as XFINIZIO," +
+                " TRONCO.YF as YFINIZIO," +
+                " TRONCO.PIANO as PIANOINIZIO "+
                 " FROM TRONCO" +
-                " WHERE PIANO = \'"+piano+"\'";
+                " WHERE TRONCO.ID = "+ t.getId() +
+                ") AS TRONCOINIZIO" +
+                " WHERE ((TRONCO.X=TRONCOINIZIO.XINIZIO" +
+                " AND TRONCO.Y=TRONCOINIZIO.YINIZIO)" +
+                " OR (TRONCO.XF=TRONCOINIZIO.XINIZIO" +
+                " AND TRONCO.YF=TRONCOINIZIO.YINIZIO)" +
+                " OR (TRONCO.X=TRONCOINIZIO.XFINIZIO" +
+                " AND TRONCO.Y=TRONCOINIZIO.YFINIZIO)" +
+                " OR (TRONCO.XF=TRONCOINIZIO.XFINIZIO" +
+                " AND TRONCO.YF=TRONCOINIZIO.YFINIZIO))" +
+                " AND TRONCO.ID <> TRONCOINIZIO.IDINIZIO" +
+                " AND TRONCO.PIANO = TRONCOINIZIO.PIANOINIZIO";
 
-        Cursor res = db.rawQuery(sql,null);
+        Cursor res = db.rawQuery(query,null);
         res.moveToFirst();
         while(res.moveToNext()) {
-            risultato.put(res.getInt(res.getColumnIndex("ID")),new Tronco(res.getInt(res.getColumnIndex("ID")),res.getFloat(res.getColumnIndex("X")),
-                    res.getFloat(res.getColumnIndex("Y")),res.getFloat(res.getColumnIndex("XF"),res.getFloat(res.getColumnIndex("Y"), rs.getFloat(LARGHEZZA), rs.getFloat(LUNGHEZZA)));
+            risultato.add(res.getInt(res.getColumnIndex("ID")));
         }
 
-        res.close();
-        db.close();
-
-        return risultato;
+        if(risultato.size()>0) {
+            return risultato;
+        }
+        else return null;
     }
 
+    public ArrayList<Float> richiediParametri(int tronco){
+        SQLiteDatabase db = connessione.getReadableDatabase();
+
+        ArrayList<Float> tronchi=new ArrayList<>();
+
+        String query =  "SELECT VULN,RV,PF"+
+                " FROM PARAMETRI WHERE TRONCO="+tronco;
+
+        Cursor res = db.rawQuery(query,null);
+        res.moveToFirst();
+        while(res.moveToNext()) {
+            tronchi.add(res.getFloat(res.getColumnIndex("VULN")));
+            tronchi.add(res.getFloat(res.getColumnIndex("RV")));
+            tronchi.add(res.getFloat(res.getColumnIndex("PF")));
+        }
+
+        return tronchi;
+    }
 
     // dato un nome del piano restituisce tutte le sue aule
     @Override

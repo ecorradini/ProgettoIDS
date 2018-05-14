@@ -13,10 +13,27 @@ public class GrafoTronchi {
         Tronco dato;
         ArrayList<Nodo> adiacenti;
         float peso;
+        private final float[] weight={0.2f,0.2f,0.2f,0.2f,0.2f};
 
-        Nodo(Tronco t) {
+        Nodo(Tronco t, Database reader) {
             dato = t;
-            peso = t.calcolaPesoTronco();
+
+            ArrayList<Float> parametri;  //0.VULNERABILITA  1.RISCHIOVITA  2.PRESENZAFUMO
+            parametri = reader.richiediParametri(t.getId());
+
+            //calcolo peso con parametri 1, 2 e 3.
+            for(int i=0; i<parametri.size(); i++){
+                if(i==1)
+                    peso += parametri.get(i)*100*weight[i];
+                else {
+                    peso += parametri.get(i) * weight[i];
+                }
+            }
+
+            numeroPersone = DAOBeacon.getNumeroPersoneInTronco(id);
+
+            // aggiunta al peso le componenti di lunghezza e los (C'È DA NORMALIZZARE: PORTARE TUTTE LE VARIE COMPONENTI A VALORI COMPRESI TRA 0 E 1)
+            peso  += lunghezza*weight[3]+(numeroPersone/(lunghezza*larghezza))*weight[4];
         }
 
         void addAdiacente(Nodo n) {
@@ -37,7 +54,9 @@ public class GrafoTronchi {
 
     public GrafoTronchi(String piano, Database reader) {
         this.piano = piano;
-        tronchiPiano = reader.richiediTronchiPiano(piano);
+        for(int i=0; i<Posizione.getPianoAttuale().getTronchi().size(); i++) {
+            tronchiPiano.put(Posizione.getPianoAttuale().getTronchi().get(i).getId(),Posizione.getPianoAttuale().getTronco(i));
+        }
 
         ArrayList<Nodo> bfs = new ArrayList<>();
         HashMap<Tronco,Nodo> fatti = new HashMap<>();
@@ -54,9 +73,30 @@ public class GrafoTronchi {
         }
 
         while(bfs.size()>0) {
-            ArrayList<Tronco> adiacenti = bfs.get(0).getTronco().richiediAdiacenti(tronchiPiano);
+            ArrayList<Tronco> adiacenti = new ArrayList<>();
+            ArrayList<Integer> adiacentiID = reader.richiediTronchiAdiacenti(bfs.get(0).getTronco());
+            for(int i=0; i<adiacentiID.size(); i++) {
+                Tronco corrente = null;
+                for(int j=0; j<Posizione.getPianoAttuale().getTronchi().size() && corrente==null; j++) {
+                    if(adiacentiID.get(i)==Posizione.getPianoAttuale().getTronchi().get(i).getId()) {
+                        corrente = Posizione.getPianoAttuale().getTronchi().get(i);
+                    }
+                }
+                if(corrente==null) {
+                    for(int x=0; x<Posizione.getEdificioAttuale().getPiani().size() && corrente==null; x++) {
+                        for(int t=0; t<Posizione.getEdificioAttuale().getPiani().get(t).getTronchi().size() && corrente==null; t++) {
+                            if(adiacentiID.get(t)==Posizione.getEdificioAttuale().getPiani().get(t).getTronchi().get(t).getId()) {
+                                corrente = Posizione.getEdificioAttuale().getPiani().get(t).getTronchi().get(t);
+                            }
+                        }
+                    }
+                }
+                if(corrente!=null) {
+                    adiacenti.add(corrente);
+                }
+            }
             ArrayList<Nodo> nodiAdiacenti = null;
-            if(adiacenti!=null) {
+            if(adiacenti.size()>0) {
                 nodiAdiacenti = new ArrayList<>();
                 for (int i = 0; i < adiacenti.size(); i++) {
                     Nodo attuale;
