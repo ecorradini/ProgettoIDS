@@ -21,6 +21,7 @@ import it.getout.gestioneposizione.Aula;
 import it.getout.gestioneposizione.Beacon;
 import it.getout.gestioneposizione.Edificio;
 import it.getout.gestioneposizione.GrafoTronchi;
+import it.getout.gestioneposizione.Percorso;
 import it.getout.gestioneposizione.Piano;
 import it.getout.gestioneposizione.Posizione;
 import it.getout.gestioneposizione.Tronco;
@@ -282,8 +283,7 @@ public class Database extends GestoreDati {
 
     @Override
     public ArrayList<Tronco> richiediPercorsoFuga(String idBeacon) {
-        //TODO: BISOGNA CALCOLARE IL PERCORSO OFFLINE
-        return new ArrayList<>();
+        return new Percorso(Posizione.getIDBeaconAttuale(),this).getResult();
     }
 
     public ArrayList<Tronco> getTronchiUscita(String beacon) {
