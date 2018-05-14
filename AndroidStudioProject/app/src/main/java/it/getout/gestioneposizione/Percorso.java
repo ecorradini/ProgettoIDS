@@ -12,13 +12,13 @@ import java.util.HashMap;
 
 public class Percorso extends Thread {
 
-    private String percorso;
+    private ArrayList<Tronco> percorso;
     private String beacon;
     private boolean finished;
     private Database reader;
 
     public Percorso(String beacon, Database reader) {
-        percorso = "";
+        percorso = new ArrayList<>();
         this.beacon = beacon;
         this.reader = reader;
         finished=false;
@@ -29,24 +29,27 @@ public class Percorso extends Thread {
         GrafoTronchi partenza;
 
         ArrayList<Piano> piani = Posizione.getEdificioAttuale().getPiani();
-        int tronco = Posizione.richiediTroncoByBeacon(beacon);
+        int tronco = reader.richiediTroncoByBeacon(beacon);
         HashMap<String,GrafoTronchi> grafi = new HashMap<>();
 
         for(int i = 0; i < piani.size(); i++){
-            grafi.put(piani.get(i).toString(), new GrafoTronchi(piani.get(i).toString(),reader));
+            grafi.put(piani.get(i).toString(), new GrafoTronchi(piani.get(i).toString(),tronco,reader));
         }
 
-        String edificio = Posizione.getEdificioAttuale().toString();
-        String piano = Posizione.getPianoAttuale().toString();
+        partenza = grafi.get(Posizione.getPianoAttuale().toString());
 
         ArrayList<Tronco> uscite = reader.getTronchiUscita(beacon);
 
-        ArrayList<GrafoTronchi.Nodo> listaNodi = calcoloPercorso(partenza,uscite);
+        ArrayList<GrafoTronchi.Nodo> listaNodi = calcoloPercorso(partenza.getRadice(),uscite);
+
+        for(int i = 0; i < listaNodi.size(); i++){
+            percorso.add(listaNodi.get(i).getTronco());
+        }
 
         finished = true;
     }
 
-    public String getResult() {
+    public ArrayList<Tronco> getResult() {
         while (!finished) {
             try {
                 Thread.sleep(500);
