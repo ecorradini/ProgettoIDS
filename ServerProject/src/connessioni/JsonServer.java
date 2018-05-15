@@ -218,7 +218,6 @@ public class JsonServer {
         });
         //Inserisci l'utente nella lista di utenti collegati al beacon
         server.createContext("/percorso", new com.sun.net.httpserver.HttpHandler() {
-
             @Override
             public void handle(com.sun.net.httpserver.HttpExchange arg0) throws IOException {
                 new Thread() {
@@ -226,7 +225,25 @@ public class JsonServer {
                         try {
                             Percorso percorso = new Percorso(arg0.getRequestURI().getQuery());
                             String response = percorso.getResult();
-                            System.out.println(response);
+                            arg0.sendResponseHeaders(200, response.length());
+                            OutputStream os = arg0.getResponseBody();
+                            os.write(response.getBytes());
+                            os.close();
+                        } catch (IOException e) {
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                }.start();
+            }
+        });
+
+        server.createContext("/uscite", new com.sun.net.httpserver.HttpHandler() {
+            @Override
+            public void handle(com.sun.net.httpserver.HttpExchange arg0) throws IOException {
+                new Thread() {
+                    public void run() {
+                        try {
+                            String response = DAOUscita.getBeaconUscitaEdificio(arg0.getRequestURI().getQuery());
                             arg0.sendResponseHeaders(200, response.length());
                             OutputStream os = arg0.getResponseBody();
                             os.write(response.getBytes());

@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -197,7 +198,6 @@ public class GestoreEntita {
     }
 
     private void aggiornaDati(String beacon) {
-
         if(!beacon.equals(this.beacon)) {
             Uscita.setBeaconPrecedente(Posizione.getIDBeaconAttuale());
             Piano pianoAttuale = reader.richiediPianoAttuale(beacon);
@@ -227,6 +227,11 @@ public class GestoreEntita {
                     }
                 }
             }
+        }
+        if(Uscita.checkUscita()) {
+            Toast.makeText(context,"Bravo! Sei correttamente uscito dall'edificio.",Toast.LENGTH_SHORT).show();
+            //Se sono uscito dall'edificio chiudo l'app
+            ((Client)context).finishAffinity();
         }
     }
 

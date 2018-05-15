@@ -8,15 +8,8 @@ public class Uscita {
 
     private static String beaconPrecedente;
 
-
-
     public static boolean checkUscita(){
         return Posizione.getIDBeaconAttuale().equals("") && Posizione.isUscita(beaconPrecedente);
-    }
-
-
-    public static String getBeaconPrecedente(){
-        return beaconPrecedente;
     }
 
     public static void setBeaconPrecedente(String b){

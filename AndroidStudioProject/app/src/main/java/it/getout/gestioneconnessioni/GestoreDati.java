@@ -31,4 +31,6 @@ public abstract class GestoreDati {
 
     public abstract ArrayList<Tronco> richiediPercorsoFuga(String beacon);
 
+    public abstract ArrayList<String> richiediUsciteEdificio(String edificio);
+
 }

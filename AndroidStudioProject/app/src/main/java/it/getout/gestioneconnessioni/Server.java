@@ -62,6 +62,7 @@ public class Server extends GestoreDati
     private static final String SERV_AULEPIANO = "/aulepiano?";         //URL aule da piano
     private static final String SERV_TRONCHIPIANO = "/tronchipiano?";   //URL tronchi da piano
     private static final String SERV_MAPPAPIANO = "/mappapiano?";       //URL tronchi da piano
+    private static final String SERV_USCITE = "/uscite?";               //URL beacon uscita edificio
     private static final String SERV_SUMUSER = "/sommautente?";         //UTL aggiunta utente
 
 
@@ -474,6 +475,39 @@ public class Server extends GestoreDati
         }
 
         return attesaPercorso.getResult();
+    }
+
+    @Override
+    public ArrayList<String> richiediUsciteEdificio(String edificio) {
+        class ThreadAttesaUscite extends Thread {
+
+            private ArrayList<String> uscite;
+            private String edificio;
+
+            private ThreadAttesaUscite(String edificio) {
+                super();
+                this.edificio = edificio;
+            }
+
+            @Override
+            public void run() {
+                RichiediUsciteTask task = new RichiediUsciteTask();
+                task.execute(edificio);
+                uscite = task.getResult();
+            }
+
+            private ArrayList<String> getResult() { return uscite; }
+        }
+
+        ThreadAttesaUscite attesaUscite = new ThreadAttesaUscite(edificio);
+        attesaUscite.start();
+        try {
+            attesaUscite.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return attesaUscite.getResult();
     }
 
     //AsyncTask che richiede l'edificio in base all'idbeacon connesso dal Server
@@ -1061,12 +1095,67 @@ public class Server extends GestoreDati
         }
     }
 
+    private class RichiediUsciteTask extends AsyncTask<String,Void,Boolean> {
 
+        private String edificio;
+        private ArrayList<String> uscite;
+        private boolean downloaded;
 
+        @Override
+        protected Boolean doInBackground(String... idbeacon)
+        {
+            downloaded = false;
+            edificio = idbeacon[0];
+            uscite = new ArrayList<>();
+            RequestQueue mRequestQueue;
+            //Metodi per il cache delle richieste JSON (Sembra che servano altrimenti non funziona)
+            Cache cache = new DiskBasedCache(context.getCacheDir(), 1024 * 1024);
+            Network network = new BasicNetwork(new HurlStack());
+            mRequestQueue = new RequestQueue(cache, network);
+            mRequestQueue.start();
+            //Url per la richiesta del percorso
+            String url = BASE_URL + SERV_USCITE + edificio;
+            //Instanzio la richiesta JSON
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                //Alla risposta
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        JSONArray arrayR = response.getJSONArray("USCITE");
+                        for(int i=0; i<arrayR.length(); i++) {
+                            uscite.add(arrayR.getString(i));
+                        }
+                        downloaded = true;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("JSON ED ATTUALE ERROR", error.toString());
+                }
+            });
+            jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy( 10000, 5, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            //Aggiungo la richiesta alla coda
+            mRequestQueue.add(jsonObjectRequest);
 
-    // notifica edoooo
+            Log.e("FINE TASK","PERCORSO");
 
+            return true;
+        }
 
+        public ArrayList<String> getResult() {
+            while(!downloaded) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
 
+            return uscite;
+        }
+    }
 
 }

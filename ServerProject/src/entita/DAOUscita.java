@@ -53,4 +53,43 @@ public class DAOUscita {
 
         return tronchiDaAttraversare;
     }
+
+    public static String getBeaconUscitaEdificio(String edificio) {
+        Connection conn = Database.getConn();
+        ArrayList<String> beaconUscita = new ArrayList<>();
+
+        String query = "SELECT "+DAOBeacon.TABLE_BEACON+"."+DAOBeacon.ID+" AS ID"+
+                        " FROM "+DAOBeacon.TABLE_BEACON+","+DAOTronco.TABLE_TRONCO+","+DAOPiano.TABLE_PIANO+
+                        " WHERE "+DAOBeacon.TABLE_BEACON+"."+DAOBeacon.TRONCO+"="+DAOTronco.TABLE_TRONCO+"."+DAOTronco.ID+
+                        " AND "+DAOTronco.TABLE_TRONCO+"."+DAOTronco.PIANO+"="+DAOPiano.TABLE_PIANO+"."+DAOPiano.NOME+
+                        " AND "+DAOPiano.TABLE_PIANO+"."+DAOPiano.EDIFICIO+"="+edificio+
+                        " AND "+DAOBeacon.USCITA+"=1";
+
+        try {
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(query);
+
+            while(rs.next()) {
+                beaconUscita.add(rs.getString(DAOBeacon.ID));
+            }
+
+            rs.close();
+            stm.close();
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        String json = "{USCITE:[";
+        for(int i=0; i<beaconUscita.size();i++) {
+            json = json + "\""+beaconUscita.get(i)+"\",";
+        }
+        if(json.substring(json.length() - 1,json.length()).equals(",")) {
+            json = json.substring(0, json.length() - 1);
+        }
+        json = json + "]}";
+
+        return json;
+    }
 }
