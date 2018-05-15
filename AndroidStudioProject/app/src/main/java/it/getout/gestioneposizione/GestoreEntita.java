@@ -251,7 +251,22 @@ public class GestoreEntita {
         if(Uscita.checkUscita()) {
             Toast.makeText(context,"Bravo! Sei correttamente uscito dall'edificio.",Toast.LENGTH_SHORT).show();
             //Se sono uscito dall'edificio chiudo l'app
-            ((Client)context).finishAffinity();
+            new Thread() {
+                public void run() {
+                    ((Client) context).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(1500);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            ((Client)context).finishAffinity();
+
+                        }
+                    });
+                }
+            }.start();
         }
     }
 
