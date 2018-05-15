@@ -340,5 +340,10 @@ public class Database extends GestoreDati {
 
         return tronco;
     }
+
+    @Override
+    public ArrayList<String> richiediUsciteEdificio(String edificio) {
+        return null;
+    }
 }
 

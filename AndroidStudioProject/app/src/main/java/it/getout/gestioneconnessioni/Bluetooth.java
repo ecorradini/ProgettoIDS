@@ -127,6 +127,8 @@ public class Bluetooth {
             mLeDeviceListAdapter.clear(); //cancella la lista di sensortag precedentemente trovati
             mLeDeviceListAdapter.setCurrentBeacon(null);
 
+            currentBeacon = null;
+
             Log.i(TAG, "Start Scan");
             //parte effettivamente la ricerca dei sensortag
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
