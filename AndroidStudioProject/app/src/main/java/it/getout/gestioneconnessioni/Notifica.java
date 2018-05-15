@@ -22,7 +22,7 @@ import java.util.Timer;
 import it.getout.Client;
 import it.getout.R;
 
-public class NotificaService extends Service {
+public class Notifica extends Service {
 
     private Timer timer = new Timer();
     private static final int NOTIFICATION_EX = 1;
@@ -30,7 +30,7 @@ public class NotificaService extends Service {
     private Context context;
     private DatagramSocket d;
 
-    public NotificaService() {}
+    public Notifica() {}
 
     @Override
     public IBinder onBind(Intent intent) {

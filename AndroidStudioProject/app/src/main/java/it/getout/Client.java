@@ -1,7 +1,6 @@
 package it.getout;
 
 import android.Manifest;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
@@ -20,7 +19,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import it.getout.fragments.FragmentEmergenza;
-import it.getout.gestioneconnessioni.NotificaService;
+import it.getout.gestioneconnessioni.Notifica;
 import it.getout.gestioneposizione.GestoreEntita;
 import it.getout.gestionevisualizzazionemappa.MappaFragment;
 
@@ -66,7 +65,7 @@ public class Client extends AppCompatActivity {
         }
 
         //NOTIFICA
-        startService(new Intent(Client.this, NotificaService.class));
+        startService(new Intent(Client.this, Notifica.class));
     }
 
 
