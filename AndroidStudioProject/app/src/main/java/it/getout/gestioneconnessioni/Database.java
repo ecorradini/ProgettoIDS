@@ -286,7 +286,7 @@ public class Database extends GestoreDati {
         return new Percorso(Posizione.getIDBeaconAttuale(),this).getResult();
     }
 
-    public ArrayList<Tronco> getTronchiUscita(String beacon) {
+    public ArrayList<Tronco> richiediTronchiUscita(String beacon) {
         SQLiteDatabase db = connessione.getReadableDatabase();
         ArrayList<Tronco> tronchiDaAttraversare = new ArrayList<>();
 

@@ -1,11 +1,7 @@
 package it.getout.gestioneposizione;
 
-import android.provider.ContactsContract;
-
 import it.getout.gestioneconnessioni.Database;
 
-import java.sql.Array;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -37,7 +33,7 @@ public class Percorso extends Thread {
 
         partenza = grafi.get(Posizione.getPianoAttuale().toString());
 
-        ArrayList<Tronco> uscite = reader.getTronchiUscita(beacon);
+        ArrayList<Tronco> uscite = reader.richiediTronchiUscita(beacon);
 
         ArrayList<GrafoTronchi.Nodo> listaNodi = calcoloPercorso(partenza.getRadice(),uscite);
 
