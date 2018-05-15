@@ -207,7 +207,17 @@ public class GestoreEntita {
                 for (int i = 0; i < Posizione.getPianoAttuale().getTronchi().size() && !done; i++) {
                     if (Posizione.getPianoAttuale().getTronchi().get(i).getBeacons().containsKey(beacon)) {
                         Posizione.setBeaconAttuale(Posizione.getPianoAttuale().getTronchi().get(i).getBeacons().get(beacon));
-                        ((Client) context).getMappaFragment().disegnaPosizione();
+                        new Thread() {
+                            public void run() {
+                                ((Client) context).runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ((Client) context).getMappaFragment().disegnaPosizione();
+
+                                    }
+                                });
+                            }
+                        }.start();
                         done = true;
                     }
                 }
@@ -221,7 +231,17 @@ public class GestoreEntita {
                             Posizione.setBeaconAttuale(corrente.getTronchi().get(i).getBeacons().get(beacon));
                             Posizione.setPianoAttuale(corrente);
                             Mappa.setMappa(reader.richiediMappaPiano(Posizione.getPianoAttuale().toString()));
-                            ((Client) context).getMappaFragment().disegnaPosizione();
+                            new Thread() {
+                                public void run() {
+                                    ((Client) context).runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            ((Client) context).getMappaFragment().disegnaPosizione();
+
+                                        }
+                                    });
+                                }
+                            }.start();
                             done = true;
                         }
                     }

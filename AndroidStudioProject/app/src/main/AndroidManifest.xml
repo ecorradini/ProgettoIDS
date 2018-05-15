@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme">
 
         <service
-            android:name=".gestioneconnessioni.NotificaService"
+            android:name=".gestioneconnessioni.Notifica"
             android:label="NotificaService">
         </service>
 

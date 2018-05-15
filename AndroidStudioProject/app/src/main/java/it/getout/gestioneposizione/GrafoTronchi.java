@@ -53,6 +53,7 @@ public class GrafoTronchi {
     private Nodo radice;
 
     public GrafoTronchi(String piano, int tronco, Database reader) {
+        tronchiPiano = new HashMap<>();
         this.piano = piano;
         for(int i=0; i<Posizione.getPianoAttuale().getTronchi().size(); i++) {
             tronchiPiano.put(Posizione.getPianoAttuale().getTronchi().get(i).getId(),Posizione.getPianoAttuale().getTronco(i));
@@ -121,8 +122,6 @@ public class GrafoTronchi {
     }
 
     public String getPiano() { return piano; }
-
-    public HashMap<Integer,Tronco> getTronchiPiano() { return tronchiPiano; }
 
     public Nodo getRadice() { return radice; }
 }
