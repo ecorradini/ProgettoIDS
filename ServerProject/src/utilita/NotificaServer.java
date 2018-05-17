@@ -63,8 +63,4 @@ public class NotificaServer extends Thread {
 
         working = false;
     }
-
-    public boolean isWorking() {
-        return working;
-    }
 }
