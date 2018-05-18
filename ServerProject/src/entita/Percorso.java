@@ -16,27 +16,30 @@ public class Percorso extends Thread {
     }
 
     public void run() {
-        String json = "{PERCORSO:[";
 
-        String edificio = DAOEdificio.selectNomeEdificio(beacon);
-        String piano = DAOPiano.selectNomePiano(beacon);
-        GrafoTronchi.Nodo partenza = DAOTronco.selectNodoByBeacon(beacon,edificio,piano);
-        ArrayList<Tronco> uscite = DAOUscita.getTronchiUscita(beacon,edificio,piano);
+        if(!beacon.equals("")) {
 
-        ArrayList<GrafoTronchi.Nodo> listaNodi = calcoloPercorso(partenza,uscite);
+            String json = "{PERCORSO:[";
 
-        for(int i=0; i<listaNodi.size();i++) {
-            json = json + "\""+listaNodi.get(i).getTronco().getID()+"\",";
+            String edificio = DAOEdificio.selectNomeEdificio(beacon);
+            String piano = DAOPiano.selectNomePiano(beacon);
+            GrafoTronchi.Nodo partenza = DAOTronco.selectNodoByBeacon(beacon, edificio, piano);
+            ArrayList<Tronco> uscite = DAOUscita.getTronchiUscita(beacon, edificio, piano);
+
+            ArrayList<GrafoTronchi.Nodo> listaNodi = calcoloPercorso(partenza, uscite);
+
+            for (int i = 0; i < listaNodi.size(); i++) {
+                json = json + "\"" + listaNodi.get(i).getTronco().getID() + "\",";
+            }
+            if (json.charAt(json.length() - 1) == ',') {
+                json = json.substring(0, json.length() - 1);
+            }
+
+            json = json + "]}";
+
+            percorso = json;
         }
-        if(json.charAt(json.length()-1)==',') {
-            json = json.substring(0,json.length()-1);
-        }
-
-        json = json + "]}";
-
-        percorso = json;
-
-        finished = true;
+            finished = true;
     }
 
     public String getResult() {

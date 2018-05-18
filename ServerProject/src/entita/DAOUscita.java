@@ -62,7 +62,7 @@ public class DAOUscita {
                         " FROM "+DAOBeacon.TABLE_BEACON+","+DAOTronco.TABLE_TRONCO+","+DAOPiano.TABLE_PIANO+
                         " WHERE "+DAOBeacon.TABLE_BEACON+"."+DAOBeacon.TRONCO+"="+DAOTronco.TABLE_TRONCO+"."+DAOTronco.ID+
                         " AND "+DAOTronco.TABLE_TRONCO+"."+DAOTronco.PIANO+"="+DAOPiano.TABLE_PIANO+"."+DAOPiano.NOME+
-                        " AND "+DAOPiano.TABLE_PIANO+"."+DAOPiano.EDIFICIO+"="+edificio+
+                        " AND "+DAOPiano.TABLE_PIANO+"."+DAOPiano.EDIFICIO+"='"+edificio+"'"+
                         " AND "+DAOBeacon.USCITA+"=1";
 
         try {
