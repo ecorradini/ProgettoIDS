@@ -36,5 +36,17 @@ public class DAOMappa {
         }
         return link;
     }
+
+    public static void insertMappaPiano(String piano) throws SQLException {
+        Connection conn = Database.getConn();
+        String link = "/Mappe/q" + piano + ".jpg";
+
+        String query = "INSERT INTO " + TABLE_MAPPA + " VALUES('" + piano + "','" + link + "')";
+        Statement stm = conn.createStatement();
+        stm.executeUpdate(query);
+
+        stm.executeUpdate(query);
+        stm.close();
+    }
 }
 
