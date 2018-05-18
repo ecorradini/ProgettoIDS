@@ -1,6 +1,7 @@
 package utilita;
 
 import connessioni.Database;
+import gui.Amministrazione;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,6 +25,9 @@ public class ConsoleDiComando implements Runnable {
                 }
                 if(command.equals("!e")) {
                     fineTestaEmergenza();
+                }
+                if(command.equals("ui")) {
+                    new Amministrazione();
                 }
             } catch (IOException e) {
                 e.printStackTrace();

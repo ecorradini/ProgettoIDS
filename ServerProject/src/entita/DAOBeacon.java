@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class DAOBeacon {
     static final String ID = "ID";
@@ -72,6 +73,28 @@ public class DAOBeacon {
         }
 
         return json;
+    }
+
+    public static ArrayList<String> selectListaBeaconsByTronco(int tronco) {
+        Connection conn = Database.getConn();
+        ArrayList<String> beacons = new ArrayList<>();
+        String query =  "SELECT "+ID+","+X+","+Y+
+                " FROM "+TABLE_BEACON+
+                " WHERE "+TRONCO+"=\'"+tronco+"\'";
+
+        try {
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(query);
+            while (rs.next()) {
+                beacons.add(rs.getString("ID"));
+            }
+            rs.close();
+            stm.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return beacons;
     }
 
     public static boolean sumUser(String beaconID) {

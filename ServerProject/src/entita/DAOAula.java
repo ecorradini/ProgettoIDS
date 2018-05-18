@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class DAOAula {
     static final String NOME = "NOME";
@@ -45,5 +46,26 @@ public class DAOAula {
         }
 
         return json;
+    }
+
+    public static ArrayList<String> selectListaAuleByPiano(String piano) {
+        Connection conn = Database.getConn();
+        ArrayList<String> aule = new ArrayList<String>();
+        String query =  "SELECT "+NOME+","+X+","+Y+","+ENTRATA+
+                " FROM "+TABLE_AULA+ " WHERE "+PIANO+"=\'"+piano+"\'";
+
+        try {
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(query);
+            while (rs.next()) {
+                aule.add(rs.getString("NOME"));
+            }
+            rs.close();
+            stm.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return aule;
     }
 }
