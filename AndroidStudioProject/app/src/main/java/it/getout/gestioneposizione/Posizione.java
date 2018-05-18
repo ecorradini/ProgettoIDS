@@ -39,6 +39,8 @@ public class Posizione {
 
     public static void setBeaconAttuale(Beacon b) { beaconAttuale = b; }
 
+    public static void setUscite(ArrayList<String> u){ uscite = u; }
+
     public static boolean isUscita(String beacon){
         return uscite.contains(beacon);
     }

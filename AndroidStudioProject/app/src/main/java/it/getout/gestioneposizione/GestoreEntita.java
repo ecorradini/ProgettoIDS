@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
 
 import it.getout.Client;
 import it.getout.gestioneconnessioni.Bluetooth;
@@ -31,6 +32,8 @@ public class GestoreEntita {
     private boolean downloadFinished;
     private boolean downloadNecessariFinished;
 
+    private boolean uscito;
+
     public GestoreEntita(Context c) {
         context = c;
         if(checkInternet()) {
@@ -39,6 +42,7 @@ public class GestoreEntita {
         else reader = new Database(context);
         downloadFinished = false;
         downloadNecessariFinished = false;
+        uscito=false;
     }
 
     public void coordinaPopolamentoDati() {
@@ -67,6 +71,10 @@ public class GestoreEntita {
 
         //Avvio comunque l'app
         ((Client)context).inizializzaFragment();
+
+        Posizione.setUscite(reader.richiediUsciteEdificio(Posizione.getEdificioAttuale().toString()));
+
+        Log.e("USCITE: ","USCITE INDIVIDUATE");
 
         downloadNecessariFinished = true;
 
@@ -200,6 +208,9 @@ public class GestoreEntita {
     private void aggiornaDati(String beacon) {
 
         if (!beacon.equals(this.beacon)) {
+
+            Log.e("SONO ENTRATO QUI","OK");
+
             Uscita.setBeaconPrecedente(Posizione.getIDBeaconAttuale());
             Piano pianoAttuale = reader.richiediPianoAttuale(beacon);
             if (pianoAttuale.equals(Posizione.getPianoAttuale())) {
@@ -247,6 +258,7 @@ public class GestoreEntita {
                         }
                     }
                 }
+
             }
         }
 
@@ -263,6 +275,13 @@ public class GestoreEntita {
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
+
+                            BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
+                            if (btAdapter.isEnabled())
+                                btAdapter.disable();
+
+                            uscito=true;
+
                             ((Client)context).finishAffinity();
 
                         }
@@ -294,7 +313,7 @@ public class GestoreEntita {
                     int contatore=0;
                     BluetoothDevice device;
 
-                    while(true) {
+                    while(!uscito) {
                         try {
                             if(primaScansione) {
                                 do {
@@ -318,9 +337,11 @@ public class GestoreEntita {
                             // se sono uscito dal precedente while perché il contatore ha raggiunto il
                             // valore 5, allora setta il beacon attuale a null.
                             if (contatore >= 5) {
-                                Log.e("ERRORE: ", "Setto il beacon a STRINGA VUOTA");
+
+                                Log.e("ERRORE ", "Setto il beacon a STRINGA VUOTA");
+                                Uscita.setBeaconPrecedente(Posizione.getIDBeaconAttuale());
                                 beacon = "";
-                                Posizione.setBeaconAttuale(new Beacon("", null));
+                                Posizione.setBeaconAttuale(new Beacon(beacon, null));
                             }
 
                             device = bluetooth.getCurrentBeacon();
@@ -338,6 +359,7 @@ public class GestoreEntita {
                                 beacon = device.getAddress();
                             }
                             else {
+
                                 aggiornaDati(beacon);
                             }
                            Thread.sleep(7000);
