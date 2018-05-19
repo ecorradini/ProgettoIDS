@@ -5,10 +5,8 @@ package gui;
         import gui.Amministrazione;
 
         import java.awt.*;
-        import java.awt.event.ActionEvent;
-        import java.awt.event.ActionListener;
-        import java.awt.event.ItemEvent;
-        import java.awt.event.ItemListener;
+        import java.awt.event.*;
+        import java.awt.geom.AffineTransform;
         import java.awt.image.BufferedImage;
         import java.io.File;
         import java.io.IOException;
@@ -43,9 +41,9 @@ public class Amministrazione
     private JButton btnAggAula;
     private JComboBox<String> comboBeacons;
     private JButton btnAggBeacon;
-    private ImageIcon mapView;
-    private JLabel mapLabel;
+    private ImagePanel mapView;
     private JButton caricamento;
+    private JLabel labelCoordinate;
 
     private JPanel aggEdificio;
 
@@ -201,8 +199,8 @@ public class Amministrazione
                     if (caricamento != null) {
                         mainPanel.remove(caricamento);
                     }
-                    if (mapLabel != null) {
-                        mainPanel.remove(mapLabel);
+                    if (mapView != null) {
+                        mainPanel.remove(mapView);
                     }
                     mapView = null;
                     String edificio = (String)comboEdifici.getSelectedItem();
@@ -229,13 +227,13 @@ public class Amministrazione
                     comboAule.removeAllItems();
                     comboTronchi.removeAllItems();
                     comboBeacons.removeAllItems();
-                    mapView = null;
                     if (caricamento != null) {
                         mainPanel.remove(caricamento);
                     }
-                    if (mapLabel != null) {
-                        mainPanel.remove(mapLabel);
+                    if (mapView != null) {
+                        mainPanel.remove(mapView);
                     }
+                    mapView=null;
                     if (!(piano = (String)comboPiani.getSelectedItem()).isEmpty()) {
                         comboAule.removeAllItems();
                         ArrayList auleList = DAOAula.selectListaAuleByPiano((String)piano);
@@ -251,24 +249,47 @@ public class Amministrazione
                         comboTronchi.setEnabled(true);
                         btnAggTronco.setEnabled(true);
                         try {
-                            Image mappa = getMappa(piano);
-                            mapView = new ImageIcon(mappa);
-                            gridBagConstraints.fill = 2;
+                            BufferedImage mappa = getMappa(piano);
+                            mapView = new ImagePanel(mappa);
+                            gridBagConstraints.fill = GridBagConstraints.NONE;
                             gridBagConstraints.ipady = 40;
                             gridBagConstraints.weightx = 0.0;
                             gridBagConstraints.gridwidth = 5;
                             gridBagConstraints.gridx = 0;
-                            gridBagConstraints.gridy = 5;
-                            mapLabel = new JLabel(mapView);
-                            mainPanel.add((Component)mapLabel, gridBagConstraints);
+                            gridBagConstraints.gridy = 3;
+                            mainPanel.add(mapView, gridBagConstraints);
+                            mapView.addMouseListener(new MouseAdapter() {
+                                @Override
+                                public void mouseClicked(MouseEvent e) {
+                                    Point panelPoint = e.getPoint();
+
+                                    if(labelCoordinate==null) {
+                                        labelCoordinate = new JLabel("(X=" + panelPoint.x + "; Y:" + ((panelPoint.y-17) > 0 ? (panelPoint.y-17) : 0) + ")");
+                                        labelCoordinate.setFont(defaultFont);
+                                        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+                                        gridBagConstraints.weightx = 0.0;
+                                        gridBagConstraints.gridwidth = 1;
+                                        gridBagConstraints.gridx = 0;
+                                        gridBagConstraints.gridy = 4;
+                                        mainPanel.add(labelCoordinate,gridBagConstraints);
+                                    }
+                                    else {
+                                        labelCoordinate.setText("(X=" + panelPoint.x + "; Y:" + ((panelPoint.y-17) > 0 ? (panelPoint.y-17) : 0) + ")");
+                                    }
+
+                                    aggiornaUI();
+                                }
+                            });
+                            aggiornaUI();
                         }
                         catch (IOException e1) {
-                            gridBagConstraints.fill = 2;
+                            labelCoordinate.setVisible(false);
+                            gridBagConstraints.fill = GridBagConstraints.NONE;
                             gridBagConstraints.ipady = 40;
                             gridBagConstraints.weightx = 0.0;
                             gridBagConstraints.gridwidth = 5;
                             gridBagConstraints.gridx = 0;
-                            gridBagConstraints.gridy = 5;
+                            gridBagConstraints.gridy = 3;
                             caricamento = new JButton("Carica una mappa...");
                             caricamento.setFont(defaultFont);
                             caricamento.addActionListener(new ActionListener(){
@@ -295,18 +316,39 @@ public class Amministrazione
                                         }
                                         finally {
                                             mainPanel.remove(caricamento);
-                                            Image mappa = null;
+                                            BufferedImage mappa = null;
                                             try {
                                                 mappa = getMappa(piano);
-                                                mapView = new ImageIcon(mappa);
-                                                gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+                                                mapView = new ImagePanel(mappa);
+                                                gridBagConstraints.fill = GridBagConstraints.CENTER;
+                                                gridBagConstraints.insets = new Insets(0,0,0,0);
                                                 gridBagConstraints.ipady = 40;
                                                 gridBagConstraints.weightx = 0.0;
                                                 gridBagConstraints.gridwidth = 5;
                                                 gridBagConstraints.gridx = 0;
-                                                gridBagConstraints.gridy = 5;
-                                                mapLabel = new JLabel(mapView);
-                                                mainPanel.add(mapLabel,gridBagConstraints);
+                                                gridBagConstraints.gridy = 3;
+                                                mainPanel.add(mapView,gridBagConstraints);
+                                                mapView.addMouseListener(new MouseAdapter() {
+                                                    @Override
+                                                    public void mouseClicked(MouseEvent e) {
+                                                        Point panelPoint = e.getPoint();
+
+                                                        if(labelCoordinate==null) {
+                                                            labelCoordinate = new JLabel("(X=" + panelPoint.x + "; Y:" + ((panelPoint.y-17) > 0 ? (panelPoint.y-17) : 0) + ")");
+                                                            labelCoordinate.setFont(defaultFont);
+                                                            gridBagConstraints.weightx = 0.0;
+                                                            gridBagConstraints.gridwidth = 1;
+                                                            gridBagConstraints.gridx = 0;
+                                                            gridBagConstraints.gridy = 4;
+                                                            mainPanel.add(labelCoordinate,gridBagConstraints);
+                                                        }
+                                                        else {
+                                                            labelCoordinate.setText("(X=" + panelPoint.x + "; Y:" + ((panelPoint.y-17) > 0 ? (panelPoint.y-17) : 0) + ")");
+                                                        }
+
+                                                        aggiornaUI();
+                                                    }
+                                                });
                                                 aggiornaUI();
                                             }
                                             catch (IOException e2) {
@@ -316,7 +358,7 @@ public class Amministrazione
                                     }
                                 }
                             });
-                            mainPanel.add((Component)caricamento, gridBagConstraints);
+                            mainPanel.add(caricamento, gridBagConstraints);
                         }
                     } else {
                         comboAule.setEnabled(false);
@@ -351,13 +393,19 @@ public class Amministrazione
         });
     }
 
-    private Image getMappa(String piano) throws IOException {
+    private BufferedImage getMappa(String piano) throws IOException {
         String path = Server.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("/ServerProject.jar", "");
-        String link = DAOMappa.selectMappaByPiano((String) piano);
+        String link = DAOMappa.selectMappaByPiano(piano);
         File mappa = new File(path + link);
-        BufferedImage imgMappa = null;
-        imgMappa = ImageIO.read(mappa);
-        return imgMappa.getScaledInstance(MIN_MAP_WIDTH * uiScaling, MIN_MAP_HEIGHT * uiScaling, 4);
+        BufferedImage imgMappa = ImageIO.read(mappa);
+        Image tmp = imgMappa.getScaledInstance(MIN_MAP_WIDTH * uiScaling, MIN_MAP_HEIGHT * uiScaling, 4);
+        BufferedImage resized = new BufferedImage(MIN_MAP_WIDTH * uiScaling, MIN_MAP_HEIGHT * uiScaling,BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D g2d = resized.createGraphics();
+        g2d.drawImage(tmp,0,0,null);
+        g2d.dispose();
+
+        return resized;
     }
 
     private void aggiungiEdificio() {
@@ -446,5 +494,49 @@ public class Amministrazione
     private void aggiornaUI() {
         pack();
         setResizable(false);
+    }
+
+    public class ImagePanel extends JPanel {
+
+        private BufferedImage img;
+
+        public ImagePanel(BufferedImage img) {
+            this.img = img;
+        }
+
+        @Override
+        public Dimension getPreferredSize() {
+            return img == null ? super.getPreferredSize() : new Dimension(img.getWidth(), img.getHeight());
+        }
+
+        protected Point getImageLocation() {
+
+            Point p = null;
+            if (img != null) {
+                int x = (getWidth() - img.getWidth()) / 2;
+                int y = (getHeight() - img.getHeight()) / 2;
+                p = new Point(x, y);
+            }
+            return p;
+
+        }
+
+        public Point toImageContext(Point p) {
+            Point imgLocation = getImageLocation();
+            Point relative = new Point(p);
+            relative.x -= imgLocation.x;
+            relative.y -= imgLocation.y;
+            return relative;
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if (img != null) {
+                Point p = getImageLocation();
+                g.drawImage(img, p.x, p.y, this);
+            }
+        }
+
     }
 }
