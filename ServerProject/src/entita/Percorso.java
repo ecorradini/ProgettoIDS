@@ -17,7 +17,9 @@ public class Percorso extends Thread {
 
     public void run() {
 
-        if(!beacon.equals("")) {
+        System.out.println("BEACON PASSATO: "+beacon);
+
+        if(beacon!=null) {
 
             String json = "{PERCORSO:[";
 
@@ -26,20 +28,35 @@ public class Percorso extends Thread {
             GrafoTronchi.Nodo partenza = DAOTronco.selectNodoByBeacon(beacon, edificio, piano);
             ArrayList<Tronco> uscite = DAOUscita.getTronchiUscita(beacon, edificio, piano);
 
-            ArrayList<GrafoTronchi.Nodo> listaNodi = calcoloPercorso(partenza, uscite);
-
-            for (int i = 0; i < listaNodi.size(); i++) {
-                json = json + "\"" + listaNodi.get(i).getTronco().getID() + "\",";
+            if (uscite.contains(partenza.getTronco())) {
+                json += "\""+partenza.getTronco().getID()+"\"";
+                json += "]}";
+                percorso = json;
+                System.out.println(percorso);
             }
-            if (json.charAt(json.length() - 1) == ',') {
-                json = json.substring(0, json.length() - 1);
+            else {
+
+                ArrayList<GrafoTronchi.Nodo> listaNodi = calcoloPercorso(partenza, uscite);
+
+                for (int i = 0; i < listaNodi.size(); i++) {
+                    json = json + "\"" + listaNodi.get(i).getTronco().getID() + "\",";
+                }
+                if (json.charAt(json.length() - 1) == ',') {
+                    json = json.substring(0, json.length() - 1);
+                }
+
+                json = json + "]}";
+
+                percorso = json;
+                System.out.println(percorso);
             }
 
-            json = json + "]}";
-
-            percorso = json;
         }
-            finished = true;
+        else{
+            percorso = "";
+        }
+
+        finished = true;
     }
 
     public String getResult() {

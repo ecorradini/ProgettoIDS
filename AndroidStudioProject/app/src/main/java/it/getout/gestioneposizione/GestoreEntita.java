@@ -74,8 +74,6 @@ public class GestoreEntita {
 
         Posizione.setUscite(reader.richiediUsciteEdificio(Posizione.getEdificioAttuale().toString()));
 
-        Log.e("USCITE: ","USCITE INDIVIDUATE");
-
         downloadNecessariFinished = true;
 
         ArrayList<Piano> pianiEdificio = new ArrayList<>();
@@ -208,10 +206,7 @@ public class GestoreEntita {
     private void aggiornaDati(String beacon) {
 
         if (!beacon.equals(this.beacon)) {
-
-            Log.e("SONO ENTRATO QUI","OK");
-
-            Uscita.setBeaconPrecedente(Posizione.getIDBeaconAttuale());
+            //Uscita.setBeaconPrecedente(Posizione.getIDBeaconAttuale());
             Piano pianoAttuale = reader.richiediPianoAttuale(beacon);
             if (pianoAttuale.equals(Posizione.getPianoAttuale())) {
                 boolean done = false;
@@ -261,6 +256,7 @@ public class GestoreEntita {
 
             }
         }
+
 
         if(Uscita.checkUscita()) {
             Toast.makeText(context,"Bravo! Sei correttamente uscito dall'edificio.",Toast.LENGTH_SHORT).show();
