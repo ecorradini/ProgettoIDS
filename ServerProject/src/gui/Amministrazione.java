@@ -19,10 +19,6 @@ package gui;
         import java.awt.image.BufferedImage;
         import java.io.File;
         import java.io.IOException;
-        import java.lang.invoke.StringConcatFactory;
-        import java.net.URL;
-        import java.security.CodeSource;
-        import java.security.ProtectionDomain;
         import java.util.ArrayList;
         import java.util.HashMap;
         import javax.imageio.ImageIO;
@@ -72,14 +68,14 @@ public class Amministrazione
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dim = toolkit.getScreenSize();
         uiScaling = dim.width / 1024;
-        setSize(1024 * uiScaling, 768 * uiScaling);
+        setSize(MIN_FRAME_WIDTH * uiScaling, MIN_FRAME_HEIGHT * uiScaling);
         setTitle("Interfaccia di amministrazione");
         setVisible(true);
-        defaultFont = new Font("Arial", 0, 14 * uiScaling);
+        defaultFont = new Font(DEFAULT_FONT, 0, MIN_FONT_SIZE * uiScaling);
         setDefaultCloseOperation(1);
-        componentDimension = new Dimension(90 * uiScaling, 20 * uiScaling);
+        componentDimension = new Dimension(MIN_COMPONENT_WIDTH * uiScaling, MIN_COMPONENT_HEIGHT * uiScaling);
         mainPanel = new JPanel(new GridBagLayout());
-        mainPanel.setSize(1024 * uiScaling, 768 * uiScaling);
+        mainPanel.setSize(MIN_FRAME_WIDTH * uiScaling, MIN_FRAME_HEIGHT * uiScaling);
         gridBagConstraints = new GridBagConstraints();
         add(mainPanel);
         setResizable(false);
@@ -189,6 +185,7 @@ public class Amministrazione
         gridBagConstraints.gridy = 2;
         mainPanel.add(btnAggBeacon, gridBagConstraints);
         pack();
+        setResizable(false);
     }
 
     private void definisciListeners() {
@@ -220,6 +217,7 @@ public class Amministrazione
                         btnAggPiano.setEnabled(false);
                     }
                     pack();
+                    setResizable(false);
                 }
             }
         });
@@ -310,6 +308,7 @@ public class Amministrazione
                                                 mapLabel = new JLabel(mapView);
                                                 mainPanel.add(mapLabel,gridBagConstraints);
                                                 pack();
+                                                setResizable(false);
                                             }
                                             catch (IOException e2) {
                                                 e2.printStackTrace();
@@ -327,6 +326,7 @@ public class Amministrazione
                         btnAggTronco.setEnabled(false);
                     }
                     pack();
+                    setResizable(false);
                 }
             }
         });
@@ -348,6 +348,7 @@ public class Amministrazione
                         btnAggBeacon.setEnabled(false);
                     }
                     pack();
+                    setResizable(false);
                 }
             }
         });
@@ -359,6 +360,6 @@ public class Amministrazione
         File mappa = new File(path + link);
         BufferedImage imgMappa = null;
         imgMappa = ImageIO.read(mappa);
-        return imgMappa.getScaledInstance(640 * uiScaling, 360 * uiScaling, 4);
+        return imgMappa.getScaledInstance(MIN_MAP_WIDTH * uiScaling, MIN_MAP_HEIGHT * uiScaling, 4);
     }
 }
