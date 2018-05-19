@@ -3,15 +3,8 @@ package gui;
         import connessioni.Server;
         import entita.*;
         import gui.Amministrazione;
-        import java.awt.Component;
-        import java.awt.Dimension;
-        import java.awt.Font;
-        import java.awt.GridBagConstraints;
-        import java.awt.GridBagLayout;
-        import java.awt.Image;
-        import java.awt.Insets;
-        import java.awt.LayoutManager;
-        import java.awt.Toolkit;
+
+        import java.awt.*;
         import java.awt.event.ActionEvent;
         import java.awt.event.ActionListener;
         import java.awt.event.ItemEvent;
@@ -19,6 +12,7 @@ package gui;
         import java.awt.image.BufferedImage;
         import java.io.File;
         import java.io.IOException;
+        import java.sql.SQLException;
         import java.util.ArrayList;
         import java.util.HashMap;
         import javax.imageio.ImageIO;
@@ -52,6 +46,8 @@ public class Amministrazione
     private ImageIcon mapView;
     private JLabel mapLabel;
     private JButton caricamento;
+
+    private JPanel aggEdificio;
 
     public Amministrazione() {
         try {
@@ -112,6 +108,12 @@ public class Amministrazione
         btnAggEdificio = new JButton("+ edificio");
         btnAggEdificio.setPreferredSize(componentDimension);
         btnAggEdificio.setFont(defaultFont);
+        btnAggEdificio.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                aggiungiEdificio();
+            }
+        });
         mainPanel.add((Component) labels[0], gridBagConstraints);
         gridBagConstraints.gridy = 1;
         mainPanel.add(comboEdifici, gridBagConstraints);
@@ -184,8 +186,7 @@ public class Amministrazione
         mainPanel.add(comboBeacons, gridBagConstraints);
         gridBagConstraints.gridy = 2;
         mainPanel.add(btnAggBeacon, gridBagConstraints);
-        pack();
-        setResizable(false);
+        aggiornaUI();
     }
 
     private void definisciListeners() {
@@ -216,8 +217,7 @@ public class Amministrazione
                         comboPiani.setEnabled(false);
                         btnAggPiano.setEnabled(false);
                     }
-                    pack();
-                    setResizable(false);
+                    aggiornaUI();
                 }
             }
         });
@@ -299,7 +299,7 @@ public class Amministrazione
                                             try {
                                                 mappa = getMappa(piano);
                                                 mapView = new ImageIcon(mappa);
-                                                gridBagConstraints.fill = 2;
+                                                gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
                                                 gridBagConstraints.ipady = 40;
                                                 gridBagConstraints.weightx = 0.0;
                                                 gridBagConstraints.gridwidth = 5;
@@ -307,8 +307,7 @@ public class Amministrazione
                                                 gridBagConstraints.gridy = 5;
                                                 mapLabel = new JLabel(mapView);
                                                 mainPanel.add(mapLabel,gridBagConstraints);
-                                                pack();
-                                                setResizable(false);
+                                                aggiornaUI();
                                             }
                                             catch (IOException e2) {
                                                 e2.printStackTrace();
@@ -325,8 +324,7 @@ public class Amministrazione
                         comboTronchi.setEnabled(false);
                         btnAggTronco.setEnabled(false);
                     }
-                    pack();
-                    setResizable(false);
+                    aggiornaUI();
                 }
             }
         });
@@ -347,8 +345,7 @@ public class Amministrazione
                         comboBeacons.setEnabled(false);
                         btnAggBeacon.setEnabled(false);
                     }
-                    pack();
-                    setResizable(false);
+                    aggiornaUI();
                 }
             }
         });
@@ -361,5 +358,93 @@ public class Amministrazione
         BufferedImage imgMappa = null;
         imgMappa = ImageIO.read(mappa);
         return imgMappa.getScaledInstance(MIN_MAP_WIDTH * uiScaling, MIN_MAP_HEIGHT * uiScaling, 4);
+    }
+
+    private void aggiungiEdificio() {
+        if(aggEdificio==null) {
+            aggEdificio = new JPanel(new GridBagLayout());
+
+            //Definisco gli elementi che fanno parte della form
+            GridBagConstraints constraintsInnner = new GridBagConstraints();
+            JLabel lNome = new JLabel("Nome:");
+            lNome.setFont(defaultFont);
+            JTextField tNome = new JTextField(20);
+            tNome.setFont(defaultFont);
+            JLabel lNomeError = new JLabel("Per favore inserisci il nome!");
+            lNomeError.setFont(defaultFont);
+            lNomeError.setForeground(Color.RED);
+            lNomeError.setVisible(false);
+            JButton confirm = new JButton("Conferma");
+            confirm.setFont(defaultFont);
+            confirm.setSize(componentDimension);
+
+            //Aggiungo gli elementi al panel
+            //LABEL NOME
+            constraintsInnner.gridx = 0;
+            constraintsInnner.gridy = 0;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggEdificio.add(lNome, constraintsInnner);
+            //TEXT NOME
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 0;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggEdificio.add(tNome, constraintsInnner);
+            //TEXT ERRORE NOME
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 1;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggEdificio.add(lNomeError, constraintsInnner);
+            //BUTTON CONFERMA
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 2;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            constraintsInnner.insets = new Insets(25, 0, 0, 10);
+            confirm.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(tNome.getText().equals("")) {
+                        lNomeError.setVisible(true);
+                    }
+                    else {
+                        lNomeError.setVisible(false);
+                        try {
+                            DAOEdificio.insertEdificio(tNome.getText());
+                        } catch (SQLException e1) {
+                        }
+                        finally {
+                            comboEdifici.addItem(tNome.getText());
+                            aggEdificio.setVisible(false);
+                            tNome.setText("");
+                            aggiornaUI();
+                        }
+                    }
+                }
+            });
+            aggEdificio.add(confirm, constraintsInnner);
+
+
+            gridBagConstraints.fill = GridBagConstraints.VERTICAL;
+            gridBagConstraints.ipady = 40;
+            gridBagConstraints.weightx = 0.0;
+            gridBagConstraints.gridheight = 4;
+            gridBagConstraints.gridx = 6;
+            gridBagConstraints.gridy = 0;
+            gridBagConstraints.insets = new Insets(10 * uiScaling, 17 * uiScaling, 0, 17 * uiScaling);
+            mainPanel.add(aggEdificio,gridBagConstraints);
+
+            aggEdificio.setVisible(true);
+        }
+        else if(aggEdificio.isVisible()) {
+            aggEdificio.setVisible(false);
+        }
+        else {
+            aggEdificio.setVisible(true);
+        }
+        aggiornaUI();
+    }
+
+    private void aggiornaUI() {
+        pack();
+        setResizable(false);
     }
 }

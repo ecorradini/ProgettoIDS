@@ -120,5 +120,15 @@ public class DAOEdificio {
 
         return nEdifici;
     }
+
+    public static void insertEdificio(String nome) throws SQLException {
+        Connection conn = Database.getConn();
+
+        String query = "INSERT INTO " + TABLE_EDIFICIO + " VALUES('" + nome + "')";
+        Statement stm = conn.createStatement();
+        stm.executeUpdate(query);
+
+        stm.close();
+    }
 }
 

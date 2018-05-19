@@ -45,7 +45,6 @@ public class DAOMappa {
         Statement stm = conn.createStatement();
         stm.executeUpdate(query);
 
-        stm.executeUpdate(query);
         stm.close();
     }
 }
