@@ -148,4 +148,14 @@ public class DAOPiano {
 
         return nPiani;
     }
+
+    public static void insertPiano(String nome,String edificio) throws SQLException {
+        Connection conn = Database.getConn();
+
+        String query = "INSERT INTO " + TABLE_PIANO + " VALUES('" + nome + "','"+ edificio + "')";
+        Statement stm = conn.createStatement();
+        stm.executeUpdate(query);
+
+        stm.close();
+    }
 }

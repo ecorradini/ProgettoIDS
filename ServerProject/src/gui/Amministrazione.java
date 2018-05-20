@@ -46,10 +46,16 @@ public class Amministrazione
     private JLabel labelCoordinate;
 
     private JPanel aggEdificio;
+    private JPanel aggPiano;
 
     public Amministrazione() {
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            for(UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                if("Nimbus".equals(info.getName())) {
+                    UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -62,6 +68,7 @@ public class Amministrazione
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dim = toolkit.getScreenSize();
         uiScaling = dim.width / 1024;
+        if(uiScaling<=0) uiScaling=1;
         setSize(MIN_FRAME_WIDTH * uiScaling, MIN_FRAME_HEIGHT * uiScaling);
         setTitle("Interfaccia di amministrazione");
         setVisible(true);
@@ -112,7 +119,7 @@ public class Amministrazione
                 aggiungiEdificio();
             }
         });
-        mainPanel.add((Component) labels[0], gridBagConstraints);
+        mainPanel.add(labels[0], gridBagConstraints);
         gridBagConstraints.gridy = 1;
         mainPanel.add(comboEdifici, gridBagConstraints);
         gridBagConstraints.gridy = 2;
@@ -128,6 +135,12 @@ public class Amministrazione
         btnAggPiano.setPreferredSize(componentDimension);
         btnAggPiano.setFont(defaultFont);
         btnAggPiano.setEnabled(false);
+        btnAggPiano.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                aggiungiPiano();
+            }
+        });
         mainPanel.add((Component) labels[1], gridBagConstraints);
         gridBagConstraints.gridy = 1;
         mainPanel.add(comboPiani, gridBagConstraints);
@@ -283,7 +296,6 @@ public class Amministrazione
                             aggiornaUI();
                         }
                         catch (IOException e1) {
-                            labelCoordinate.setVisible(false);
                             gridBagConstraints.fill = GridBagConstraints.NONE;
                             gridBagConstraints.ipady = 40;
                             gridBagConstraints.weightx = 0.0;
@@ -487,6 +499,89 @@ public class Amministrazione
         }
         else {
             aggEdificio.setVisible(true);
+        }
+        aggiornaUI();
+    }
+
+    private void aggiungiPiano() {
+        if(aggPiano==null) {
+            aggPiano = new JPanel(new GridBagLayout());
+
+            //Definisco gli elementi che fanno parte della form
+            GridBagConstraints constraintsInnner = new GridBagConstraints();
+            JLabel lNome = new JLabel("Nome:");
+            lNome.setFont(defaultFont);
+            JTextField tNome = new JTextField(20);
+            tNome.setFont(defaultFont);
+            JLabel lNomeError = new JLabel("Per favore inserisci il nome!");
+            lNomeError.setFont(defaultFont);
+            lNomeError.setForeground(Color.RED);
+            lNomeError.setVisible(false);
+            JButton confirm = new JButton("Conferma");
+            confirm.setFont(defaultFont);
+            confirm.setSize(componentDimension);
+
+            //Aggiungo gli elementi al panel
+            //LABEL NOME
+            constraintsInnner.gridx = 0;
+            constraintsInnner.gridy = 0;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggPiano.add(lNome, constraintsInnner);
+            //TEXT NOME
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 0;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggPiano.add(tNome, constraintsInnner);
+            //TEXT ERRORE NOME
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 1;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggPiano.add(lNomeError, constraintsInnner);
+            //BUTTON CONFERMA
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 2;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            constraintsInnner.insets = new Insets(25, 0, 0, 10);
+            confirm.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(tNome.getText().equals("")) {
+                        lNomeError.setVisible(true);
+                    }
+                    else {
+                        lNomeError.setVisible(false);
+                        try {
+                            DAOPiano.insertPiano(tNome.getText(),(String)comboEdifici.getSelectedItem());
+                        } catch (SQLException e1) {
+                        }
+                        finally {
+                            comboPiani.addItem(tNome.getText());
+                            aggPiano.setVisible(false);
+                            tNome.setText("");
+                            aggiornaUI();
+                        }
+                    }
+                }
+            });
+            aggPiano.add(confirm, constraintsInnner);
+
+
+            gridBagConstraints.fill = GridBagConstraints.VERTICAL;
+            gridBagConstraints.ipady = 40;
+            gridBagConstraints.weightx = 0.0;
+            gridBagConstraints.gridheight = 4;
+            gridBagConstraints.gridx = 6;
+            gridBagConstraints.gridy = 0;
+            gridBagConstraints.insets = new Insets(10 * uiScaling, 17 * uiScaling, 0, 17 * uiScaling);
+            mainPanel.add(aggPiano,gridBagConstraints);
+
+            aggPiano.setVisible(true);
+        }
+        else if(aggPiano.isVisible()) {
+            aggPiano.setVisible(false);
+        }
+        else {
+            aggPiano.setVisible(true);
         }
         aggiornaUI();
     }
