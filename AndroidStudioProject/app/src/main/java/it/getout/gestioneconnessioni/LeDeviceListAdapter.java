@@ -14,9 +14,6 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import it.getout.MainActivity;
-import it.getout.gestioneposizione.Beacon;
-
 // Adapter per gestire i dispositivi identificati durante lo scanner.
 public class LeDeviceListAdapter {
 

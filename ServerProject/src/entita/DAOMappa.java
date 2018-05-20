@@ -1,8 +1,7 @@
 package entita;
 
-import connessioni.DatabaseConnection;
+import connessioni.Database;
 
-import javax.management.ImmutableDescriptor;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,14 +9,14 @@ import java.sql.Statement;
 
 public class DAOMappa {
     static final String PIANO = "PIANO";
-    static final String IMMAGINE = "IMMAGINE";
+    static final String LINK = "LINK";
     static final String TABLE_MAPPA = "MAPPA";
 
     public static String selectMappaByPiano(String piano) {
-        Connection conn = DatabaseConnection.getConn();
-        String immagineBase64 = "";
+        Connection conn = Database.getConn();
+        String link="";
 
-        String query =  "SELECT "+ IMMAGINE+
+        String query =  "SELECT "+ LINK+
                 " FROM "+TABLE_MAPPA+
                 " WHERE "+PIANO+"=\'"+piano+"\'";
 
@@ -26,21 +25,27 @@ public class DAOMappa {
             ResultSet rs = stm.executeQuery(query);
 
             while(rs.next()) {
-                immagineBase64 = rs.getString(IMMAGINE);
+                link = rs.getString(LINK);
             }
 
             rs.close();
             stm.close();
-            DatabaseConnection.getConn().commit();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        String json = "{ "+"\"MAPPA\":\""+immagineBase64+"\"}";
+        return link;
+    }
 
-        System.out.println("RESPONSE: "+json);
+    public static void insertMappaPiano(String piano) throws SQLException {
+        Connection conn = Database.getConn();
+        String link = "/Mappe/q" + piano + ".jpg";
 
-        return json;
+        String query = "INSERT INTO " + TABLE_MAPPA + " VALUES('" + piano + "','" + link + "')";
+        Statement stm = conn.createStatement();
+        stm.executeUpdate(query);
+
+        stm.close();
     }
 }
 

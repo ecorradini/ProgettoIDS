@@ -1,11 +1,9 @@
 package it.getout.gestioneposizione;
 
-import android.graphics.Point;
 import android.graphics.PointF;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-
-import it.getout.gestioneconnessioni.Connessioni;
 
 /**
  * Created by Alessandro on 01/02/2018.
@@ -13,26 +11,22 @@ import it.getout.gestioneconnessioni.Connessioni;
 
 public class Tronco {
 
+    private int id;
     private PointF inizio;
     private PointF fine;
     private float larghezza;
+    private float lunghezza;
     private HashMap<String,Beacon> beacons;
 
-    public Tronco(PointF inizio, PointF fine, float larghezza){
+    public Tronco(int id, PointF inizio, PointF fine, float larghezza, float lunghezza){
+        this.id = id;
         this.inizio = inizio;
         this.fine = fine;
         this.larghezza = larghezza;
-        downloadBeacons();
+        this.lunghezza = lunghezza;
     }
 
-    private void downloadBeacons() {
-        if(!PosizioneUtente.checkInternet()) {
-            beacons = Connessioni.getDbReference().initBeacons(this);
-        }
-        else {
-            Connessioni.getServerReference().richiediBeaconbyTronco(this);
-        }
-    }
+    public int getId() { return id; }
 
     public PointF getInizio(){
         return inizio;
@@ -44,6 +38,10 @@ public class Tronco {
 
     public float getLarghezza(){
         return larghezza;
+    }
+
+    public float getLunghezza(){
+        return lunghezza;
     }
 
     public Beacon getBeaconByID(String id){

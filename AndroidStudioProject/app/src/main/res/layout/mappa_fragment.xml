@@ -4,10 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
+    <it.getout.gestionevisualizzazionemappa.TouchImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="immaginemappa"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:id="@+id/image_mappa"/>
 
 </RelativeLayout>

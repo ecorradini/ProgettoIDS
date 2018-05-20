@@ -10,13 +10,11 @@ import android.graphics.PointF;
 public class Aula {
 
     private String nome;
-    private PointF entrata;
-    private Piano piano;
+    private String entrata;
 
-    public Aula (String nome, PointF entrata, Piano piano){
+    public Aula (String nome, String entrata){
         this.nome = nome;
         this.entrata = entrata;
-        this.piano = piano;
     }
 
     //meotodi per ottenere nome, entrata e piano di un'aula
@@ -25,13 +23,10 @@ public class Aula {
         return this.nome;
     }
 
-    public PointF getEntrata(){
+    public String getEntrata(){
         return this.entrata;
     }
 
-    public Piano getPiano(){
-        return this.piano;
-    }
-
+    public boolean isEntrata(Beacon b) { return b.getId().equals(entrata); }
 
 }
