@@ -16,8 +16,8 @@ package gui;
         import javax.imageio.ImageIO;
         import javax.swing.*;
 
-public class Amministrazione
-        extends JFrame {
+public class Amministrazione extends JFrame {
+
     private final int MIN_FRAME_WIDTH = 1024;
     private final int MIN_FRAME_HEIGHT = 768;
     private final int MIN_COMPONENT_WIDTH = 90;
