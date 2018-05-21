@@ -1,6 +1,6 @@
 package gui;
 
-        import connessioni.Server;
+import connessioni.Server;
         import entita.*;
         import gui.Amministrazione;
 
@@ -82,6 +82,7 @@ public class Amministrazione extends JFrame {
         gridBagConstraints = new GridBagConstraints();
         add(mainPanel);
         setResizable(false);
+        setLocationRelativeTo(null);
         aggiungiElementiIniziali();
         definisciListeners();
     }
@@ -118,6 +119,18 @@ public class Amministrazione extends JFrame {
         btnAggEdificio.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(aggPiano!=null) {
+                    aggPiano.setVisible(false);
+                }
+                if(aggAula!=null) {
+                    aggAula.setVisible(false);
+                }
+                if(aggTronco!=null) {
+                    aggTronco.setVisible(false);
+                }
+                if(aggBeacon!=null) {
+                    aggBeacon.setVisible(false);
+                }
                 aggiungiEdificio();
             }
         });
@@ -140,6 +153,18 @@ public class Amministrazione extends JFrame {
         btnAggPiano.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(aggEdificio!=null) {
+                    aggEdificio.setVisible(false);
+                }
+                if(aggAula!=null) {
+                    aggAula.setVisible(false);
+                }
+                if(aggTronco!=null) {
+                    aggTronco.setVisible(false);
+                }
+                if(aggBeacon!=null) {
+                    aggBeacon.setVisible(false);
+                }
                 aggiungiPiano();
             }
         });
@@ -163,6 +188,18 @@ public class Amministrazione extends JFrame {
         btnAggTronco.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(aggPiano!=null) {
+                    aggPiano.setVisible(false);
+                }
+                if(aggAula!=null) {
+                    aggAula.setVisible(false);
+                }
+                if(aggEdificio!=null) {
+                    aggEdificio.setVisible(false);
+                }
+                if(aggBeacon!=null) {
+                    aggBeacon.setVisible(false);
+                }
                 aggiungiTronco();
             }
         });
@@ -186,6 +223,18 @@ public class Amministrazione extends JFrame {
         btnAggAula.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(aggPiano!=null) {
+                    aggPiano.setVisible(false);
+                }
+                if(aggEdificio!=null) {
+                    aggEdificio.setVisible(false);
+                }
+                if(aggTronco!=null) {
+                    aggTronco.setVisible(false);
+                }
+                if(aggBeacon!=null) {
+                    aggBeacon.setVisible(false);
+                }
                 aggiungiAula();
             }
         });
@@ -209,6 +258,18 @@ public class Amministrazione extends JFrame {
         btnAggBeacon.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(aggPiano!=null) {
+                    aggPiano.setVisible(false);
+                }
+                if(aggAula!=null) {
+                    aggAula.setVisible(false);
+                }
+                if(aggTronco!=null) {
+                    aggTronco.setVisible(false);
+                }
+                if(aggEdificio!=null) {
+                    aggEdificio.setVisible(false);
+                }
                 aggiungiBeacon();
             }
         });
@@ -419,6 +480,10 @@ public class Amministrazione extends JFrame {
                         }
                         comboBeacons.setEnabled(true);
                         btnAggBeacon.setEnabled(true);
+                        if(mapView!=null) {
+                            int[] coordinate = DAOTronco.selectCoordinateTronco(tronco);
+                            mapView.paintTronco(coordinate[0], coordinate[1], coordinate[2], coordinate[3]);
+                        }
                     } else {
                         comboBeacons.setEnabled(false);
                         btnAggBeacon.setEnabled(false);
@@ -1173,13 +1238,15 @@ public class Amministrazione extends JFrame {
     private void aggiornaUI() {
         pack();
         setResizable(false);
+        setLocationRelativeTo(null);
     }
 
     public class ImagePanel extends JPanel {
 
         private BufferedImage img;
 
-        public ImagePanel(BufferedImage img) {
+        ImagePanel(BufferedImage img) {
+            setPreferredSize(new Dimension(MIN_MAP_WIDTH*uiScaling,MIN_MAP_HEIGHT*uiScaling));
             this.img = img;
         }
 
@@ -1188,7 +1255,7 @@ public class Amministrazione extends JFrame {
             return img == null ? super.getPreferredSize() : new Dimension(img.getWidth(), img.getHeight());
         }
 
-        protected Point getImageLocation() {
+        Point getImageLocation() {
 
             Point p = null;
             if (img != null) {
@@ -1200,12 +1267,8 @@ public class Amministrazione extends JFrame {
 
         }
 
-        public Point toImageContext(Point p) {
-            Point imgLocation = getImageLocation();
-            Point relative = new Point(p);
-            relative.x -= imgLocation.x;
-            relative.y -= imgLocation.y;
-            return relative;
+        void paintTronco(int x, int y, int xf, int yf) {
+            getGraphics().drawLine(x,y,xf,yf);
         }
 
         @Override

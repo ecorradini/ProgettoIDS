@@ -80,6 +80,32 @@ public class DAOTronco {
         return risultato;
     }
 
+    public static int[] selectCoordinateTronco(int troncoID) {
+        Connection conn = Database.getConn();
+        int[] result = new int[4];
+
+        String query = "SELECT "+X+","+Y+","+XF+","+YF+" FROM "+TABLE_TRONCO+" WHERE "+ID+"="+troncoID;
+
+        try{
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(query);
+
+            while(rs.next()) {
+                result[0] = rs.getInt(X);
+                result[1] = rs.getInt(Y);
+                result[2] = rs.getInt(XF);
+                result[3] = rs.getInt(YF);
+            }
+
+            rs.close();
+            stm.close();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
     public static ArrayList<Integer> selectTronchiAdiacenti(Tronco t) {
         Connection conn = Database.getConn();
         ArrayList<Integer> risultato = new ArrayList<>();
