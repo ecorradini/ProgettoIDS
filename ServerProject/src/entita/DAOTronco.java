@@ -177,7 +177,13 @@ public class DAOTronco {
 
         String query = "INSERT INTO " + TABLE_TRONCO + " VALUES('" + X + "','"+ Y + "','" + XF +"','" + YF + "','" + larghezza + "','" + piano + "','" + lunghezza +"')";
         Statement stm = conn.createStatement();
-        int id = stm.executeUpdate(query);
+        stm.executeUpdate(query,Statement.RETURN_GENERATED_KEYS);
+        String queryID = "SELECT MAX("+ID+") AS LASTID FROM "+TABLE_TRONCO;
+        ResultSet rs = stm.executeQuery(queryID);
+        int id=0;
+        while(rs.next()) {
+            id = rs.getInt("LASTID");
+        }
 
         stm.close();
 

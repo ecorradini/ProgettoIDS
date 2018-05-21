@@ -49,6 +49,7 @@ public class Amministrazione extends JFrame {
     private JPanel aggPiano;
     private JPanel aggAula;
     private JPanel aggTronco;
+    private JPanel aggBeacon;
 
     public Amministrazione() {
         try {
@@ -71,7 +72,6 @@ public class Amministrazione extends JFrame {
         Dimension dim = toolkit.getScreenSize();
         uiScaling = dim.width / 1024;
         if(uiScaling<=0) uiScaling=1;
-        setSize(MIN_FRAME_WIDTH * uiScaling, MIN_FRAME_HEIGHT * uiScaling);
         setTitle("Interfaccia di amministrazione");
         setVisible(true);
         defaultFont = new Font(DEFAULT_FONT, 0, MIN_FONT_SIZE * uiScaling);
@@ -206,6 +206,12 @@ public class Amministrazione extends JFrame {
         btnAggBeacon.setPreferredSize(componentDimension);
         btnAggBeacon.setFont(defaultFont);
         btnAggBeacon.setEnabled(false);
+        btnAggBeacon.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                aggiungiBeacon();
+            }
+        });
         mainPanel.add(labels[4], gridBagConstraints);
         gridBagConstraints.gridy = 1;
         mainPanel.add(comboBeacons, gridBagConstraints);
@@ -261,6 +267,10 @@ public class Amministrazione extends JFrame {
                         mainPanel.remove(mapView);
                     }
                     mapView=null;
+                    if(labelCoordinate!=null) {
+                        mainPanel.remove(labelCoordinate);
+                    }
+                    labelCoordinate=null;
                     if (!(piano = (String)comboPiani.getSelectedItem()).isEmpty()) {
                         comboAule.removeAllItems();
                         ArrayList auleList = DAOAula.selectListaAuleByPiano((String)piano);
@@ -635,7 +645,7 @@ public class Amministrazione extends JFrame {
 
             JLabel lEntrata = new JLabel("Entrata:");
             lEntrata.setFont(defaultFont);
-            JTextField tEntrata = new JTextField(40);
+            JTextField tEntrata = new JTextField(20);
             tEntrata.setFont(defaultFont);
             JLabel lEntrataError = new JLabel("Per favore inserisci l'id del beacon di entrata!");
             lEntrataError.setFont(defaultFont);
@@ -783,7 +793,7 @@ public class Amministrazione extends JFrame {
             lX.setFont(defaultFont);
             JTextField tX = new JTextField(6);
             tX.setFont(defaultFont);
-            JLabel lXError = new JLabel("Per favore inserisci la coordinata X!");
+            JLabel lXError = new JLabel("Per favore inserisci la X!");
             lXError.setFont(defaultFont);
             lXError.setForeground(Color.RED);
             lXError.setVisible(false);
@@ -792,7 +802,7 @@ public class Amministrazione extends JFrame {
             lY.setFont(defaultFont);
             JTextField tY = new JTextField(6);
             tY.setFont(defaultFont);
-            JLabel lYError = new JLabel("Per favore inserisci la coordinata Y!");
+            JLabel lYError = new JLabel("Per favore inserisci la Y!");
             lYError.setFont(defaultFont);
             lYError.setForeground(Color.RED);
             lYError.setVisible(false);
@@ -801,7 +811,7 @@ public class Amministrazione extends JFrame {
             lXF.setFont(defaultFont);
             JTextField tXF = new JTextField(6);
             tXF.setFont(defaultFont);
-            JLabel lXFError = new JLabel("Per favore inserisci la coordinata X finale!");
+            JLabel lXFError = new JLabel("Per favore inserisci la X finale!");
             lXFError.setFont(defaultFont);
             lXFError.setForeground(Color.RED);
             lXFError.setVisible(false);
@@ -810,25 +820,25 @@ public class Amministrazione extends JFrame {
             lYF.setFont(defaultFont);
             JTextField tYF = new JTextField(6);
             tYF.setFont(defaultFont);
-            JLabel lYFError = new JLabel("Per favore inserisci la coordinata Y finale!");
+            JLabel lYFError = new JLabel("Per favore inserisci Y finale!");
             lYFError.setFont(defaultFont);
             lYFError.setForeground(Color.RED);
             lYFError.setVisible(false);
 
             JLabel lLarghezza = new JLabel("Larghezza:");
             lLarghezza.setFont(defaultFont);
-            JTextField tLarghezza = new JTextField(40);
+            JTextField tLarghezza = new JTextField(20);
             tLarghezza.setFont(defaultFont);
-            JLabel lLarghezzaError = new JLabel("Per favore inserisci la larghezza del tronco!");
+            JLabel lLarghezzaError = new JLabel("Per favore inserisci la larghezza!");
             lLarghezzaError.setFont(defaultFont);
             lLarghezzaError.setForeground(Color.RED);
             lLarghezzaError.setVisible(false);
 
             JLabel lLunghezza = new JLabel("Lunghezza:");
             lLunghezza.setFont(defaultFont);
-            JTextField tLunghezza = new JTextField(40);
+            JTextField tLunghezza = new JTextField(20);
             tLunghezza.setFont(defaultFont);
-            JLabel lLunghezzaError = new JLabel("Per favore inserisci la larghezza del tronco!");
+            JLabel lLunghezzaError = new JLabel("Per favore inserisci la lunghezza!");
             lLunghezzaError.setFont(defaultFont);
             lLunghezzaError.setForeground(Color.RED);
             lLunghezzaError.setVisible(false);
@@ -843,80 +853,95 @@ public class Amministrazione extends JFrame {
             constraintsInnner.gridx = 0;
             constraintsInnner.gridy = 0;
             constraintsInnner.anchor = GridBagConstraints.LINE_START;
-            aggAula.add(lX, constraintsInnner);
+            aggTronco.add(lX, constraintsInnner);
             //TEXT X
             constraintsInnner.gridx = 1;
             constraintsInnner.gridy = 0;
             constraintsInnner.anchor = GridBagConstraints.LINE_START;
-            aggAula.add(tX, constraintsInnner);
+            aggTronco.add(tX, constraintsInnner);
             //TEXT ERRORE X
             constraintsInnner.gridx = 1;
             constraintsInnner.gridy = 1;
             constraintsInnner.anchor = GridBagConstraints.LINE_START;
-            aggAula.add(lXError, constraintsInnner);
+            aggTronco.add(lXError, constraintsInnner);
             //LABEL Y
             constraintsInnner.gridx = 0;
             constraintsInnner.gridy = 2;
             constraintsInnner.anchor = GridBagConstraints.LINE_START;
-            aggAula.add(lY, constraintsInnner);
+            aggTronco.add(lY, constraintsInnner);
             //TEXT Y
             constraintsInnner.gridx = 1;
             constraintsInnner.gridy = 2;
             constraintsInnner.anchor = GridBagConstraints.LINE_START;
-            aggAula.add(tY, constraintsInnner);
+            aggTronco.add(tY, constraintsInnner);
             //TEXT ERRORE Y
             constraintsInnner.gridx = 1;
             constraintsInnner.gridy = 3;
             constraintsInnner.anchor = GridBagConstraints.LINE_START;
-            aggAula.add(lYError, constraintsInnner);
+            aggTronco.add(lYError, constraintsInnner);
             //LABEL XF
             constraintsInnner.gridx = 0;
             constraintsInnner.gridy = 4;
             constraintsInnner.anchor = GridBagConstraints.LINE_START;
-            aggAula.add(lXF, constraintsInnner);
+            aggTronco.add(lXF, constraintsInnner);
             //TEXT XF
             constraintsInnner.gridx = 1;
             constraintsInnner.gridy = 4;
             constraintsInnner.anchor = GridBagConstraints.LINE_START;
-            aggAula.add(tXF, constraintsInnner);
+            aggTronco.add(tXF, constraintsInnner);
             //TEXT ERROR XF
             constraintsInnner.gridx = 1;
             constraintsInnner.gridy = 5;
             constraintsInnner.anchor = GridBagConstraints.LINE_START;
-            aggAula.add(lXFError, constraintsInnner);
-            //LABEL LUNGHEZZA
+            aggTronco.add(lXFError, constraintsInnner);
+            //LABEL YF
             constraintsInnner.gridx = 0;
             constraintsInnner.gridy = 6;
             constraintsInnner.anchor = GridBagConstraints.LINE_START;
-            aggAula.add(lLunghezza, constraintsInnner);
-            //TEXT LUNGHEZZA
+            aggTronco.add(lYF, constraintsInnner);
+            //TEXT YF
             constraintsInnner.gridx = 1;
             constraintsInnner.gridy = 6;
             constraintsInnner.anchor = GridBagConstraints.LINE_START;
-            aggAula.add(tLunghezza, constraintsInnner);
-            //TEXT ERRORE ENTRATA
+            aggTronco.add(tYF, constraintsInnner);
+            //TEXT ERROR YF
             constraintsInnner.gridx = 1;
             constraintsInnner.gridy = 7;
             constraintsInnner.anchor = GridBagConstraints.LINE_START;
-            aggAula.add(lLunghezzaError, constraintsInnner);
-            //LABEL LARGHEZZA
+            aggTronco.add(lYFError, constraintsInnner);
+            //LABEL LUNGHEZZA
             constraintsInnner.gridx = 0;
             constraintsInnner.gridy = 8;
             constraintsInnner.anchor = GridBagConstraints.LINE_START;
-            aggAula.add(lLarghezza, constraintsInnner);
+            aggTronco.add(lLunghezza, constraintsInnner);
             //TEXT LUNGHEZZA
             constraintsInnner.gridx = 1;
             constraintsInnner.gridy = 8;
             constraintsInnner.anchor = GridBagConstraints.LINE_START;
-            aggAula.add(tLarghezza, constraintsInnner);
+            aggTronco.add(tLunghezza, constraintsInnner);
             //TEXT ERRORE ENTRATA
             constraintsInnner.gridx = 1;
             constraintsInnner.gridy = 9;
             constraintsInnner.anchor = GridBagConstraints.LINE_START;
-            aggAula.add(lLarghezzaError, constraintsInnner);
-            //BUTTON CONFERMA
+            aggTronco.add(lLunghezzaError, constraintsInnner);
+            //LABEL LARGHEZZA
+            constraintsInnner.gridx = 0;
+            constraintsInnner.gridy = 10;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggTronco.add(lLarghezza, constraintsInnner);
+            //TEXT LUNGHEZZA
             constraintsInnner.gridx = 1;
             constraintsInnner.gridy = 10;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggTronco.add(tLarghezza, constraintsInnner);
+            //TEXT ERRORE ENTRATA
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 11;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggTronco.add(lLarghezzaError, constraintsInnner);
+            //BUTTON CONFERMA
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 12;
             constraintsInnner.anchor = GridBagConstraints.LINE_START;
             constraintsInnner.insets = new Insets(25, 0, 0, 10);
             confirm.addActionListener(new ActionListener() {
@@ -988,6 +1013,159 @@ public class Amministrazione extends JFrame {
         }
         else {
             aggTronco.setVisible(true);
+        }
+        aggiornaUI();
+    }
+
+    private void aggiungiBeacon() {
+        if(aggBeacon==null) {
+            aggBeacon = new JPanel(new GridBagLayout());
+
+            //Definisco gli elementi che fanno parte della form
+            GridBagConstraints constraintsInnner = new GridBagConstraints();
+            JLabel lID = new JLabel("ID:");
+            lID.setFont(defaultFont);
+            JTextField tID = new JTextField(20);
+            tID.setFont(defaultFont);
+            JLabel lIDError = new JLabel("Per favore inserisci l'ID!");
+            lIDError.setFont(defaultFont);
+            lIDError.setForeground(Color.RED);
+            lIDError.setVisible(false);
+
+            JLabel lX = new JLabel("X:");
+            lX.setFont(defaultFont);
+            JTextField tX = new JTextField(6);
+            tX.setFont(defaultFont);
+            JLabel lXError = new JLabel("Per favore inserisci la coordinata X!");
+            lXError.setFont(defaultFont);
+            lXError.setForeground(Color.RED);
+            lXError.setVisible(false);
+
+            JLabel lY = new JLabel("Y:");
+            lY.setFont(defaultFont);
+            JTextField tY = new JTextField(6);
+            tY.setFont(defaultFont);
+            JLabel lYError = new JLabel("Per favore inserisci la coordinata Y!");
+            lYError.setFont(defaultFont);
+            lYError.setForeground(Color.RED);
+            lYError.setVisible(false);
+
+            JCheckBox cUscita = new JCheckBox("Uscita");
+            cUscita.setFont(defaultFont);
+
+
+            JButton confirm = new JButton("Conferma");
+            confirm.setFont(defaultFont);
+            confirm.setSize(componentDimension);
+
+            //Aggiungo gli elementi al panel
+            //LABEL ID
+            constraintsInnner.gridx = 0;
+            constraintsInnner.gridy = 0;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggBeacon.add(lID, constraintsInnner);
+            //TEXT NOME
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 0;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggBeacon.add(tID, constraintsInnner);
+            //TEXT ERRORE NOME
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 1;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggBeacon.add(lIDError, constraintsInnner);
+            //LABEL X
+            constraintsInnner.gridx = 0;
+            constraintsInnner.gridy = 2;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggBeacon.add(lX, constraintsInnner);
+            //TEXT X
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 2;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggBeacon.add(tX, constraintsInnner);
+            //TEXT ERRORE X
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 3;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggBeacon.add(lXError, constraintsInnner);
+            //LABEL Y
+            constraintsInnner.gridx = 0;
+            constraintsInnner.gridy = 4;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggBeacon.add(lY, constraintsInnner);
+            //TEXT Y
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 4;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggBeacon.add(tY, constraintsInnner);
+            //TEXT ERROR Y
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 5;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggBeacon.add(lYError, constraintsInnner);
+            //CHECKUSCITA
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 6;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggBeacon.add(cUscita, constraintsInnner);
+
+            //BUTTON CONFERMA
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 7;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            constraintsInnner.insets = new Insets(25, 0, 0, 10);
+            confirm.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(tID.getText().equals("")) {
+                        lIDError.setVisible(true);
+                    }
+                    else if(tX.getText().equals("")) {
+                        lXError.setVisible(true);
+                    }
+                    else if(tY.getText().equals("")) {
+                        lYError.setVisible(true);
+                    }
+                    else {
+                        lIDError.setVisible(false);
+                        lXError.setVisible(false);
+                        lYError.setVisible(false);
+                        try {
+                            DAOBeacon.insertBeacon(tID.getText(),((Integer)comboTronchi.getSelectedItem()).toString(),tX.getText(),tY.getText(),cUscita.isSelected() ? "1" : "0");
+                        } catch (SQLException e1) {
+                        }
+                        finally {
+                            comboBeacons.addItem(tID.getText());
+                            aggBeacon.setVisible(false);
+                            tID.setText("");
+                            tX.setText("");
+                            tY.setText("");
+                            cUscita.setSelected(false);
+                            aggiornaUI();
+                        }
+                    }
+                }
+            });
+            aggBeacon.add(confirm, constraintsInnner);
+
+
+            gridBagConstraints.fill = GridBagConstraints.VERTICAL;
+            gridBagConstraints.ipady = 40;
+            gridBagConstraints.weightx = 0.0;
+            gridBagConstraints.gridheight = 4;
+            gridBagConstraints.gridx = 6;
+            gridBagConstraints.gridy = 0;
+            gridBagConstraints.insets = new Insets(10 * uiScaling, 17 * uiScaling, 0, 17 * uiScaling);
+            mainPanel.add(aggBeacon,gridBagConstraints);
+
+            aggBeacon.setVisible(true);
+        }
+        else if(aggBeacon.isVisible()) {
+            aggBeacon.setVisible(false);
+        }
+        else {
+            aggBeacon.setVisible(true);
         }
         aggiornaUI();
     }

@@ -154,4 +154,14 @@ public class DAOBeacon {
 
     }
 
+    public static void insertBeacon(String id,String tronco, String X, String Y, String uscita) throws SQLException {
+        Connection conn = Database.getConn();
+
+        String query = "INSERT INTO " + TABLE_BEACON + " VALUES('" + id + "','"+ X + "','" + Y +"','" + tronco + "','" + "0" +"','" + uscita + "')";
+        Statement stm = conn.createStatement();
+        stm.executeUpdate(query);
+
+        stm.close();
+    }
+
 }
