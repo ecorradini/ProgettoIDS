@@ -47,6 +47,8 @@ public class Amministrazione extends JFrame {
 
     private JPanel aggEdificio;
     private JPanel aggPiano;
+    private JPanel aggAula;
+    private JPanel aggTronco;
 
     public Amministrazione() {
         try {
@@ -158,6 +160,12 @@ public class Amministrazione extends JFrame {
         btnAggTronco.setPreferredSize(componentDimension);
         btnAggTronco.setFont(defaultFont);
         btnAggTronco.setEnabled(false);
+        btnAggTronco.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                aggiungiTronco();
+            }
+        });
         mainPanel.add((Component) labels[2], gridBagConstraints);
         gridBagConstraints.gridy = 1;
         mainPanel.add(comboTronchi, gridBagConstraints);
@@ -175,6 +183,12 @@ public class Amministrazione extends JFrame {
         btnAggAula.setPreferredSize(componentDimension);
         btnAggAula.setFont(defaultFont);
         btnAggAula.setEnabled(false);
+        btnAggAula.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                aggiungiAula();
+            }
+        });
         mainPanel.add((Component) labels[3], gridBagConstraints);
         gridBagConstraints.gridy = 1;
         mainPanel.add(comboAule, gridBagConstraints);
@@ -582,6 +596,398 @@ public class Amministrazione extends JFrame {
         }
         else {
             aggPiano.setVisible(true);
+        }
+        aggiornaUI();
+    }
+
+    private void aggiungiAula() {
+        if(aggAula==null) {
+            aggAula = new JPanel(new GridBagLayout());
+
+            //Definisco gli elementi che fanno parte della form
+            GridBagConstraints constraintsInnner = new GridBagConstraints();
+            JLabel lNome = new JLabel("Nome:");
+            lNome.setFont(defaultFont);
+            JTextField tNome = new JTextField(20);
+            tNome.setFont(defaultFont);
+            JLabel lNomeError = new JLabel("Per favore inserisci il nome!");
+            lNomeError.setFont(defaultFont);
+            lNomeError.setForeground(Color.RED);
+            lNomeError.setVisible(false);
+
+            JLabel lX = new JLabel("X:");
+            lX.setFont(defaultFont);
+            JTextField tX = new JTextField(6);
+            tX.setFont(defaultFont);
+            JLabel lXError = new JLabel("Per favore inserisci la coordinata X!");
+            lXError.setFont(defaultFont);
+            lXError.setForeground(Color.RED);
+            lXError.setVisible(false);
+
+            JLabel lY = new JLabel("Y:");
+            lY.setFont(defaultFont);
+            JTextField tY = new JTextField(6);
+            tY.setFont(defaultFont);
+            JLabel lYError = new JLabel("Per favore inserisci la coordinata Y!");
+            lYError.setFont(defaultFont);
+            lYError.setForeground(Color.RED);
+            lYError.setVisible(false);
+
+            JLabel lEntrata = new JLabel("Entrata:");
+            lEntrata.setFont(defaultFont);
+            JTextField tEntrata = new JTextField(40);
+            tEntrata.setFont(defaultFont);
+            JLabel lEntrataError = new JLabel("Per favore inserisci l'id del beacon di entrata!");
+            lEntrataError.setFont(defaultFont);
+            lEntrataError.setForeground(Color.RED);
+            lEntrataError.setVisible(false);
+
+
+            JButton confirm = new JButton("Conferma");
+            confirm.setFont(defaultFont);
+            confirm.setSize(componentDimension);
+
+            //Aggiungo gli elementi al panel
+            //LABEL NOME
+            constraintsInnner.gridx = 0;
+            constraintsInnner.gridy = 0;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggAula.add(lNome, constraintsInnner);
+            //TEXT NOME
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 0;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggAula.add(tNome, constraintsInnner);
+            //TEXT ERRORE NOME
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 1;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggAula.add(lNomeError, constraintsInnner);
+            //LABEL X
+            constraintsInnner.gridx = 0;
+            constraintsInnner.gridy = 2;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggAula.add(lX, constraintsInnner);
+            //TEXT X
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 2;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggAula.add(tX, constraintsInnner);
+            //TEXT ERRORE X
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 3;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggAula.add(lXError, constraintsInnner);
+            //LABEL Y
+            constraintsInnner.gridx = 0;
+            constraintsInnner.gridy = 4;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggAula.add(lY, constraintsInnner);
+            //TEXT Y
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 4;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggAula.add(tY, constraintsInnner);
+            //TEXT ERROR Y
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 5;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggAula.add(lYError, constraintsInnner);
+            //LABEL ENTRATA
+            constraintsInnner.gridx = 0;
+            constraintsInnner.gridy = 6;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggAula.add(lEntrata, constraintsInnner);
+            //TEXT ENTRATA
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 6;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggAula.add(tEntrata, constraintsInnner);
+            //TEXT ERRORE ENTRATA
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 7;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggAula.add(lEntrataError, constraintsInnner);
+            //BUTTON CONFERMA
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 8;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            constraintsInnner.insets = new Insets(25, 0, 0, 10);
+            confirm.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(tNome.getText().equals("")) {
+                        lNomeError.setVisible(true);
+                    }
+                    else if(tX.getText().equals("")) {
+                        lXError.setVisible(true);
+                    }
+                    else if(tY.getText().equals("")) {
+                        lYError.setVisible(true);
+                    }
+                    else if(tEntrata.getText().equals("")) {
+                        lEntrataError.setVisible(true);
+                    }
+                    else {
+                        lNomeError.setVisible(false);
+                        lXError.setVisible(false);
+                        lYError.setVisible(false);
+                        lEntrataError.setVisible(false);
+                        try {
+                            DAOAula.insertAula(tNome.getText(),(String)comboPiani.getSelectedItem(),
+                                    tX.getText(),tY.getText(),tEntrata.getText());
+                        } catch (SQLException e1) {
+                        }
+                        finally {
+                            comboAule.addItem(tNome.getText());
+                            aggAula.setVisible(false);
+                            tNome.setText("");
+                            tX.setText("");
+                            tY.setText("");
+                            tEntrata.setText("");
+                            aggiornaUI();
+                        }
+                    }
+                }
+            });
+            aggAula.add(confirm, constraintsInnner);
+
+
+            gridBagConstraints.fill = GridBagConstraints.VERTICAL;
+            gridBagConstraints.ipady = 40;
+            gridBagConstraints.weightx = 0.0;
+            gridBagConstraints.gridheight = 4;
+            gridBagConstraints.gridx = 6;
+            gridBagConstraints.gridy = 0;
+            gridBagConstraints.insets = new Insets(10 * uiScaling, 17 * uiScaling, 0, 17 * uiScaling);
+            mainPanel.add(aggAula,gridBagConstraints);
+
+            aggAula.setVisible(true);
+        }
+        else if(aggAula.isVisible()) {
+            aggAula.setVisible(false);
+        }
+        else {
+            aggAula.setVisible(true);
+        }
+        aggiornaUI();
+    }
+
+    private void aggiungiTronco() {
+        if(aggTronco==null) {
+            aggTronco = new JPanel(new GridBagLayout());
+
+            //Definisco gli elementi che fanno parte della form
+            GridBagConstraints constraintsInnner = new GridBagConstraints();
+            JLabel lX = new JLabel("X:");
+            lX.setFont(defaultFont);
+            JTextField tX = new JTextField(6);
+            tX.setFont(defaultFont);
+            JLabel lXError = new JLabel("Per favore inserisci la coordinata X!");
+            lXError.setFont(defaultFont);
+            lXError.setForeground(Color.RED);
+            lXError.setVisible(false);
+
+            JLabel lY = new JLabel("Y:");
+            lY.setFont(defaultFont);
+            JTextField tY = new JTextField(6);
+            tY.setFont(defaultFont);
+            JLabel lYError = new JLabel("Per favore inserisci la coordinata Y!");
+            lYError.setFont(defaultFont);
+            lYError.setForeground(Color.RED);
+            lYError.setVisible(false);
+
+            JLabel lXF = new JLabel("XF:");
+            lXF.setFont(defaultFont);
+            JTextField tXF = new JTextField(6);
+            tXF.setFont(defaultFont);
+            JLabel lXFError = new JLabel("Per favore inserisci la coordinata X finale!");
+            lXFError.setFont(defaultFont);
+            lXFError.setForeground(Color.RED);
+            lXFError.setVisible(false);
+
+            JLabel lYF = new JLabel("YF:");
+            lYF.setFont(defaultFont);
+            JTextField tYF = new JTextField(6);
+            tYF.setFont(defaultFont);
+            JLabel lYFError = new JLabel("Per favore inserisci la coordinata Y finale!");
+            lYFError.setFont(defaultFont);
+            lYFError.setForeground(Color.RED);
+            lYFError.setVisible(false);
+
+            JLabel lLarghezza = new JLabel("Larghezza:");
+            lLarghezza.setFont(defaultFont);
+            JTextField tLarghezza = new JTextField(40);
+            tLarghezza.setFont(defaultFont);
+            JLabel lLarghezzaError = new JLabel("Per favore inserisci la larghezza del tronco!");
+            lLarghezzaError.setFont(defaultFont);
+            lLarghezzaError.setForeground(Color.RED);
+            lLarghezzaError.setVisible(false);
+
+            JLabel lLunghezza = new JLabel("Lunghezza:");
+            lLunghezza.setFont(defaultFont);
+            JTextField tLunghezza = new JTextField(40);
+            tLunghezza.setFont(defaultFont);
+            JLabel lLunghezzaError = new JLabel("Per favore inserisci la larghezza del tronco!");
+            lLunghezzaError.setFont(defaultFont);
+            lLunghezzaError.setForeground(Color.RED);
+            lLunghezzaError.setVisible(false);
+
+
+            JButton confirm = new JButton("Conferma");
+            confirm.setFont(defaultFont);
+            confirm.setSize(componentDimension);
+
+            //Aggiungo gli elementi al panel
+            //LABEL X
+            constraintsInnner.gridx = 0;
+            constraintsInnner.gridy = 0;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggAula.add(lX, constraintsInnner);
+            //TEXT X
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 0;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggAula.add(tX, constraintsInnner);
+            //TEXT ERRORE X
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 1;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggAula.add(lXError, constraintsInnner);
+            //LABEL Y
+            constraintsInnner.gridx = 0;
+            constraintsInnner.gridy = 2;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggAula.add(lY, constraintsInnner);
+            //TEXT Y
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 2;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggAula.add(tY, constraintsInnner);
+            //TEXT ERRORE Y
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 3;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggAula.add(lYError, constraintsInnner);
+            //LABEL XF
+            constraintsInnner.gridx = 0;
+            constraintsInnner.gridy = 4;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggAula.add(lXF, constraintsInnner);
+            //TEXT XF
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 4;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggAula.add(tXF, constraintsInnner);
+            //TEXT ERROR XF
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 5;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggAula.add(lXFError, constraintsInnner);
+            //LABEL LUNGHEZZA
+            constraintsInnner.gridx = 0;
+            constraintsInnner.gridy = 6;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggAula.add(lLunghezza, constraintsInnner);
+            //TEXT LUNGHEZZA
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 6;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggAula.add(tLunghezza, constraintsInnner);
+            //TEXT ERRORE ENTRATA
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 7;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggAula.add(lLunghezzaError, constraintsInnner);
+            //LABEL LARGHEZZA
+            constraintsInnner.gridx = 0;
+            constraintsInnner.gridy = 8;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggAula.add(lLarghezza, constraintsInnner);
+            //TEXT LUNGHEZZA
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 8;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggAula.add(tLarghezza, constraintsInnner);
+            //TEXT ERRORE ENTRATA
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 9;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            aggAula.add(lLarghezzaError, constraintsInnner);
+            //BUTTON CONFERMA
+            constraintsInnner.gridx = 1;
+            constraintsInnner.gridy = 10;
+            constraintsInnner.anchor = GridBagConstraints.LINE_START;
+            constraintsInnner.insets = new Insets(25, 0, 0, 10);
+            confirm.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(tX.getText().equals("")) {
+                        lXError.setVisible(true);
+                    }
+                    else if(tY.getText().equals("")) {
+                        lYError.setVisible(true);
+                    }
+                    else if(tY.getText().equals("")) {
+                        lYError.setVisible(true);
+                    }
+                    else if(tXF.getText().equals("")) {
+                        lXFError.setVisible(true);
+                    }
+                    else if(tYF.getText().equals("")) {
+                        lYFError.setVisible(true);
+                    }
+                    else if(tLunghezza.getText().equals("")) {
+                        lLunghezzaError.setVisible(true);
+                    }
+                    else if(tLarghezza.getText().equals("")) {
+                        lLarghezzaError.setVisible(true);
+                    }
+                    else {
+                        lXError.setVisible(false);
+                        lYError.setVisible(false);
+                        lXFError.setVisible(false);
+                        lYFError.setVisible(false);
+                        lLarghezzaError.setVisible(false);
+                        lLunghezzaError.setVisible(false);
+                        int id = 0;
+                        try {
+                            id = DAOTronco.insertTronco(tX.getText(),tY.getText(),tXF.getText(),tYF.getText(),tLunghezza.getText(),tLarghezza.getText(),(String)comboPiani.getSelectedItem());
+                        } catch (SQLException e1) {
+                        }
+                        finally {
+                            comboTronchi.addItem(id);
+                            aggTronco.setVisible(false);
+                            tX.setText("");
+                            tY.setText("");
+                            tXF.setText("");
+                            tYF.setText("");
+                            tLarghezza.setText("");
+                            tLunghezza.setText("");
+                            aggiornaUI();
+                        }
+                    }
+                }
+            });
+            aggTronco.add(confirm, constraintsInnner);
+
+
+            gridBagConstraints.fill = GridBagConstraints.VERTICAL;
+            gridBagConstraints.ipady = 40;
+            gridBagConstraints.weightx = 0.0;
+            gridBagConstraints.gridheight = 4;
+            gridBagConstraints.gridx = 6;
+            gridBagConstraints.gridy = 0;
+            gridBagConstraints.insets = new Insets(10 * uiScaling, 17 * uiScaling, 0, 17 * uiScaling);
+            mainPanel.add(aggTronco,gridBagConstraints);
+
+            aggTronco.setVisible(true);
+        }
+        else if(aggTronco.isVisible()) {
+            aggTronco.setVisible(false);
+        }
+        else {
+            aggTronco.setVisible(true);
         }
         aggiornaUI();
     }

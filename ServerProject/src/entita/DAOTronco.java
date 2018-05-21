@@ -171,4 +171,16 @@ public class DAOTronco {
 
         return risultato;
     }
+
+    public static int insertTronco(String X, String Y, String XF, String YF, String lunghezza, String larghezza, String piano) throws SQLException {
+        Connection conn = Database.getConn();
+
+        String query = "INSERT INTO " + TABLE_TRONCO + " VALUES('" + X + "','"+ Y + "','" + XF +"','" + YF + "','" + larghezza + "','" + piano + "','" + lunghezza +"')";
+        Statement stm = conn.createStatement();
+        int id = stm.executeUpdate(query);
+
+        stm.close();
+
+        return id;
+    }
 }

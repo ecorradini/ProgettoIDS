@@ -68,4 +68,14 @@ public class DAOAula {
         }
         return aule;
     }
+
+    public static void insertAula(String nome,String piano, String X, String Y, String entrata) throws SQLException {
+        Connection conn = Database.getConn();
+
+        String query = "INSERT INTO " + TABLE_AULA + " VALUES('" + nome + "','"+ X + "','" + Y +"','" + piano + "','" + entrata + "')";
+        Statement stm = conn.createStatement();
+        stm.executeUpdate(query);
+
+        stm.close();
+    }
 }
