@@ -98,5 +98,41 @@ public class DAOParametri {
             e.printStackTrace();
         }
         return edificio;
+
     }
+
+    public static void updateTestaEmergenza() {
+        Connection conn = Database.getConn();
+
+        String query = "update PARAMETRI set RV=1 where TRONCO=3";
+
+        try {
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(query);
+
+            rs.close();
+            stm.close();
+
+        } catch (SQLException e) {
+            //L'utente è già stato inserito, non mi interessa
+        }
+    }
+
+    public static void updateFineTestaEmergenza() {
+        Connection conn = Database.getConn();
+
+        String query = "update PARAMETRI set RV=0 where TRONCO=3";
+
+        try {
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(query);
+
+            rs.close();
+            stm.close();
+
+        } catch (SQLException e) {
+            //L'utente è già stato inserito, non mi interessa
+        }
+    }
+
 }

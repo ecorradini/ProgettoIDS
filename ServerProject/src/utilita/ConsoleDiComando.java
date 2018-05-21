@@ -1,6 +1,7 @@
 package utilita;
 
 import connessioni.Database;
+import entita.DAOParametri;
 import gui.Amministrazione;
 
 import java.io.BufferedReader;
@@ -35,37 +36,14 @@ public class ConsoleDiComando implements Runnable {
         }
     }
 
+    /**
+     * metodo che permette di avviare l'emergenza
+     */
     private void testaEmergenza() {
-        Connection conn = Database.getConn();
-
-        String query = "update PARAMETRI set RV=1 where TRONCO=3";
-
-        try {
-            Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery(query);
-
-            rs.close();
-            stm.close();
-
-        } catch (SQLException e) {
-            //L'utente è già stato inserito, non mi interessa
-        }
+        DAOParametri.updateTestaEmergenza();
     }
 
     private void fineTestaEmergenza() {
-        Connection conn = Database.getConn();
-
-        String query = "update PARAMETRI set RV=0 where TRONCO=3";
-
-        try {
-            Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery(query);
-
-            rs.close();
-            stm.close();
-
-        } catch (SQLException e) {
-            //L'utente è già stato inserito, non mi interessa
-        }
+        DAOParametri.updateFineTestaEmergenza();
     }
 }
