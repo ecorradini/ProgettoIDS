@@ -291,84 +291,87 @@ public class GestoreEntita {
 
         BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();  // Local Bluetooth adapter
 
-        // Is Bluetooth turned on?
-        if (!btAdapter.isEnabled()) {
-            //attivazione del bluetooth (qualora non sia già funzionante)
-            Bluetooth.activateBluetooth((AppCompatActivity)c);
-        }
+        if (btAdapter == null){
+            Toast.makeText(c,"Bluetooth NOT support",Toast.LENGTH_SHORT).show();
+        }else {
 
-        bluetooth = new Bluetooth(btAdapter, (AppCompatActivity)c);
+            // Is Bluetooth turned on?
+            if (!btAdapter.isEnabled()) {
+                //attivazione del bluetooth (qualora non sia già funzionante)
+                Bluetooth.activateBluetooth((AppCompatActivity) c);
+            }
 
-        try {
-            final Thread postDelayed = new Thread() {
-                public void run () {
+            bluetooth = new Bluetooth(btAdapter, (AppCompatActivity) c);
 
-                    Looper.prepare();
+            try {
+                final Thread postDelayed = new Thread() {
+                    public void run() {
 
-                    boolean primaScansione=true;
-                    int contatore=0;
-                    BluetoothDevice device;
+                        Looper.prepare();
 
-                    while(!uscito) {
-                        try {
-                            if(primaScansione) {
-                                do {
-                                    bluetooth.discoverBLEDevices();
-                                    Thread.sleep(1500);
-                                } while (!bluetooth.getTerminatedScan());
-                            }
-                            else{
-                                contatore = 0;
-                                do {
-                                    bluetooth.discoverBLEDevices();
-                                    Thread.sleep(1500);
-                                    contatore++;
-                                } while (!bluetooth.getTerminatedScan() && contatore < 5);
-                            }
+                        boolean primaScansione = true;
+                        int contatore = 0;
+                        BluetoothDevice device;
 
-                            primaScansione = false;
-
-                            Log.e("VALORE DEL CONTATORE","CONTATORE = "+contatore);
-
-                            // se sono uscito dal precedente while perché il contatore ha raggiunto il
-                            // valore 5, allora setta il beacon attuale a null.
-                            if (contatore >= 5) {
-
-                                Log.e("ERRORE ", "Setto il beacon a STRINGA VUOTA");
-                                Uscita.setBeaconPrecedente(Posizione.getIDBeaconAttuale());
-                                beacon = "";
-                                Posizione.setBeaconAttuale(new Beacon(beacon, null));
-                            }
-
-                            device = bluetooth.getCurrentBeacon();
-
-                            if (device != null) {
-                                Log.e("Mi sono connesso", device.getAddress());
-
-                                if (beacon == null) {
-                                    scaricaDati(device.getAddress());
-                                    //new ThreadBluetooth(context);
+                        while (!uscito) {
+                            try {
+                                if (primaScansione) {
+                                    do {
+                                        bluetooth.discoverBLEDevices();
+                                        Thread.sleep(1500);
+                                    } while (!bluetooth.getTerminatedScan());
                                 } else {
-                                    aggiornaDati(device.getAddress());
+                                    contatore = 0;
+                                    do {
+                                        bluetooth.discoverBLEDevices();
+                                        Thread.sleep(1500);
+                                        contatore++;
+                                    } while (!bluetooth.getTerminatedScan() && contatore < 5);
                                 }
 
-                                beacon = device.getAddress();
-                            }
-                            else {
+                                primaScansione = false;
 
-                                aggiornaDati(beacon);
+                                Log.e("VALORE DEL CONTATORE", "CONTATORE = " + contatore);
+
+                                // se sono uscito dal precedente while perché il contatore ha raggiunto il
+                                // valore 5, allora setta il beacon attuale a null.
+                                if (contatore >= 5) {
+
+                                    Log.e("ERRORE ", "Setto il beacon a STRINGA VUOTA");
+                                    Uscita.setBeaconPrecedente(Posizione.getIDBeaconAttuale());
+                                    beacon = "";
+                                    Posizione.setBeaconAttuale(new Beacon(beacon, null));
+                                }
+
+                                device = bluetooth.getCurrentBeacon();
+
+                                if (device != null) {
+                                    Log.e("Mi sono connesso", device.getAddress());
+
+                                    if (beacon == null) {
+                                        scaricaDati(device.getAddress());
+                                        //new ThreadBluetooth(context);
+                                    } else {
+                                        aggiornaDati(device.getAddress());
+                                    }
+
+                                    beacon = device.getAddress();
+                                } else {
+
+                                    aggiornaDati(beacon);
+                                }
+                                Thread.sleep(7000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
                             }
-                           Thread.sleep(7000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
                         }
                     }
-                }
 
-            };
-            postDelayed.start();
-        } catch(Exception e) {
-            e.printStackTrace();
+                };
+                postDelayed.start();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -381,4 +384,5 @@ public class GestoreEntita {
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
+
 }

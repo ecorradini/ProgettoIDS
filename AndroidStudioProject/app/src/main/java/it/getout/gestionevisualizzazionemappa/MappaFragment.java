@@ -77,10 +77,20 @@ public class MappaFragment extends Fragment {
         Canvas canvas = new Canvas(mutableBitmap);
         float startX0 = Posizione.getBeaconAttuale().getPosizione().x;
         float starty0 = Posizione.getBeaconAttuale().getPosizione().y;
-        float endx0 = percorso.get(1).getInizio().x;
-        float endy0 = percorso.get(1).getInizio().y;
 
-        canvas.drawLine(startX0,starty0,endx0,endy0,paint);
+        if(percorso.size()==1) {
+            float endx0 = percorso.get(0).getFine().x;
+            float endy0 = percorso.get(0).getFine().y;
+            canvas.drawLine(startX0,starty0,endx0,endy0,paint);
+        }
+        else {
+            float endx0 = percorso.get(1).getInizio().x;
+            float endy0 = percorso.get(1).getInizio().y;
+            canvas.drawLine(startX0,starty0,endx0,endy0,paint);
+        }
+
+
+
 
         for(int i=1; i<percorso.size();i++) {
 

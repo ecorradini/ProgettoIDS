@@ -117,6 +117,7 @@ public class Bluetooth {
     public static void activateBluetooth (AppCompatActivity c) {
         Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
         c.startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        //TODO: handle the case when the user does NOT activate bluetooth.
     }
 
     //thread che si occupa di far partire lo scan in cerca dei beacon
