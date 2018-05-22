@@ -28,7 +28,7 @@
         android:layout_marginRight="30dp"
         android:src="@mipmap/twotone_directions_black_18dp"
         app:backgroundTint="@color/icons"
-        android:test="VAI"
+        android:text="VAI"
         app:elevation="4dp" />
 
     <FrameLayout
