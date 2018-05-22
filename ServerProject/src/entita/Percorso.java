@@ -29,7 +29,7 @@ public class Percorso extends Thread {
 
         if(beacon!=null) {
 
-            if(!destinazione.isEmpty()) {
+            if(destinazione.isEmpty()) {
                 String json = "{PERCORSO:[";
 
                 String edificio = DAOEdificio.selectNomeEdificio(beacon);

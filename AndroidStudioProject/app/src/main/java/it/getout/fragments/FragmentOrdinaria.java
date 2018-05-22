@@ -48,13 +48,21 @@ public class FragmentOrdinaria extends Fragment {
                         }
                     }
 
-                    button_ordinaria.setVisibility(View.VISIBLE);
-                    button_ordinaria.setOnClickListener(new View.OnClickListener() {
+                    ((Client)getActivity()).stopLoadingPhase2();
+
+                    ((Client)getActivity()).runOnUiThread(new Runnable() {
                         @Override
-                        public void onClick(View v) {
-                            getFragmentManager().beginTransaction().replace(R.id.mappa_container, FragmentListaAule.newInstance()).commit();
+                        public void run() {
+                            button_ordinaria.setVisibility(View.VISIBLE);
+                            button_ordinaria.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    getFragmentManager().beginTransaction().replace(R.id.mappa_container, FragmentListaAule.newInstance()).commit();
+                                }
+                            });
                         }
                     });
+
                 }
             }.start();
 

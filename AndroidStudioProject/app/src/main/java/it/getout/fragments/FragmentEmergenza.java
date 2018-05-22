@@ -55,6 +55,7 @@ public class FragmentEmergenza extends Fragment {
                             ((Client) getActivity()).getMappaFragment().disegnaPercorso(percorso);
                         }
                     });
+                    ((Client)getActivity()).stopLoadingPhase2();
 
                     while (true) {
                         String beaconA = Posizione.getIDBeaconAttuale();

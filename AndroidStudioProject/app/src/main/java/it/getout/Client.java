@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,12 +47,11 @@ public class Client extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        //store flag di inizio emergenza
-        try {
-            preferences.getBoolean("Emergenza", false);
-        }catch(Exception e) {
+        //store flag di inizio emergenza"
+
+        if(!preferences.contains("Emergenza")) {
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("Emergenza","false");
+            editor.putBoolean("Emergenza",false);
             editor.apply();
         }
 
@@ -110,7 +110,7 @@ public class Client extends AppCompatActivity {
                             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_main, emergenza).commit();
 
                             stopLoading();
-                        }else if(!name){
+                        }else {
                             window.setStatusBarColor(ContextCompat.getColor(Client.this, R.color.colorPrimaryDarkOrdinaria));
 
                             ActionBar bar = getSupportActionBar();
@@ -128,32 +128,26 @@ public class Client extends AppCompatActivity {
             }
         }.start();
 
-        new Thread() {
+        runOnUiThread(new Runnable() {
+            @Override
             public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        loadingPhase2.setVisibility(View.VISIBLE);
-                    }
-                });
-                while(!gestore.isDownloadFinished()) {
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        loadingPhase2.setVisibility(View.GONE);
-                    }
-                });
+                loadingPhase2.setVisibility(View.VISIBLE);
             }
-        }.start();
+        });
+
+
     }
 
     public MappaFragment getMappaFragment() { return mappaFragment; }
+
+    public void stopLoadingPhase2() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                loadingPhase2.setVisibility(View.GONE);
+            }
+        });
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {

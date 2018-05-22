@@ -53,7 +53,6 @@ public class Server {
                     for (int j = 0; j < piani.size(); j++) {
                         value.put(piani.get(j), new GrafoTronchi(piani.get(j)));
                         percentualeCompletamento += (100/(numeroTotaleDati));
-                        System.out.print("\r");
                         System.out.print("\rPercentuale di completamento: "+percentualeCompletamento+"%\r");
                     }
                     grafiPiani.put(edifici.get(i), value);
