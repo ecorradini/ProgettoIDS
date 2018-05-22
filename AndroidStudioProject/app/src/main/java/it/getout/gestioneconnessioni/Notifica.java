@@ -95,16 +95,31 @@ public class Notifica extends Service {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,0);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "getout")
-                            .setSmallIcon(R.mipmap.ic_launcher)
-                            .setContentText("Evacuare immediatamente.")
-                            .setContentTitle(message)
-                            .setContentIntent(pendingIntent)
-                            .setAutoCancel(true)
-                            .setPriority(NotificationCompat.PRIORITY_MAX);
+        //controllo sulla stringa di arrivo per creare il messaggio sulla notifica
+        if (message.substring(0,1).equals("E")) {
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "getout")
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setContentText("Evacuare immediatamente.")
+                    .setContentTitle(message)
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(true)
+                    .setPriority(NotificationCompat.PRIORITY_MAX);
 
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(NOTIFICATION_EX, builder.build());
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+            notificationManager.notify(NOTIFICATION_EX, builder.build());
+        }
+        else{
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "getout")
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setContentText("Keep Calm, Emergenza Rientrata")
+                    .setContentTitle(message)
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(true)
+                    .setPriority(NotificationCompat.PRIORITY_MAX);
+
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+            notificationManager.notify(NOTIFICATION_EX, builder.build());
+        }
     }
 
     private void createNotificationChannel() {
