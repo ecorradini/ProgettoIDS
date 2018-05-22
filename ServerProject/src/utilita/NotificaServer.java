@@ -22,9 +22,11 @@ public class NotificaServer extends Thread {
     private int count;
     private boolean working = false;
     private ArrayList<String> giaInviata;
+    private boolean verifica_emergenza = false;
 
-    public NotificaServer() {
+    public NotificaServer(boolean emergenza) {
         super();
+        verifica_emergenza = emergenza;
         giaInviata = new ArrayList<>();
     }
 

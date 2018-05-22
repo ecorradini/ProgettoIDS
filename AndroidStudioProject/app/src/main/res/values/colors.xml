@@ -7,4 +7,9 @@
     <color name="colorPrimaryEmergenza">#FF5722</color>
     <color name="colorPrimaryDarkEmergenza">#E64A19</color>
     <color name="colorAccentEmergenza">#FF5252</color>
+
+    <color name="colorPrimaryOrdinaria">#009688</color>
+    <color name="colorPrimaryDarkOrdinaria">#00796b</color>
+    <color name="colorAccentOrdinaria">#00bcd4</color>
+    <color name="icons">#00bcd4</color>
 </resources>

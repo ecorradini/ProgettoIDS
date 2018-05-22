@@ -6,9 +6,11 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
@@ -64,8 +66,15 @@ public class Notifica extends Service {
                     DatagramPacket receivePacket = new DatagramPacket(recvBuf, recvBuf.length);
                     d.receive(receivePacket);
                     //Check if the message is correct
-                   String message = new String(receivePacket.getData()).trim();
-                   creaNotifica(message);
+                    String message = new String(receivePacket.getData()).trim();
+
+                    //store flag di inizio emergenza
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("Emergenza","vera");
+                    editor.apply();
+
+                    creaNotifica(message);
                     //Close the port!
                     d.close();
 

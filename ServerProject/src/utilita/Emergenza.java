@@ -7,6 +7,7 @@ public class Emergenza {
 
     private Thread controllo;
     private NotificaServer n;
+    private boolean emergenza = false;
 
     public Emergenza() {
         controllo = new Thread(new Runnable() {
@@ -20,10 +21,15 @@ public class Emergenza {
                     //2. SE DAOParametri.controllaEmergenza==true allora invia notifica
 
                     if(DAOParametri.controllaEmergenza() && notifica==null) {
-                        notifica = new NotificaServer();
+                        notifica = new NotificaServer(emergenza);
                         notifica.start();
+                        emergenza = true;
                     }
-                    else if(!DAOParametri.controllaEmergenza()) {
+                    else if(!DAOParametri.controllaEmergenza() && emergenza == true) {
+                        notifica = new NotificaServer(emergenza);
+                        notifica.start();
+                        emergenza = false;
+                    }else if(!DAOParametri.controllaEmergenza()){
                         notifica = null;
                     }
 

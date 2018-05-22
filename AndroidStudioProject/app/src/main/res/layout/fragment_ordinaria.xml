@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorPrimaryDarkEmergenza"
+    android:background="@color/colorPrimaryOrdinaria"
     android:orientation="vertical">
 
     <!--<TextView
@@ -19,9 +19,16 @@
         android:id="@+id/textEmergenza"/>-->
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/myFAB"
+        android:id="@+id/floating_botton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginRight="30dp"
+        android:src="@mipmap/twotone_directions_black_18dp"
+        app:backgroundTint="@color/icons"
+        android:test="VAI"
         app:elevation="4dp" />
 
     <FrameLayout
@@ -29,4 +36,4 @@
         android:layout_height="match_parent"
         android:id="@+id/mappa_container"/>
 
-</LinearLayout>
+</RelativeLayout>

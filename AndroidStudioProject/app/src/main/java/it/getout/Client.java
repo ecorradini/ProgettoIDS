@@ -2,9 +2,11 @@ package it.getout;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -87,6 +89,14 @@ public class Client extends AppCompatActivity {
                         Window window = getWindow();
                         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
                         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                        String name = preferences.getString("Emergenza", null);
+                        if(!name.equalsIgnoreCase("falsa"))
+                        {
+                            name = name + "  Sethi";  /* Edit the value here*/
+                        }
+                        if ()
                         window.setStatusBarColor(ContextCompat.getColor(Client.this, R.color.colorPrimaryDarkEmergenza));
 
                         ActionBar bar = getSupportActionBar();
