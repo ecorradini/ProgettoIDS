@@ -21,6 +21,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import it.getout.fragments.FragmentEmergenza;
+import it.getout.fragments.FragmentOrdinaria;
 import it.getout.gestioneconnessioni.Notifica;
 import it.getout.gestioneposizione.GestoreEntita;
 import it.getout.gestionevisualizzazionemappa.MappaFragment;
@@ -35,7 +36,7 @@ public class Client extends AppCompatActivity {
     private CardView loadingPhase2;
     private GestoreEntita gestore;
     private MappaFragment mappaFragment;
-
+    private SharedPreferences preferences;
 
 
 
@@ -45,7 +46,11 @@ public class Client extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
+        //store flag di inizio emergenza
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("Emergenza","vera");
+        editor.apply();
 
         mappaFragment = MappaFragment.newInstance();
 
@@ -90,23 +95,32 @@ public class Client extends AppCompatActivity {
                         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
                         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
-                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
                         String name = preferences.getString("Emergenza", null);
-                        if(!name.equalsIgnoreCase("falsa"))
-                        {
-                            name = name + "  Sethi";  /* Edit the value here*/
+                        if(name.equalsIgnoreCase("vera")){
+                            window.setStatusBarColor(ContextCompat.getColor(Client.this, R.color.colorPrimaryDarkEmergenza));
+
+                            ActionBar bar = getSupportActionBar();
+                            bar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryEmergenza)));
+                            bar.setTitle("Modalità Emergenza");
+
+                            FragmentEmergenza emergenza = FragmentEmergenza.newInstance();
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_main, emergenza).commit();
+
+                            stopLoading();
+                        }else if(name.equalsIgnoreCase("falsa")){
+                            window.setStatusBarColor(ContextCompat.getColor(Client.this, R.color.colorPrimaryDarkOrdinaria));
+
+                            ActionBar bar = getSupportActionBar();
+                            bar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryOrdinaria)));
+                            bar.setTitle("Modalità Ordinaria");
+
+                            FragmentOrdinaria ordinaria = FragmentOrdinaria.newInstance();
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_main, ordinaria).commit();
+
+                            stopLoading();
                         }
-                        if ()
-                        window.setStatusBarColor(ContextCompat.getColor(Client.this, R.color.colorPrimaryDarkEmergenza));
 
-                        ActionBar bar = getSupportActionBar();
-                        bar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryEmergenza)));
-                        bar.setTitle("Modalità Emergenza");
 
-                        FragmentEmergenza emergenza = FragmentEmergenza.newInstance();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_main, emergenza).commit();
-
-                        stopLoading();
                     }
                 });
             }
