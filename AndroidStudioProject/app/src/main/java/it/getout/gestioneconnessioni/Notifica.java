@@ -71,7 +71,7 @@ public class Notifica extends Service {
                     //store flag di inizio emergenza
                     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
                     SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString("Emergenza","vera");
+                    editor.putBoolean("Emergenza",true);
                     editor.apply();
 
                     creaNotifica(message);

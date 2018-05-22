@@ -29,6 +29,7 @@
         android:src="@mipmap/twotone_directions_black_18dp"
         app:backgroundTint="@color/icons"
         android:text="VAI"
+        android:visibility="gone"
         app:elevation="4dp" />
 
     <FrameLayout

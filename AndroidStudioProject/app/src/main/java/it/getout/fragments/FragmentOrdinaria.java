@@ -1,6 +1,7 @@
 package it.getout.fragments;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import it.getout.gestioneposizione.Tronco;
 public class FragmentOrdinaria extends Fragment {
 
     public View view;
+    public FloatingActionButton button_ordinaria;
 
     public static FragmentOrdinaria newInstance() {
         return new FragmentOrdinaria();
@@ -31,6 +33,7 @@ public class FragmentOrdinaria extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_ordinaria, container, false);
+            button_ordinaria = (FloatingActionButton) view.findViewById(R.id.floating_botton);
 
             getFragmentManager().beginTransaction().replace(R.id.mappa_container, ((Client)getActivity()).getMappaFragment()).commit();
 
@@ -44,31 +47,14 @@ public class FragmentOrdinaria extends Fragment {
                             e.printStackTrace();
                         }
                     }
-                    final ArrayList<Tronco> percorso = gestoreEntita.scaricaPercorso("");
-                    getActivity().runOnUiThread(new Runnable() {
+
+                    button_ordinaria.setVisibility(View.VISIBLE);
+                    button_ordinaria.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void run() {
-                            ((Client) getActivity()).getMappaFragment().disegnaPercorso(percorso);
+                        public void onClick(View v) {
+                            getFragmentManager().beginTransaction().replace(R.id.mappa_container, FragmentListaAule.newInstance()).commit();
                         }
                     });
-
-                    while (true) {
-                        String beaconA = Posizione.getIDBeaconAttuale();
-                        try {
-                            Thread.sleep(300);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        if (!beaconA.equals(Posizione.getIDBeaconAttuale())) {
-                            final ArrayList<Tronco> percorsoN = gestoreEntita.scaricaPercorso("");
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    ((Client) getActivity()).getMappaFragment().disegnaPercorso(percorsoN);
-                                }
-                            });
-                        }
-                    }
                 }
             }.start();
 

@@ -45,12 +45,15 @@ public class Client extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        //store flag di inizio emergenza
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("Emergenza","vera");
-        editor.apply();
+        //store flag di inizio emergenza
+        try {
+            preferences.getBoolean("Emergenza", false);
+        }catch(Exception e) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("Emergenza","false");
+            editor.apply();
+        }
 
         mappaFragment = MappaFragment.newInstance();
 
@@ -95,8 +98,8 @@ public class Client extends AppCompatActivity {
                         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
                         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
-                        String name = preferences.getString("Emergenza", null);
-                        if(name.equalsIgnoreCase("vera")){
+                        boolean name = preferences.getBoolean("Emergenza",true);
+                        if(name){
                             window.setStatusBarColor(ContextCompat.getColor(Client.this, R.color.colorPrimaryDarkEmergenza));
 
                             ActionBar bar = getSupportActionBar();
@@ -107,7 +110,7 @@ public class Client extends AppCompatActivity {
                             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_main, emergenza).commit();
 
                             stopLoading();
-                        }else if(name.equalsIgnoreCase("falsa")){
+                        }else if(!name){
                             window.setStatusBarColor(ContextCompat.getColor(Client.this, R.color.colorPrimaryDarkOrdinaria));
 
                             ActionBar bar = getSupportActionBar();
@@ -119,7 +122,6 @@ public class Client extends AppCompatActivity {
 
                             stopLoading();
                         }
-
 
                     }
                 });
