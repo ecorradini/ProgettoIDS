@@ -44,7 +44,7 @@ public class FragmentOrdinaria extends Fragment {
                             e.printStackTrace();
                         }
                     }
-                    final ArrayList<Tronco> percorso = gestoreEntita.scaricaPercorso();
+                    final ArrayList<Tronco> percorso = gestoreEntita.scaricaPercorso("");
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -60,7 +60,7 @@ public class FragmentOrdinaria extends Fragment {
                             e.printStackTrace();
                         }
                         if (!beaconA.equals(Posizione.getIDBeaconAttuale())) {
-                            final ArrayList<Tronco> percorsoN = gestoreEntita.scaricaPercorso();
+                            final ArrayList<Tronco> percorsoN = gestoreEntita.scaricaPercorso("");
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {

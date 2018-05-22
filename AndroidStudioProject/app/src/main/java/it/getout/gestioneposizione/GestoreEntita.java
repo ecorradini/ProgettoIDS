@@ -199,8 +199,13 @@ public class GestoreEntita {
         }
     }
 
-    public ArrayList<Tronco> scaricaPercorso() {
-        return reader.richiediPercorsoFuga(Posizione.getIDBeaconAttuale());
+    public ArrayList<Tronco> scaricaPercorso(String destinazione) {
+        if(destinazione.isEmpty()) {
+            return reader.richiediPercorsoFuga(Posizione.getIDBeaconAttuale());
+        }
+        else {
+            return reader.richiediPercorsoFuga(Posizione.getIDBeaconAttuale()+","+destinazione);
+        }
     }
 
     private void aggiornaDati(String beacon) {
