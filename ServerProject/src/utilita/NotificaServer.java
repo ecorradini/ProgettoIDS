@@ -35,25 +35,28 @@ public class NotificaServer extends Thread {
         try {
 
             working = true;
-
-            String edificio = "Emergenza a "+DAOParametri.selectEdificioParametro().toUpperCase()+"!";
-
+            byte[] sendData;
+            String appoggio = "";
+            String edificio = "Emergenza: "+DAOParametri.selectEdificioParametro().toUpperCase()+"!";
+            String fineEmergenza = "Fine Emergenza";
             socket = new DatagramSocket();
             ArrayList<String> ipList = DAOUtente.getAllUtenti();
-
             count = 0;
             for(int i=0;i<ipList.size();i++) {
                 if(!giaInviata.contains(ipList.get(i))) {
                     String ip = ipList.get(i);
 
-                    //edificio
-
-                    byte[] sendData = edificio.getBytes();
+                    if (verifica_emergenza){
+                        appoggio = edificio;
+                        sendData = appoggio.getBytes();
+                    }
+                    else {
+                        appoggio = fineEmergenza;
+                        sendData = appoggio.getBytes();
+                    }
                     //Send a response
-
                     DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName(ip), 9601);
                     socket.send(sendPacket);
-
                     giaInviata.add(ip);
                 }
             }
@@ -64,5 +67,7 @@ public class NotificaServer extends Thread {
         }
 
         working = false;
+        verifica_emergenza = false;
+
     }
 }
