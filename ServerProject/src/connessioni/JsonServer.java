@@ -223,7 +223,14 @@ public class JsonServer {
                 new Thread() {
                     public void run() {
                         try {
-                            Percorso percorso = new Percorso(arg0.getRequestURI().getQuery());
+                            String[] arrivoDestinazione = arg0.getRequestURI().getQuery().split(",");
+                            Percorso percorso = null;
+                            if(arrivoDestinazione.length < 2) {
+                                percorso = new Percorso(arrivoDestinazione[0]);
+                            }
+                            else {
+                                percorso = new Percorso(arrivoDestinazione[0],arrivoDestinazione[1]);
+                            }
                             String response = percorso.getResult();
                             arg0.sendResponseHeaders(200, response.length());
                             OutputStream os = arg0.getResponseBody();

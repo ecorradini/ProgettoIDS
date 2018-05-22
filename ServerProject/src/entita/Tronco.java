@@ -56,7 +56,9 @@ public class Tronco {
     }
 
 
-
+    public boolean equals(Tronco t) {
+        return t.getID()==id;
+    }
 
     public int getID() { return id; }
     public float getX() { return x; }

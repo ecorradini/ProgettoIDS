@@ -69,6 +69,54 @@ public class DAOAula {
         return aule;
     }
 
+    public static ArrayList<String> selectBeaconAuleEdificio(String edificio) {
+        Connection conn = Database.getConn();
+        ArrayList<String> beacons = new ArrayList<String>();
+
+        String query =  "SELECT "+ENTRATA+
+                " FROM "+TABLE_AULA+","+DAOPiano.TABLE_PIANO+","+DAOEdificio.TABLE_EDIFICIO+
+                " WHERE "+TABLE_AULA+"."+PIANO+"="+DAOPiano.TABLE_PIANO+"."+NOME+
+                " AND "+DAOPiano.TABLE_PIANO+"."+DAOPiano.EDIFICIO+"="+DAOEdificio.TABLE_EDIFICIO+"."+NOME+
+                " AND "+DAOEdificio.NOME+"='"+edificio+"'";
+
+        try {
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(query);
+            while (rs.next()) {
+                beacons.add(rs.getString(ENTRATA));
+            }
+            rs.close();
+            stm.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return beacons;
+    }
+
+    public static String selectBeaconEntrata(String aula) {
+        Connection conn = Database.getConn();
+        String beacon = "";
+
+        String query =  "SELECT "+ENTRATA+
+                " FROM "+TABLE_AULA+
+                " WHERE "+NOME+"='"+aula+"'";
+
+        try {
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(query);
+            while (rs.next()) {
+                beacon = rs.getString(ENTRATA);
+            }
+            rs.close();
+            stm.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return beacon;
+    }
+
     public static void insertAula(String nome,String piano, String X, String Y, String entrata) throws SQLException {
         Connection conn = Database.getConn();
 
