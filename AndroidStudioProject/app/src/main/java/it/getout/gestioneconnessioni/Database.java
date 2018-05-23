@@ -38,6 +38,8 @@ public class Database extends GestoreDati {
         connessione = new ConnessioneDatabase(context);
     }
 
+
+
     @Override
     public Edificio richiediEdificioAttuale(String idBeacon) {   //tipo edificio ancora non è dato sapere
         SQLiteDatabase db = connessione.getReadableDatabase();
