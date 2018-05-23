@@ -106,7 +106,7 @@ public class GUIParametri extends JFrame {
                 switch (e.getType()) {
                     case TableModelEvent.UPDATE:
                         for (int i = firstRow; i <= lastRow; i++) {
-                            int tronco = Integer.parseInt((String)tableParametri.getValueAt(i,0));
+                            int tronco = Integer.parseInt((String)tableParametri.getValueAt(i,2));
                             float vulnerabilita = Float.parseFloat((String)tableParametri.getValueAt(i,3));
                             float rischiovita = Float.parseFloat((String)tableParametri.getValueAt(i,4));
                             float presenzafumo = Float.parseFloat((String)tableParametri.getValueAt(i,5));

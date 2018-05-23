@@ -91,7 +91,7 @@ public class DAOParametri {
     public static void updateTronco(int id, float vulnerabilita, float rischiovita, float presenzafumo) {
         Connection conn = Database.getConn();
 
-        String query = "UPDATE "+TABLE_PARAMETRI+" SET " + VULNERABILITA + "='" + vulnerabilita + "',"+ RISCHIOVITA + "='" + rischiovita +"'," + presenzafumo + "='" + presenzafumo + "' WHERE "+TRONCO+"="+id;
+        String query = "UPDATE "+TABLE_PARAMETRI+" SET " + VULNERABILITA + "=" + vulnerabilita + ","+ RISCHIOVITA + "=" + rischiovita +"," + PRESENZAFUMO + "=" + presenzafumo + " WHERE "+TRONCO+"="+id;
         try {
             Statement stm = conn.createStatement();
             stm.executeUpdate(query);
