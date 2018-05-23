@@ -2,12 +2,10 @@ package gui;
 
 import connessioni.Server;
         import entita.*;
-        import gui.Amministrazione;
 
-        import java.awt.*;
+import java.awt.*;
         import java.awt.event.*;
-        import java.awt.geom.AffineTransform;
-        import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImage;
         import java.io.File;
         import java.io.IOException;
         import java.sql.SQLException;
@@ -16,7 +14,7 @@ import connessioni.Server;
         import javax.imageio.ImageIO;
         import javax.swing.*;
 
-public class Amministrazione extends JFrame {
+public class GUIAmministrazione extends JFrame {
 
     private final int MIN_FRAME_WIDTH = 1024;
     private final int MIN_FRAME_HEIGHT = 768;
@@ -51,7 +49,7 @@ public class Amministrazione extends JFrame {
     private JPanel aggTronco;
     private JPanel aggBeacon;
 
-    public Amministrazione() {
+    public GUIAmministrazione() {
         try {
             for(UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if("Nimbus".equals(info.getName())) {
@@ -393,7 +391,7 @@ public class Amministrazione extends JFrame {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
                                     JFileChooser imgOpen = new JFileChooser();
-                                    int returnVal = imgOpen.showOpenDialog(Amministrazione.this);
+                                    int returnVal = imgOpen.showOpenDialog(GUIAmministrazione.this);
                                     if (returnVal == 0) {
                                         String pathS = Server.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("/ServerProject.jar", "")+"/Mappe/q"+piano+".jpg";
                                         File file = imgOpen.getSelectedFile();

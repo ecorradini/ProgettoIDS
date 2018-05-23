@@ -1,16 +1,11 @@
 package utilita;
 
-import connessioni.Database;
 import entita.DAOParametri;
-import gui.Amministrazione;
+import gui.GUIAmministrazione;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 public class ConsoleDiComando implements Runnable {
 
@@ -28,7 +23,7 @@ public class ConsoleDiComando implements Runnable {
                     fineTestaEmergenza();
                 }
                 if(command.equals("ui")) {
-                    new Amministrazione();
+                    new GUIAmministrazione();
                 }
             } catch (IOException e) {
                 e.printStackTrace();

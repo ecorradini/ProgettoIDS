@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,8 +39,8 @@ public class FragmentListaAule extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(view.getContext());
         rv.setLayoutManager(llm);
 
-        RVAdapterAule rvcalendario = new RVAdapterAule(Posizione.getEdificioAttuale().getPiani(),view.getContext());
-        rv.setAdapter(rvcalendario);
+        RVAdapterAule rvaule = new RVAdapterAule(Posizione.getEdificioAttuale().getPiani(),view.getContext());
+        rv.setAdapter(rvaule);
 
         return view;
     }
