@@ -5,6 +5,9 @@ import entita.DAOParametri;
 import entita.DAOPiano;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -68,7 +71,28 @@ public class GUIParametri extends JFrame {
 
 
         ArrayList<String[]> info = DAOParametri.selectAllParametri();
-        tableParametri = new JTable(info.size(), 6);
+        String[][] matriceTabella = new String[info.size()][6];
+        for(int i=0; i<info.size(); i++) {
+            matriceTabella[i] = info.get(i);
+        }
+        String[] columnNames = new String[] { "EDIFICIO","PIANO","TRONCO","VULNERABILITA","RISCHIO VITA","PRESENZA FUMO"};
+        tableParametri = new JTable(matriceTabella, columnNames);
+        tableParametri.setFont(defaultFont);
+        TableColumnModel columnModel = tableParametri.getColumnModel();
+        columnModel.getColumn(0).setMinWidth(150*uiScaling);
+        columnModel.getColumn(1).setMinWidth(150*uiScaling);
+        columnModel.getColumn(2).setMinWidth(150*uiScaling);
+        columnModel.getColumn(3).setMinWidth(150*uiScaling);
+        columnModel.getColumn(4).setMinWidth(150*uiScaling);
+        columnModel.getColumn(5).setMinWidth(150*uiScaling);
+        JTableHeader header = tableParametri.getTableHeader();
+        header.setFont(defaultFont);
+        tableParametri.setRowHeight(defaultFont.getSize()+5);
+        tableParametri.setPreferredSize(new Dimension(920*uiScaling,300*uiScaling));
 
+        JScrollPane scrollPane = new JScrollPane(tableParametri);
+        scrollPane.setPreferredSize(new Dimension(920*uiScaling,300*uiScaling));
+        mainPanel.add(scrollPane, gridBagConstraints);
+        pack();
     }
 }

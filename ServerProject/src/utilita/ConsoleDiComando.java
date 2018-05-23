@@ -2,6 +2,7 @@ package utilita;
 
 import entita.DAOParametri;
 import gui.GUIAmministrazione;
+import gui.GUIParametri;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,6 +25,9 @@ public class ConsoleDiComando implements Runnable {
                 }
                 if(command.equals("ui")) {
                     new GUIAmministrazione();
+                }
+                if(command.equals("parametri")) {
+                    new GUIParametri();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
