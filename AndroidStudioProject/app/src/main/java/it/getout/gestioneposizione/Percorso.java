@@ -139,4 +139,91 @@ public class Percorso extends Thread {
         }
         return finale.getPercorso();
     }
+
+    private ArrayList<GrafoTronchi.Nodo> calcoloPercorso(GrafoTronchi.Nodo partenza, GrafoTronchi.Nodo destinazione) {
+
+        class PercorsoConCosto {
+
+            private ArrayList<GrafoTronchi.Nodo> percorso;    //deve partire con una lista vuota
+            private float costo;
+            private GrafoTronchi.Nodo destinazione;
+
+            private PercorsoConCosto(GrafoTronchi.Nodo destinazione) {
+                percorso = new ArrayList<>();
+                costo = 0;
+                this.destinazione = destinazione;
+            }
+
+            private ArrayList<GrafoTronchi.Nodo> getPercorso () {return percorso;}
+
+            private void aggiungiNodo(GrafoTronchi.Nodo nuovo) {
+                percorso.add(nuovo);
+            }
+
+            private void sommaCosto(float costo) {
+                this.costo += costo;
+            }
+
+            private float getCosto() {
+                return costo;
+            }
+
+            private GrafoTronchi.Nodo getUltimoNodo() { return percorso.get(percorso.size()-1); }
+
+            private boolean finito() {
+                boolean finito = false;
+                if(percorso.get(percorso.size()-1).getTronco().equals(destinazione.getTronco())) {
+                    finito=true;
+                }
+                return finito;
+            }
+
+            private void aggiungiPadre(PercorsoConCosto padre) {
+                percorso.addAll(padre.getPercorso());
+                costo += padre.getCosto();
+            }
+        }
+
+        PercorsoConCosto finale = null;
+
+        ArrayList<PercorsoConCosto> frontiera = new ArrayList<>();
+        PercorsoConCosto iniziale = new PercorsoConCosto(destinazione);
+        iniziale.aggiungiNodo(partenza);
+        iniziale.sommaCosto(partenza.getPeso());
+        frontiera.add(iniziale);
+
+        boolean stop = false;
+        while(!stop && frontiera.size()>0) {
+
+            ArrayList<GrafoTronchi.Nodo> adiacenti;
+            PercorsoConCosto minore = frontiera.get(0);
+            for(int j=0; j<frontiera.size(); j++) {
+                if(frontiera.get(j).getCosto() < minore.getCosto()) {
+                    minore = frontiera.get(j);
+                }
+            }
+            adiacenti = minore.getUltimoNodo().getAdiacenti();
+
+            for (int i = 0; i < adiacenti.size(); i++) {
+                PercorsoConCosto daAggiungere = new PercorsoConCosto(destinazione);
+                daAggiungere.aggiungiPadre(minore);
+                daAggiungere.sommaCosto(minore.getCosto());
+                daAggiungere.aggiungiNodo(adiacenti.get(i));
+                daAggiungere.sommaCosto(adiacenti.get(i).getPeso());
+                frontiera.add(daAggiungere);
+            }
+
+            frontiera.remove(minore);
+
+            for(int x=0; x<frontiera.size(); x++) {
+                if(frontiera.get(x).finito()) {
+                    stop=true;
+                    finale = frontiera.get(x);
+                }
+            }
+        }
+        return finale.getPercorso();
+    }
+
+
 }
