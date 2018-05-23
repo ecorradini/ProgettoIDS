@@ -1,7 +1,12 @@
 package gui;
 
+import entita.DAOEdificio;
+import entita.DAOParametri;
+import entita.DAOPiano;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class GUIParametri extends JFrame {
 
@@ -16,6 +21,8 @@ public class GUIParametri extends JFrame {
     private Dimension componentDimension;
     private GridBagConstraints gridBagConstraints;
     private JPanel mainPanel;
+
+    private JTable tableParametri;
 
     public GUIParametri() {
         try {
@@ -59,6 +66,9 @@ public class GUIParametri extends JFrame {
         gridBagConstraints.fill = 1;
         gridBagConstraints.insets = new Insets(10 * uiScaling, 17 * uiScaling, 0, 17 * uiScaling);
 
+
+        ArrayList<String[]> info = DAOParametri.selectAllParametri();
+        tableParametri = new JTable(info.size(), 6);
 
     }
 }
