@@ -88,6 +88,20 @@ public class DAOParametri {
         return parametriTronchi;
     }
 
+    public static void updateTronco(int id, float vulnerabilita, float rischiovita, float presenzafumo) {
+        Connection conn = Database.getConn();
+
+        String query = "UPDATE "+TABLE_PARAMETRI+" SET " + VULNERABILITA + "='" + vulnerabilita + "',"+ RISCHIOVITA + "='" + rischiovita +"'," + presenzafumo + "='" + presenzafumo + "' WHERE "+TRONCO+"="+id;
+        try {
+            Statement stm = conn.createStatement();
+            stm.executeUpdate(query);
+
+            stm.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static boolean controllaEmergenza(){
         boolean emergenza = false;
 
