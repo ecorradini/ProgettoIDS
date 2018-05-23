@@ -68,12 +68,6 @@ public class Notifica extends Service {
                     //Check if the message is correct
                     String message = new String(receivePacket.getData()).trim();
 
-                    //store flag di inizio emergenza
-                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putBoolean("Emergenza",true);
-                    editor.apply();
-
                     creaNotifica(message);
                     //Close the port!
                     d.close();
@@ -98,6 +92,13 @@ public class Notifica extends Service {
 
         //controllo sulla stringa di arrivo per creare il messaggio sulla notifica
         if (message.substring(0,1).equals("E")) {
+
+            //store flag di inizio emergenza
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("Emergenza",true);
+            editor.apply();
+
             builder = new NotificationCompat.Builder(context, "getout")
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setContentText("Evacuare immediatamente.")
@@ -107,6 +108,13 @@ public class Notifica extends Service {
                     .setPriority(NotificationCompat.PRIORITY_MAX);
         }
         else{
+
+            //store flag di inizio emergenza
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("Fine Emergenza",false);
+            editor.apply();
+
             builder = new NotificationCompat.Builder(context, "getout")
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setContentText("Keep Calm, Emergenza Rientrata")

@@ -4,13 +4,15 @@ import java.io.Console;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Database {
     private static Connection connection;
     public static final String dbUrl="jdbc:jtds:sqlserver://den1.mssql5.gear.host/getoutdb";
+
+
 
     public static void init() throws ClassNotFoundException, SQLException {
 
@@ -43,4 +45,10 @@ public class Database {
     public static Connection getConn() {
         return connection;
     }
+
+
+
+
+
+
 }

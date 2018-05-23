@@ -49,6 +49,7 @@ public class GestoreEntita {
         initBluetooth(context);
     }
 
+
     private void scaricaDati(String beacon) {
         //All'inizio scarico solo i dati che mi servono immediatamente
         Edificio edificioAttuale = reader.richiediEdificioAttuale(beacon);
