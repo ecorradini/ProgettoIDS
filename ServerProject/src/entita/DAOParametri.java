@@ -45,6 +45,49 @@ public class DAOParametri {
         return tronchi;
     }
 
+    public static ArrayList<String[]> selectAllParametri(){
+        Connection conn = Database.getConn();
+
+        ArrayList<String[]> parametriTronchi;
+
+        String query =  "SELECT "+DAOEdificio.TABLE_EDIFICIO+"."+DAOEdificio.NOME+" AS EDIFICIO,"+DAOPiano.TABLE_PIANO+"."+DAOPiano.NOME+" as PIANO,"+TABLE_PARAMETRI+"."+TRONCO+" AS TRONCO,"+VULNERABILITA+","+RISCHIOVITA+","+PRESENZAFUMO+
+                " FROM "+DAOEdificio.TABLE_EDIFICIO+","+DAOPiano.TABLE_PIANO+","+DAOTronco.TABLE_TRONCO+","+TABLE_PARAMETRI+
+                " WHERE "+TABLE_PARAMETRI+"."+TRONCO+"="+DAOTronco.TABLE_TRONCO+"."+DAOTronco.ID+
+                " AND "+DAOTronco.TABLE_TRONCO+"."+DAOTronco.PIANO+"="+DAOPiano.TABLE_PIANO+"."+DAOPiano.NOME+
+                " AND "+DAOPiano.TABLE_PIANO+"."+DAOPiano.EDIFICIO+"="+DAOEdificio.TABLE_EDIFICIO+"."+DAOEdificio.NOME;
+
+        try {
+            parametriTronchi = new ArrayList<>();
+
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(query);
+
+            while(rs.next()) {
+
+                String[] result = new String[] {
+                    rs.getString("EDIFICIO"),
+                        rs.getString("PIANO"),
+                        String.valueOf(rs.getInt("TRONCO")),
+                        String.valueOf(rs.getFloat(VULNERABILITA)),
+                        String.valueOf(rs.getFloat(RISCHIOVITA)),
+                        String.valueOf(rs.getFloat(PRESENZAFUMO))
+                };
+
+                parametriTronchi.add(result);
+
+            }
+
+            rs.close();
+            stm.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            parametriTronchi=null;
+            e.printStackTrace();
+        }
+
+        return parametriTronchi;
+    }
+
     public static boolean controllaEmergenza(){
         boolean emergenza = false;
 
