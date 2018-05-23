@@ -21,15 +21,18 @@ public class Emergenza {
                     //2. SE DAOParametri.controllaEmergenza==true allora invia notifica
 
                     if(DAOParametri.controllaEmergenza() && notifica==null) {
+                        System.out.println("inizioemergenza");
+                        emergenza = true;
                         notifica = new NotificaServer(emergenza);
                         notifica.start();
-                        emergenza = true;
+
                     }
                     else if(!DAOParametri.controllaEmergenza() && emergenza == true) {
+                        emergenza = false;
                         notifica = new NotificaServer(emergenza);
                         notifica.start();
-                        emergenza = false;
-                    }else if(!DAOParametri.controllaEmergenza()){
+
+                    }else if(!DAOParametri.controllaEmergenza() && emergenza == false ){
                         notifica = null;
                     }
 
