@@ -16,6 +16,15 @@ public class ConsoleDiComando implements Runnable {
         while(true) {
             try{
                 String command = br.readLine();
+                if(command.equals("help")) {
+                    System.out.println();
+                    System.out.println("Comandi eseguibili per il server di GetOut!:");
+                    System.out.println("'e -i id_tronco' --> inizio test emergenza sul tronco id_tronco");
+                    System.out.println("'e -f id_tronco' --> fine test emergenza sul tronco id_tronco");
+                    System.out.println("'amm' --> avvio interfaccia di amministrazione dati del server");
+                    System.out.println("'par' --> avvio interfaccia di modifica dei parametri dei tronchi");
+                    System.out.println();
+                }
                 if(command.equals("amm")) {
                     new GUIAmministrazione();
                 }
