@@ -35,7 +35,7 @@ public class FragmentOrdinaria extends Fragment {
             view = inflater.inflate(R.layout.fragment_ordinaria, container, false);
             button_ordinaria = (FloatingActionButton) view.findViewById(R.id.floating_botton);
 
-            getFragmentManager().beginTransaction().replace(R.id.mappa_container, ((Client)getActivity()).getMappaFragment()).commit();
+            getFragmentManager().beginTransaction().replace(R.id.mappa_container, ((Client)getActivity()).getMappaFragment()).addToBackStack(null).commit();
 
             new Thread() {
                 public void run() {

@@ -55,6 +55,8 @@ public class Client extends AppCompatActivity {
             editor.apply();
         }
 
+        Log.e("MODALITA", Boolean.toString(preferences.getBoolean("Emergenza", false)));
+
         mappaFragment = MappaFragment.newInstance();
 
         loading = findViewById(R.id.cv_loading);

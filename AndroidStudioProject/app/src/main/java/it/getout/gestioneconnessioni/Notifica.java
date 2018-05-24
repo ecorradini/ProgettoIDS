@@ -99,6 +99,8 @@ public class Notifica extends Service {
             editor.putBoolean("Emergenza",true);
             editor.apply();
 
+            Log.e("MODALITA", Boolean.toString(preferences.getBoolean("Emergenza", false)));
+
             builder = new NotificationCompat.Builder(context, "getout")
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setContentText("Evacuare immediatamente.")
@@ -114,6 +116,8 @@ public class Notifica extends Service {
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean("Emergenza",false);
             editor.apply();
+
+            Log.e("MODALITA", Boolean.toString(preferences.getBoolean("Emergenza", false)));
 
             builder = new NotificationCompat.Builder(context, "getout")
                     .setSmallIcon(R.mipmap.ic_launcher)
