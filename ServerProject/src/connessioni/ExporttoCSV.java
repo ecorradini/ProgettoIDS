@@ -11,7 +11,7 @@ public class ExporttoCSV {
     {
         this.filename = filename;
         this.tablename = tablename;
-        this.query = "SELECT * INTO OUTFILE \'" + filename + "\' FIELDS TERMINATED BY \';\' LINES TERMINATED BY \'\\n\' FROM " + tablename;
+        this.query = "SELECT * INTO OUTFILE \'" + filename + "\' FIELDS TERMINATED BY \',\' LINES TERMINATED BY \'\\n\' FROM " + tablename;
     }
 
     public String getFilename() {
