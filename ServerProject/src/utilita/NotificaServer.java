@@ -37,7 +37,6 @@ public class NotificaServer extends Thread {
             working = true;
             byte[] sendData;
             String appoggio = "";
-            String edificio = "Emergenza: "+DAOParametri.selectEdificioParametro().toUpperCase()+"!";
             String fineEmergenza = "Fine Emergenza";
             socket = new DatagramSocket();
             ArrayList<String> ipList = DAOUtente.getAllUtenti();
@@ -47,8 +46,9 @@ public class NotificaServer extends Thread {
                     String ip = ipList.get(i);
 
                     if (verifica_emergenza){
-                        appoggio = edificio;
+                        appoggio = "Emergenza: "+DAOParametri.selectEdificioParametro().toUpperCase()+"!";
                         sendData = appoggio.getBytes();
+
                     }
                     else {
                         appoggio = fineEmergenza;
