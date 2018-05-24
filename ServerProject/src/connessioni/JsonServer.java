@@ -263,6 +263,29 @@ public class JsonServer {
             }
         });
 
+
+        server.createContext("/prendicsv", new HttpHandler() {
+            public void handle(HttpExchange arg0) throws IOException {
+                new Thread(){
+                    public void run()  {
+                        try {
+                            String path = Server.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("/filecsv/","");
+                            //String link = DAOMappa.selectMappaByPiano(arg0.getRequestURI().getQuery());
+
+                            File file = new File(path);
+                            arg0.sendResponseHeaders(200, file.length());
+                            OutputStream outputStream=arg0.getResponseBody();
+                            Files.copy(file.toPath(), outputStream);
+                            outputStream.close();
+                        } catch (IOException e) {
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                }.start();
+            }
+        });
+
+
         // connectionhendler server json server
 
 

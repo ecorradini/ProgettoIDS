@@ -1,0 +1,1 @@
+INSERT INTO getoutdb.dbo.EDIFICIO (NOME) VALUES ('Ingegneria');
