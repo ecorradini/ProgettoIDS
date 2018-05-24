@@ -16,18 +16,19 @@ public class ConsoleDiComando implements Runnable {
         while(true) {
             try{
                 String command = br.readLine();
-                if(command.equals("e")) {
-                    System.out.println("INIZIO TEST EMERGENZA");
-                    testaEmergenza();
-                }
-                if(command.equals("!e")) {
-                    fineTestaEmergenza();
-                }
-                if(command.equals("ui")) {
+                if(command.equals("amm")) {
                     new GUIAmministrazione();
                 }
-                if(command.equals("parametri")) {
+                else if(command.equals("par")) {
                     new GUIParametri();
+                }
+                else if(command.substring(0,4).equals("e -i")) {
+                    int tronco = Integer.parseInt(command.substring(5));
+                    testaEmergenza(tronco);
+                }
+                else if(command.substring(0,4).equals("e -f")) {
+                    int tronco = Integer.parseInt(command.substring(5));
+                    fineTestaEmergenza(tronco);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -38,11 +39,11 @@ public class ConsoleDiComando implements Runnable {
     /**
      * metodo che permette di avviare l'emergenza
      */
-    private void testaEmergenza() {
-        DAOParametri.updateTestaEmergenza();
+    private void testaEmergenza(int tronco) {
+        DAOParametri.updateTestaEmergenza(tronco);
     }
 
-    private void fineTestaEmergenza() {
-        DAOParametri.updateFineTestaEmergenza();
+    private void fineTestaEmergenza(int tronco) {
+        DAOParametri.updateFineTestaEmergenza(tronco);
     }
 }

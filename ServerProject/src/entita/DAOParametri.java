@@ -158,10 +158,10 @@ public class DAOParametri {
 
     }
 
-    public static void updateTestaEmergenza() {
+    public static void updateTestaEmergenza(int tronco) {
         Connection conn = Database.getConn();
 
-        String query = "update PARAMETRI set RV=1 where TRONCO=3";
+        String query = "update PARAMETRI set RV=1 where TRONCO="+tronco;
 
         try {
             Statement stm = conn.createStatement();
@@ -171,14 +171,13 @@ public class DAOParametri {
             stm.close();
 
         } catch (SQLException e) {
-            //L'utente è già stato inserito, non mi interessa
         }
     }
 
-    public static void updateFineTestaEmergenza() {
+    public static void updateFineTestaEmergenza(int tronco) {
         Connection conn = Database.getConn();
 
-        String query = "update PARAMETRI set RV=0 where TRONCO=3";
+        String query = "update PARAMETRI set RV=0 where TRONCO="+tronco;
 
         try {
             Statement stm = conn.createStatement();
@@ -188,7 +187,6 @@ public class DAOParametri {
             stm.close();
 
         } catch (SQLException e) {
-            //L'utente è già stato inserito, non mi interessa
         }
     }
 
