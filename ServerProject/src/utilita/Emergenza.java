@@ -28,11 +28,13 @@ public class Emergenza {
 
                     }
                     else if(!DAOParametri.controllaEmergenza() && emergenza == true) {
+                        System.out.println("fineemergenza");
                         emergenza = false;
                         notifica = new NotificaServer(emergenza);
                         notifica.start();
 
                     }else if(!DAOParametri.controllaEmergenza() && emergenza == false ){
+                        //System.out.println("birillo");
                         notifica = null;
                     }
 
