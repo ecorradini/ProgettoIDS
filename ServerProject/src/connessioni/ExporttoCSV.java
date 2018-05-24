@@ -3,9 +3,20 @@ package connessioni;
 import java.sql.*;
 
 public class ExporttoCSV {
-    String filename = "d:/outfile.csv";
-    String tablename = "abc";
-    String query = "SELECT * INTO OUTFILE \"" + filename + "\" FROM " + tablename;
+    private String filename = "d:/outfile.csv";
+    private String tablename = "abc";
+    private String query = "SELECT * INTO OUTFILE \'" + filename + "\' FROM " + tablename;
+
+    public ExporttoCSV (String filename, String tablename)
+    {
+        this.filename = filename;
+        this.tablename = tablename;
+        this.query = "SELECT * INTO OUTFILE \'" + filename + "\' FIELDS TERMINATED BY \';\' LINES TERMINATED BY \'\\n\' FROM " + tablename;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
 
     public void scritturaFileCsv() {
         try {
