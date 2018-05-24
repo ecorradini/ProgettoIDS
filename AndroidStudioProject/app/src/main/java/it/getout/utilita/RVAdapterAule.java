@@ -29,6 +29,7 @@ public class RVAdapterAule extends RecyclerView.Adapter<RVAdapterAule.CViewHolde
     public RVAdapterAule(ArrayList<Piano> c, Context context) {
         super();
         struttura = c;
+        struttura.remove(0);
         this.context = context;
 
     }
@@ -61,8 +62,8 @@ public class RVAdapterAule extends RecyclerView.Adapter<RVAdapterAule.CViewHolde
     }
 
     @Override
-    public void onBindViewHolder(RVAdapterAule.CViewHolder cViewHolder, final int position) { ;
-        cViewHolder.piano.clearComposingText();
+    public void onBindViewHolder(RVAdapterAule.CViewHolder cViewHolder, final int position) {
+
         cViewHolder.piano.setText(struttura.get(position).toString());
 
         if(struttura.get(position).getAule()!= null && struttura.get(position).getAule().size()>0) {
@@ -105,7 +106,7 @@ public class RVAdapterAule extends RecyclerView.Adapter<RVAdapterAule.CViewHolde
                 public void onClick(View v) {
                     mExpandedPosition = isExpanded ? -1 : pos;
                     TransitionManager.beginDelayedTransition((ViewGroup) holder.itemView, new AutoTransition());
-                    //notifyItemChanged(pos);
+                    notifyItemChanged(pos);
                 }
             });
         }

@@ -57,7 +57,7 @@ public class FragmentOrdinaria extends Fragment {
                             button_ordinaria.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    getFragmentManager().beginTransaction().replace(R.id.mappa_container, FragmentListaAule.newInstance()).commit();
+                                    getFragmentManager().beginTransaction().replace(R.id.mappa_container, FragmentListaAule.newInstance()).addToBackStack(null).commit();
                                 }
                             });
                         }
