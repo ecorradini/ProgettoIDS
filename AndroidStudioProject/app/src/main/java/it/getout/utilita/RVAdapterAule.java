@@ -61,8 +61,8 @@ public class RVAdapterAule extends RecyclerView.Adapter<RVAdapterAule.CViewHolde
     }
 
     @Override
-    public void onBindViewHolder(RVAdapterAule.CViewHolder cViewHolder, final int position) {
-
+    public void onBindViewHolder(RVAdapterAule.CViewHolder cViewHolder, final int position) { ;
+        cViewHolder.piano.clearComposingText();
         cViewHolder.piano.setText(struttura.get(position).toString());
 
         if(struttura.get(position).getAule()!= null && struttura.get(position).getAule().size()>0) {

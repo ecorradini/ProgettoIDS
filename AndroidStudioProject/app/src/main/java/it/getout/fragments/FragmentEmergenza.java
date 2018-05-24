@@ -66,7 +66,7 @@ public class FragmentEmergenza extends Fragment {
                         }
                         if (!beaconA.equals(Posizione.getIDBeaconAttuale())) {
                             final ArrayList<Tronco> percorsoN = gestoreEntita.scaricaPercorso("");
-                            getActivity().runOnUiThread(new Runnable() {
+                            ((Client) getActivity()).runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     ((Client) getActivity()).getMappaFragment().disegnaPercorso(percorsoN);

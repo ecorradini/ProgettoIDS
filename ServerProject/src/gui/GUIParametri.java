@@ -5,6 +5,8 @@ import entita.DAOParametri;
 import entita.DAOPiano;
 
 import javax.swing.*;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
@@ -76,7 +78,12 @@ public class GUIParametri extends JFrame {
             matriceTabella[i] = info.get(i);
         }
         String[] columnNames = new String[] { "EDIFICIO","PIANO","TRONCO","VULNERABILITA","RISCHIO VITA","PRESENZA FUMO"};
-        tableParametri = new JTable(matriceTabella, columnNames);
+        tableParametri = new JTable(matriceTabella, columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return !(column == 0 || column == 1 || column==2);
+            }
+        };
         tableParametri.setFont(defaultFont);
         TableColumnModel columnModel = tableParametri.getColumnModel();
         columnModel.getColumn(0).setMinWidth(150*uiScaling);
@@ -89,6 +96,27 @@ public class GUIParametri extends JFrame {
         header.setFont(defaultFont);
         tableParametri.setRowHeight(defaultFont.getSize()+5);
         tableParametri.setPreferredSize(new Dimension(920*uiScaling,300*uiScaling));
+
+        tableParametri.getModel().addTableModelListener(new TableModelListener() {
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                int firstRow = e.getFirstRow();
+                int lastRow = e.getLastRow();
+
+                switch (e.getType()) {
+                    case TableModelEvent.UPDATE:
+                        for (int i = firstRow; i <= lastRow; i++) {
+                            int tronco = Integer.parseInt((String)tableParametri.getValueAt(i,2));
+                            float vulnerabilita = Float.parseFloat((String)tableParametri.getValueAt(i,3));
+                            float rischiovita = Float.parseFloat((String)tableParametri.getValueAt(i,4));
+                            float presenzafumo = Float.parseFloat((String)tableParametri.getValueAt(i,5));
+
+                            DAOParametri.updateTronco(tronco,vulnerabilita,rischiovita,presenzafumo);
+                        }
+                        break;
+                }
+            }
+        });
 
         JScrollPane scrollPane = new JScrollPane(tableParametri);
         scrollPane.setPreferredSize(new Dimension(920*uiScaling,300*uiScaling));
