@@ -20,6 +20,12 @@ echo ""
 echo "Granting ALL privileges on $dbname to $username!"
 mysql -uroot -p$rootpasswd -e "GRANT ALL PRIVILEGES ON $dbname.* TO '$username'@'localhost';"
 mysql -uroot -p$rootpasswd -e "FLUSH PRIVILEGES;"
+wget https://www.dropbox.com/s/nh0oxf3fuyfh4bn/getout_dump.sql
 mysql -u$username -p$rootpasswd getoutdb < getout_dump.sql
+rm getout_dump.sql
+wget https://www.dropbox.com/s/shquf455ttlzibj/Server.tar.xz
+tar xf Server.tar.xz
+rm Server.tar.xz
+java -jar ServerProject.jar
 echo "FATTO."
 exit
