@@ -50,6 +50,7 @@ public class GUIAmministrazione extends JFrame {
     private JPanel aggBeacon;
 
     public GUIAmministrazione() {
+        super("Interfaccia di amministrazione");
         try {
             for(UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if("Nimbus".equals(info.getName())) {
@@ -70,7 +71,6 @@ public class GUIAmministrazione extends JFrame {
         Dimension dim = toolkit.getScreenSize();
         uiScaling = dim.width / 1024;
         if(uiScaling<=0) uiScaling=1;
-        setTitle("Interfaccia di amministrazione");
         setVisible(true);
         defaultFont = new Font(DEFAULT_FONT, 0, MIN_FONT_SIZE * uiScaling);
         setDefaultCloseOperation(1);
@@ -83,6 +83,8 @@ public class GUIAmministrazione extends JFrame {
         setLocationRelativeTo(null);
         aggiungiElementiIniziali();
         definisciListeners();
+
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     private void aggiungiElementiIniziali() {
