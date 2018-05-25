@@ -115,7 +115,7 @@ DROP TABLE IF EXISTS `TRONCO`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `TRONCO` (
-  `ID` decimal(10,0) NOT NULL,
+  `ID` decimal(10,0) NOT NULL AUTO_INCREMENT,
   `X` float NOT NULL,
   `Y` float NOT NULL,
   `XF` float NOT NULL,

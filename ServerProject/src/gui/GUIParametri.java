@@ -118,5 +118,7 @@ public class GUIParametri extends JFrame {
         scrollPane.setPreferredSize(new Dimension(920*uiScaling,300*uiScaling));
         mainPanel.add(scrollPane, gridBagConstraints);
         pack();
+        setResizable(false);
+        setLocationRelativeTo(null);
     }
 }
