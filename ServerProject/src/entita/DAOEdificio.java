@@ -14,6 +14,27 @@ public class DAOEdificio {
     //Nome della tabella "EDIFICIO"
     static final String TABLE_EDIFICIO = "EDIFICIO";
 
+
+    //scaricamento di tutti gli edifici per ottenimento dati offline EDO
+    public static String downloadEdicifi(){
+        String tmp = "";
+        try {
+            Connection con = Database.getConn();
+            Statement stm = con.createStatement();
+            ResultSet rs = stm.executeQuery("SELECT * FROM EDIFICIO");
+            while (rs.next()){
+                tmp = rs.getString(1);
+            }
+            rs.close();
+            stm.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return tmp;
+    }
+
+
     public static String selectEdificioByBeacon(String idBeacon) {
         Connection conn = Database.getConn();
         String nomeEdificio = "";
@@ -130,5 +151,9 @@ public class DAOEdificio {
 
         stm.close();
     }
+
+
+
+
 }
 

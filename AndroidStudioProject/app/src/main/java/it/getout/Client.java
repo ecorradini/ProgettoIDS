@@ -24,6 +24,7 @@ import android.widget.Toast;
 import it.getout.fragments.FragmentEmergenza;
 import it.getout.fragments.FragmentOrdinaria;
 import it.getout.gestioneconnessioni.Notifica;
+import it.getout.gestioneconnessioni.Server;
 import it.getout.gestioneposizione.GestoreEntita;
 import it.getout.gestionevisualizzazionemappa.MappaFragment;
 
@@ -38,6 +39,7 @@ public class Client extends AppCompatActivity {
     private GestoreEntita gestore;
     private MappaFragment mappaFragment;
     private SharedPreferences preferences;
+
 
 
 

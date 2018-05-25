@@ -13,6 +13,27 @@ public class DAOPiano {
     static final String EDIFICIO = "EDIFICIO";
     static final String TABLE_PIANO = "PIANO";
 
+
+    //scaricamento di tutti gli edifici per ottenimento dati offline EDO
+    public static String downloadPiani(){
+        String tmp = "";
+        try {
+            Connection con = Database.getConn();
+            Statement stm = con.createStatement();
+            ResultSet rs = stm.executeQuery("SELECT * FROM PIANO");
+            while (rs.next()){
+                tmp = rs.getInt(1)+" "+rs.getString(2);  //prende un piano + edificio e poi passa sotto 'spero'
+            }
+            rs.close();
+            stm.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return tmp;
+    }
+
+
     public static String selectPianoByBeacon(String idBeacon) {
         Connection conn = Database.getConn();
         String nomePiano = "";

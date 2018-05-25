@@ -16,6 +16,27 @@ public class DAOAula {
     static final String ENTRATA = "ENTRATA";
     static final String TABLE_AULA = "AULA";
 
+
+    //scaricamento di tutte le aule per ottenimento dati offline EDO
+    public static String downloadAule(){
+        String tmp = "";
+        try {
+            Connection con = Database.getConn();
+            Statement stm = con.createStatement();
+            ResultSet rs = stm.executeQuery("SELECT * FROM AULA");
+            while (rs.next()){
+                tmp = rs.getString(1)+" "+rs.getInt(2)+" "+rs.getInt(3)+" "+rs.getString(4)+" "+rs.getString(5);
+            }
+            rs.close();
+            stm.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return tmp;
+    }
+
+
     public static String selectAllAuleByPiano(String piano) {
         Connection conn = Database.getConn();
         String json="{\""+piano+"\":[";

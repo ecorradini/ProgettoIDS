@@ -26,6 +26,51 @@ public class JsonServer {
         System.out.println("Il server ora accetta richieste. Grazie per l'attesa.");
 
         server = HttpServer.create(new InetSocketAddress(9600), 0);
+
+        //scaricamento di tutti gli edifici per ottenimento dati offline EDO
+        server.createContext("/downloadEdifici", new HttpHandler() {
+            public void handle(HttpExchange arg0) throws IOException {
+                new Thread(){
+                    public void run()  {
+                        try {
+                            String queryEdifici = DAOEdificio.downloadEdicifi();
+                            File file = new File(queryEdifici);
+                            arg0.sendResponseHeaders(200, file.length());
+                            OutputStream outputStream=arg0.getResponseBody();
+                            Files.copy(file.toPath(), outputStream);
+                            outputStream.close();
+                        } catch (IOException e) {
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                }.start();
+            }
+        });
+
+
+        //scaricamento di tutti i piani per ottenimento dati offline EDO
+        server.createContext("/downloadPiani", new HttpHandler() {
+            public void handle(HttpExchange arg0) throws IOException {
+                new Thread(){
+                    public void run()  {
+                        try {
+                            String queryEdifici = DAOPiano.downloadPiani();
+                            File file = new File(queryEdifici);
+                            arg0.sendResponseHeaders(200, file.length());
+                            OutputStream outputStream=arg0.getResponseBody();
+                            Files.copy(file.toPath(), outputStream);
+                            outputStream.close();
+                        } catch (IOException e) {
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                }.start();
+            }
+        });
+
+
+
+
         server.createContext("/edificioattuale", new HttpHandler() {
             public void handle(HttpExchange arg0) {
                 new Thread(){

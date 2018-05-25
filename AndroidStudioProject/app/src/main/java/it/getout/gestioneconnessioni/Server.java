@@ -68,6 +68,8 @@ public class Server extends GestoreDati
 
     private static String BASE_URL;
 
+
+
     private DatagramSocket c;
     private Context context;
 
@@ -88,6 +90,12 @@ public class Server extends GestoreDati
             e.printStackTrace();
         }
     }
+
+    /* comunicazione client server per ricevere la query del server mysql EDO
+    private void scaricamentoDatiIniziali(){
+
+    }
+    */
 
 
     private void discoverIP(){

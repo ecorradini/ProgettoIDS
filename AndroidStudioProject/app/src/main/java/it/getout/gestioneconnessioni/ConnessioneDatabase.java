@@ -80,5 +80,12 @@ public class ConnessioneDatabase extends SQLiteOpenHelper {
 
         onCreate(db);
     }
+
+
+    /*mi serve per riempire il database con dati inziali
+    public void riempimentoDAtabaseIniziale(String query){
+
+    }
+    */
 }
 

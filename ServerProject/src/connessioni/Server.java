@@ -16,6 +16,7 @@ public class Server {
 
     private static HashMap<String,HashMap<String,GrafoTronchi>> grafiPiani;
 
+
     public static void main(String[] args) throws IOException{
 
         try {
@@ -29,6 +30,9 @@ public class Server {
             System.out.println("Eccezione SQL");
             e.printStackTrace();
         }
+
+        Thread downloadInizialeThread = new Thread(DownloadIniziale.getInstance());
+        downloadInizialeThread.start();
 
         Thread discoveryThread = new Thread(DiscoveryIP.getInstance());
         discoveryThread.start();

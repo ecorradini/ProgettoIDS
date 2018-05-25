@@ -17,6 +17,27 @@ public class DAOBeacon {
     static final String USCITA = "USCITA";
     static final String TABLE_BEACON = "BEACON";
 
+
+    //scaricamento di tutti i beacon per ottenimento dati offline EDO
+    public static String downloadBeacons(){
+        String tmp = "";
+        try {
+            Connection con = Database.getConn();
+            Statement stm = con.createStatement();
+            ResultSet rs = stm.executeQuery("SELECT * FROM BEACON");
+            while (rs.next()){
+                tmp = rs.getString(1)+" "+rs.getInt(2)+" "+rs.getInt(3)+" "+rs.getString(4)+" "+rs.getInt(5)+" "+rs.getInt(6);
+            }
+            rs.close();
+            stm.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return tmp;
+    }
+
+
     public static String selectPosizioneById(String idBeacon) {
         Connection conn = Database.getConn();
         String json="";

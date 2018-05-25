@@ -12,6 +12,14 @@ import java.util.HashMap;
 
 public class DAOUscita {
 
+
+    //scaricamento di tutte le uscite per ottenimento dati offline EDO
+    /*
+    public static String downloadUscite(){
+
+    }
+    */
+
     public static ArrayList<Tronco> getTronchiUscita(String beacon,String edificio,String piano) {
         Connection conn = Database.getConn();
         ArrayList<Tronco> tronchiDaAttraversare = new ArrayList<>();

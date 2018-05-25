@@ -21,6 +21,28 @@ public class DAOTronco {
     static final String PIANO = "PIANO";
     static final String TABLE_TRONCO = "TRONCO";
 
+
+    //scaricamento di tutti i tronchi per ottenimento dati offline EDO
+    public static String downloadTronchi(){
+        String tmp = "";
+        try {
+            Connection con = Database.getConn();
+            Statement stm = con.createStatement();
+            ResultSet rs = stm.executeQuery("SELECT * FROM TRONCO");
+            while (rs.next()){
+                tmp = rs.getInt(1)+" "+rs.getInt(2)+" "+rs.getInt(3)+" "+rs.getInt(4)+" "+rs.getInt(5)+" "+rs.getInt(6)+" "+rs.getString(7)+" "+rs.getInt(8);
+            }
+            rs.close();
+            stm.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return tmp;
+    }
+
+
+
     public static String selectAllTronchiByPiano(String piano) {
         Connection conn = Database.getConn();
         String json="{\""+piano+"\":[";
