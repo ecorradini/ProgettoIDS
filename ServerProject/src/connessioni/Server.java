@@ -25,9 +25,6 @@ public class Server {
         } catch (ClassNotFoundException e) {
             System.out.println("Eccezione Class not found");
             e.printStackTrace();
-        } catch (SQLException e) {
-            System.out.println("Eccezione SQL");
-            e.printStackTrace();
         }
 
         Thread discoveryThread = new Thread(DiscoveryIP.getInstance());

@@ -10,12 +10,12 @@ import java.util.List;
 
 public class Database {
     private static Connection connection;
-    public static final String dbUrl="jdbc:jtds:sqlserver://den1.mssql5.gear.host/getoutdb";
-    //public static final String dbUrl="jdbc:mysql://localhost/getoutdb";
+    private static final String dbUrl="jdbc:jtds:sqlserver://den1.mssql5.gear.host/getoutdb";
+    //private static final String dbUrl="jdbc:mysql://localhost/getoutdb";
 
 
 
-    public static void init() throws ClassNotFoundException, SQLException {
+    public static void init() throws ClassNotFoundException {
 
         try {
 
@@ -29,9 +29,8 @@ public class Database {
             char passwordArray[] = console.readPassword("Password del database: ");
             String password = new String(passwordArray);
 
-            //Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(dbUrl, "getoutdb", password);
-            //connection = DriverManager.getConnection(dbUrl+"?user=getoutdb&password="+password);
             System.out.println("Connesso al DB");
         } catch(SQLException e) {
             System.out.println(e.getMessage());
