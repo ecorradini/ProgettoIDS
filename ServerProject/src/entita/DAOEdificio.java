@@ -17,13 +17,13 @@ public class DAOEdificio {
 
     //scaricamento di tutti gli edifici per ottenimento dati offline EDO
     public static String downloadEdicifi(){
-        String tmp = "";
+        String json="EDIFICI:[";
         try {
             Connection con = Database.getConn();
             Statement stm = con.createStatement();
             ResultSet rs = stm.executeQuery("SELECT * FROM EDIFICIO");
             while (rs.next()){
-                tmp = rs.getString(1);
+                json = json + rs.getString(1)+",";
             }
             rs.close();
             stm.close();
@@ -31,7 +31,13 @@ public class DAOEdificio {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return tmp;
+        finally {
+            if(json.substring(json.length() - 1,json.length()).equals(",")) {
+                json = json.substring(0, json.length() - 1);
+            }
+            json = json + "]";
+        }
+        return json;
     }
 
 

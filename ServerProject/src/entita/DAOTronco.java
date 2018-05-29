@@ -24,13 +24,13 @@ public class DAOTronco {
 
     //scaricamento di tutti i tronchi per ottenimento dati offline EDO
     public static String downloadTronchi(){
-        String tmp = "";
+        String json="TRONCHI:[";
         try {
             Connection con = Database.getConn();
             Statement stm = con.createStatement();
             ResultSet rs = stm.executeQuery("SELECT * FROM TRONCO");
             while (rs.next()){
-                tmp = rs.getInt(1)+" "+rs.getInt(2)+" "+rs.getInt(3)+" "+rs.getInt(4)+" "+rs.getInt(5)+" "+rs.getInt(6)+" "+rs.getString(7)+" "+rs.getInt(8);
+                json = json+rs.getInt(1)+rs.getInt(2)+rs.getInt(3)+rs.getInt(4)+rs.getInt(5)+rs.getInt(6)+rs.getString(7)+rs.getInt(8)+",";
             }
             rs.close();
             stm.close();
@@ -38,7 +38,13 @@ public class DAOTronco {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return tmp;
+        finally {
+            if(json.substring(json.length() - 1,json.length()).equals(",")) {
+                json = json.substring(0, json.length() - 1);
+            }
+            json = json + "]";
+        }
+        return json;
     }
 
 

@@ -28,8 +28,6 @@ public class Server {
             e.printStackTrace();
         }
 
-        Thread downloadInizialeThread = new Thread(DownloadIniziale.getInstance());
-        downloadInizialeThread.start();
 
         Thread discoveryThread = new Thread(DiscoveryIP.getInstance());
         discoveryThread.start();

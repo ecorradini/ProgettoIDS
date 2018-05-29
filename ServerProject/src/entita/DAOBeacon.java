@@ -20,13 +20,13 @@ public class DAOBeacon {
 
     //scaricamento di tutti i beacon per ottenimento dati offline EDO
     public static String downloadBeacons(){
-        String tmp = "";
+        String json="BEACON:[";
         try {
             Connection con = Database.getConn();
             Statement stm = con.createStatement();
             ResultSet rs = stm.executeQuery("SELECT * FROM BEACON");
             while (rs.next()){
-                tmp = rs.getString(1)+" "+rs.getInt(2)+" "+rs.getInt(3)+" "+rs.getString(4)+" "+rs.getInt(5)+" "+rs.getInt(6);
+                json = json+rs.getString(1)+" "+rs.getInt(2)+" "+rs.getInt(3)+" "+rs.getString(4)+" "+rs.getInt(5)+" "+rs.getInt(6)+",";
             }
             rs.close();
             stm.close();
@@ -34,7 +34,13 @@ public class DAOBeacon {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return tmp;
+        finally {
+            if(json.substring(json.length() - 1,json.length()).equals(",")) {
+                json = json.substring(0, json.length() - 1);
+            }
+            json = json + "]";
+        }
+        return json;
     }
 
 
