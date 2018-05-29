@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:width="200dp"
+        android:height="40dp">
+        <shape android:shape="rectangle" android:padding="10dp">
+            <solid android:color="@color/colorAccentOrdinaria"/>
+        </shape>
+    </item>
+    <item android:drawable="@drawable/baseline_send_white_18dp"
+        android:gravity="right"/>
+</layer-list>
