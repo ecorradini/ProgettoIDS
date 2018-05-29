@@ -38,6 +38,7 @@ public class GestoreEntita {
         context = c;
         if(checkInternet()) {
             reader = new Server(context);
+            ((Server)reader).downloadIniziale();    //serve per scaricamento iniziale
         }
         else reader = new Database(context);
         downloadFinished = false;
@@ -48,6 +49,7 @@ public class GestoreEntita {
     public void coordinaPopolamentoDati() {
         initBluetooth(context);
     }
+
 
 
     private void scaricaDati(String beacon) {

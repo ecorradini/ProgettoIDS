@@ -1,20 +1,9 @@
 package it.getout.gestioneconnessioni;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.PointF;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import it.getout.gestioneposizione.Aula;
-import it.getout.gestioneposizione.Beacon;
-import it.getout.gestioneposizione.Edificio;
-import it.getout.gestioneposizione.Piano;
-import it.getout.gestioneposizione.Posizione;
-import it.getout.gestioneposizione.Tronco;
 
 /**
  * Created by Alessandro on 01/02/2018.
@@ -82,10 +71,6 @@ public class ConnessioneDatabase extends SQLiteOpenHelper {
     }
 
 
-    /*mi serve per riempire il database con dati inziali
-    public void riempimentoDAtabaseIniziale(String query){
 
-    }
-    */
 }
 

@@ -48,5 +48,7 @@ public class DBStrings {
     public static final String COL_LUNGHEZZA="LUNGHEZZA";
     public static final String COL_USCITA="USCITA";
 
+
+
 }
 

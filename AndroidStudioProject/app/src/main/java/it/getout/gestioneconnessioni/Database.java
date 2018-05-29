@@ -1,5 +1,6 @@
 package it.getout.gestioneconnessioni;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,6 +17,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import it.getout.gestioneposizione.Aula;
 import it.getout.gestioneposizione.Beacon;
@@ -38,6 +41,14 @@ public class Database extends GestoreDati {
         connessione = new ConnessioneDatabase(context);
     }
 
+    public void inserisciValori(HashMap<String,ContentValues> hashMap){
+        SQLiteDatabase db = connessione.getWritableDatabase();
+        Iterator iterator = hashMap.entrySet().iterator();
+        while (iterator.hasNext()){
+            Map.Entry entry = (Map.Entry)iterator.next();
+            db.insert((String)entry.getKey(),null,(ContentValues)entry.getValue());
+        }
+    }
 
 
     @Override
