@@ -25,7 +25,7 @@ public class DAOAula {
             Statement stm = con.createStatement();
             ResultSet rs = stm.executeQuery("SELECT * FROM AULA");
             while (rs.next()){
-                json = json + rs.getString(1)+rs.getInt(2)+rs.getInt(3)+rs.getString(4)+rs.getString(5)+",";
+                json = json + "\"" + rs.getString(NOME)+ "\":{\"X\":\""+ rs.getInt(X)+"\",\"Y\":\""+rs.getInt(Y)+"\",\"PIANO\":\""+rs.getString(PIANO)+"\",\"ENTRATA\":\""+rs.getString(ENTRATA)+"\"},";
             }
             rs.close();
             stm.close();

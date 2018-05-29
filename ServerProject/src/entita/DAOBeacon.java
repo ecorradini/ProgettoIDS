@@ -26,7 +26,7 @@ public class DAOBeacon {
             Statement stm = con.createStatement();
             ResultSet rs = stm.executeQuery("SELECT * FROM BEACON");
             while (rs.next()){
-                json = json+rs.getString(1)+" "+rs.getInt(2)+" "+rs.getInt(3)+" "+rs.getString(4)+" "+rs.getInt(5)+" "+rs.getInt(6)+",";
+                json = json+"\""+rs.getString(ID)+"\":{\"X\":\""+rs.getInt(X)+"\",\"Y\":\""+rs.getInt(Y)+"\",\"TRONCO\":\""+rs.getString(TRONCO)+"\",\"UTENTI\":\""+rs.getInt(UTENTI)+"\",\"USCITA\":\""+rs.getInt(USCITA)+"\"},";
             }
             rs.close();
             stm.close();

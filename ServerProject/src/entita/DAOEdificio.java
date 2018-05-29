@@ -23,7 +23,7 @@ public class DAOEdificio {
             Statement stm = con.createStatement();
             ResultSet rs = stm.executeQuery("SELECT * FROM EDIFICIO");
             while (rs.next()){
-                json = json + rs.getString(1)+",";
+                json = json + "\"" + rs.getString(NOME)+"\",";
             }
             rs.close();
             stm.close();
