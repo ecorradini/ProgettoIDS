@@ -4,15 +4,16 @@ import connessioni.Server;
         import entita.*;
 
 import java.awt.*;
-        import java.awt.event.*;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
-        import java.io.File;
-        import java.io.IOException;
-        import java.sql.SQLException;
-        import java.util.ArrayList;
-        import java.util.HashMap;
-        import javax.imageio.ImageIO;
-        import javax.swing.*;
+import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+
 
 public class GUIAmministrazione extends JFrame {
 
@@ -67,16 +68,16 @@ public class GUIAmministrazione extends JFrame {
         } catch (UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
+        setMinimumSize(new Dimension(MIN_FRAME_WIDTH, MIN_FRAME_HEIGHT));
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dim = toolkit.getScreenSize();
         uiScaling = dim.width / 1024;
         if(uiScaling<=0) uiScaling=1;
-        setVisible(true);
         defaultFont = new Font(DEFAULT_FONT, 0, MIN_FONT_SIZE * uiScaling);
         setDefaultCloseOperation(1);
         componentDimension = new Dimension(MIN_COMPONENT_WIDTH * uiScaling, MIN_COMPONENT_HEIGHT * uiScaling);
         mainPanel = new JPanel(new GridBagLayout());
-        mainPanel.setSize(MIN_FRAME_WIDTH * uiScaling, MIN_FRAME_HEIGHT * uiScaling);
+        //mainPanel.setSize(new Dimension(MIN_FRAME_WIDTH * uiScaling, MIN_FRAME_HEIGHT * uiScaling));
         gridBagConstraints = new GridBagConstraints();
         add(mainPanel);
         setResizable(false);
@@ -297,6 +298,9 @@ public class GUIAmministrazione extends JFrame {
                         mainPanel.remove(mapView);
                     }
                     mapView = null;
+                    if(labelCoordinate!=null) {
+                        mainPanel.remove(labelCoordinate);
+                    }
                     String edificio = (String)comboEdifici.getSelectedItem();
                     if (!edificio.isEmpty()) {
                         ArrayList pianiList = DAOPiano.selectListaPianiByEdificio(edificio);
@@ -331,7 +335,6 @@ public class GUIAmministrazione extends JFrame {
                     if(labelCoordinate!=null) {
                         mainPanel.remove(labelCoordinate);
                     }
-                    labelCoordinate=null;
                     if (!(piano = (String)comboPiani.getSelectedItem()).isEmpty()) {
                         comboAule.removeAllItems();
                         ArrayList auleList = DAOAula.selectListaAuleByPiano((String)piano);
@@ -364,17 +367,16 @@ public class GUIAmministrazione extends JFrame {
                                     if(labelCoordinate==null) {
                                         labelCoordinate = new JLabel("(X=" + panelPoint.x + "; Y:" + ((panelPoint.y-17) > 0 ? (panelPoint.y-17) : 0) + ")");
                                         labelCoordinate.setFont(defaultFont);
-                                        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-                                        gridBagConstraints.weightx = 0.0;
-                                        gridBagConstraints.gridwidth = 1;
-                                        gridBagConstraints.gridx = 0;
-                                        gridBagConstraints.gridy = 4;
-                                        mainPanel.add(labelCoordinate,gridBagConstraints);
                                     }
                                     else {
                                         labelCoordinate.setText("(X=" + panelPoint.x + "; Y:" + ((panelPoint.y-17) > 0 ? (panelPoint.y-17) : 0) + ")");
                                     }
-
+                                    gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+                                    gridBagConstraints.weightx = 0.0;
+                                    gridBagConstraints.gridwidth = 1;
+                                    gridBagConstraints.gridx = 0;
+                                    gridBagConstraints.gridy = 4;
+                                    mainPanel.add(labelCoordinate,gridBagConstraints);
                                     aggiornaUI();
                                 }
                             });
@@ -433,16 +435,15 @@ public class GUIAmministrazione extends JFrame {
                                                         if(labelCoordinate==null) {
                                                             labelCoordinate = new JLabel("(X=" + panelPoint.x + "; Y:" + ((panelPoint.y-17) > 0 ? (panelPoint.y-17) : 0) + ")");
                                                             labelCoordinate.setFont(defaultFont);
-                                                            gridBagConstraints.weightx = 0.0;
-                                                            gridBagConstraints.gridwidth = 1;
-                                                            gridBagConstraints.gridx = 0;
-                                                            gridBagConstraints.gridy = 4;
-                                                            mainPanel.add(labelCoordinate,gridBagConstraints);
                                                         }
                                                         else {
                                                             labelCoordinate.setText("(X=" + panelPoint.x + "; Y:" + ((panelPoint.y-17) > 0 ? (panelPoint.y-17) : 0) + ")");
                                                         }
-
+                                                        gridBagConstraints.weightx = 0.0;
+                                                        gridBagConstraints.gridwidth = 1;
+                                                        gridBagConstraints.gridx = 0;
+                                                        gridBagConstraints.gridy = 4;
+                                                        mainPanel.add(labelCoordinate,gridBagConstraints);
                                                         aggiornaUI();
                                                     }
                                                 });
@@ -1239,6 +1240,7 @@ public class GUIAmministrazione extends JFrame {
         pack();
         setResizable(false);
         setLocationRelativeTo(null);
+        setVisible(true);
     }
 
     public class ImagePanel extends JPanel {

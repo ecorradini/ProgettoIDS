@@ -44,15 +44,15 @@ public class GUIParametri extends JFrame {
         } catch (UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
+        setMinimumSize(new Dimension(MIN_FRAME_WIDTH, MIN_FRAME_HEIGHT));
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dim = toolkit.getScreenSize();
         uiScaling = dim.width / 1024;
         if(uiScaling<=0) uiScaling=1;
-        setVisible(true);
         defaultFont = new Font(DEFAULT_FONT, 0, MIN_FONT_SIZE * uiScaling);
         setDefaultCloseOperation(1);
         mainPanel = new JPanel(new GridBagLayout());
-        mainPanel.setSize(MIN_FRAME_WIDTH * uiScaling, MIN_FRAME_HEIGHT * uiScaling);
+        //mainPanel.setPreferredSize(new Dimension(MIN_FRAME_WIDTH * uiScaling, MIN_FRAME_HEIGHT * uiScaling));
         gridBagConstraints = new GridBagConstraints();
         add(mainPanel);
         setResizable(false);
@@ -122,5 +122,6 @@ public class GUIParametri extends JFrame {
         pack();
         setResizable(false);
         setLocationRelativeTo(null);
+        setVisible(true);
     }
 }
