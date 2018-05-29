@@ -1,6 +1,7 @@
 package entita;
 
 import connessioni.Database;
+import connessioni.Server;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -79,22 +80,54 @@ public class DAOMappa {
         stm.close();
     }
 
-    private static String encodeFileToBase64Binary(File file) {
-        String encodedfile = null;
+    public static String getBase64Mappe() {
+        String json = "MAPPA:[";
+        String path = Server.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("/ServerProject.jar","");
+        //String link = DAOMappa.selectMappaByPiano(arg0.getRequestURI().getQuery());
+        Connection conn = Database.getConn();
+        String query = "SELECT * FROM "+TABLE_MAPPA;
+
         try {
-            FileInputStream fileInputStreamReader = new FileInputStream(file);
-            byte[] bytes = new byte[(int) file.length()];
-            fileInputStreamReader.read(bytes);
-            encodedfile = Base64.getEncoder().encodeToString(bytes);
-        } catch (FileNotFoundException e) {
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(query);
+
+            while (rs.next()) {
+                String link = rs.getString(LINK);
+                String piano = rs.getString(PIANO);
+
+                File file = new File(path+link);
+                String encodedMap = null;
+                try {
+                    FileInputStream fileInputStreamReader = new FileInputStream(file);
+                    byte[] bytes = new byte[(int) file.length()];
+                    fileInputStreamReader.read(bytes);
+                    encodedMap = Base64.getEncoder().encodeToString(bytes);
+
+                    json = json + "\""+piano+"\":\""+encodedMap+"\",";
+
+                } catch (FileNotFoundException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+            }
+
+            rs.close();
+            stm.close();
+        } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } finally {
+            if(json.substring(json.length() - 1,json.length()).equals(",")) {
+                json = json.substring(0, json.length() - 1);
+            }
+            json = json + "]";
         }
 
-        return encodedfile;
+        return json;
 
 
     }
