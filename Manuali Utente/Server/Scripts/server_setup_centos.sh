@@ -27,6 +27,6 @@ rm getout_dump.sql
 wget https://www.dropbox.com/s/shquf455ttlzibj/Server.tar.xz
 tar xf Server.tar.xz
 rm Server.tar.xz
-java -jar ServerProject.jar
+sudo java -jar ServerProject.jar
 echo "FATTO."
 exit
