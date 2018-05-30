@@ -92,9 +92,7 @@ public class RVAdapterAule extends RecyclerView.Adapter<RVAdapterAule.CViewHolde
                         }.start();
                     }
                 });
-                cViewHolder.textAule.remove(aulaT);
                 cViewHolder.textAule.add(aulaT);
-                cViewHolder.listaAule.removeView(aulaT);
                 cViewHolder.listaAule.addView(aulaT);
             }
 
