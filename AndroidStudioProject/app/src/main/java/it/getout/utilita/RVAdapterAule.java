@@ -107,6 +107,7 @@ public class RVAdapterAule extends RecyclerView.Adapter<RVAdapterAule.CViewHolde
                 @Override
                 public void onClick(View v) {
                     mExpandedPosition = isExpanded ? -1 : pos;
+                    cViewHolder.listaAule.removeAllViewsInLayout();
                     TransitionManager.beginDelayedTransition((ViewGroup) holder.itemView, new AutoTransition());
                     notifyItemChanged(pos);
                 }
