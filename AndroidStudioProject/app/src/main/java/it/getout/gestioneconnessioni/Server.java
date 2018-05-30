@@ -1,6 +1,8 @@
 package it.getout.gestioneconnessioni;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PointF;
@@ -16,7 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
-import com.android.volley.toolbox.HttpResponse;
+
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
 
@@ -24,13 +26,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.FileOutputStream;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.HttpURLConnection;
-import java.net.Inet4Address;
+
 import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
@@ -38,7 +40,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.concurrent.ExecutionException;
+import java.util.StringTokenizer;
+
 
 import it.getout.gestioneposizione.Aula;
 import it.getout.gestioneposizione.Beacon;
@@ -46,6 +49,7 @@ import it.getout.gestioneposizione.Edificio;
 import it.getout.gestioneposizione.Piano;
 import it.getout.gestioneposizione.Posizione;
 import it.getout.gestioneposizione.Tronco;
+
 
 /**
  * Created by Alessandro on 01/02/2018.
@@ -65,10 +69,7 @@ public class Server extends GestoreDati
     private static final String SERV_USCITE = "/uscite?";               //URL beacon uscita edificio
     private static final String SERV_SUMUSER = "/sommautente?";         //UTL aggiunta utente
 
-
     private static String BASE_URL;
-
-
 
     private DatagramSocket c;
     private Context context;
@@ -82,7 +83,6 @@ public class Server extends GestoreDati
                 discoverIP();
             }
         };
-
         discovery.start();
         try {
             discovery.join();
@@ -91,15 +91,8 @@ public class Server extends GestoreDati
         }
     }
 
-    /* comunicazione client server per ricevere la query del server mysql EDO
-    private void scaricamentoDatiIniziali(){
-
-    }
-    */
-
 
     private void discoverIP(){
-
         // Find the server using UDP broadcast
         try {
             //Open a random port to send the package
@@ -517,6 +510,143 @@ public class Server extends GestoreDati
 
         return attesaUscite.getResult();
     }
+
+
+    public void downloadIniziale(){
+        new DownLoadInizialeTask().execute();
+    }
+
+    //AsyncTask che richiede la stringa json per il download iniziale di tutto
+    private class DownLoadInizialeTask extends AsyncTask<Void,Void,Boolean> {
+
+        private String json= "";
+        private boolean downloaded;
+
+        @Override
+        protected Boolean doInBackground(Void... params){
+            downloaded = false;
+            RequestQueue mRequestQueue;
+            //Metodi per il cache delle richieste JSON (Sembra che servano altrimenti non funziona)
+            Cache cache = new DiskBasedCache(context.getCacheDir(), 1024 * 1024);
+            Network network = new BasicNetwork(new HurlStack());
+            mRequestQueue = new RequestQueue(cache, network);
+            mRequestQueue.start();
+            //Url per la richiesta del percorso
+            String url = BASE_URL + "/downloaddatabase";
+            //Instanzio la richiesta JSON
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                //Alla risposta
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        JSONArray edifici = response.getJSONArray("EDIFICI");
+                        ContentValues edificiDaAggiungere = new ContentValues();
+                        JSONArray piani = response.getJSONArray("PIANI");
+                        ContentValues pianiDaAggiungere = new ContentValues();
+                        JSONArray aule = response.getJSONArray("AULE");
+                        ContentValues auleDaAggiungere = new ContentValues();
+                        JSONArray beacon = response.getJSONArray("BEACON");
+                        ContentValues beaconDaAggiungere = new ContentValues();
+                        JSONArray mappe = response.getJSONArray("MAPPE");
+                        ContentValues mappeDaAggiungere = new ContentValues();
+                        JSONArray tronchi = response.getJSONArray("TRONCHI");
+                        ContentValues tronchiDaAggiungere = new ContentValues();
+
+                        for (int e = 0; e<edifici.length(); e++){
+                            String nome = edifici.getString(e);
+                            edificiDaAggiungere.put("NOME",nome);}
+
+                        for (int p = 0; p<piani.length(); p++){
+                            JSONObject corrente = piani.getJSONObject(p);
+                            String nome = corrente.getString("NOME");
+                            String edificio = corrente.getString("EDIFICIO");
+                            pianiDaAggiungere.put("NOME",nome);
+                            pianiDaAggiungere.put("EDIFICIO",edificio);}
+
+                        for (int a = 0; a<aule.length(); a++){
+                            JSONObject corrente = aule.getJSONObject(a);
+                            String nome = corrente.getString("NOME");
+                            String x = corrente.getString("X");
+                            String y = corrente.getString("Y");
+                            String piano = corrente.getString("PIANO");
+                            String entrata = corrente.getString("ENTRATA");
+                            auleDaAggiungere.put("NOME",nome);
+                            auleDaAggiungere.put("X",x);
+                            auleDaAggiungere.put("Y",y);
+                            auleDaAggiungere.put("ENTRTA",entrata);}
+
+                        for(int b = 0; b<beacon.length(); b++){
+                            JSONObject corrente = beacon.getJSONObject(b);
+                            String id = corrente.getString("ID");
+                            String x = corrente.getString("X");
+                            String y = corrente.getString("Y");
+                            String tronco = corrente.getString("TRONCO");
+                            String utenti = corrente.getString("UTENTI");
+                            String uscita = corrente.getString("USCITA");
+                            beaconDaAggiungere.put("ID",id);
+                            beaconDaAggiungere.put("X",x);
+                            beaconDaAggiungere.put("Y",y);
+                            beaconDaAggiungere.put("TRONCO",tronco);
+                            beaconDaAggiungere.put("UTENTI",utenti);
+                            beaconDaAggiungere.put("USCITA",uscita);}
+
+                        for(int m =0; m<mappe.length();m++){
+                            JSONObject corrente = mappe.getJSONObject(m);
+                            String piano = corrente.getString("PIANO");
+                            String mappa = corrente.getString("MAPPA");
+                            mappeDaAggiungere.put("PIANO", piano);
+                            mappeDaAggiungere.put("MAPPA",mappa);}
+
+                        for(int t=0; t<tronchi.length(); t++){
+                            JSONObject corrente = tronchi.getJSONObject(t);
+                            String id = corrente.getString("ID");
+                            String x = corrente.getString("X");
+                            String y = corrente.getString("Y");
+                            String xf = corrente.getString("XF");
+                            String yf = corrente.getString("YF");
+                            String larghezza = corrente.getString("LARGHEZZA");
+                            String piano = corrente.getString("PIANO");
+                            String lunghezza = corrente.getString("LUNGHEZZA");
+                            tronchiDaAggiungere.put("ID", id);
+                            tronchiDaAggiungere.put("X", x);
+                            tronchiDaAggiungere.put("Y", y);
+                            tronchiDaAggiungere.put("XF", xf);
+                            tronchiDaAggiungere.put("YF", yf);
+                            tronchiDaAggiungere.put("LARGHEZA", larghezza);
+                            tronchiDaAggiungere.put("PIANO", piano);
+                            tronchiDaAggiungere.put("LUNGHEZZA", lunghezza);}
+
+                        HashMap<String,ContentValues> hashMap= new HashMap<>();
+                        hashMap.put("EDIFICIO",edificiDaAggiungere);
+                        hashMap.put("PIANO",pianiDaAggiungere);
+                        hashMap.put("AULA",auleDaAggiungere);
+                        hashMap.put("BEACON",beaconDaAggiungere);
+                        hashMap.put("TRONCO",tronchiDaAggiungere);
+                        hashMap.put("MAPPA",mappeDaAggiungere);
+
+                        Database db = new Database(context);
+                        db.inserisciValori(hashMap);
+
+                        downloaded = true;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("JSON ED ATTUALE ERROR", error.toString());
+                }
+            });
+            //Aggiungo la richiesta alla coda
+            mRequestQueue.add(jsonObjectRequest);
+
+            return true;
+        }
+    }
+
+
+
 
     //AsyncTask che richiede l'edificio in base all'idbeacon connesso dal Server
     private class RichiediEdificioTask extends AsyncTask<String,Void,Boolean> {

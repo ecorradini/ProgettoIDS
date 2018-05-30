@@ -62,7 +62,7 @@ public class RVAdapterAule extends RecyclerView.Adapter<RVAdapterAule.CViewHolde
     }
 
     @Override
-    public void onBindViewHolder(RVAdapterAule.CViewHolder cViewHolder, final int position) {
+    public void onBindViewHolder(final RVAdapterAule.CViewHolder cViewHolder, final int position) {
 
         cViewHolder.piano.setText(struttura.get(position).toString());
 
@@ -85,14 +85,16 @@ public class RVAdapterAule extends RecyclerView.Adapter<RVAdapterAule.CViewHolde
                                 ((Client)context).runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        
+
                                     }
                                 });
                             }
                         }.start();
                     }
                 });
+                cViewHolder.textAule.remove(aulaT);
                 cViewHolder.textAule.add(aulaT);
+                cViewHolder.listaAule.removeView(aulaT);
                 cViewHolder.listaAule.addView(aulaT);
             }
 

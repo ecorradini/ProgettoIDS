@@ -68,6 +68,8 @@ public class Client extends AppCompatActivity {
 
         startLoading();
 
+
+
         if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMESSO_LOCATION);
         }
@@ -77,6 +79,7 @@ public class Client extends AppCompatActivity {
         else {
             gestore.coordinaPopolamentoDati();
         }
+
 
         //NOTIFICA
         startService(new Intent(Client.this, Notifica.class));
