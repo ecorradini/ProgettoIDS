@@ -58,8 +58,8 @@ public class Database extends GestoreDati {
                 " FROM "+DBStrings.TABLE_EDIFICIO+","+DBStrings.TABLE_PIANO+","+DBStrings.TABLE_TRONCO+","+DBStrings.TABLE_BEACON+
                 " WHERE "+DBStrings.TABLE_BEACON+"."+DBStrings.COL_TRONCO+"="+DBStrings.TABLE_TRONCO+"."+DBStrings.COL_ID+" AND "+
                 DBStrings.TABLE_TRONCO+"."+DBStrings.COL_PIANO+"="+DBStrings.TABLE_PIANO+"."+DBStrings.COL_NOME+" AND "+
-                DBStrings.TABLE_PIANO+"."+DBStrings.COL_EDIFICIO+"="+DBStrings.TABLE_EDIFICIO+"."+DBStrings.COL_NOME+
-                DBStrings.TABLE_BEACON+"."+DBStrings.COL_ID+"="+idBeacon;
+                DBStrings.TABLE_PIANO+"."+DBStrings.COL_EDIFICIO+"="+DBStrings.TABLE_EDIFICIO+"."+DBStrings.COL_NOME+" AND "+
+                DBStrings.TABLE_BEACON+"."+DBStrings.COL_ID+"='"+idBeacon+"'";
         Cursor res = db.rawQuery(sql,null);
         res.moveToFirst();
         String nEdificio = res.getString(res.getColumnIndex("NOME_EDIFICIO"));

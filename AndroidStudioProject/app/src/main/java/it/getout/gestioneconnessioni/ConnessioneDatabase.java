@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class ConnessioneDatabase extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION=3;
+    private static final int DATABASE_VERSION=5;
 
     //nome del database
     private static final String DATABASE_NAME= "locale";
@@ -24,18 +24,18 @@ public class ConnessioneDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String create_edificio = "CREATE TABLE "+DBStrings.TABLE_EDIFICIO+"("+
+        String create_edificio = "CREATE TABLE IF NOT EXISTS "+DBStrings.TABLE_EDIFICIO+"("+
                 DBStrings.COL_NOME+" TEXT PRIMARY KEY"+")";
-        String create_piano = "CREATE TABLE "+DBStrings.TABLE_PIANO+"("+
+        String create_piano = "CREATE TABLE IF NOT EXISTS "+DBStrings.TABLE_PIANO+"("+
                 DBStrings.COL_NOME+" TEXT PRIMARY KEY,"+
                 DBStrings.COL_EDIFICIO+" TEXT NOT NULL"+")";
-        String create_aula="CREATE TABLE "+DBStrings.TABLE_AULA+"("+
+        String create_aula="CREATE TABLE IF NOT EXISTS "+DBStrings.TABLE_AULA+"("+
                 DBStrings.COL_NOME+" TEXT PRIMARY KEY,"+
                 DBStrings.COL_X+" REAL NOT NULL,"+
-                DBStrings.COL_Y+" REAL) NOT NULL,"+
+                DBStrings.COL_Y+" REAL NOT NULL,"+
                 DBStrings.COL_PIANO+" TEXT NOT NULL,"+
                 DBStrings.COL_ENTRATA+" TEXT"+")";
-        String create_tronco="CREATE TABLE "+DBStrings.TABLE_TRONCO+"("+
+        String create_tronco="CREATE TABLE IF NOT EXISTS "+DBStrings.TABLE_TRONCO+"("+
                 DBStrings.COL_ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"+
                 DBStrings.COL_X+" REAL NOT NULL,"+
                 DBStrings.COL_Y+" REAL NOT NULL,"+
@@ -44,14 +44,14 @@ public class ConnessioneDatabase extends SQLiteOpenHelper {
                 DBStrings.COL_LARGHEZZA+" REAL NOT NULL,"+
                 DBStrings.COL_PIANO+" TEXT NOT NULL,"+
                 DBStrings.COL_LUNGHEZZA+" REAL NOT NULL"+")";
-        String create_beacon="CREATE TABLE "+DBStrings.TABLE_BEACON+"("+
+        String create_beacon="CREATE TABLE IF NOT EXISTS "+DBStrings.TABLE_BEACON+"("+
                 DBStrings.COL_ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"+
                 DBStrings.COL_X+" REAL NOT NULL,"+
                 DBStrings.COL_Y+" REAL NOT NULL,"+
                 DBStrings.COL_TRONCO+" TEXT NOT NULL,"+
-                DBStrings.COL_UTENTI+"INTEGER"+
-                DBStrings.COL_USCITA+"INTEGER"+")";
-        String create_mappa="CREATE TABLE "+DBStrings.TABLE_MAPPA+"("+
+                DBStrings.COL_UTENTI+" INTEGER,"+
+                DBStrings.COL_USCITA+" INTEGER"+")";
+        String create_mappa="CREATE TABLE IF NOT EXISTS "+DBStrings.TABLE_MAPPA+"("+
                 DBStrings.COL_PIANO+" TEXT PRIMARY KEY," +
                 DBStrings.COL_IMMAGINE+" TEXT NOT NULL"+")";
 

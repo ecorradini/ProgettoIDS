@@ -20,13 +20,13 @@ public class DAOBeacon {
 
     //scaricamento di tutti i beacon per ottenimento dati offline EDO
     public static String downloadBeacons(){
-        String json="BEACON:[";
+        String json="\"BEACON\":[";
         try {
             Connection con = Database.getConn();
             Statement stm = con.createStatement();
             ResultSet rs = stm.executeQuery("SELECT * FROM BEACON");
             while (rs.next()){
-                json = json+"\""+rs.getString(ID)+"\":{\"X\":\""+rs.getInt(X)+"\",\"Y\":\""+rs.getInt(Y)+"\",\"TRONCO\":\""+rs.getString(TRONCO)+"\",\"UTENTI\":\""+rs.getInt(UTENTI)+"\",\"USCITA\":\""+rs.getInt(USCITA)+"\"},";
+                json = json+"{\"ID\":\""+rs.getString(ID)+"\",\"X\":\""+rs.getInt(X)+"\",\"Y\":\""+rs.getInt(Y)+"\",\"TRONCO\":\""+rs.getString(TRONCO)+"\",\"UTENTI\":\""+rs.getInt(UTENTI)+"\",\"USCITA\":\""+rs.getInt(USCITA)+"\"},";
             }
             rs.close();
             stm.close();

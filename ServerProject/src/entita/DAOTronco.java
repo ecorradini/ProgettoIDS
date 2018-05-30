@@ -24,13 +24,13 @@ public class DAOTronco {
 
     //scaricamento di tutti i tronchi per ottenimento dati offline EDO
     public static String downloadTronchi(){
-        String json="TRONCHI:[";
+        String json="\"TRONCHI\":[";
         try {
             Connection con = Database.getConn();
             Statement stm = con.createStatement();
             ResultSet rs = stm.executeQuery("SELECT * FROM TRONCO");
             while (rs.next()){
-                json = json+"\""+rs.getInt(ID)+"\":{\"X\":\""+rs.getInt(X)+"\",\"Y\":\""+rs.getInt(Y)+"\",\"XF\":\""+rs.getInt(XF)+"\",\"YF\":\""+rs.getInt(YF)+"\",\"LARGHEZZA\":\""+rs.getInt(LARGHEZZA)+"\",\"PIANO\":\""+rs.getString(PIANO)+"\",\"LUNGHEZZA\":\""+rs.getInt(LUNGHEZZA)+"\"},";
+                json = json+"{\"ID\":\""+rs.getInt(ID)+"\",\"X\":\""+rs.getInt(X)+"\",\"Y\":\""+rs.getInt(Y)+"\",\"XF\":\""+rs.getInt(XF)+"\",\"YF\":\""+rs.getInt(YF)+"\",\"LARGHEZZA\":\""+rs.getInt(LARGHEZZA)+"\",\"PIANO\":\""+rs.getString(PIANO)+"\",\"LUNGHEZZA\":\""+rs.getInt(LUNGHEZZA)+"\"},";
             }
             rs.close();
             stm.close();

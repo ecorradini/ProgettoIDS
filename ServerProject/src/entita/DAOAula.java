@@ -19,13 +19,13 @@ public class DAOAula {
 
     //scaricamento di tutte le aule per ottenimento dati offline EDO
     public static String downloadAule(){
-        String json="AULE:[";
+        String json="\"AULE\":[";
         try {
             Connection con = Database.getConn();
             Statement stm = con.createStatement();
             ResultSet rs = stm.executeQuery("SELECT * FROM AULA");
             while (rs.next()){
-                json = json + "\"" + rs.getString(NOME)+ "\":{\"X\":\""+ rs.getInt(X)+"\",\"Y\":\""+rs.getInt(Y)+"\",\"PIANO\":\""+rs.getString(PIANO)+"\",\"ENTRATA\":\""+rs.getString(ENTRATA)+"\"},";
+                json = json + "{\"NOME\":\"" + rs.getString(NOME)+ "\",\"X\":\""+ rs.getInt(X)+"\",\"Y\":\""+rs.getInt(Y)+"\",\"PIANO\":\""+rs.getString(PIANO)+"\",\"ENTRATA\":\""+rs.getString(ENTRATA)+"\"},";
             }
             rs.close();
             stm.close();

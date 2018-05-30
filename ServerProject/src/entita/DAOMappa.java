@@ -81,7 +81,7 @@ public class DAOMappa {
     }
 
     public static String getBase64Mappe() {
-        String json = "MAPPA:[";
+        String json = "\"MAPPA\":[";
         String path = Server.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("/ServerProject.jar","");
         //String link = DAOMappa.selectMappaByPiano(arg0.getRequestURI().getQuery());
         Connection conn = Database.getConn();

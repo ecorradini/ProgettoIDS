@@ -17,7 +17,7 @@ public class DAOEdificio {
 
     //scaricamento di tutti gli edifici per ottenimento dati offline EDO
     public static String downloadEdicifi(){
-        String json="EDIFICI:[";
+        String json="\"EDIFICI\":[";
         try {
             Connection con = Database.getConn();
             Statement stm = con.createStatement();

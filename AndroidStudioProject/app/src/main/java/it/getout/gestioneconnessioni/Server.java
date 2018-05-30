@@ -68,6 +68,7 @@ public class Server extends GestoreDati
     private static final String SERV_MAPPAPIANO = "/mappapiano?";       //URL tronchi da piano
     private static final String SERV_USCITE = "/uscite?";               //URL beacon uscita edificio
     private static final String SERV_SUMUSER = "/sommautente?";         //UTL aggiunta utente
+    private static final String SERV_DOWNLOADDATABASE = "/downloaddatabase";
 
     private static String BASE_URL;
 
@@ -532,7 +533,7 @@ public class Server extends GestoreDati
             mRequestQueue = new RequestQueue(cache, network);
             mRequestQueue.start();
             //Url per la richiesta del percorso
-            String url = BASE_URL + "/downloaddatabase";
+            String url = BASE_URL + SERV_DOWNLOADDATABASE;
             //Instanzio la richiesta JSON
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 //Alla risposta
@@ -547,7 +548,7 @@ public class Server extends GestoreDati
                         ContentValues auleDaAggiungere = new ContentValues();
                         JSONArray beacon = response.getJSONArray("BEACON");
                         ContentValues beaconDaAggiungere = new ContentValues();
-                        JSONArray mappe = response.getJSONArray("MAPPE");
+                        JSONArray mappe = response.getJSONArray("MAPPA");
                         ContentValues mappeDaAggiungere = new ContentValues();
                         JSONArray tronchi = response.getJSONArray("TRONCHI");
                         ContentValues tronchiDaAggiungere = new ContentValues();
@@ -573,7 +574,7 @@ public class Server extends GestoreDati
                             auleDaAggiungere.put("NOME",nome);
                             auleDaAggiungere.put("X",x);
                             auleDaAggiungere.put("Y",y);
-                            auleDaAggiungere.put("ENTRTA",entrata);}
+                            auleDaAggiungere.put("ENTRATA",entrata);}
 
                         for(int b = 0; b<beacon.length(); b++){
                             JSONObject corrente = beacon.getJSONObject(b);
@@ -612,7 +613,7 @@ public class Server extends GestoreDati
                             tronchiDaAggiungere.put("Y", y);
                             tronchiDaAggiungere.put("XF", xf);
                             tronchiDaAggiungere.put("YF", yf);
-                            tronchiDaAggiungere.put("LARGHEZA", larghezza);
+                            tronchiDaAggiungere.put("LARGHEZZA", larghezza);
                             tronchiDaAggiungere.put("PIANO", piano);
                             tronchiDaAggiungere.put("LUNGHEZZA", lunghezza);}
 
@@ -635,9 +636,13 @@ public class Server extends GestoreDati
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.d("JSON ED ATTUALE ERROR", error.toString());
+                    Log.d("ERRORE DOWNLOADDATABASE", error.toString());
                 }
             });
+            jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    10000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             //Aggiungo la richiesta alla coda
             mRequestQueue.add(jsonObjectRequest);
 

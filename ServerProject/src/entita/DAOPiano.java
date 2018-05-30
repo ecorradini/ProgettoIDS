@@ -15,7 +15,7 @@ public class DAOPiano {
 
     //scaricamento di tutti gli edifici per ottenimento dati offline EDO
     public static String downloadPiani(){
-        String json="PIANI:[";
+        String json="\"PIANI\":[";
         try {
             Connection con = Database.getConn();
             Statement stm = con.createStatement();
