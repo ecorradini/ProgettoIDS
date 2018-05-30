@@ -21,7 +21,7 @@ public class DAOPiano {
             Statement stm = con.createStatement();
             ResultSet rs = stm.executeQuery("SELECT * FROM PIANO");
             while (rs.next()){
-                json = json + "\""+ rs.getInt(NOME) +"\":\"" + rs.getString(EDIFICIO)+"\",";  //prende un piano + edificio e poi passa sotto 'spero'
+                json = json + "{\"NOME\":\""+ rs.getInt(NOME) +"\",\"EDIFICIO\":\"" + rs.getString(EDIFICIO)+"\"},";  //prende un piano + edificio e poi passa sotto 'spero'
             }
             rs.close();
             stm.close();

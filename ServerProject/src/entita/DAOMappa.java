@@ -103,7 +103,7 @@ public class DAOMappa {
                     fileInputStreamReader.read(bytes);
                     encodedMap = Base64.getEncoder().encodeToString(bytes);
 
-                    json = json + "\""+piano+"\":\""+encodedMap+"\",";
+                    json = json + "{\"PIANO\":\""+piano+"\",\"MAPPA\":\""+encodedMap+"\"},";
 
                 } catch (FileNotFoundException e) {
                     // TODO Auto-generated catch block
