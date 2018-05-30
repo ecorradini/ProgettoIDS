@@ -1,29 +1,6 @@
 package it.getout.gestioneconnessioni;
 
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.PointF;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import it.getout.gestioneposizione.Aula;
-import it.getout.gestioneposizione.Beacon;
-import it.getout.gestioneposizione.Edificio;
-import it.getout.gestioneposizione.Piano;
-import it.getout.gestioneposizione.Posizione;
-import it.getout.gestioneposizione.Tronco;
-
-/**
- * Created by Alessandro on 01/02/2018.
- */
-
 public class DBStrings {
-
-
-
     //nomi delle tabelle
     public static final String TABLE_EDIFICIO="EDIFICIO";
     public static final String TABLE_PIANO="PIANO";
@@ -47,8 +24,6 @@ public class DBStrings {
     public static final String COL_ENTRATA="ENTRATA";
     public static final String COL_LUNGHEZZA="LUNGHEZZA";
     public static final String COL_USCITA="USCITA";
-
-
-
+    public static final String COL_UTENTI="UTENTI";
 }
 

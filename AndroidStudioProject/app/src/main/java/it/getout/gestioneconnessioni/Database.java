@@ -89,22 +89,18 @@ public class Database extends GestoreDati {
         return new Piano(nPiano);
     }
 
-    //passandogli un edificio ed un piano mi deve restituire la stringa in base64 dell'immagine del piano
+    //passandogli un piano mi deve restituire la stringa in base64 dell'immagine del piano
     @Override
     public Bitmap richiediMappaPiano(String pianoAttuale) {
-
         SQLiteDatabase db = connessione.getReadableDatabase();
-
         String sql = "SELECT "+DBStrings.COL_IMMAGINE+
                 " FROM "+DBStrings.TABLE_MAPPA+
                 " WHERE "+DBStrings.COL_PIANO+"="+pianoAttuale;
-
         Cursor res = db.rawQuery(sql,null);
         res.moveToFirst();
         String nImage = res.getString(res.getColumnIndex(DBStrings.COL_IMMAGINE));
         res.close();
         db.close();
-
         byte[] decodedString = Base64.decode(nImage, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }

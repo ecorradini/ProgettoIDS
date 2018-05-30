@@ -25,31 +25,35 @@ public class ConnessioneDatabase extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String create_edificio = "CREATE TABLE "+DBStrings.TABLE_EDIFICIO+"("+
-                DBStrings.COL_NOME+" VARCHAR(20) PRIMARY KEY"+")";
+                DBStrings.COL_NOME+" TEXT PRIMARY KEY"+")";
         String create_piano = "CREATE TABLE "+DBStrings.TABLE_PIANO+"("+
-                DBStrings.COL_NOME+" VARCHAR(20) PRIMARY KEY,"+
-                DBStrings.COL_EDIFICIO+" VARCHAR(20) NOT NULL"+")";
+                DBStrings.COL_NOME+" TEXT PRIMARY KEY,"+
+                DBStrings.COL_EDIFICIO+" TEXT NOT NULL"+")";
         String create_aula="CREATE TABLE "+DBStrings.TABLE_AULA+"("+
-                DBStrings.COL_NOME+" VARCHAR(20) PRIMARY KEY,"+
-                DBStrings.COL_X+" FLOAT(6,2) NOT NULL,"+
-                DBStrings.COL_Y+" FLOAT(6,2) NOT NULL,"+
-                DBStrings.COL_PIANO+" VARCHAR(20) NOT NULL"+")";
+                DBStrings.COL_NOME+" TEXT PRIMARY KEY,"+
+                DBStrings.COL_X+" REAL NOT NULL,"+
+                DBStrings.COL_Y+" REAL) NOT NULL,"+
+                DBStrings.COL_PIANO+" TEXT NOT NULL,"+
+                DBStrings.COL_ENTRATA+" TEXT"+")";
         String create_tronco="CREATE TABLE "+DBStrings.TABLE_TRONCO+"("+
                 DBStrings.COL_ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"+
-                DBStrings.COL_X+" FLOAT(6,2) NOT NULL,"+
-                DBStrings.COL_Y+" FLOAT(6,2) NOT NULL,"+
-                DBStrings.COL_XF+" FLOAT(6,2) NOT NULL,"+
-                DBStrings.COL_YF+" FLOAT(6,2) NOT NULL,"+
-                DBStrings.COL_LARGHEZZA+" FLOAT(8,4) NOT NULL,"+
-                DBStrings.COL_PIANO+" VARCHAR(20) NOT NULL"+")";
+                DBStrings.COL_X+" REAL NOT NULL,"+
+                DBStrings.COL_Y+" REAL NOT NULL,"+
+                DBStrings.COL_XF+" REAL NOT NULL,"+
+                DBStrings.COL_YF+" REAL NOT NULL,"+
+                DBStrings.COL_LARGHEZZA+" REAL NOT NULL,"+
+                DBStrings.COL_PIANO+" TEXT NOT NULL,"+
+                DBStrings.COL_LUNGHEZZA+" REAL NOT NULL"+")";
         String create_beacon="CREATE TABLE "+DBStrings.TABLE_BEACON+"("+
                 DBStrings.COL_ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"+
-                DBStrings.COL_X+" FLOAT(6,2) NOT NULL,"+
-                DBStrings.COL_Y+" FLOAT(6,2) NOT NULL,"+
-                DBStrings.COL_TRONCO+" VARCHAR(20) NOT NULL"+")";
+                DBStrings.COL_X+" REAL NOT NULL,"+
+                DBStrings.COL_Y+" REAL NOT NULL,"+
+                DBStrings.COL_TRONCO+" TEXT NOT NULL,"+
+                DBStrings.COL_UTENTI+"INTEGER"+
+                DBStrings.COL_USCITA+"INTEGER"+")";
         String create_mappa="CREATE TABLE "+DBStrings.TABLE_MAPPA+"("+
-                DBStrings.COL_IMMAGINE+" LONGTEXT NOT NULL,"+
-                DBStrings.COL_PIANO+" VARCHAR(20) PRIMARY KEY"+")";
+                DBStrings.COL_PIANO+" TEXT PRIMARY KEY," +
+                DBStrings.COL_IMMAGINE+" TEXT NOT NULL"+")";
 
         sqLiteDatabase.execSQL(create_edificio);
         sqLiteDatabase.execSQL(create_piano);
