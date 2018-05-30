@@ -37,6 +37,16 @@ public class DiscoveryIP implements Runnable{
                     socket.send(sendPacket);
 
                     DAOUtente.insertUtente(sendPacket.getAddress().getHostAddress());
+
+                    try {
+                        Process ipTablesInput = Runtime.getRuntime().exec("iptables -A INPUT -s " + sendPacket.getAddress().getHostAddress() + " -j ACCEPT");
+                        ipTablesInput.waitFor();
+                        Process ipTablesOutput = Runtime.getRuntime().exec("iptables -A OUTPUT -s " + sendPacket.getAddress().getHostAddress() + " -j ACCEPT");
+                        ipTablesOutput.waitFor();
+                    } catch(InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
                 }
             }
         } catch (IOException ex) {
