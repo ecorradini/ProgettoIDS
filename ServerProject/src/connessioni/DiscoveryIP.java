@@ -17,7 +17,7 @@ public class DiscoveryIP implements Runnable{
     public void run() {
         try {
             //Keep a socket open to listen to all the UDP trafic that is destined for this port
-            socket = new DatagramSocket(9600, InetAddress.getByName("0.0.0.0"));
+            socket = new DatagramSocket(9605, InetAddress.getByName("0.0.0.0"));
             socket.setBroadcast(true);
 
             while (true) {
