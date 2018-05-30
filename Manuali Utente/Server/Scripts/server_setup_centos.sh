@@ -24,6 +24,9 @@ mysql -uroot -p$rootpasswd -e "FLUSH PRIVILEGES;"
 wget https://www.dropbox.com/s/nh0oxf3fuyfh4bn/getout_dump.sql
 mysql -u$username -p$rootpasswd getoutdb < getout_dump.sql
 rm getout_dump.sql
+wget https://www.dropbox.com/s/e15rqfcpujan3j0/firewall.sh
+sh firewall.sh
+rm firewall.sh
 wget https://www.dropbox.com/s/shquf455ttlzibj/Server.tar.xz
 tar xf Server.tar.xz
 rm Server.tar.xz
