@@ -45,7 +45,9 @@ public class ConsoleDiComando implements Runnable {
                             fineTestaEmergenza(tronco);
                         }
                         else if(command.substring(0,3).equals("csv")) {
-                            new CSVImport(command.substring(4,command.length()-1).toUpperCase());
+                            System.out.println("Inizio l'importazione");
+                            new CSVImport(command.substring(4,command.length()).toUpperCase());
+                            System.out.println("Ho terminato l'importazione");
                         }
                     } catch(Exception e) {
                         System.out.println("Comando non trovato!");

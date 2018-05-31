@@ -33,12 +33,17 @@ public class CSVImport extends JFrame {
                     st = new StringTokenizer(strLine, ";");
                     String[] dataToInsert = new String[st.countTokens()];
                     for(int i=0; i<dataToInsert.length; i++) {
-                        dataToInsert[i] = st.nextToken().toString();
+                        dataToInsert[i] = st.nextToken();
                     }
 
                     try {
                         if (tabella.equals("AULA")) {
-                            DAOAula.insertAula(dataToInsert[0], dataToInsert[1], dataToInsert[2], dataToInsert[3], dataToInsert[4]);
+                            if(dataToInsert.length==5) {
+                                DAOAula.insertAula(dataToInsert[0], dataToInsert[1], dataToInsert[2], dataToInsert[3], dataToInsert[4]);
+                            }
+                            else {
+                                DAOAula.insertAula(dataToInsert[0], dataToInsert[1], dataToInsert[2], dataToInsert[3], null);
+                            }
                         }
                         else if(tabella.equals("BEACON")) {
                             DAOBeacon.insertBeacon(dataToInsert[0], dataToInsert[1], dataToInsert[2], dataToInsert[3], dataToInsert[4]);

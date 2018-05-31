@@ -147,7 +147,13 @@ public class DAOAula {
     public static void insertAula(String nome,String piano, String X, String Y, String entrata) throws SQLException {
         Connection conn = Database.getConn();
 
-        String query = "INSERT INTO " + TABLE_AULA + " VALUES('" + nome + "','"+ X + "','" + Y +"','" + piano + "','" + entrata + "')";
+        String query="";
+        if(entrata!=null) {
+            query = "INSERT INTO " + TABLE_AULA + " VALUES('" + nome + "','" + X + "','" + Y + "','" + piano + "','" + entrata + "')";
+        }
+        else {
+            query = "INSERT INTO " + TABLE_AULA + "(NOME,X,Y,PIANO) VALUES('" + nome + "','" + X + "','" + Y + "','" + piano + "')";
+        }
         Statement stm = conn.createStatement();
         stm.executeUpdate(query);
 
