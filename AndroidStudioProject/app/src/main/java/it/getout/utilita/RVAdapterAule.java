@@ -1,5 +1,6 @@
 package it.getout.utilita;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.transition.AutoTransition;
 import android.support.transition.TransitionManager;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 
 import it.getout.Client;
 import it.getout.R;
+import it.getout.fragments.FragmentListaAule;
 import it.getout.gestioneposizione.Aula;
 import it.getout.gestioneposizione.Piano;
 import it.getout.gestioneposizione.Tronco;
@@ -61,6 +63,7 @@ public class RVAdapterAule extends RecyclerView.Adapter<RVAdapterAule.CViewHolde
         return new CViewHolder(v);
     }
 
+    @SuppressLint("ResourceType")
     @Override
     public void onBindViewHolder(final RVAdapterAule.CViewHolder cViewHolder, final int position) {
 
@@ -73,9 +76,13 @@ public class RVAdapterAule extends RecyclerView.Adapter<RVAdapterAule.CViewHolde
             for(int i=0; i<aule.size(); i++) {
                 final int index = i;
                 TextView aulaT = new TextView(context);
+
+                aulaT.setBackground(context.getResources().getDrawable(R.drawable.aula_list_background));
+
                 aulaT.setText(aule.get(i).getNome());
                 aulaT.setTextSize(16);
                 aulaT.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+
                 aulaT.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
