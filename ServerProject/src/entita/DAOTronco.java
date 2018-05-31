@@ -229,7 +229,7 @@ public class DAOTronco {
     public static int insertTronco(String X, String Y, String XF, String YF, String lunghezza, String larghezza, String piano) throws SQLException {
         Connection conn = Database.getConn();
 
-        String query = "INSERT INTO " + TABLE_TRONCO + "("+X+","+Y+","+XF+","+YF+","+LARGHEZZA+","+LUNGHEZZA+") VALUES('" + X + "','"+ Y + "','" + XF +"','" + YF + "','" + larghezza + "','" + piano + "','" + lunghezza +"')";
+        String query = "INSERT INTO " + TABLE_TRONCO + "(X,Y,XF,YF,"+LARGHEZZA+","+LUNGHEZZA+") VALUES('" + X + "','"+ Y + "','" + XF +"','" + YF + "','" + larghezza + "','" + piano + "','" + lunghezza +"')";
         Statement stm = conn.createStatement();
         stm.executeUpdate(query,Statement.RETURN_GENERATED_KEYS);
         String queryID = "SELECT MAX("+ID+") AS LASTID FROM "+TABLE_TRONCO;
