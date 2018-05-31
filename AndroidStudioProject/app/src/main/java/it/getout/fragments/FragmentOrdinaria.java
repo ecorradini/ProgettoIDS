@@ -18,7 +18,7 @@ import it.getout.gestioneposizione.Tronco;
 public class FragmentOrdinaria extends Fragment {
 
     public View view;
-    public FloatingActionButton button_ordinaria;
+    private FloatingActionButton button_ordinaria;
 
     public static FragmentOrdinaria newInstance() {
         return new FragmentOrdinaria();
@@ -33,7 +33,7 @@ public class FragmentOrdinaria extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_ordinaria, container, false);
-            button_ordinaria = (FloatingActionButton) view.findViewById(R.id.floating_botton);
+            button_ordinaria = (FloatingActionButton)view.findViewById(R.id.floating_botton);
 
             getFragmentManager().beginTransaction().replace(R.id.mappa_container, ((Client)getActivity()).getMappaFragment()).addToBackStack(null).commit();
 
@@ -57,6 +57,7 @@ public class FragmentOrdinaria extends Fragment {
                             button_ordinaria.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+                                    button_ordinaria.setVisibility(View.INVISIBLE);
                                     getFragmentManager().beginTransaction().replace(R.id.mappa_container, FragmentListaAule.newInstance()).addToBackStack(null).commit();
                                 }
                             });
