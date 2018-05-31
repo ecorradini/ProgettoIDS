@@ -1,7 +1,8 @@
 package utilita;
 
 import entita.DAOParametri;
-import gui.CSVImport;
+import entita.Tronco;
+import gui.ImportaCSV;
 import gui.GUIAmministrazione;
 import gui.GUIParametri;
 
@@ -26,6 +27,7 @@ public class ConsoleDiComando implements Runnable {
                             System.out.println("'e -f id_tronco' --> fine test emergenza sul tronco id_tronco");
                             System.out.println("'amm' --> avvio interfaccia di amministrazione dati del server");
                             System.out.println("'par' --> avvio interfaccia di modifica dei parametri dei tronchi");
+                            System.out.println("'pesi peso_vulnerabilita peso_rischiovita peso_presenzafumo peso_lunghezza peso_los' --> aggiornamento valore dei pesi");
                             System.out.println("'csv edificio' --> caricamento CSV edifici");
                             System.out.println("'csv piano' --> caricamento CSV piani");
                             System.out.println("'csv tronco' --> caricamento CSV tronchi");
@@ -46,8 +48,12 @@ public class ConsoleDiComando implements Runnable {
                         }
                         else if(command.substring(0,3).equals("csv")) {
                             System.out.println("Inizio l'importazione");
-                            new CSVImport(command.substring(4,command.length()).toUpperCase());
+                            new ImportaCSV(command.substring(4,command.length()).toUpperCase());
                             System.out.println("Ho terminato l'importazione");
+                        }
+                        else if(command.substring(0,4).equals("pesi")) {
+                            String pesi[] = command.substring(5).split(" ");
+                            Tronco.setWeight(Float.parseFloat(pesi[0]),Float.parseFloat(pesi[1]),Float.parseFloat(pesi[2]),Float.parseFloat(pesi[3]),Float.parseFloat(pesi[4]));
                         }
                     } catch(Exception e) {
                         System.out.println("Comando non trovato!");
