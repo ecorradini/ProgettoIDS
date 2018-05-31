@@ -55,8 +55,8 @@ public class CSVImport extends JFrame {
                             DAOPiano.insertPiano(dataToInsert[0],dataToInsert[1]);
                         }
                         else if(tabella.equals("TRONCO")) {
-                            DAOTronco.insertTronco(dataToInsert[0], dataToInsert[1], dataToInsert[2], dataToInsert[3], dataToInsert[4],dataToInsert[5],dataToInsert[6]);
-                            DAOParametri.insertParametri(dataToInsert[0]);
+                            int id = DAOTronco.insertTronco(dataToInsert[0], dataToInsert[1], dataToInsert[2], dataToInsert[3], dataToInsert[4],dataToInsert[5],dataToInsert[6]);
+                            DAOParametri.insertParametri(String.valueOf(id));
                         }
                     } catch(Exception e) {
                         e.printStackTrace();
