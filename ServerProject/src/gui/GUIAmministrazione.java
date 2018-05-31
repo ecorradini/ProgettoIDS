@@ -1044,7 +1044,9 @@ public class GUIAmministrazione extends JFrame {
                         int id = 0;
                         try {
                             id = DAOTronco.insertTronco(tX.getText(),tY.getText(),tXF.getText(),tYF.getText(),tLunghezza.getText(),tLarghezza.getText(),(String)comboPiani.getSelectedItem());
+                            DAOParametri.insertParametri(String.valueOf(id));
                         } catch (SQLException e1) {
+                            e1.printStackTrace();
                         }
                         finally {
                             comboTronchi.addItem(id);

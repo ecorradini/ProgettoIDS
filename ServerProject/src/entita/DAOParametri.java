@@ -190,4 +190,14 @@ public class DAOParametri {
         }
     }
 
+    public static void insertParametri(String tronco) throws SQLException {
+        Connection conn = Database.getConn();
+
+        String query = "INSERT INTO " + TABLE_PARAMETRI + " VALUES(" + tronco + ",0,0,0)";
+        Statement stm = conn.createStatement();
+        stm.executeUpdate(query);
+
+        stm.close();
+    }
+
 }

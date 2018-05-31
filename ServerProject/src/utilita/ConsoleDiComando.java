@@ -1,6 +1,7 @@
 package utilita;
 
 import entita.DAOParametri;
+import gui.CSVImport;
 import gui.GUIAmministrazione;
 import gui.GUIParametri;
 
@@ -25,6 +26,11 @@ public class ConsoleDiComando implements Runnable {
                             System.out.println("'e -f id_tronco' --> fine test emergenza sul tronco id_tronco");
                             System.out.println("'amm' --> avvio interfaccia di amministrazione dati del server");
                             System.out.println("'par' --> avvio interfaccia di modifica dei parametri dei tronchi");
+                            System.out.println("'csv edificio' --> caricamento CSV edifici");
+                            System.out.println("'csv piano' --> caricamento CSV piani");
+                            System.out.println("'csv tronco' --> caricamento CSV tronchi");
+                            System.out.println("'csv aula' --> caricamento CSV aule");
+                            System.out.println("'csv beacon' --> caricamento CSV beacon");
                             System.out.println();
                         }
                         if (command.equals("amm")) {
@@ -37,6 +43,9 @@ public class ConsoleDiComando implements Runnable {
                         } else if (command.substring(0, 4).equals("e -f")) {
                             int tronco = Integer.parseInt(command.substring(5));
                             fineTestaEmergenza(tronco);
+                        }
+                        else if(command.substring(0,3).equals("csv")) {
+                            new CSVImport(command.substring(4,command.length()-1).toUpperCase());
                         }
                     } catch(Exception e) {
                         System.out.println("Comando non trovato!");
