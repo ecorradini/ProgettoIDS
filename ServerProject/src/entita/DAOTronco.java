@@ -145,6 +145,7 @@ public class DAOTronco {
                        " TRONCO.Y  as YINIZIO," +
                        " TRONCO.XF as XFINIZIO," +
                        " TRONCO.YF as YFINIZIO," +
+                       " TRONCO.PIANO as PIANOINIZIO"+
                        " FROM TRONCO" +
                        " WHERE TRONCO.ID = "+ t.getID() +
                        ") AS TRONCOINIZIO" +
@@ -156,7 +157,8 @@ public class DAOTronco {
                        " AND TRONCO.Y=TRONCOINIZIO.YFINIZIO)" +
                        " OR (TRONCO.XF=TRONCOINIZIO.XFINIZIO" +
                        " AND TRONCO.YF=TRONCOINIZIO.YFINIZIO))" +
-                       " AND TRONCO.ID <> TRONCOINIZIO.IDINIZIO";
+                       " AND TRONCO.ID <> TRONCOINIZIO.IDINIZIO" +
+                       " AND TRONCO.PIANO=TRONCOINIZIO.PIANOINIZIO";
 
         try {
             Statement stm = conn.createStatement();
