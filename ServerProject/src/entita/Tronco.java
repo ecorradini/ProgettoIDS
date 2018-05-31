@@ -7,7 +7,7 @@ import java.util.HashMap;
 public class Tronco {
     private int id;
     private float x,y,xf,yf,larghezza, lunghezza;
-    private final float[] weight={0.2f,0.2f,0.2f,0.2f,0.2f}; // supponendo che i primi tre valori siano legati ai "parametri", gli altri due alla "lunghezza" e "los"
+    private static float[] weight; // supponendo che i primi tre valori siano legati ai "parametri", gli altri due alla "lunghezza" e "los"
 
     public Tronco(int id, float x, float y, float xf, float yf, float larghezza, float lunghezza) {
         this.id = id;
@@ -17,6 +17,10 @@ public class Tronco {
         this.yf = yf;
         this.larghezza = larghezza;
         this.lunghezza = lunghezza;
+    }
+
+    public static void setWeight(float w1, float w2, float w3, float w4, float w5) {
+        weight = new float[]{w1,w2,w3,w4,w5};
     }
 
     public ArrayList<Tronco> richiediAdiacenti(HashMap<Integer,Tronco> tronchiPiano) {

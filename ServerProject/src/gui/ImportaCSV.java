@@ -13,9 +13,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
-public class CSVImport extends JFrame {
+public class ImportaCSV extends JFrame {
 
-    public CSVImport(String tabella) {
+    public ImportaCSV(String tabella) {
         JFileChooser csvOpen = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV files (*csv)", "csv");
         csvOpen.setFileFilter(filter);
