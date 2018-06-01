@@ -47,47 +47,16 @@ public class Database extends GestoreDati {
         Iterator iterator = hashMap.entrySet().iterator();
         while (iterator.hasNext()){
             Map.Entry entry = (Map.Entry)iterator.next();
-            db.insert((String)entry.getKey(),null,(ContentValues)entry.getValue());
+            String chiave = (String)entry.getKey();
+            String nomeTabella = chiave.split(",")[0];
+            db.insert(nomeTabella,null,(ContentValues)entry.getValue());
         }
-    }
-
-
-    public String tableToString(SQLiteDatabase db, String tableName) {
-        Log.d("","tableToString called");
-        String tableString = String.format("Table %s:\n", tableName);
-        Cursor allRows  = db.rawQuery("SELECT * FROM " + tableName, null);
-        tableString += cursorToString(allRows);
-        return tableString;
-    }
-
-    public String cursorToString(Cursor cursor){
-        String cursorString = "";
-        if (cursor.moveToFirst() ){
-            String[] columnNames = cursor.getColumnNames();
-            for (String name: columnNames)
-                cursorString += String.format("%s ][ ", name);
-            cursorString += "\n";
-            do {
-                for (String name: columnNames) {
-                    cursorString += String.format("%s ][ ",
-                            cursor.getString(cursor.getColumnIndex(name)));
-                }
-                cursorString += "\n";
-            } while (cursor.moveToNext());
-        }
-        return cursorString;
     }
 
 
     @Override
     public Edificio richiediEdificioAttuale(String idBeacon) {   //tipo edificio ancora non è dato sapere
         SQLiteDatabase db = connessione.getReadableDatabase();
-        String ciao = tableToString(db,DBStrings.TABLE_EDIFICIO);
-        String suca = tableToString(db,DBStrings.TABLE_PIANO);
-        String minchia = tableToString(db,DBStrings.TABLE_BEACON);
-        Log.e("sqlite",ciao);
-        Log.e("sqlite2",suca);
-        Log.e("sqlite3",minchia);
 
         String sql = "SELECT "+DBStrings.TABLE_EDIFICIO+"."+DBStrings.COL_NOME+" AS NOME_EDIFICIO"+
                 " FROM "+DBStrings.TABLE_EDIFICIO+","+DBStrings.TABLE_PIANO+","+DBStrings.TABLE_TRONCO+","+DBStrings.TABLE_BEACON+
@@ -99,7 +68,6 @@ public class Database extends GestoreDati {
         res.moveToFirst();
         String nEdificio = res.getString(res.getColumnIndex("NOME_EDIFICIO"));
         res.close();
-        db.close();
         return new Edificio(nEdificio);
     }
 
@@ -119,7 +87,6 @@ public class Database extends GestoreDati {
         res.moveToFirst();
         String nPiano = res.getString(res.getColumnIndex("NOME_PIANO"));
         res.close();
-        db.close();
 
         return new Piano(nPiano);
     }
@@ -135,7 +102,6 @@ public class Database extends GestoreDati {
         res.moveToFirst();
         String nImage = res.getString(res.getColumnIndex(DBStrings.COL_IMMAGINE));
         res.close();
-        db.close();
         byte[] decodedString = Base64.decode(nImage, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
@@ -159,13 +125,12 @@ public class Database extends GestoreDati {
         //Beacon(String id, PointF posizione)
         while(res.moveToNext()) {
             listaBeacon.put(        //metodo put per riempire un'hashmap
-                    res.getString(res.getColumnIndex(DBStrings.COL_ID)),
+                    res.getString(res.getColumnIndex("ID_BEACON")),
                     new Beacon(
                             res.getString(res.getColumnIndex("ID_BEACON")),
                             new PointF(res.getFloat(res.getColumnIndex("X_BEACON")), res.getFloat(res.getColumnIndex("Y_BEACON")))));
         }
         res.close();
-        db.close();
 
         return listaBeacon;
 
@@ -190,7 +155,6 @@ public class Database extends GestoreDati {
                     res.getFloat(res.getColumnIndex(DBStrings.COL_LUNGHEZZA))));
         }
         res.close();
-        db.close();
 
         return listaTronchi;
 
@@ -228,6 +192,8 @@ public class Database extends GestoreDati {
             risultato.add(res.getInt(res.getColumnIndex("ID")));
         }
 
+        res.close();
+
         if(risultato.size()>0) {
             return risultato;
         }
@@ -250,6 +216,8 @@ public class Database extends GestoreDati {
             tronchi.add(res.getFloat(res.getColumnIndex("PF")));
         }
 
+        res.close();
+
         return tronchi;
     }
 
@@ -264,6 +232,8 @@ public class Database extends GestoreDati {
 
         persone = res.getInt(res.getColumnIndex("UTENTI"));
 
+        res.close();
+
         return persone;
 
     }
@@ -273,18 +243,16 @@ public class Database extends GestoreDati {
     public ArrayList<Aula> richiediAulePiano(String nomePiano) {
         SQLiteDatabase db = connessione.getReadableDatabase();
 
-        String sql = " SELECT "+DBStrings.COL_NOME+","+DBStrings.COL_X+","+DBStrings.COL_Y+
-                " FROM "+DBStrings.TABLE_AULA+ " WHERE "+DBStrings.COL_PIANO+"="+nomePiano;
+        String sql = " SELECT "+DBStrings.COL_NOME+","+DBStrings.COL_ENTRATA+
+                " FROM "+DBStrings.TABLE_AULA+ " WHERE "+DBStrings.COL_PIANO+"='"+nomePiano+"'";
 
         Cursor res = db.rawQuery(sql,null);
         ArrayList<Aula> listaAule = new ArrayList<>();
         res.moveToFirst();
         while(res.moveToNext()) {
-            listaAule.add(new Aula(res.getString(res.getColumnIndex(DBStrings.COL_NOME)),
-                    res.getString(res.getColumnIndex(DBStrings.COL_ENTRATA))));
+            listaAule.add(new Aula(res.getString(res.getColumnIndex(DBStrings.COL_NOME)),res.getString(res.getColumnIndex(DBStrings.COL_ENTRATA))));
         }
         res.close();
-        db.close();
 
         return listaAule;
     }
@@ -294,7 +262,7 @@ public class Database extends GestoreDati {
     public ArrayList<Piano> richiediPianiEdificio(String nomeEdificio) {
         SQLiteDatabase db = connessione.getReadableDatabase();
 
-        String sql = " SELECT "+DBStrings.COL_NOME+ " FROM "+DBStrings.TABLE_PIANO+ " WHERE "+DBStrings.COL_EDIFICIO+"="+nomeEdificio;
+        String sql = " SELECT "+DBStrings.COL_NOME+ " FROM "+DBStrings.TABLE_PIANO+ " WHERE "+DBStrings.COL_EDIFICIO+"='"+nomeEdificio+"'";
 
         Cursor res = db.rawQuery(sql,null);
         ArrayList<Piano> listaPiani = new ArrayList<>();
@@ -303,7 +271,6 @@ public class Database extends GestoreDati {
             listaPiani.add(new Piano(res.getString(res.getColumnIndex(DBStrings.COL_NOME))));
         }
         res.close();
-        db.close();
 
         return listaPiani;
 
@@ -320,7 +287,6 @@ public class Database extends GestoreDati {
         String x = res.getString(res.getColumnIndex(DBStrings.COL_X));
         String y = res.getString(res.getColumnIndex(DBStrings.COL_Y));
         res.close();
-        db.close();
 
         return new Beacon(idBeacon,new PointF(Float.parseFloat(x),Float.parseFloat(y)));
     }
@@ -364,7 +330,6 @@ public class Database extends GestoreDati {
         }
 
         res.close();
-        db.close();
 
         return tronchiDaAttraversare;
     }
@@ -380,14 +345,28 @@ public class Database extends GestoreDati {
         res.moveToFirst();
         int tronco = res.getInt(res.getColumnIndex(DBStrings.COL_TRONCO));
         res.close();
-        db.close();
 
         return tronco;
     }
 
     @Override
     public ArrayList<String> richiediUsciteEdificio(String edificio) {
-        return null;
+        SQLiteDatabase db = connessione.getReadableDatabase();
+        String query = "SELECT "+DBStrings.TABLE_BEACON+"."+DBStrings.COL_ID+" AS ID"+
+                " FROM "+DBStrings.TABLE_BEACON+","+DBStrings.TABLE_TRONCO+","+DBStrings.TABLE_PIANO+
+                " WHERE "+DBStrings.TABLE_BEACON+"."+DBStrings.COL_TRONCO+"="+DBStrings.TABLE_TRONCO+"."+DBStrings.COL_ID+
+                " AND "+DBStrings.TABLE_TRONCO+"."+DBStrings.COL_PIANO+"="+DBStrings.TABLE_PIANO+"."+DBStrings.COL_NOME+
+                " AND "+DBStrings.TABLE_PIANO+"."+DBStrings.COL_EDIFICIO+"='"+edificio+"'"+
+                " AND "+DBStrings.COL_USCITA+"=1";
+
+        Cursor res = db.rawQuery(query,null);
+        ArrayList<String> usciteEdificio = new ArrayList<>();
+        while(res.moveToNext()) {
+            usciteEdificio.add(res.getString(res.getColumnIndex(DBStrings.COL_ID)));
+        }
+        res.close();
+
+        return usciteEdificio;
     }
 }
 

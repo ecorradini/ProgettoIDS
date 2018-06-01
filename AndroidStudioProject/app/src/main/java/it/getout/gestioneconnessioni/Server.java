@@ -541,30 +541,34 @@ public class Server extends GestoreDati
                 public void onResponse(JSONObject response) {
                     try {
                         JSONArray edifici = response.getJSONArray("EDIFICI");
-                        ContentValues edificiDaAggiungere = new ContentValues();
                         JSONArray piani = response.getJSONArray("PIANI");
-                        ContentValues pianiDaAggiungere = new ContentValues();
                         JSONArray aule = response.getJSONArray("AULE");
-                        ContentValues auleDaAggiungere = new ContentValues();
                         JSONArray beacon = response.getJSONArray("BEACON");
-                        ContentValues beaconDaAggiungere = new ContentValues();
                         JSONArray mappe = response.getJSONArray("MAPPA");
-                        ContentValues mappeDaAggiungere = new ContentValues();
+
                         JSONArray tronchi = response.getJSONArray("TRONCHI");
-                        ContentValues tronchiDaAggiungere = new ContentValues();
 
+
+                        HashMap<String,ContentValues> hashMap= new HashMap<>();
                         for (int e = 0; e<edifici.length(); e++){
+                            ContentValues edificiDaAggiungere = new ContentValues();
                             String nome = edifici.getString(e);
-                            edificiDaAggiungere.put("NOME",nome);}
+                            edificiDaAggiungere.put("NOME",nome);
+                            hashMap.put("EDIFICIO,"+e,edificiDaAggiungere);
+                        }
 
-                        for (int p = 0; p<piani.length(); p++){
+                        for (int p = 0; p<piani.length(); p++) {
+                            ContentValues pianiDaAggiungere = new ContentValues();
                             JSONObject corrente = piani.getJSONObject(p);
                             String nome = corrente.getString("NOME");
                             String edificio = corrente.getString("EDIFICIO");
                             pianiDaAggiungere.put("NOME",nome);
-                            pianiDaAggiungere.put("EDIFICIO",edificio);}
+                            pianiDaAggiungere.put("EDIFICIO",edificio);
+                            hashMap.put("PIANO,"+p,pianiDaAggiungere);
+                        }
 
                         for (int a = 0; a<aule.length(); a++){
+                            ContentValues auleDaAggiungere = new ContentValues();
                             JSONObject corrente = aule.getJSONObject(a);
                             String nome = corrente.getString("NOME");
                             float x = Float.parseFloat(corrente.getString("X"));
@@ -575,9 +579,12 @@ public class Server extends GestoreDati
                             auleDaAggiungere.put("X",x);
                             auleDaAggiungere.put("Y",y);
                             auleDaAggiungere.put("PIANO",piano);
-                            auleDaAggiungere.put("ENTRATA",entrata);}
+                            auleDaAggiungere.put("ENTRATA",entrata);
+                            hashMap.put("AULA,"+a,auleDaAggiungere);
+                        }
 
                         for(int b = 0; b<beacon.length(); b++){
+                            ContentValues beaconDaAggiungere = new ContentValues();
                             JSONObject corrente = beacon.getJSONObject(b);
                             String id = corrente.getString("ID");
                             float x = Float.parseFloat(corrente.getString("X"));
@@ -585,23 +592,27 @@ public class Server extends GestoreDati
                             String tronco = corrente.getString("TRONCO");
                             int utenti = Integer.parseInt(corrente.getString("UTENTI"));
                             int uscita = Integer.parseInt(corrente.getString("USCITA"));
-
                             beaconDaAggiungere.put("ID",id);
                             beaconDaAggiungere.put("X",x);
                             beaconDaAggiungere.put("Y",y);
                             beaconDaAggiungere.put("TRONCO",tronco);
                             beaconDaAggiungere.put("UTENTI",utenti);
                             beaconDaAggiungere.put("USCITA",uscita);
+                            hashMap.put("BEACON,"+b,beaconDaAggiungere);
                             }
 
                         for(int m =0; m<mappe.length();m++){
+                            ContentValues mappeDaAggiungere = new ContentValues();
                             JSONObject corrente = mappe.getJSONObject(m);
                             String piano = corrente.getString("PIANO");
                             String mappa = corrente.getString("MAPPA");
                             mappeDaAggiungere.put("PIANO", piano);
-                            mappeDaAggiungere.put("MAPPA",mappa);}
+                            mappeDaAggiungere.put("MAPPA",mappa);
+                            hashMap.put("MAPPA,"+m,mappeDaAggiungere);
+                        }
 
                         for(int t=0; t<tronchi.length(); t++){
+                            ContentValues tronchiDaAggiungere = new ContentValues();
                             JSONObject corrente = tronchi.getJSONObject(t);
                             int id = Integer.parseInt(corrente.getString("ID"));
                             float x = Float.parseFloat(corrente.getString("X"));
@@ -618,15 +629,9 @@ public class Server extends GestoreDati
                             tronchiDaAggiungere.put("YF", yf);
                             tronchiDaAggiungere.put("LARGHEZZA", larghezza);
                             tronchiDaAggiungere.put("PIANO", piano);
-                            tronchiDaAggiungere.put("LUNGHEZZA", lunghezza);}
-
-                        HashMap<String,ContentValues> hashMap= new HashMap<>();
-                        hashMap.put("EDIFICIO",edificiDaAggiungere);
-                        hashMap.put("PIANO",pianiDaAggiungere);
-                        hashMap.put("AULA",auleDaAggiungere);
-                        hashMap.put("BEACON",beaconDaAggiungere);
-                        hashMap.put("TRONCO",tronchiDaAggiungere);
-                        hashMap.put("MAPPA",mappeDaAggiungere);
+                            tronchiDaAggiungere.put("LUNGHEZZA", lunghezza);
+                            hashMap.put("TRONCO,"+t,tronchiDaAggiungere);
+                        }
 
                         Database db = new Database(context);
                         db.inserisciValori(hashMap);

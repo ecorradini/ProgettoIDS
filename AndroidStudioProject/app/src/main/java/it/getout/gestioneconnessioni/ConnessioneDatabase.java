@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class ConnessioneDatabase extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION=7;
+    private static final int DATABASE_VERSION=8;
 
     //nome del database
     private static final String DATABASE_NAME= "locale";

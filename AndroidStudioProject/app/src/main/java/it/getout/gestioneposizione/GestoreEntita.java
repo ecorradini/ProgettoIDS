@@ -194,7 +194,6 @@ public class GestoreEntita {
                 if (done) break;
             }
         } catch (Exception e) {
-            Log.e(e.getCause().toString(),e.getMessage());
             e.printStackTrace();
         } finally {
             pianiEdificio.addAll(pianiEdificioApp);
