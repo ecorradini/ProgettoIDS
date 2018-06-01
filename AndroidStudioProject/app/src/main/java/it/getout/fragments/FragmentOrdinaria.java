@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import it.getout.R;
 import it.getout.gestioneposizione.GestoreEntita;
 import it.getout.gestioneposizione.Posizione;
 import it.getout.gestioneposizione.Tronco;
+import it.getout.gestionevisualizzazionemappa.MappaFragment;
 
 public class FragmentOrdinaria extends Fragment {
 
@@ -37,7 +39,13 @@ public class FragmentOrdinaria extends Fragment {
             view = inflater.inflate(R.layout.fragment_ordinaria, container, false);
             button_ordinaria = (FloatingActionButton)view.findViewById(R.id.floating_botton);
 
-            getFragmentManager().beginTransaction().replace(R.id.mappa_container, ((Client)getActivity()).getMappaFragment()).addToBackStack(null).commit();
+            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+            MappaFragment mappa = ((Client) getActivity()).getMappaFragment();
+            if(getActivity().getSupportFragmentManager().findFragmentByTag("MAPPA")!=null) {
+                mappa = ((Client) getActivity()).recreateMappaFragment();
+            }
+            ft.add(R.id.mappa_container_ordinaria, mappa, "MAPPA");
+            ft.commit();
 
             new Thread() {
                 public void run() {
@@ -60,8 +68,10 @@ public class FragmentOrdinaria extends Fragment {
                             button_ordinaria.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    button_ordinaria.setVisibility(View.INVISIBLE);
-                                    getFragmentManager().beginTransaction().replace(R.id.mappa_container, FragmentListaAule.newInstance()).addToBackStack(null).commit();
+                                    setButton(false);
+                                    FragmentListaAule fragmentListaAule = FragmentListaAule.newInstance();
+                                    fragmentListaAule.setParent(FragmentOrdinaria.this);
+                                    getFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter, R.anim.exit).replace(R.id.mappa_container_ordinaria, fragmentListaAule).addToBackStack(null).commit();
                                 }
                             });
                         }
@@ -74,20 +84,8 @@ public class FragmentOrdinaria extends Fragment {
         return view;
     }
 
-    @Override
-    public void onViewStateRestored(Bundle inState) {
-        super.onViewStateRestored(inState);
-
-        Log.i("resume", "fragmentordinaria1");
-        button_ordinaria.setVisibility(View.VISIBLE);
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        Log.i("resume", "fragmentordinaria2");
-        button_ordinaria.setVisibility(View.VISIBLE);
+    public void setButton(boolean visibile) {
+        if(visibile) button_ordinaria.setVisibility(View.VISIBLE);
+        else button_ordinaria.setVisibility(View.GONE);
     }
 }

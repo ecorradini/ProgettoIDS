@@ -16,6 +16,7 @@ import it.getout.utilita.RVAdapterAule;
 
 public class FragmentListaAule extends Fragment {
     public View view;
+    public FragmentOrdinaria parent;
 
     private RecyclerView rv;
 
@@ -39,9 +40,13 @@ public class FragmentListaAule extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(view.getContext());
         rv.setLayoutManager(llm);
 
-        RVAdapterAule rvaule = new RVAdapterAule(Posizione.getEdificioAttuale().getPiani(),view.getContext());
+        RVAdapterAule rvaule = new RVAdapterAule(Posizione.getEdificioAttuale().getPiani(),view.getContext(),parent);
         rv.setAdapter(rvaule);
 
         return view;
+    }
+
+    public void setParent(FragmentOrdinaria ordinaria) {
+        parent = ordinaria;
     }
 }

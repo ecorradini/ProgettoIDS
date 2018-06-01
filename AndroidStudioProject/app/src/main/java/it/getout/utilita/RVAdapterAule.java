@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import it.getout.Client;
 import it.getout.R;
 import it.getout.fragments.FragmentListaAule;
+import it.getout.fragments.FragmentOrdinaria;
 import it.getout.gestioneposizione.Aula;
 import it.getout.gestioneposizione.Piano;
 import it.getout.gestioneposizione.Tronco;
@@ -31,15 +32,16 @@ public class RVAdapterAule extends RecyclerView.Adapter<RVAdapterAule.CViewHolde
     private int mExpandedPosition = -1;
     private ArrayList<Piano> struttura;
     private Context context;
+    FragmentOrdinaria parent;
     //private View v;
 
 
-    public RVAdapterAule(ArrayList<Piano> c, Context context, View view) {
+    public RVAdapterAule(ArrayList<Piano> c, Context context, FragmentOrdinaria parent) {
         super();
         struttura = c;
         struttura.remove(0);
         this.context = context;
-        //this.v = view;
+        this.parent=parent;
 
     }
 
@@ -55,7 +57,6 @@ public class RVAdapterAule extends RecyclerView.Adapter<RVAdapterAule.CViewHolde
             cv = itemView.findViewById(R.id.cv_aule);
             piano = itemView.findViewById(R.id.txtnome_piano);
             listaAule = itemView.findViewById(R.id.lista_aule);
-            fab = (FloatingActionButton) itemView.findViewById(R.id.floating_botton);
 
             textAule = new ArrayList<>();
         }
@@ -96,8 +97,8 @@ public class RVAdapterAule extends RecyclerView.Adapter<RVAdapterAule.CViewHolde
                     @Override
                     public void onClick(View view) {
                         //final ArrayList<Tronco> percorso = ((Client)view.getContext()).getGestore().scaricaPercorso(struttura.get(position).getAula(index).getNome());
-                        cViewHolder.fab.show();
                        // android.app.Fragment currentFragment = ((Client) context).getFragmentManager().findFragmentById(R.layout.fragment_ordinaria);
+                        parent.setButton(true);
                         ((Client)context).getSupportFragmentManager().popBackStackImmediate();
                         /*new Thread() {
                             public void run() {
