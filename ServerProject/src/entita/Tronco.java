@@ -17,6 +17,7 @@ public class Tronco {
         this.yf = yf;
         this.larghezza = larghezza;
         this.lunghezza = lunghezza;
+        weight = new float[]{0.2f,0.2f,0.2f,0.2f,0.2f};
     }
 
     public static void setWeight(float w1, float w2, float w3, float w4, float w5) {
