@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.PointF;
 import android.provider.ContactsContract;
 import android.util.Base64;
+import android.util.Log;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -51,9 +52,43 @@ public class Database extends GestoreDati {
     }
 
 
+    public String tableToString(SQLiteDatabase db, String tableName) {
+        Log.d("","tableToString called");
+        String tableString = String.format("Table %s:\n", tableName);
+        Cursor allRows  = db.rawQuery("SELECT * FROM " + tableName, null);
+        tableString += cursorToString(allRows);
+        return tableString;
+    }
+
+    public String cursorToString(Cursor cursor){
+        String cursorString = "";
+        if (cursor.moveToFirst() ){
+            String[] columnNames = cursor.getColumnNames();
+            for (String name: columnNames)
+                cursorString += String.format("%s ][ ", name);
+            cursorString += "\n";
+            do {
+                for (String name: columnNames) {
+                    cursorString += String.format("%s ][ ",
+                            cursor.getString(cursor.getColumnIndex(name)));
+                }
+                cursorString += "\n";
+            } while (cursor.moveToNext());
+        }
+        return cursorString;
+    }
+
+
     @Override
     public Edificio richiediEdificioAttuale(String idBeacon) {   //tipo edificio ancora non è dato sapere
         SQLiteDatabase db = connessione.getReadableDatabase();
+        String ciao = tableToString(db,DBStrings.TABLE_EDIFICIO);
+        String suca = tableToString(db,DBStrings.TABLE_PIANO);
+        String minchia = tableToString(db,DBStrings.TABLE_BEACON);
+        Log.e("sqlite",ciao);
+        Log.e("sqlite2",suca);
+        Log.e("sqlite3",minchia);
+
         String sql = "SELECT "+DBStrings.TABLE_EDIFICIO+"."+DBStrings.COL_NOME+" AS NOME_EDIFICIO"+
                 " FROM "+DBStrings.TABLE_EDIFICIO+","+DBStrings.TABLE_PIANO+","+DBStrings.TABLE_TRONCO+","+DBStrings.TABLE_BEACON+
                 " WHERE "+DBStrings.TABLE_BEACON+"."+DBStrings.COL_TRONCO+"="+DBStrings.TABLE_TRONCO+"."+DBStrings.COL_ID+" AND "+
@@ -75,10 +110,10 @@ public class Database extends GestoreDati {
 
         String sql = "SELECT "+DBStrings.TABLE_PIANO+"."+DBStrings.COL_NOME+" AS NOME_PIANO"+
                 " FROM "+DBStrings.TABLE_BEACON+","+DBStrings.TABLE_TRONCO+","+DBStrings.TABLE_PIANO+","+DBStrings.TABLE_EDIFICIO+
-                " WHERE "+DBStrings.TABLE_BEACON+"."+DBStrings.COL_ID+"="+idBeacon+" AND "+
+                " WHERE "+DBStrings.TABLE_BEACON+"."+DBStrings.COL_ID+"='"+idBeacon+"' AND "+
                 DBStrings.TABLE_BEACON+"."+DBStrings.COL_TRONCO+"="+DBStrings.TABLE_TRONCO+"."+DBStrings.COL_ID+" AND "+
                 DBStrings.TABLE_PIANO+"."+DBStrings.COL_NOME+"="+DBStrings.TABLE_TRONCO+"."+DBStrings.COL_PIANO+" AND "+DBStrings.TABLE_PIANO+
-                "."+DBStrings.COL_EDIFICIO+" = "+DBStrings.TABLE_EDIFICIO+"."+DBStrings.COL_NOME;
+                "."+DBStrings.COL_EDIFICIO+"="+DBStrings.TABLE_EDIFICIO+"."+DBStrings.COL_NOME;
 
         Cursor res = db.rawQuery(sql,null);
         res.moveToFirst();

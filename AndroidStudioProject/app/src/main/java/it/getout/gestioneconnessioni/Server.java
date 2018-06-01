@@ -520,7 +520,7 @@ public class Server extends GestoreDati
     //AsyncTask che richiede la stringa json per il download iniziale di tutto
     private class DownLoadInizialeTask extends AsyncTask<Void,Void,Boolean> {
 
-        private String json= "";
+        //private String json= "";
         private boolean downloaded;
 
         @Override
@@ -567,29 +567,32 @@ public class Server extends GestoreDati
                         for (int a = 0; a<aule.length(); a++){
                             JSONObject corrente = aule.getJSONObject(a);
                             String nome = corrente.getString("NOME");
-                            String x = corrente.getString("X");
-                            String y = corrente.getString("Y");
+                            float x = Float.parseFloat(corrente.getString("X"));
+                            float y = Float.parseFloat(corrente.getString("Y"));
                             String piano = corrente.getString("PIANO");
                             String entrata = corrente.getString("ENTRATA");
                             auleDaAggiungere.put("NOME",nome);
                             auleDaAggiungere.put("X",x);
                             auleDaAggiungere.put("Y",y);
+                            auleDaAggiungere.put("PIANO",piano);
                             auleDaAggiungere.put("ENTRATA",entrata);}
 
                         for(int b = 0; b<beacon.length(); b++){
                             JSONObject corrente = beacon.getJSONObject(b);
                             String id = corrente.getString("ID");
-                            String x = corrente.getString("X");
-                            String y = corrente.getString("Y");
+                            float x = Float.parseFloat(corrente.getString("X"));
+                            float y = Float.parseFloat(corrente.getString("Y"));
                             String tronco = corrente.getString("TRONCO");
-                            String utenti = corrente.getString("UTENTI");
-                            String uscita = corrente.getString("USCITA");
+                            int utenti = Integer.parseInt(corrente.getString("UTENTI"));
+                            int uscita = Integer.parseInt(corrente.getString("USCITA"));
+
                             beaconDaAggiungere.put("ID",id);
                             beaconDaAggiungere.put("X",x);
                             beaconDaAggiungere.put("Y",y);
                             beaconDaAggiungere.put("TRONCO",tronco);
                             beaconDaAggiungere.put("UTENTI",utenti);
-                            beaconDaAggiungere.put("USCITA",uscita);}
+                            beaconDaAggiungere.put("USCITA",uscita);
+                            }
 
                         for(int m =0; m<mappe.length();m++){
                             JSONObject corrente = mappe.getJSONObject(m);
@@ -600,14 +603,14 @@ public class Server extends GestoreDati
 
                         for(int t=0; t<tronchi.length(); t++){
                             JSONObject corrente = tronchi.getJSONObject(t);
-                            String id = corrente.getString("ID");
-                            String x = corrente.getString("X");
-                            String y = corrente.getString("Y");
-                            String xf = corrente.getString("XF");
-                            String yf = corrente.getString("YF");
-                            String larghezza = corrente.getString("LARGHEZZA");
+                            int id = Integer.parseInt(corrente.getString("ID"));
+                            float x = Float.parseFloat(corrente.getString("X"));
+                            float y = Float.parseFloat(corrente.getString("Y"));
+                            float xf = Float.parseFloat(corrente.getString("XF"));
+                            float yf = Float.parseFloat(corrente.getString("YF"));
+                            float larghezza = Float.parseFloat(corrente.getString("LARGHEZZA"));
                             String piano = corrente.getString("PIANO");
-                            String lunghezza = corrente.getString("LUNGHEZZA");
+                            float lunghezza = Float.parseFloat(corrente.getString("LUNGHEZZA"));
                             tronchiDaAggiungere.put("ID", id);
                             tronchiDaAggiungere.put("X", x);
                             tronchiDaAggiungere.put("Y", y);
@@ -640,7 +643,7 @@ public class Server extends GestoreDati
                 }
             });
             jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
-                    10000,
+                    100000,
                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             //Aggiungo la richiesta alla coda

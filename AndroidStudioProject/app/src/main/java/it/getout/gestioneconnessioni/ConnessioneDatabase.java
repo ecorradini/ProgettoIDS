@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class ConnessioneDatabase extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION=5;
+    private static final int DATABASE_VERSION=7;
 
     //nome del database
     private static final String DATABASE_NAME= "locale";
@@ -24,6 +24,13 @@ public class ConnessioneDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+DBStrings.TABLE_EDIFICIO);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+DBStrings.TABLE_MAPPA);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+DBStrings.TABLE_BEACON);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+DBStrings.TABLE_TRONCO);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+DBStrings.TABLE_AULA);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+DBStrings.TABLE_PIANO);
+
         String create_edificio = "CREATE TABLE IF NOT EXISTS "+DBStrings.TABLE_EDIFICIO+"("+
                 DBStrings.COL_NOME+" TEXT PRIMARY KEY"+")";
         String create_piano = "CREATE TABLE IF NOT EXISTS "+DBStrings.TABLE_PIANO+"("+
@@ -45,7 +52,7 @@ public class ConnessioneDatabase extends SQLiteOpenHelper {
                 DBStrings.COL_PIANO+" TEXT NOT NULL,"+
                 DBStrings.COL_LUNGHEZZA+" REAL NOT NULL"+")";
         String create_beacon="CREATE TABLE IF NOT EXISTS "+DBStrings.TABLE_BEACON+"("+
-                DBStrings.COL_ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                DBStrings.COL_ID+" TEXT PRIMARY KEY,"+
                 DBStrings.COL_X+" REAL NOT NULL,"+
                 DBStrings.COL_Y+" REAL NOT NULL,"+
                 DBStrings.COL_TRONCO+" TEXT NOT NULL,"+
@@ -64,13 +71,6 @@ public class ConnessioneDatabase extends SQLiteOpenHelper {
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
-        db.execSQL("DROP TABLE IF EXISTS "+DBStrings.TABLE_EDIFICIO);
-        db.execSQL("DROP TABLE IF EXISTS "+DBStrings.TABLE_MAPPA);
-        db.execSQL("DROP TABLE IF EXISTS "+DBStrings.TABLE_BEACON);
-        db.execSQL("DROP TABLE IF EXISTS "+DBStrings.TABLE_TRONCO);
-        db.execSQL("DROP TABLE IF EXISTS "+DBStrings.TABLE_AULA);
-        db.execSQL("DROP TABLE IF EXISTS "+DBStrings.TABLE_PIANO);
-
         onCreate(db);
     }
 
