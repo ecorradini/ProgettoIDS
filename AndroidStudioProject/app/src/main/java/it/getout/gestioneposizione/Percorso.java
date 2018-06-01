@@ -1,5 +1,7 @@
 package it.getout.gestioneposizione;
 
+import android.util.Log;
+
 import it.getout.gestioneconnessioni.Database;
 
 import java.util.ArrayList;
@@ -32,6 +34,8 @@ public class Percorso extends Thread {
         }
 
         partenza = grafi.get(Posizione.getPianoAttuale().toString());
+
+        Log.e("PARTENZA",partenza==null ? "NULL" : "NOT NULL");
 
         ArrayList<Tronco> uscite = reader.richiediTronchiUscita(beacon);
 

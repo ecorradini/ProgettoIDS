@@ -2,6 +2,8 @@ package it.getout.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import it.getout.R;
 import it.getout.gestioneposizione.GestoreEntita;
 import it.getout.gestioneposizione.Posizione;
 import it.getout.gestioneposizione.Tronco;
+import it.getout.gestionevisualizzazionemappa.MappaFragment;
 
 public class FragmentEmergenza extends Fragment {
 
@@ -33,10 +36,16 @@ public class FragmentEmergenza extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (view == null) {
+        if(view==null) {
             view = inflater.inflate(R.layout.fragment_emergenza, container, false);
 
-            getFragmentManager().beginTransaction().replace(R.id.mappa_container, ((Client)getActivity()).getMappaFragment()).commit();
+            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+            MappaFragment mappa = ((Client) getActivity()).getMappaFragment();
+            if(getActivity().getSupportFragmentManager().findFragmentByTag("MAPPA")!=null) {
+                mappa = ((Client) getActivity()).recreateMappaFragment();
+            }
+            ft.add(R.id.mappa_container, mappa, "MAPPA");
+            ft.commit();
 
             new Thread() {
                 public void run() {
@@ -55,7 +64,7 @@ public class FragmentEmergenza extends Fragment {
                             ((Client) getActivity()).getMappaFragment().disegnaPercorso(percorso);
                         }
                     });
-                    ((Client)getActivity()).stopLoadingPhase2();
+                    ((Client) getActivity()).stopLoadingPhase2();
 
                     while (true) {
                         String beaconA = Posizione.getIDBeaconAttuale();
@@ -76,8 +85,6 @@ public class FragmentEmergenza extends Fragment {
                     }
                 }
             }.start();
-
-
         }
         return view;
     }

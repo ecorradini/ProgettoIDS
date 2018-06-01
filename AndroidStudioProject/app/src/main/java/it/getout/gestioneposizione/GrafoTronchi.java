@@ -1,5 +1,7 @@
 package it.getout.gestioneposizione;
 
+import android.util.Log;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,14 +50,21 @@ public class GrafoTronchi {
         public float getPeso() { return peso; }
     }
 
-    private HashMap<Integer,Tronco> tronchiPiano;
     private String piano;
     private Nodo radice;
 
     public GrafoTronchi(String piano, int tronco, Database reader) {
-        tronchiPiano = new HashMap<>();
+        HashMap<Integer,Tronco> tronchiPiano = new HashMap<>();
         this.piano = piano;
-        for(int i=0; i<Posizione.getPianoAttuale().getTronchi().size(); i++) {
+
+        Piano p = null;
+        for(int i=0; i<Posizione.getEdificioAttuale().getPiani().size() && p==null; i++) {
+            if(Posizione.getEdificioAttuale().getPiani().get(i).toString().equals(piano)) {
+                p = Posizione.getEdificioAttuale().getPiani().get(i);
+            }
+        }
+
+        for(int i=0; i<p.getTronchi().size(); i++) {
             tronchiPiano.put(Posizione.getPianoAttuale().getTronchi().get(i).getId(),Posizione.getPianoAttuale().getTronco(i));
         }
 

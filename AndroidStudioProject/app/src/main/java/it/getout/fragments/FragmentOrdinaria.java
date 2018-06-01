@@ -3,6 +3,8 @@ package it.getout.fragments;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import it.getout.R;
 import it.getout.gestioneposizione.GestoreEntita;
 import it.getout.gestioneposizione.Posizione;
 import it.getout.gestioneposizione.Tronco;
+import it.getout.gestionevisualizzazionemappa.MappaFragment;
 
 public class FragmentOrdinaria extends Fragment {
 
@@ -31,11 +34,17 @@ public class FragmentOrdinaria extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (view == null) {
+        if(view==null) {
             view = inflater.inflate(R.layout.fragment_ordinaria, container, false);
-            button_ordinaria = (FloatingActionButton)view.findViewById(R.id.floating_botton);
+            button_ordinaria = (FloatingActionButton) view.findViewById(R.id.floating_botton);
 
-            getFragmentManager().beginTransaction().replace(R.id.mappa_container, ((Client)getActivity()).getMappaFragment()).addToBackStack(null).commit();
+            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+            MappaFragment mappa = ((Client) getActivity()).getMappaFragment();
+            if(getActivity().getSupportFragmentManager().findFragmentByTag("MAPPA")!=null) {
+                mappa = ((Client) getActivity()).recreateMappaFragment();
+            }
+            ft.add(R.id.mappa_container_ordinaria, mappa,"MAPPA");
+            ft.commit();
 
             new Thread() {
                 public void run() {
@@ -48,9 +57,9 @@ public class FragmentOrdinaria extends Fragment {
                         }
                     }
 
-                    ((Client)getActivity()).stopLoadingPhase2();
+                    ((Client) getActivity()).stopLoadingPhase2();
 
-                    ((Client)getActivity()).runOnUiThread(new Runnable() {
+                    ((Client) getActivity()).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             button_ordinaria.setVisibility(View.VISIBLE);
@@ -66,8 +75,6 @@ public class FragmentOrdinaria extends Fragment {
 
                 }
             }.start();
-
-
         }
         return view;
     }

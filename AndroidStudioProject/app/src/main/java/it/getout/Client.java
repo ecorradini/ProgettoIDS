@@ -8,17 +8,21 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import it.getout.fragments.FragmentEmergenza;
@@ -57,8 +61,6 @@ public class Client extends AppCompatActivity {
             editor.apply();
         }
 
-        Log.e("MODALITA", Boolean.toString(preferences.getBoolean("Emergenza", false)));
-
         mappaFragment = MappaFragment.newInstance();
 
         loading = findViewById(R.id.cv_loading);
@@ -93,20 +95,63 @@ public class Client extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.mainmenu, menu);
         MenuItem item = menu.findItem(R.id.switch_button);
         item.setActionView(R.layout.switch_layout);
+        SwitchCompat switchButton = (SwitchCompat) item.getActionView();
+
+        switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                boolean emergenzaB = preferences.getBoolean("Emergenza", false);
+                Window window = getWindow();
+                if (emergenzaB) {
+                    FragmentOrdinaria ordinaria = FragmentOrdinaria.newInstance();
+                    getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.enter, R.anim.exit)
+                            .replace(R.id.fragment_container_main, ordinaria)
+                            .commit();
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Client.this);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putBoolean("Emergenza", false);
+                    editor.apply();
+                    window.setStatusBarColor(ContextCompat.getColor(Client.this, R.color.colorPrimaryDarkOrdinaria));
+                    ActionBar bar = getSupportActionBar();
+                    bar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryOrdinaria)));
+                    bar.setTitle("Modalità Ordinaria");
+                } else {
+                    FragmentEmergenza emergenza = FragmentEmergenza.newInstance();
+                    getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.enter, R.anim.exit)
+                            .replace(R.id.fragment_container_main, emergenza)
+                            .commit();
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Client.this);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putBoolean("Emergenza", true);
+                    editor.apply();
+                    window.setStatusBarColor(ContextCompat.getColor(Client.this, R.color.colorPrimaryDarkEmergenza));
+                    ActionBar bar = getSupportActionBar();
+                    bar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryEmergenza)));
+                    bar.setTitle("Modalità Emergenza");
+                }
+            }
+        });
+
+        boolean emergenza = preferences.getBoolean("Emergenza", false);
+        if(emergenza) switchButton.setChecked(true);
+        else switchButton.setChecked(false);
+
         return true;
     }
 
     public void inizializzaFragment() {
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 runOnUiThread(new Runnable() {
                     public void run() {
                         Window window = getWindow();
                         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
                         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
-                        boolean name = preferences.getBoolean("Emergenza",true);
-                        if(name){
+                        boolean name = preferences.getBoolean("Emergenza", false);
+                        if (name) {
                             window.setStatusBarColor(ContextCompat.getColor(Client.this, R.color.colorPrimaryDarkEmergenza));
 
                             ActionBar bar = getSupportActionBar();
@@ -117,7 +162,7 @@ public class Client extends AppCompatActivity {
                             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_main, emergenza).commit();
 
                             stopLoading();
-                        }else {
+                        } else {
                             window.setStatusBarColor(ContextCompat.getColor(Client.this, R.color.colorPrimaryDarkOrdinaria));
 
                             ActionBar bar = getSupportActionBar();
@@ -145,7 +190,26 @@ public class Client extends AppCompatActivity {
 
     }
 
-    public MappaFragment getMappaFragment() { return mappaFragment; }
+    public MappaFragment getMappaFragment() {
+        return mappaFragment;
+    }
+
+    public MappaFragment recreateMappaFragment() {
+        try {
+            Fragment.SavedState savedState = getSupportFragmentManager().saveFragmentInstanceState(mappaFragment);
+
+            MappaFragment newInstance = mappaFragment.getClass().newInstance();
+            newInstance.setInitialSavedState(savedState);
+
+            mappaFragment = newInstance;
+
+            return mappaFragment;
+        }
+        catch (Exception e) // InstantiationException, IllegalAccessException
+        {
+            throw new RuntimeException("Cannot reinstantiate fragment " + mappaFragment.getClass().getName(), e);
+        }
+    }
 
     public void stopLoadingPhase2() {
         runOnUiThread(new Runnable() {
