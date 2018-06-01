@@ -1,9 +1,12 @@
 package it.getout.utilita;
 
 import android.annotation.SuppressLint;
+import android.app.FragmentManager;
 import android.content.Context;
+import android.support.design.widget.FloatingActionButton;
 import android.support.transition.AutoTransition;
 import android.support.transition.TransitionManager;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,18 +24,22 @@ import it.getout.gestioneposizione.Aula;
 import it.getout.gestioneposizione.Piano;
 import it.getout.gestioneposizione.Tronco;
 
+import static android.view.View.VISIBLE;
+
 public class RVAdapterAule extends RecyclerView.Adapter<RVAdapterAule.CViewHolder> {
 
     private int mExpandedPosition = -1;
     private ArrayList<Piano> struttura;
     private Context context;
+    //private View v;
 
 
-    public RVAdapterAule(ArrayList<Piano> c, Context context) {
+    public RVAdapterAule(ArrayList<Piano> c, Context context, View view) {
         super();
         struttura = c;
         struttura.remove(0);
         this.context = context;
+        //this.v = view;
 
     }
 
@@ -41,12 +48,14 @@ public class RVAdapterAule extends RecyclerView.Adapter<RVAdapterAule.CViewHolde
         TextView piano;
         LinearLayout listaAule;
         ArrayList<TextView> textAule;
+        FloatingActionButton fab;
 
         CViewHolder(View itemView) {
             super(itemView);
-            cv = (CardView)itemView.findViewById(R.id.cv_aule);
-            piano = (TextView)itemView.findViewById(R.id.txtnome_piano);
-            listaAule = (LinearLayout)itemView.findViewById(R.id.lista_aule);
+            cv = itemView.findViewById(R.id.cv_aule);
+            piano = itemView.findViewById(R.id.txtnome_piano);
+            listaAule = itemView.findViewById(R.id.lista_aule);
+            fab = (FloatingActionButton) itemView.findViewById(R.id.floating_botton);
 
             textAule = new ArrayList<>();
         }
@@ -86,17 +95,22 @@ public class RVAdapterAule extends RecyclerView.Adapter<RVAdapterAule.CViewHolde
                 aulaT.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        ArrayList<Tronco> percorso = ((Client)view.getContext()).getGestore().scaricaPercorso(struttura.get(position).getAula(index).getNome());
-                        new Thread() {
+                        //final ArrayList<Tronco> percorso = ((Client)view.getContext()).getGestore().scaricaPercorso(struttura.get(position).getAula(index).getNome());
+                        cViewHolder.fab.show();
+                       // android.app.Fragment currentFragment = ((Client) context).getFragmentManager().findFragmentById(R.layout.fragment_ordinaria);
+                        ((Client)context).getSupportFragmentManager().popBackStackImmediate();
+                        /*new Thread() {
                             public void run() {
                                 ((Client)context).runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
 
-                                    }
+
+                                }
                                 });
                             }
-                        }.start();
+                        }.start();*/
+
                     }
                 });
                 cViewHolder.textAule.add(aulaT);
@@ -104,7 +118,7 @@ public class RVAdapterAule extends RecyclerView.Adapter<RVAdapterAule.CViewHolde
             }
 
             final boolean isExpanded = position == mExpandedPosition;
-            cViewHolder.listaAule.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+            cViewHolder.listaAule.setVisibility(isExpanded ? VISIBLE : View.GONE);
             cViewHolder.itemView.setActivated(isExpanded);
             final int pos = position;
             final RVAdapterAule.CViewHolder holder = cViewHolder;
@@ -119,6 +133,9 @@ public class RVAdapterAule extends RecyclerView.Adapter<RVAdapterAule.CViewHolde
             });
         }
     }
+
+
+
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
