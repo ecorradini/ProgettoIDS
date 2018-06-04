@@ -33,14 +33,15 @@ public class ConsoleDiComando implements Runnable {
                             System.out.println("Comandi eseguibili per il server di GetOut!:\n");
                             System.out.println("\033[1m'e -i <id_tronco>'\033[0m \t--> inizio test emergenza sul tronco id_tronco\n");
                             System.out.println("\033[1m'e -f <id_tronco>'\033[0m \t--> fine test emergenza sul tronco id_tronco\n");
-                            System.out.println("\033[1m'amm'\033[0m \t\t--> avvio interfaccia di amministrazione dati del server\n");
-                            System.out.println("\033[1m'par'\033[0m \t\t--> avvio interfaccia di modifica dei parametri dei tronchi\n");
-                            System.out.println("\033[1m'pesi <peso_vulnerabilita> <peso_rischiovita> <peso_presenzafumo> <peso_lunghezza> <peso_los>'\033[0m \t--> aggiornamento valore dei pesi\n");
-                            System.out.println("\033[1m'csv edificio'\033[0m \t--> caricamento CSV edifici\n");
-                            System.out.println("\033[1m'csv piano'\033[0m \t--> caricamento CSV piani\n");
-                            System.out.println("\033[1m'csv tronco'\033[0m \t--> caricamento CSV tronchi\n");
-                            System.out.println("\033[1m'csv aula'\033[0m \t--> caricamento CSV aule\n");
-                            System.out.println("\033[1m'csv beacon'\033[0m \t--> caricamento CSV beacon");
+                            System.out.println("\033[1m'amm'\033[0m \t\t\t--> avvio interfaccia di amministrazione dati del server\n");
+                            System.out.println("\033[1m'par'\033[0m \t\t\t--> avvio interfaccia di modifica dei parametri dei tronchi\n");
+                            System.out.println("\033[1m'pesi <peso_vulnerabilita> <peso_rischiovita> <peso_presenzafumo> <peso_lunghezza> <peso_los>'\033[0m\n \t\t\t\t--> aggiornamento valore dei pesi\n");
+                            System.out.println("\033[1m'csv edificio'\033[0m \t\t--> caricamento CSV edifici\n");
+                            System.out.println("\033[1m'csv piano'\033[0m \t\t--> caricamento CSV piani\n");
+                            System.out.println("\033[1m'csv tronco'\033[0m \t\t--> caricamento CSV tronchi\n");
+                            System.out.println("\033[1m'csv aula'\033[0m \t\t--> caricamento CSV aule\n");
+                            System.out.println("\033[1m'csv beacon'\033[0m \t\t--> caricamento CSV beacon\n");
+                            System.out.println("\033[1m'exit'\033[0m \t\t\t--> spegnimento server");
                             System.out.println();
                         }
                         else if (command.equals("amm")) {
@@ -62,10 +63,12 @@ public class ConsoleDiComando implements Runnable {
                         else if(command.substring(0,4).equals("pesi")) {
                             String pesi[] = command.substring(5).split(" ");
                             Tronco.setWeight(Float.parseFloat(pesi[0]),Float.parseFloat(pesi[1]),Float.parseFloat(pesi[2]),Float.parseFloat(pesi[3]),Float.parseFloat(pesi[4]));
+                        }else if(command.substring(0,4).equals("exit")) {
+                            System.exit(0);
                         }
                         else System.out.println("Comando non trovato. Digitare 'help' per ottenere la lista dei comandi disponibli.");
                     } catch(Exception e) {
-                        System.out.println("Comando non trovato!");
+                        System.out.println("Comando non trovato.");
                     }
                 }
             } catch (IOException e) {
@@ -84,4 +87,6 @@ public class ConsoleDiComando implements Runnable {
     private void fineTestaEmergenza(int tronco) {
         DAOParametri.updateFineTestaEmergenza(tronco);
     }
+
+
 }
