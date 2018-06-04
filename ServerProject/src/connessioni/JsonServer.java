@@ -15,12 +15,24 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
+/**
+ * Classe che gestisce le richieste dai client
+ */
 public class JsonServer {
 
+    /**
+     * variabile server http
+     */
     private HttpServer server;
+    /**
+     * Thread di lavoro in background per la ricezione di richieste
+     */
     private Thread worker;
 
+    /**
+     * Costruttore
+     * @throws IOException
+     */
     public JsonServer() throws IOException {
 
         System.out.println("Il server ora accetta richieste. Grazie per l'attesa.");
@@ -68,9 +80,7 @@ public class JsonServer {
             }
         });
 
-
-
-
+        //Scaricamento edificio attuale dato beacon
         server.createContext("/edificioattuale", new HttpHandler() {
             public void handle(HttpExchange arg0) {
                 new Thread(){
@@ -89,7 +99,7 @@ public class JsonServer {
             }
         });
 
-
+        //Scaricamento piano attuale dato beacon
         server.createContext("/pianoattuale", new HttpHandler() {
             public void handle(HttpExchange arg0) throws IOException {
                 new Thread(){
@@ -109,7 +119,7 @@ public class JsonServer {
 
         });
 
-
+        //Scaricamento lista beacon del tronco
         server.createContext("/beacontronco", new HttpHandler() {
             public void handle(HttpExchange arg0) throws IOException {
                 new Thread(){
@@ -129,6 +139,7 @@ public class JsonServer {
 
         });
 
+        //Identificazione posizione dell'utente dato il beacon
         server.createContext("/posizione", new HttpHandler() {
             public void handle(HttpExchange arg0) throws IOException {
                 new Thread(){
@@ -148,6 +159,7 @@ public class JsonServer {
 
         });
 
+        //Scaricamento piani dell'edificio
         server.createContext("/pianiedificio", new HttpHandler() {
             public void handle(HttpExchange arg0) throws IOException {
                 new Thread(){
@@ -166,6 +178,7 @@ public class JsonServer {
             }
         });
 
+        //Scaricamento delle aule del piano
         server.createContext("/aulepiano", new HttpHandler() {
             public void handle(HttpExchange arg0) throws IOException {
                 new Thread(){
@@ -184,6 +197,7 @@ public class JsonServer {
             }
         });
 
+        //Scaricamento dei tronchi del piano
         server.createContext("/tronchipiano", new HttpHandler() {
             public void handle(HttpExchange arg0) throws IOException {
                 new Thread(){
@@ -202,6 +216,7 @@ public class JsonServer {
             }
         });
 
+        //Scaricamento mappa del piano
         server.createContext("/mappapiano", new HttpHandler() {
             public void handle(HttpExchange arg0) throws IOException {
                 new Thread(){
@@ -223,6 +238,7 @@ public class JsonServer {
             }
         });
 
+        //Controllo dell'emergenza
         server.createContext("/controllaEmergenza", new HttpHandler() {
             public void handle(HttpExchange arg0) throws IOException {
                 new Thread(){
@@ -261,7 +277,8 @@ public class JsonServer {
 
             }
         });
-        //Inserisci l'utente nella lista di utenti collegati al beacon
+
+        //Scaricamento percorso calcolato
         server.createContext("/percorso", new com.sun.net.httpserver.HttpHandler() {
             @Override
             public void handle(com.sun.net.httpserver.HttpExchange arg0) throws IOException {
@@ -270,9 +287,11 @@ public class JsonServer {
                         try {
                             String[] arrivoDestinazione = arg0.getRequestURI().getQuery().split(",");
                             Percorso percorso = null;
+                            //Caso verso uscita
                             if(arrivoDestinazione.length < 2) {
                                 percorso = new Percorso(arrivoDestinazione[0]);
                             }
+                            //Caso verso aula
                             else {
                                 percorso = new Percorso(arrivoDestinazione[0],arrivoDestinazione[1]);
                             }
@@ -289,6 +308,7 @@ public class JsonServer {
             }
         });
 
+        //Scaricamento uscite dell'edificio
         server.createContext("/uscite", new com.sun.net.httpserver.HttpHandler() {
             @Override
             public void handle(com.sun.net.httpserver.HttpExchange arg0) throws IOException {
@@ -308,7 +328,7 @@ public class JsonServer {
             }
         });
 
-
+        //Download di tutti i dati del database per salvataggio offline
         server.createContext("/downloaddatabase", new HttpHandler() {
             public void handle(HttpExchange arg0) throws IOException {
                 new Thread(){
@@ -329,8 +349,6 @@ public class JsonServer {
 
 
         // connectionhendler server json server
-
-
         server.setExecutor(null); // creates a default executor
         worker = new Thread(new Runnable() {
             @Override

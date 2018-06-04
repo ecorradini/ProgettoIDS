@@ -9,35 +9,45 @@ import java.net.InetAddress;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Classe invio broadcast indirizzo IP
+ */
 public class DiscoveryIP implements Runnable{
 
+    /**
+     * Socket
+     */
     DatagramSocket socket;
 
+    /**
+     * Metodo run del Runnable
+     */
     @Override
     public void run() {
         try {
-            //Keep a socket open to listen to all the UDP trafic that is destined for this port
+            //Mantieni il socket aperto all'ascolto di tutto il traffico UDP destinato alla porta 9605
             socket = new DatagramSocket(9605, InetAddress.getByName("0.0.0.0"));
             socket.setBroadcast(true);
 
             while (true) {
-
-                //Receive a packet
+                //Ricevi un pacchetto
                 byte[] recvBuf = new byte[15000];
                 DatagramPacket packet = new DatagramPacket(recvBuf, recvBuf.length);
                 socket.receive(packet);
 
-                //Packet received
-                //See if the packet holds the right command (message)
+                //Pacchetto ricevuto
+                //Controllo se il pacchetto
                 String message = new String(packet.getData()).trim();
                 if (message.equals("GETOUT")) {
                     byte[] sendData = "GETOUT_R".getBytes();
-                    //Send a response
+                    //Invia un pacchetto in risposta
                     DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, packet.getAddress(), packet.getPort());
                     socket.send(sendPacket);
 
+                    //Inserisco l'IP del mittente nella tabella degli utenti
                     DAOUtente.insertUtente(sendPacket.getAddress().getHostAddress());
 
+                    //Aggiungo l'eccezione ad iptables per il client appena registratosi
                     try {
                         Process ipTablesInput = Runtime.getRuntime().exec("iptables -A INPUT -s " + sendPacket.getAddress().getHostAddress() + " -j ACCEPT");
                         ipTablesInput.waitFor();
@@ -54,10 +64,17 @@ public class DiscoveryIP implements Runnable{
         }
     }
 
+    /**
+     * Restituisco l'istanza
+     * @return
+     */
     public static DiscoveryIP getInstance() {
         return DiscoveryIPHolder.INSTANCE;
     }
 
+    /**
+     * Instanzio la classe. Final, deve essere sempre in esecuzione.
+     */
     private static class DiscoveryIPHolder {
         private static final DiscoveryIP INSTANCE = new DiscoveryIP();
     }
