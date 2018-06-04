@@ -68,7 +68,7 @@ public class ConsoleDiComando implements Runnable {
                         }
                         else System.out.println("Comando non trovato. Digitare 'help' per ottenere la lista dei comandi disponibli.");
                     } catch(Exception e) {
-                        System.out.println("Comando non trovato.");
+                        System.out.println("Comando non trovato. Digitare 'help' per ottenere la lista dei comandi disponibli.");
                     }
                 }
             } catch (IOException e) {
