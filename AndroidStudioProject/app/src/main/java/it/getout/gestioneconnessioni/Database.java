@@ -119,7 +119,7 @@ public class Database extends GestoreDati {
                 " WHERE "+DBStrings.TABLE_BEACON+"."+DBStrings.COL_TRONCO+"="+troncoAttuale;
 
         Cursor res = db.rawQuery(sql,null);
-        res.moveToFirst();
+        //res.moveToFirst();
         HashMap<String, Beacon> listaBeacon = new HashMap<String, Beacon>();
 
         //Beacon(String id, PointF posizione)
@@ -145,7 +145,7 @@ public class Database extends GestoreDati {
 
         Cursor res = db.rawQuery(sql,null);
         ArrayList<Tronco> listaTronchi = new ArrayList<>();
-        res.moveToFirst();
+        //res.moveToFirst();
         while(res.moveToNext()) {
             listaTronchi.add(new Tronco(
                     res.getInt(res.getColumnIndex(DBStrings.COL_ID)),
@@ -368,5 +368,6 @@ public class Database extends GestoreDati {
 
         return usciteEdificio;
     }
+
 }
 

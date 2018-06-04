@@ -35,7 +35,7 @@ public class JsonServer {
      */
     public JsonServer() throws IOException {
 
-        System.out.println("Il server ora accetta richieste. Grazie per l'attesa.");
+        System.out.println("Il server ora accetta richieste. Grazie per l'attesa.\n(Digitare 'help' per conoscere la lista dei comandi disponibili.)\n");
 
         server = HttpServer.create(new InetSocketAddress(9600), 0);
 
