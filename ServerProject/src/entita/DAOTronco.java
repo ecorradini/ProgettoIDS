@@ -1,5 +1,6 @@
 package entita;
 
+import com.mysql.jdbc.log.Log;
 import connessioni.Database;
 import connessioni.Server;
 
@@ -206,6 +207,7 @@ public class DAOTronco {
 
         ArrayList<GrafoTronchi.Nodo> visitati = new ArrayList<>();
         ArrayList<GrafoTronchi.Nodo> daVisitare = new ArrayList<>();
+        System.out.println(piano);
         daVisitare.add(Server.getGrafiPiani().get(edificio).get(piano).getRadice());
 
         GrafoTronchi.Nodo risultato = null;
