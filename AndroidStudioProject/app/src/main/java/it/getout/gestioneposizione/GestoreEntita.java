@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
+import android.content.SearchRecentSuggestionsProvider;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -14,7 +15,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Timer;
 
 import it.getout.Client;
 import it.getout.gestioneconnessioni.Bluetooth;
@@ -51,7 +51,12 @@ public class GestoreEntita {
     }
 
 
-
+    /**
+     * Funzione che scarica e istanzia i dati relativi all'attuale edificio, l'attuale piano e setta
+     * la posizione attuale sulla base del MAC address del beacon passato come parametro.
+     *
+     * @param beacon
+     */
     private void scaricaDati(String beacon) {
         //All'inizio scarico solo i dati che mi servono immediatamente
         Edificio edificioAttuale = reader.richiediEdificioAttuale(beacon);
@@ -63,6 +68,7 @@ public class GestoreEntita {
         for(int i=0; i<tronchiPiano.size(); i++) {
             tronchiPiano.get(i).setBeacons(reader.richiediBeaconTronco(tronchiPiano.get(i).getId()));
         }
+
         pianoAttuale.setTronchi(tronchiPiano);
 
         Beacon posizione = reader.richiediPosizione(beacon);
@@ -86,6 +92,12 @@ public class GestoreEntita {
         scaricaDatiRimanenti(pianiEdificio);
 
     }
+
+    /**
+     * Funzione che istanzia i dati non essenziali dell'edificio
+     *
+     * @param pianiEdificio
+     */
 
     private void scaricaDatiRimanenti(ArrayList<Piano> pianiEdificio) {
         ArrayList<Piano> pianiEdificioApp = new ArrayList<>(pianiEdificio);
@@ -210,16 +222,29 @@ public class GestoreEntita {
         }
     }
 
+    /**
+     * Funzione che aggiorna i dati sulla posizione corrente in base al MAC address del beacon passato.
+     * Controlla infine se è avvenuta l'uscita dell'utente dall'edificio.
+     *
+     * @param beacon
+     */
+
     private void aggiornaDati(String beacon) {
 
         if (!beacon.equals(this.beacon)) {
-            //Uscita.setBeaconPrecedente(Posizione.getIDBeaconAttuale());
+
             Piano pianoAttuale = reader.richiediPianoAttuale(beacon);
+
             if (pianoAttuale.equals(Posizione.getPianoAttuale())) {
                 boolean done = false;
+
                 //Ciclo i tronchi del piano alla ricerca del beacon
                 for (int i = 0; i < Posizione.getPianoAttuale().getTronchi().size() && !done; i++) {
+
+                    // Se sul tronco i-esimo è contenuto il beacon al quale l'app si è collegata
+                    // per ultimo, setta la nuova posizione e la ridisegna su mappa
                     if (Posizione.getPianoAttuale().getTronchi().get(i).getBeacons().containsKey(beacon)) {
+
                         Posizione.setBeaconAttuale(Posizione.getPianoAttuale().getTronchi().get(i).getBeacons().get(beacon));
                         new Thread() {
                             public void run() {
@@ -237,7 +262,9 @@ public class GestoreEntita {
                 }
             } else {
                 boolean done = false;
-                //Ciclo fra tutti i tronchi di tutti i piani alla ricerca del beacon
+
+                //Ciclo fra tutti i tronchi di tutti i piani alla ricerca del beacon e
+                // disegno della nuova mappa e della nuova posizione su tale mappa.
                 for (int i = 0; i < Posizione.getEdificioAttuale().getPiani().size() && !done; i++) {
                     Piano corrente = Posizione.getEdificioAttuale().getPiani().get(i);
                     for (int j = 0; j < corrente.getTronchi().size(); j++) {
@@ -264,10 +291,13 @@ public class GestoreEntita {
             }
         }
 
-
+        // Verifica se è avvenuta l'USCITA: se il beacon attuale è il beacon fittizio e l'ultimo
+        // beacon reale al quale l'app si è collegata è taggato come "beacon di uscita" allora
+        // considera l'utente come fuori dall'edificio e quindi fuori pericolo.
+        // Viene quindi terminata chiusa l'applicazione.
         if(Uscita.checkUscita()) {
             Toast.makeText(context,"Bravo! Sei correttamente uscito dall'edificio.",Toast.LENGTH_SHORT).show();
-            //Se sono uscito dall'edificio chiudo l'app
+
             new Thread() {
                 public void run() {
                     ((Client) context).runOnUiThread(new Runnable() {
@@ -294,6 +324,13 @@ public class GestoreEntita {
         }
     }
 
+
+    /**
+     * Funzione per la scansione Bluetooth continua dei beacons. Se non viene rilevato alcun beacon
+     * dopo 5 scansioni, viene considerato il beacon al quale si è attualmente "collegati" come un
+     * beacon settato a null.
+     * @param c
+     */
     private void initBluetooth(Context c) {
 
         BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();  // Local Bluetooth adapter
