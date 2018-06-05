@@ -31,17 +31,25 @@ import it.getout.gestioneposizione.Posizione;
 import it.getout.gestioneposizione.Tronco;
 
 /**
+ * la classe contiene le query che fanno riferimento al database locale
  * Created by Alessandro on 01/02/2018.
  */
-
 public class Database extends GestoreDati {
 
     private ConnessioneDatabase connessione;
 
+    /**
+     * metodo costruttore
+     * @param context
+     */
     public Database(Context context) {
         connessione = new ConnessioneDatabase(context);
     }
 
+    /**
+     * metodo che inserisce i valori nel database locale ( va a riempire il dB con i valori scaricati dal server)
+     * @param hashMap
+     */
     public void inserisciValori(HashMap<String,ContentValues> hashMap){
         SQLiteDatabase db = connessione.getWritableDatabase();
         Iterator iterator = hashMap.entrySet().iterator();
@@ -53,7 +61,11 @@ public class Database extends GestoreDati {
         }
     }
 
-
+    /**
+     * metodo che effettua una query e richiede l'edificio attuale attraverso l'id del beacon a cui l'utente è connesso
+     * @param idBeacon
+     * @return
+     */
     @Override
     public Edificio richiediEdificioAttuale(String idBeacon) {   //tipo edificio ancora non è dato sapere
         SQLiteDatabase db = connessione.getReadableDatabase();
@@ -71,7 +83,11 @@ public class Database extends GestoreDati {
         return new Edificio(nEdificio);
     }
 
-    //passatogli l'id del beacon mi restituisce il piano
+    /**
+     * metodo che passatogli l'id del beacon mi restituisce il piano
+     * @param idBeacon
+     * @return
+     */
     @Override
     public Piano richiediPianoAttuale(String idBeacon){
         SQLiteDatabase db = connessione.getReadableDatabase();
@@ -91,7 +107,11 @@ public class Database extends GestoreDati {
         return new Piano(nPiano);
     }
 
-    //passandogli un piano mi deve restituire la stringa in base64 dell'immagine del piano
+    /**
+     * metodo che passandogli un piano mi deve restituire la stringa in base64 dell'immagine del piano
+     * @param pianoAttuale
+     * @return immagine base64
+     */
     @Override
     public Bitmap richiediMappaPiano(String pianoAttuale) {
         SQLiteDatabase db = connessione.getReadableDatabase();
@@ -106,7 +126,11 @@ public class Database extends GestoreDati {
         return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
 
-    //id_tronco string string dato un tronco voglio tutti i beacon del tronco
+    /**
+     * metodo che attraverso id_tronco del tronco a cui l'utente è connesso, restituisce tutti i beacon del tronco
+     * @param troncoAttuale
+     * @return listaBeacon
+     */
     //non capisco Strng dentro hasmap visto che sarebbe la stessa stringa contenuta nell'oggetto Beacon
     @Override
     public HashMap<String,Beacon> richiediBeaconTronco(int troncoAttuale) {
@@ -136,6 +160,11 @@ public class Database extends GestoreDati {
 
     }
 
+    /**
+     * metodo che richiede tutti i Tronchi definito da un singolo piano
+     * @param nomePiano
+     * @return listaTronchi
+     */
     @Override
     public ArrayList<Tronco> richiediTronchiPiano(String nomePiano) {
         SQLiteDatabase db = connessione.getReadableDatabase();
@@ -159,6 +188,11 @@ public class Database extends GestoreDati {
 
     }
 
+    /**
+     * metodo che richiede i Tronchi adiacenti a partire da un tronco definito
+     * @param t
+     * @return risultato
+     */
     public ArrayList<Integer> richiediTronchiAdiacenti(Tronco t) {
         SQLiteDatabase db = connessione.getReadableDatabase();
         ArrayList<Integer> risultato = new ArrayList<>();
@@ -199,7 +233,11 @@ public class Database extends GestoreDati {
         else return null;
     }
 
-    // dato un nome del piano restituisce tutte le sue aule
+    /**
+     * metodo che dato un nome del piano restituisce tutte le sue aule
+     * @param nomePiano
+     * @return listaAule
+     */
     @Override
     public ArrayList<Aula> richiediAulePiano(String nomePiano) {
         SQLiteDatabase db = connessione.getReadableDatabase();
@@ -218,7 +256,11 @@ public class Database extends GestoreDati {
         return listaAule;
     }
 
-    // dato un nome dell'edificio restituisce la lista dei suoi piani
+    /**
+     * metodo che dato un nome dell'edificio restituisce la lista dei suoi piani
+     * @param nomeEdificio
+     * @return listaPiani
+     */
     @Override
     public ArrayList<Piano> richiediPianiEdificio(String nomeEdificio) {
         SQLiteDatabase db = connessione.getReadableDatabase();
@@ -237,6 +279,11 @@ public class Database extends GestoreDati {
 
     }
 
+    /**
+     * metodo che richiede la posizione del beacon tramite l'ID del beacon
+     * @param idBeacon
+     * @return Beacon
+     */
     @Override
     public Beacon richiediPosizione(String idBeacon) {
         SQLiteDatabase db = connessione.getReadableDatabase();
@@ -252,6 +299,13 @@ public class Database extends GestoreDati {
         return new Beacon(idBeacon,new PointF(Float.parseFloat(x),Float.parseFloat(y)));
     }
 
+    /**
+     * metodo che richiede il percorso verso l'uscita
+     * se destinazione è nullo allora si richiamerà il percorso più breve verso un uscita
+     * altrimenti se contiene il nome di un aula allora verrà richiamato il percorso verso l'aula
+     * @param destinazione
+     * @return Percorso
+     */
     @Override
     public ArrayList<Tronco> richiediPercorsoFuga(String destinazione) {
         String[] destSplit = destinazione.split(",");
@@ -263,6 +317,11 @@ public class Database extends GestoreDati {
         }
     }
 
+    /**
+     * metodo che richiede i Tronchi che contengono un beacon che definisce l'uscita
+     * @param beacon
+     * @return tronchiUscita
+     */
     public ArrayList<Tronco> richiediTronchiUscita(String beacon) {
         SQLiteDatabase db = connessione.getReadableDatabase();
         ArrayList<Tronco> tronchiUscita = new ArrayList<>();
@@ -301,6 +360,11 @@ public class Database extends GestoreDati {
         return tronchiUscita;
     }
 
+    /**
+     * metodo che richiede il tronco dove è contenuto il beacon attraverso l'id del beacon
+     * @param idBeacon
+     * @return
+     */
     public int richiediTroncoByBeacon(String idBeacon){
         SQLiteDatabase db = connessione.getReadableDatabase();
 
@@ -316,6 +380,11 @@ public class Database extends GestoreDati {
         return tronco;
     }
 
+    /**
+     * metodo che richiede l'ID dei beacon di uscita all'interno dell'edificio
+     * @param edificio
+     * @return usciteEdificio
+     */
     @Override
     public ArrayList<String> richiediUsciteEdificio(String edificio) {
         SQLiteDatabase db = connessione.getReadableDatabase();
@@ -337,6 +406,11 @@ public class Database extends GestoreDati {
         return usciteEdificio;
     }
 
+    /**
+     * metodo che richiede i parametri che caratterizzano il tronco (VULN,RV,PF)
+     * @param tronco
+     * @return tronchi
+     */
     public ArrayList<Float> richiediParametri(int tronco){
         SQLiteDatabase db = connessione.getReadableDatabase();
 

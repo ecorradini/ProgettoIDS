@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 
 /**
+ * classe che si occupa di creare il database locale e di gestire la connessione con esso
  * Created by Alessandro on 01/02/2018.
  */
 
@@ -16,12 +17,18 @@ public class ConnessioneDatabase extends SQLiteOpenHelper {
     //nome del database
     private static final String DATABASE_NAME= "locale";
 
-
+    /**
+     * metodo costruttore
+     * @param context
+     */
     public ConnessioneDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-
+    /**
+     * metodo definito per la creazione del database e definizione delle relative colonne
+     * @param sqLiteDatabase
+     */
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+DBStrings.TABLE_EDIFICIO);
@@ -77,11 +84,14 @@ public class ConnessioneDatabase extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(create_parametri);
     }
 
+    /**
+     * metodo per l'upgrade della versione del database
+     * @param db
+     * @param oldVersion
+     * @param newVersion
+     */
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
         onCreate(db);
     }
-
-
-
 }
 

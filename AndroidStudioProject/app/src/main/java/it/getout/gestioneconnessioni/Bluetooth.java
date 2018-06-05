@@ -65,6 +65,11 @@ public class Bluetooth {
     //conta quante volte consecutive non si invia la propria posizione al server
     private int cont;
 
+    /**
+     * costruttore della classe
+     * @param btAdapter
+     * @param a
+     */
     public Bluetooth(BluetoothAdapter btAdapter, AppCompatActivity a){
 
         activity = a;
@@ -120,7 +125,9 @@ public class Bluetooth {
         //TODO: handle the case when the user does NOT activate bluetooth.
     }
 
-    //thread che si occupa di far partire lo scan in cerca dei beacon
+    /**
+     * thread che si occupa di far partire lo scan in cerca dei beacon
+     */
     private Runnable startScan = new Runnable() {
         @Override
         public void run() {
@@ -160,7 +167,9 @@ public class Bluetooth {
         }
     };
 
-    //thread per mettere in pausa lo scan ed eventualmente elaborare i dati
+    /**
+     * thread per mettere in pausa lo scan ed eventualmente elaborare i dati
+     */
     private Runnable stopScan = new Runnable() {
         @Override
         public void run() {
@@ -203,7 +212,10 @@ public class Bluetooth {
     };
 
 
-    //callback utilizzata per trovare dispositivi nel raggio d'azione
+
+    /**
+     *callback utilizzata per trovare dispositivi nel raggio d'azione
+     */
     private ScanCallback mScanCallback = new ScanCallback() {
 
         @Override
@@ -229,5 +241,9 @@ public class Bluetooth {
         }
     };
 
+    /**
+     * metodo che ritorna il boolean che è true se la scansione è conclusa
+     * @return terminatedScan
+     */
     public boolean getTerminatedScan(){ return terminatedScan; }
 }
