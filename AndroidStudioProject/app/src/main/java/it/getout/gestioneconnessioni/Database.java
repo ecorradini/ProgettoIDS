@@ -253,8 +253,14 @@ public class Database extends GestoreDati {
     }
 
     @Override
-    public ArrayList<Tronco> richiediPercorsoFuga(String idBeacon) {
-        return new Percorso(Posizione.getIDBeaconAttuale(),this).getResult();
+    public ArrayList<Tronco> richiediPercorsoFuga(String destinazione) {
+        String[] destSplit = destinazione.split(",");
+        if(destSplit.length>0) {
+            return new Percorso(Posizione.getIDBeaconAttuale(),destSplit[1],this).getResult();
+        }
+        else {
+            return new Percorso(Posizione.getIDBeaconAttuale(), this).getResult();
+        }
     }
 
     public ArrayList<Tronco> richiediTronchiUscita(String beacon) {

@@ -12,11 +12,22 @@ public class Percorso extends Thread {
     private ArrayList<Tronco> percorso;
     private String beacon;
     private boolean finished;
+    private String destinazione;
     private Database reader;
 
     public Percorso(String beacon, Database reader) {
         percorso = new ArrayList<>();
         this.beacon = beacon;
+        this.reader = reader;
+        this.destinazione="";
+        finished=false;
+        start();
+    }
+
+    public Percorso(String beacon, String destinazione, Database reader) {
+        percorso = new ArrayList<>();
+        this.beacon = beacon;
+        this.destinazione = destinazione;
         this.reader = reader;
         finished=false;
         start();
@@ -35,9 +46,46 @@ public class Percorso extends Thread {
 
         partenza = grafi.get(Posizione.getPianoAttuale().toString());
 
-        ArrayList<Tronco> uscite = reader.richiediTronchiUscita(beacon);
+        ArrayList<GrafoTronchi.Nodo> listaNodi = new ArrayList<>();
 
-        ArrayList<GrafoTronchi.Nodo> listaNodi = calcoloPercorso(partenza.getRadice(),uscite);
+        if(destinazione.isEmpty()) {
+            ArrayList<Tronco> uscite = reader.richiediTronchiUscita(beacon);
+
+            listaNodi = calcoloPercorso(partenza.getRadice(), uscite);
+        }
+        else {
+            Aula corrente = null;
+            for(int i=0; i<Posizione.getPianoAttuale().getAule().size() && corrente==null; i++) {
+                if(Posizione.getPianoAttuale().getAule().get(i).getNome().equals(destinazione)) {
+                    corrente = Posizione.getPianoAttuale().getAule().get(i);
+                }
+            }
+            Log.e("BEACON AULA",corrente.getEntrata());
+            int troncoAula = reader.richiediTroncoByBeacon(corrente.getEntrata());
+            Tronco troncoDestinazione = null;
+            for(int i=0; i<Posizione.getPianoAttuale().getTronchi().size() && troncoDestinazione==null; i++) {
+                if(Posizione.getPianoAttuale().getTronchi().get(i).getId()==troncoAula) {
+                    troncoDestinazione = Posizione.getPianoAttuale().getTronchi().get(i);
+                }
+            }
+            GrafoTronchi grafo = grafi.get(Posizione.getPianoAttuale().toString());
+            GrafoTronchi.Nodo destinazione = null;
+            ArrayList<GrafoTronchi.Nodo> daVisitare = new ArrayList<>();
+            daVisitare.add(grafo.getRadice());
+            while(daVisitare.size()> 0 && destinazione==null) {
+                if(daVisitare.get(0).getTronco().equals(troncoDestinazione)) {
+                    destinazione = daVisitare.get(0);
+                }
+                else {
+                    ArrayList<GrafoTronchi.Nodo> adiacenti = daVisitare.get(0).getAdiacenti();
+                    daVisitare.remove(0);
+                    daVisitare.addAll(adiacenti);
+                }
+
+            }
+            listaNodi = calcoloPercorso(partenza.getRadice(),destinazione);
+
+        }
 
         for(int i = 0; i < listaNodi.size(); i++){
             percorso.add(listaNodi.get(i).getTronco());
