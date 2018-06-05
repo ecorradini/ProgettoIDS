@@ -199,44 +199,6 @@ public class Database extends GestoreDati {
         else return null;
     }
 
-    public ArrayList<Float> richiediParametri(int tronco){
-        SQLiteDatabase db = connessione.getReadableDatabase();
-
-        ArrayList<Float> tronchi=new ArrayList<>();
-
-        String query =  "SELECT VULN,RV,PF"+
-                " FROM PARAMETRI WHERE TRONCO="+tronco;
-
-        Cursor res = db.rawQuery(query,null);
-        //res.moveToFirst();
-        while(res.moveToNext()) {
-            tronchi.add(res.getFloat(res.getColumnIndex("VULN")));
-            tronchi.add(res.getFloat(res.getColumnIndex("RV")));
-            tronchi.add(res.getFloat(res.getColumnIndex("PF")));
-        }
-
-        res.close();
-
-        return tronchi;
-    }
-
-    public int richiediNumeroPersoneInTronco(int tronco){
-        int persone=0;
-
-        SQLiteDatabase db = connessione.getReadableDatabase();
-        String query = "SELECT SUM(UTENTI) AS UTENTI FROM BEACON WHERE TRONCO = "+tronco;
-
-        Cursor res = db.rawQuery(query,null);
-        //res.moveToFirst();
-
-        persone = res.getInt(res.getColumnIndex("UTENTI"));
-
-        res.close();
-
-        return persone;
-
-    }
-
     // dato un nome del piano restituisce tutte le sue aule
     @Override
     public ArrayList<Aula> richiediAulePiano(String nomePiano) {
