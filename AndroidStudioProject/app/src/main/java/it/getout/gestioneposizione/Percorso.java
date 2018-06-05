@@ -24,6 +24,12 @@ public class Percorso extends Thread {
         start();
     }
 
+    /**
+     * Costruttore
+     * @param beacon ID beacon di partenza;
+     * @param destinazione Uscita (null) o ID beacon di destinazione.
+     * @param reader Gestore connessione con database locale.
+     */
     public Percorso(String beacon, String destinazione, Database reader) {
         percorso = new ArrayList<>();
         this.beacon = beacon;
@@ -33,6 +39,9 @@ public class Percorso extends Thread {
         start();
     }
 
+    /**
+     * Metodo che implementa l'algoritmo di calcolo del percorso.
+     */
     public void run() {
         GrafoTronchi partenza;
 
@@ -94,6 +103,10 @@ public class Percorso extends Thread {
         finished = true;
     }
 
+    /**
+     * Metodo che restituisce il percorso calcolato.
+     * @return ArrayList<Tronco>
+     */
     public ArrayList<Tronco> getResult() {
         while (!finished) {
             try {
@@ -105,6 +118,12 @@ public class Percorso extends Thread {
         return percorso;
     }
 
+    /**
+     * Calcolo del percorso verso l'uscita.
+     * @param partenza
+     * @param tronchiUscita
+     * @return ArrayList<GrafoTronchi.Nodo>
+     */
     private ArrayList<GrafoTronchi.Nodo> calcoloPercorso(GrafoTronchi.Nodo partenza, ArrayList<Tronco> tronchiUscita) {
 
         class PercorsoConCosto {
@@ -195,6 +214,12 @@ public class Percorso extends Thread {
         return finale.getPercorso();
     }
 
+    /**
+     * Calcolo del percorso verso una destinazione scelta.
+     * @param partenza
+     * @param destinazione
+     * @return ArrayList<GrafoTronchi.Nodo>
+     */
     private ArrayList<GrafoTronchi.Nodo> calcoloPercorso(GrafoTronchi.Nodo partenza, GrafoTronchi.Nodo destinazione) {
 
         class PercorsoConCosto {

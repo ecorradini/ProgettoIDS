@@ -5,6 +5,9 @@ import android.graphics.PointF;
 
 /**
  * Created by Alessandro on 01/02/2018.
+ *
+ * Classe che rappresenta un'aula.
+ *
  */
 
 public class Aula {
@@ -17,16 +20,30 @@ public class Aula {
         this.entrata = entrata;
     }
 
-    //meotodi per ottenere nome, entrata e piano di un'aula
+
+    /**
+     * Ritorna il nome dell'aula
+     * @return String
+     */
 
     public String getNome() {
         return this.nome;
     }
 
+    /**
+     * Rirtorna l'ID del beacon posizionato all'entrata dell'aula.
+     * @return String
+     */
+
     public String getEntrata(){
         return this.entrata;
     }
 
+    /**
+     * Controlla se un certo beacon è associato ad un'aula.
+     * @param b Beacon
+     * @return boolean
+     */
     public boolean isEntrata(Beacon b) { return b.getId().equals(entrata); }
 
 }

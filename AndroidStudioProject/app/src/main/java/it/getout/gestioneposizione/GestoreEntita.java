@@ -2,12 +2,9 @@ package it.getout.gestioneposizione;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.AsyncTaskLoader;
 import android.content.Context;
-import android.content.SearchRecentSuggestionsProvider;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -34,6 +31,11 @@ public class GestoreEntita {
 
     private boolean uscito;
 
+
+    /**
+     * Costruttore
+     * @param c
+     */
     public GestoreEntita(Context c) {
         context = c;
         if(checkInternet()) {
@@ -52,10 +54,10 @@ public class GestoreEntita {
 
 
     /**
-     * Funzione che scarica e istanzia i dati relativi all'attuale edificio, l'attuale piano e setta
+     * Funzione che, al primo avvio, scarica e istanzia i dati relativi all'attuale edificio, l'attuale piano e setta
      * la posizione attuale sulla base del MAC address del beacon passato come parametro.
      *
-     * @param beacon
+     * @param beacon id del beacon al quale si è collegati
      */
     private void scaricaDati(String beacon) {
         //All'inizio scarico solo i dati che mi servono immediatamente
@@ -94,9 +96,9 @@ public class GestoreEntita {
     }
 
     /**
-     * Funzione che istanzia i dati non essenziali dell'edificio
+     * Funzione che istanzia i dati non essenziali sin da subito dell'edificio.
      *
-     * @param pianiEdificio
+     * @param pianiEdificio lista dei piani che costituiscono l'edificio corrente
      */
 
     private void scaricaDatiRimanenti(ArrayList<Piano> pianiEdificio) {
@@ -213,6 +215,13 @@ public class GestoreEntita {
         }
     }
 
+    /**
+     * Funzione che richiede il percorso verso l'uscita o una destinazione scelta
+     * @param destinazione uscita o id del beacon che si trova presso l'aula desiderata.
+     * @return ArrayList<Tronco>
+     */
+
+
     public ArrayList<Tronco> scaricaPercorso(String destinazione) {
         if(destinazione.isEmpty()) {
             return reader.richiediPercorsoFuga(Posizione.getIDBeaconAttuale());
@@ -226,7 +235,7 @@ public class GestoreEntita {
      * Funzione che aggiorna i dati sulla posizione corrente in base al MAC address del beacon passato.
      * Controlla infine se è avvenuta l'uscita dell'utente dall'edificio.
      *
-     * @param beacon
+     * @param beacon id del beacon al quale ci si è collegati per ultimo
      */
 
     private void aggiornaDati(String beacon) {
@@ -327,9 +336,8 @@ public class GestoreEntita {
 
     /**
      * Funzione per la scansione Bluetooth continua dei beacons. Se non viene rilevato alcun beacon
-     * dopo 5 scansioni, viene considerato il beacon al quale si è attualmente "collegati" come un
-     * beacon settato a null.
-     * @param c
+     * dopo 5 tentativi, la posizione corrente è settata a null.
+     * @param c Context
      */
     private void initBluetooth(Context c) {
 
@@ -419,9 +427,24 @@ public class GestoreEntita {
         }
     }
 
+    /**
+     * Restituisce il valore della variabile per controllare se il download è terminato.
+     * @return boolean
+     */
     public boolean isDownloadFinished() { return downloadFinished;}
 
+
+    /**
+     * Restituisce il valore della variabile per controllare se il download è terminato.
+     * @return boolean
+     */
     public boolean isDownloadNecessariFinished() { return downloadNecessariFinished; }
+
+
+    /**
+     * Funzione che controlla è presente la connessione alla rete.
+     * @return boolean
+     */
 
     public boolean checkInternet() {
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);

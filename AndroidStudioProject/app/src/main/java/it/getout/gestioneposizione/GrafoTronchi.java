@@ -1,14 +1,26 @@
 package it.getout.gestioneposizione;
 
-import android.util.Log;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import it.getout.gestioneconnessioni.Database;
 
+
+/**
+ * Classe che rappresenta il grafo dei tronchi di un piano. Esso viene utilizzato per costruire il percorso
+ * migliore verso la destinazione (percorso a peso totale minore) nel caso in cui l'applicazione venga
+ * eseguita in modalità offline.
+ *
+ */
+
+
 public class GrafoTronchi {
+
+
+    /**
+     * Classe che rappresenta un tronco con i suoi adiacenti ed il peso valutato di quel tronco
+     *
+     */
 
     public class Nodo {
 
@@ -51,6 +63,13 @@ public class GrafoTronchi {
 
     private String piano;
     private Nodo radice;
+
+    /**
+     * Costruttore che genera il grafo dei tronchi.
+     * @param piano piano
+     * @param tronco tronco
+     * @param reader gestore della connessione con il database locale.
+     */
 
     public GrafoTronchi(String piano, int tronco, Database reader) {
         HashMap<Integer,Tronco> tronchiPiano = new HashMap<>();
@@ -129,7 +148,16 @@ public class GrafoTronchi {
         }
     }
 
+
+    /**
+     * Metodo che ritorna il piano
+     * @return String
+     */
     public String getPiano() { return piano; }
 
+    /**
+     * Metodo che ritorna il nodo(tronco) radice.
+     * @return Nodo
+     */
     public Nodo getRadice() { return radice; }
 }
