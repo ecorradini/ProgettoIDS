@@ -96,8 +96,8 @@ public class RVAdapterAule extends RecyclerView.Adapter<RVAdapterAule.CViewHolde
                 aulaT.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //final ArrayList<Tronco> percorso = ((Client)view.getContext()).getGestore().scaricaPercorso(struttura.get(position).getAula(index).getNome());
-                       // android.app.Fragment currentFragment = ((Client) context).getFragmentManager().findFragmentById(R.layout.fragment_ordinaria);
+                        parent.setAula(struttura.get(position).getAula(index).getNome());
+                        // android.app.Fragment currentFragment = ((Client) context).getFragmentManager().findFragmentById(R.layout.fragment_ordinaria);
                         parent.setButton(true);
                         ((Client)context).getSupportFragmentManager().popBackStackImmediate();
                         /*new Thread() {
