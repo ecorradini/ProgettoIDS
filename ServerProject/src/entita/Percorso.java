@@ -8,7 +8,9 @@ public class Percorso extends Thread {
     private String beacon;
     private String destinazione;
     private boolean finished;
-
+    /**
+     * costruttore per fuga
+     */
     public Percorso(String beacon) {
         percorso = "";
         this.beacon = beacon;
@@ -16,7 +18,9 @@ public class Percorso extends Thread {
         finished=false;
         start();
     }
-
+    /**
+     * costruttore per richiesta destinazione
+     */
     public Percorso(String beacon, String destinazione) {
         percorso = "";
         this.beacon = beacon;
@@ -24,7 +28,9 @@ public class Percorso extends Thread {
         finished=false;
         start();
     }
-
+    /**
+     * metodo run del runnable per il calcolo del percorso
+     */
     public void run() {
 
         if(beacon!=null) {
@@ -92,7 +98,10 @@ public class Percorso extends Thread {
 
         finished = true;
     }
-
+    /**
+     * evita che si avviino più thread di calcolo contemporaneamente
+     * @return stringa JSON
+     */
     public String getResult() {
         while (!finished) {
             try {
@@ -103,7 +112,12 @@ public class Percorso extends Thread {
         }
         return percorso;
     }
-
+    /**
+     * metodo che calcola il percorso sul grafo tramite UCS ritornando i nodi da attraversare
+     * @param partenza nodo di partenza
+     * @param tronchiUscita possibili tronchi di uscita dall' edificio
+     * @return ArrayList<GrafoTronchi.Nodo>
+     */
     private ArrayList<GrafoTronchi.Nodo> calcoloPercorso(GrafoTronchi.Nodo partenza, ArrayList<Tronco> tronchiUscita) {
 
         class PercorsoConCosto {
@@ -115,23 +129,41 @@ public class Percorso extends Thread {
                 percorso = new ArrayList<>();
                 costo = 0;
             }
-
+            /**
+             * ritorna il percorso costruito
+             * @return ArrayList<GrafoTronchi.Nodo>
+             */
             private ArrayList<GrafoTronchi.Nodo> getPercorso () {return percorso;}
-
+            /**
+             * aggiunge il  nodo passato al percorso
+             * @param nuovo
+             */
             private void aggiungiNodo(GrafoTronchi.Nodo nuovo) {
                 percorso.add(nuovo);
             }
-
+            /**
+             * calcola il peso del percorso per espandere su un certo nodo
+             * @param costo costo del nuovo nodo da espandere
+             */
             private void sommaCosto(float costo) {
                 this.costo += costo;
             }
-
+            /**
+             * ritorna il costo del percorso
+             * @param costo costo del nuovo nodo da espandere
+             */
             private float getCosto() {
                 return costo;
             }
-
+            /**
+             * ritorna l'ultimo nodo di un percorso
+             * @return GrafoTronchi.Nodo
+             */
             private GrafoTronchi.Nodo getUltimoNodo() { return percorso.get(percorso.size()-1); }
-
+            /**
+             * controlla se si è arrivati a trovare la via di fuga più vicina, e ritorna TRUE nel caso
+             * @return boolean
+             */
             private boolean finito() {
                 boolean finito = false;
                 if(tronchiUscita.contains(percorso.get(percorso.size()-1).getTronco())) {
@@ -139,7 +171,10 @@ public class Percorso extends Thread {
                 }
                 return finito;
             }
-
+            /**
+             * costruisce il percorso aggiungendo al percorso fino al nodo padre il nodo figlio
+             * @param padre
+             */
             private void aggiungiPadre(PercorsoConCosto padre) {
                 percorso.addAll(padre.getPercorso());
                 costo += padre.getCosto();
@@ -186,7 +221,12 @@ public class Percorso extends Thread {
         }
         return finale.getPercorso();
     }
-
+    /**
+     * metodo che calcola il percorso sul grafo tramite UCS identicamente a sopra ma verso una destinazione interna all' aula e senza condizione di emergenza
+     * @param partenza nodo di partenza
+     * @param destinazione  nodo di destinazione
+     * @return ArrayList<GrafoTronchi.Nodo>
+     */
     private ArrayList<GrafoTronchi.Nodo> calcoloPercorso(GrafoTronchi.Nodo partenza, GrafoTronchi.Nodo destinazione) {
 
         class PercorsoConCosto {

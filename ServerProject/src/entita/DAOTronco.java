@@ -22,8 +22,10 @@ public class DAOTronco {
     static final String PIANO = "PIANO";
     static final String TABLE_TRONCO = "TRONCO";
 
-
-    //scaricamento di tutti i tronchi per ottenimento dati offline EDO
+    /**
+     * scaricamento di tutti i tronchi per ottenimento dati offline
+     * @return stringa JSON
+     */
     public static String downloadTronchi(){
         String json="\"TRONCHI\":[";
         try {
@@ -48,7 +50,11 @@ public class DAOTronco {
         return json;
     }
 
-
+    /**
+     * scaricamento di tutti i tronchi relativi a un piano per ottenimento dati offline
+     * @param piano identificativo del piano per cui si vogliono i tronchi
+     * @return stringa JSON
+     */
 
     public static String selectAllTronchiByPiano(String piano) {
         Connection conn = Database.getConn();
@@ -81,7 +87,11 @@ public class DAOTronco {
 
         return json;
     }
-
+    /**
+     * costruisce un' hashmap tra gli id dei tronchi e i tronchi stessi di un piano specificato
+     * @param piano identificatico del piano per cui si vuole svolgere l' operazione
+     * @return HashMap<Integer,Tronco>
+     */
     public static HashMap<Integer,Tronco> selectTronchiDelPiano(String piano) {
         Connection conn = Database.getConn();
         HashMap<Integer,Tronco> risultato = new HashMap<>();
@@ -108,6 +118,11 @@ public class DAOTronco {
 
         return risultato;
     }
+    /**
+     * ritorna le coordinate del tronco
+     * @param troncoID id del tronco per cui si vogliono le coordinate
+     * @return Hint[]
+     */
 
     public static int[] selectCoordinateTronco(int troncoID) {
         Connection conn = Database.getConn();
@@ -134,7 +149,11 @@ public class DAOTronco {
 
         return result;
     }
-
+    /**
+     * ritorna l' array degli identificativi dei tronchi adiacenti a un tronco specificato
+     * @param t tronco per cui si vogliono calcolare gli adiacenti
+     * @return Array<Integer>
+     */
     public static ArrayList<Integer> selectTronchiAdiacenti(Tronco t) {
         Connection conn = Database.getConn();
         ArrayList<Integer> risultato = new ArrayList<>();
@@ -182,6 +201,14 @@ public class DAOTronco {
         else return null;
     }
 
+    /**
+     * seleziona un nodo del grafo in base al beacon, all'edificio e al piano specificato
+     * @param beacon identificatico del beacon per cui si vuole svolgere l' operazione
+     * @param edificio identificatico del edificio per cui si vuole svolgere l' operazione
+     * @param piano identificatico del piano per cui si vuole svolgere l' operazione
+     * @return GrafoTronchi.Nodo
+     */
+
     public static GrafoTronchi.Nodo selectNodoByBeacon(String beacon, String edificio, String piano) {
         Connection conn = Database.getConn();
         String query = "SELECT TRONCO" +
@@ -227,6 +254,18 @@ public class DAOTronco {
 
         return risultato;
     }
+
+    /**
+     * inserisce un nuovo tronco
+     * @param X cooordinata X di inizio del tronco
+     * @param Y cooordinata Y di inizio del tronco
+     * @param XF cooordinata X di fine del tronco
+     * @param YF cooordinata Y di fine del tronco
+     * @param lunghezza lunghezza del tronco
+     * @param larghezza larghezza del tronco
+     * @param piano identificatico del piano a cui si trova l' edificio
+     * @throws SQLException
+     */
 
     public static int insertTronco(String X, String Y, String XF, String YF, String lunghezza, String larghezza, String piano) throws SQLException {
         Connection conn = Database.getConn();
