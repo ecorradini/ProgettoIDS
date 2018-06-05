@@ -76,6 +76,10 @@ public class Server extends GestoreDati
     private Context context;
 
 
+    /**
+     * Costruttore
+     * @param c
+     */
     public Server(Context c) {
         context = c;
 
@@ -93,6 +97,10 @@ public class Server extends GestoreDati
     }
 
 
+    /**
+     * Metodo per la ricerca e scoperta dell'indirizzo IP del server nella rete LAN alla quale il
+     * client è connesso.
+     */
     private void discoverIP(){
         // Find the server using UDP broadcast
         try {
@@ -163,6 +171,11 @@ public class Server extends GestoreDati
     }
 
 
+    /**
+     * Metodo che richiede al server l'edificio attuale in base all'id del beacon passato come parametro
+     * @param beacon
+     * @return Edificio
+     */
     @Override
     public Edificio richiediEdificioAttuale(String beacon) {
 
@@ -203,6 +216,11 @@ public class Server extends GestoreDati
         return attesaEdifico.getResult();
     }
 
+    /**
+     * Metodo che richiede al server il piano attuale in base all'id del beacon passato come parametro
+     * @param beacon
+     * @return Piano
+     */
     @Override
     public Piano richiediPianoAttuale(String beacon) {
 
@@ -242,6 +260,11 @@ public class Server extends GestoreDati
         return attesaPiano.getResult();
     }
 
+    /**
+     * Metodo che richiede al server la mappa del piano attuale.
+     * @param piano
+     * @return Bitmap
+     */
     @Override
     public Bitmap richiediMappaPiano(String piano) {
 
@@ -276,6 +299,12 @@ public class Server extends GestoreDati
         return attesaMappa.getResult();
     }
 
+
+    /**
+     * Metodo che richiede al server tutti i beacon apparteneti al tronco passato come parametro
+     * @param idTronco
+     * @return HashMap<String, Beacon>
+     */
     @Override
     public HashMap<String, Beacon> richiediBeaconTronco(int idTronco) {
 
@@ -310,6 +339,11 @@ public class Server extends GestoreDati
         return attesaBeacon.getResult();
     }
 
+    /**
+     * Metodo che richiede al server tutti i tronchi apparteneti al piano passato come parametro
+     * @param piano
+     * @return ArrayList<Tronco>
+     */
     @Override
     public ArrayList<Tronco> richiediTronchiPiano(String piano) {
 
@@ -344,6 +378,11 @@ public class Server extends GestoreDati
         return attesaTronco.getResult();
     }
 
+    /**
+     * Metodo che richiede al server tutte le aule apparteneti al piano passato come parametro
+     * @param piano
+     * @return
+     */
     @Override
     public ArrayList<Aula> richiediAulePiano(String piano) {
 
@@ -378,6 +417,11 @@ public class Server extends GestoreDati
         return attesaAule.getResult();
     }
 
+    /**
+     * Metodo che richiede al server tutti i piani apparteneti all'edificio passato come parametro
+     * @param edificio
+     * @return
+     */
     @Override
     public ArrayList<Piano> richiediPianiEdificio(String edificio) {
 
@@ -412,6 +456,12 @@ public class Server extends GestoreDati
         return attesaPiani.getResult();
     }
 
+    /**
+     * Metodo che richiede al server il beacon attuale in base all'ID del beacon al quale
+     * ci si è connessi
+     * @param beacon
+     * @return Beacon
+     */
     @Override
     public Beacon richiediPosizione(String beacon) {
         class ThreadAttesaBeacon extends Thread {
@@ -445,6 +495,11 @@ public class Server extends GestoreDati
         return attesaBeacon.getResult();
     }
 
+    /**
+     * Metodo che richiede al server il percorso di fuga a partire dal beacon attuale
+     * @param beacon
+     * @return ArrayList<Tronco>
+     */
     @Override
     public ArrayList<Tronco> richiediPercorsoFuga(String beacon) {
 
@@ -479,6 +534,11 @@ public class Server extends GestoreDati
         return attesaPercorso.getResult();
     }
 
+    /**
+     * Metodo che richiede al server le uscite dell'edificio in base all'edifico passato come parametro.
+     * @param edificio
+     * @return
+     */
     @Override
     public ArrayList<String> richiediUsciteEdificio(String edificio) {
         class ThreadAttesaUscite extends Thread {
@@ -513,6 +573,9 @@ public class Server extends GestoreDati
     }
 
 
+    /**
+     * Metodo per lo scaricamento iniziale di tutti i dati dell'applicazione.
+     */
     public void downloadIniziale(){
         new DownLoadInizialeTask().execute();
     }

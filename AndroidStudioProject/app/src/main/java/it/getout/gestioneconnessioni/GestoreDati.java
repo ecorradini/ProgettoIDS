@@ -11,6 +11,12 @@ import it.getout.gestioneposizione.Edificio;
 import it.getout.gestioneposizione.Piano;
 import it.getout.gestioneposizione.Tronco;
 
+
+/**
+ * Classe astratta per la gestione dell'elaborazione dei dati: se il client è connesso alla rete,
+ * i metodi di tale classe saranno gli analoghi di quelli definiti nella classe Server, altrimenti
+ * saranno quelli della classe Database.
+ */
 public abstract class GestoreDati {
 
     public abstract Edificio richiediEdificioAttuale(String beacon);
