@@ -8,6 +8,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+/**
+ * Classe Data Access Object per Aula
+ */
+
 public class DAOAula {
 
     //Nomi delle colonne della tabella

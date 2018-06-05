@@ -8,6 +8,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+/**
+ * Data Access Object per edificio
+ */
+
 public class DAOEdificio {
     //Nome della colonna "NOME"
     static final String NOME = "NOME";
@@ -15,7 +19,11 @@ public class DAOEdificio {
     static final String TABLE_EDIFICIO = "EDIFICIO";
 
 
-    //scaricamento di tutti gli edifici per ottenimento dati offline EDO
+    /**
+     * Scaricamento di tutti i edifici per ottenimento dati offline
+     * @return stringa JSON
+     */
+
     public static String downloadEdicifi(){
         String json="\"EDIFICI\":[";
         try {
@@ -40,6 +48,12 @@ public class DAOEdificio {
         return json;
     }
 
+
+    /**
+     * scarica l' edificio in base al beacon cui si è connessi per ottenimento dati
+     * @param idBeacon id del beacon  di cui si è interessati a scaricare l' edificio
+     * @return stringa JSON
+     */
 
     public static String selectEdificioByBeacon(String idBeacon) {
         Connection conn = Database.getConn();
@@ -72,6 +86,12 @@ public class DAOEdificio {
         return json;
     }
 
+    /**
+     * seleziona l' edificio in base al beacon cui si è connessi per ottenimento offline
+     * @param idBeacon id del beacon  di cui si è interessati a selezionare l'edificio
+     * @return stringa JSON
+     */
+
     public static String selectNomeEdificio(String idBeacon) {
         Connection conn = Database.getConn();
         String nomeEdificio = "";
@@ -102,6 +122,11 @@ public class DAOEdificio {
         return nomeEdificio;
     }
 
+    /**
+     * seleziona gli edifici
+     * @return ArrayList<String>
+     */
+
     public static ArrayList<String> selectEdifici() {
         Connection conn = Database.getConn();
         ArrayList<String> edifici = new ArrayList<>();
@@ -125,6 +150,11 @@ public class DAOEdificio {
         return edifici;
     }
 
+    /**
+     * conta gli edifici
+     * @return int
+     */
+
     public static int selectCountEdifici() {
         Connection conn = Database.getConn();
         int nEdifici=0;
@@ -147,7 +177,11 @@ public class DAOEdificio {
 
         return nEdifici;
     }
-
+    /**
+     * Inserimento di un'aula nel database
+     * @param nome nome che funge anche da identificativo dell' edificio
+     * @throws SQLException
+     */
     public static void insertEdificio(String nome) throws SQLException {
         Connection conn = Database.getConn();
 

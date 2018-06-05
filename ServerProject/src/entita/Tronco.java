@@ -8,7 +8,9 @@ public class Tronco {
     private int id;
     private float x,y,xf,yf,larghezza, lunghezza;
     private static float[] weight; // supponendo che i primi tre valori siano legati ai "parametri", gli altri due alla "lunghezza" e "los"
-
+    /**
+     * costruttore
+     */
     public Tronco(int id, float x, float y, float xf, float yf, float larghezza, float lunghezza) {
         this.id = id;
         this.x = x;
@@ -19,11 +21,22 @@ public class Tronco {
         this.lunghezza = lunghezza;
         weight = new float[]{0.2f,0.2f,0.2f,0.2f,0.2f};
     }
-
+    /**
+     * metodo per impostare i pesi dei parametri che influenzano il calcolo del percorso
+     * @param w1
+     * @param w2
+     * @param w3
+     * @param w4
+     * @param w5
+     */
     public static void setWeight(float w1, float w2, float w3, float w4, float w5) {
         weight = new float[]{w1,w2,w3,w4,w5};
     }
-
+    /**
+     * ritorna i tronchi adiacenti a un insieme di tronchi passato in input
+     * @param tronchiPiano insieme dei tronchi di cui si vuole trovare il set di tronchi adiacenti
+     * @return ArrayList<Tronco>
+     */
     public ArrayList<Tronco> richiediAdiacenti(HashMap<Integer,Tronco> tronchiPiano) {
         ArrayList<Integer> adiacentiID = DAOTronco.selectTronchiAdiacenti(this);
         ArrayList<Tronco> adiacenti = new ArrayList<>();
@@ -35,6 +48,11 @@ public class Tronco {
         }
         else return null;
     }
+
+    /**
+     * applica la formula per il calcolo del percorso in base ai pesi e ai valori dei parametri del tronco selezionato poi lo ritorna
+     * @return float
+     */
 
     public float calcolaPesoTronco(){
         float peso=0;
@@ -60,6 +78,12 @@ public class Tronco {
         return peso;
     }
 
+
+    /**
+     * ritorna true se il tronco passato è uguale al tronco corrente selezionato
+     * @param t
+     * @return boolean
+     */
 
     public boolean equals(Tronco t) {
         return t.getID()==id;

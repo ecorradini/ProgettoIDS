@@ -9,17 +9,18 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
-
+/**
+ * Data Access Object di uscita
+ */
 public class DAOUscita {
 
-
-    //scaricamento di tutte le uscite per ottenimento dati offline EDO
-    /*
-    public static String downloadUscite(){
-
-    }
-    */
-
+    /**
+     * ritorna i tronchi in cui ci sono le uscite a partire da dove ci si trova
+     * @param beacon identificatico del beacon per cui si vuole svolgere l' operazione
+     * @param edificio identificatico del edificio per cui si vuole svolgere l' operazione
+     * @param piano identificatico del piano per cui si vuole svolgere l' operazione
+     * @return ArrayList<Tronco>
+     */
     public static ArrayList<Tronco> getTronchiUscita(String beacon,String edificio,String piano) {
         Connection conn = Database.getConn();
         ArrayList<Tronco> tronchiDaAttraversare = new ArrayList<>();
@@ -61,6 +62,12 @@ public class DAOUscita {
 
         return tronchiDaAttraversare;
     }
+
+    /**
+     * ritorna i beacon di uscita di un edificio per il funzionamento offline
+     * @param edificio identificativo dell' edificio per cui si vogliono i beacon di uscita
+     * @return stringa JSON
+     */
 
     public static String getBeaconUscitaEdificio(String edificio) {
         Connection conn = Database.getConn();

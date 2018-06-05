@@ -5,6 +5,11 @@ import connessioni.Database;
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * Data Access Object per i paramatri
+ */
+
+
 public class DAOParametri {
     static final String TRONCO = "TRONCO";  //id del tronco di riferimento
     static final String VULNERABILITA = "VULN"; //parametro reale (probabilità di incendio per quel tronco)
@@ -12,7 +17,10 @@ public class DAOParametri {
     static final String PRESENZAFUMO = "PF"; // parametro di tipo boolean
     static final String TABLE_PARAMETRI = "PARAMETRI";
 
-    //scaricamento di tutti gli edifici per ottenimento dati offline EDO
+    /**
+     * scaricamento tutti edifici per ottenimento dati offline
+     * @return stringa JSON
+     */
     public static String downloadParametri(){
         String json="\"PARAMETRI\":[";
         try {
@@ -36,7 +44,11 @@ public class DAOParametri {
         }
         return json;
     }
-
+    /**
+     * ritorna i parametri di pericolo di un tronco
+     * @param tronco identificativo del tronco per cui si vogliono i parametri di pericolo
+     * @return ArrayList<Float>
+     */
     public static ArrayList<Float> selectParametri(int tronco){
         Connection conn = Database.getConn();
 
@@ -69,7 +81,11 @@ public class DAOParametri {
 
         return tronchi;
     }
-
+    /**
+     * scaricamento di tutti i parametri di pericolo per funzionamento offline
+     * @param tronco identificativo del tronco per cui si vogliono i parametri di pericolo
+     * @return ArrayList<String>
+     */
     public static ArrayList<String[]> selectAllParametri(){
         Connection conn = Database.getConn();
 
@@ -105,13 +121,20 @@ public class DAOParametri {
             rs.close();
             stm.close();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             parametriTronchi=null;
             e.printStackTrace();
         }
 
         return parametriTronchi;
     }
+
+    /**
+     * aggiorna il tronco specificato
+     * @param id identificativo del tronco da aggiornare
+     * @param vulnerabilita valore del parametro vulnerabilità per quel tronco
+     * @param rischiovita valore del parametro rischiovita per quel tronco
+     * @param presenzafumo valore del parametro presenzafumo per quel tronco
+     */
 
     public static void updateTronco(int id, float vulnerabilita, float rischiovita, float presenzafumo) {
         Connection conn = Database.getConn();
@@ -126,6 +149,11 @@ public class DAOParametri {
             e.printStackTrace();
         }
     }
+
+    /**
+     * ritorna TRUE se è presente un' emergenza
+     * @return boolean
+     */
 
     public static boolean controllaEmergenza(){
         boolean emergenza = false;
@@ -153,6 +181,11 @@ public class DAOParametri {
 
         return emergenza;
     }
+
+    /**
+     * ritorna l'identificativo dell' edificio per cui vi almeno un tronco con un rischio vita di 1
+     * @return String
+     */
 
     public static String selectEdificioParametro(){
         Connection conn = Database.getConn();
@@ -182,6 +215,10 @@ public class DAOParametri {
         return edificio;
 
     }
+    /**
+     * avvia l' emergenza
+     * @param tronco identificativo del tronco in cui si presenta l' emergenza
+     */
 
     public static void updateTestaEmergenza(int tronco) {
         Connection conn = Database.getConn();
@@ -199,6 +236,11 @@ public class DAOParametri {
         }
     }
 
+    /**
+     * termina l' emergenza
+     * @param id identificativo del tronco in cui si era presentata l' emergenza che si vuole terminare
+     */
+
     public static void updateFineTestaEmergenza(int tronco) {
         Connection conn = Database.getConn();
 
@@ -214,6 +256,12 @@ public class DAOParametri {
         } catch (SQLException e) {
         }
     }
+
+    /**
+     * inserisce i parametri di pericolo sul db
+     * @param tronco identificativo del tronco di cui si vogliono inserire i parametri
+     * @throws SQLException
+     */
 
     public static void insertParametri(String tronco) throws SQLException {
         Connection conn = Database.getConn();

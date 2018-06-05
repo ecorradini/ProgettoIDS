@@ -7,13 +7,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
+/**
+ * Data Access Object di piano
+ */
 public class DAOPiano {
     static final String NOME = "NOME";
     static final String EDIFICIO = "EDIFICIO";
     static final String TABLE_PIANO = "PIANO";
 
-    //scaricamento di tutti gli edifici per ottenimento dati offline EDO
+    /**
+     * scaricamento di tutti gli edifici per ottenimento dei dati offline
+     * @return stringa JSON
+     */
     public static String downloadPiani(){
         String json="\"PIANI\":[";
         try {
@@ -38,7 +43,11 @@ public class DAOPiano {
         return json;
     }
 
-
+    /**
+     * scarica il piano del beacon selezionato per ottenimento dati offline
+     * @param idBeacon idenyificativo del beacon
+     * @return stringa JSON
+     */
     public static String selectPianoByBeacon(String idBeacon) {
         Connection conn = Database.getConn();
         String nomePiano = "";
@@ -69,7 +78,10 @@ public class DAOPiano {
 
         return json;
     }
-
+    /**
+     * ritorna il nome identificativo del piano in cui si trova quel beacon
+     * @param idBeacon identificativo del beacon
+     */
     public static String selectNomePiano(String idBeacon) {
         Connection conn = Database.getConn();
         String nomePiano = "";
@@ -97,7 +109,11 @@ public class DAOPiano {
 
         return nomePiano;
     }
-
+    /**
+     * scaricamento di tutti i piani dell' edificio per ottenimento dati offline
+     * @param edificio identificativo dell' edificio
+     * @return stringa JSON
+     */
     public static String selectAllPianiByEdificio(String edificio) {
         Connection conn = Database.getConn();
         String json="{\""+edificio+"\":[";
@@ -128,7 +144,11 @@ public class DAOPiano {
 
         return json;
     }
-
+    /**
+     * ritorna la lista dei piani di un edificio
+     * @param edificio identificativo dell' edificio di cui si vogliono i piani
+     * @return ArrayList<String>
+     */
     public static ArrayList<String> selectListaPianiByEdificio(String edificio) {
         Connection conn = Database.getConn();
         ArrayList<String> piani = new ArrayList<>();
@@ -152,6 +172,11 @@ public class DAOPiano {
         return piani;
     }
 
+    /**
+     * ritorna il numero di piani
+     * @return int
+     */
+
     public static int selectCountPiani() {
         Connection conn = Database.getConn();
         int nPiani=0;
@@ -174,6 +199,12 @@ public class DAOPiano {
 
         return nPiani;
     }
+
+    /**
+     * inserisce un nuovo piano
+     * @param nome nome del piano
+     * @param edificio nome dell' edificio cui appartiene quel piano
+     */
 
     public static void insertPiano(String nome,String edificio) throws SQLException {
         Connection conn = Database.getConn();

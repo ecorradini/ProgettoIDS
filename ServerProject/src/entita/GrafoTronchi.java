@@ -4,6 +4,10 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * classe per gestire i pesi dei tronchi nel calcolo del percorso
+ */
+
 public class GrafoTronchi {
 
     class Nodo {
@@ -21,17 +25,30 @@ public class GrafoTronchi {
             if(adiacenti==null) adiacenti = new ArrayList<>();
             adiacenti.add(n);
         }
-
+        /**
+         * ritorna il tronco del nodo
+         * @return Tronco
+         */
         Tronco getTronco() { return dato; }
-
+        /**
+         * ritorna i nodi adiacenti
+         * @return ArrayList<Nodo>
+         */
         ArrayList<Nodo> getAdiacenti() { return adiacenti; }
-
+        /**
+         * ritorna il peso di un tronco
+         * @return float
+         */
         public float getPeso() { return peso; }
     }
 
     private HashMap<Integer,Tronco> tronchiPiano;
     private String piano;
     private Nodo radice;
+
+    /**
+     * costruttore
+     */
 
     public GrafoTronchi(String piano) {
         this.piano = piano;
@@ -77,10 +94,21 @@ public class GrafoTronchi {
             bfs.remove(0);
         }
     }
-
+    /**
+     * ritorna il piano in cui si trova il nodo
+     * @return String
+     */
     public String getPiano() { return piano; }
-
+    /**
+     * ritorna i tronchi del piano cui si riferisce il grafo
+     * @return HashMap<Integer,Tronco>
+     */
     public HashMap<Integer,Tronco> getTronchiPiano() { return tronchiPiano; }
+
+    /**
+     * ritorna la radice del grafo
+     * @return Nodo
+     */
 
     public Nodo getRadice() { return radice; }
 }

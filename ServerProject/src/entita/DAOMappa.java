@@ -12,14 +12,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Base64;
-
+/**
+ * Data Access Object per la mappa
+ */
 public class DAOMappa {
     static final String PIANO = "PIANO";
     static final String LINK = "LINK";
     static final String TABLE_MAPPA = "MAPPA";
 
+    /**
+     * scaricamento delle mappe per funzionamento offline
+     * @return  string JSON
+     */
 
-    //scaricamento di tutte le mappe per ottenimento dati offline EDO
     public static String downloadMappe() {
         String json = "MAPPE:[";
         try {
@@ -43,6 +48,11 @@ public class DAOMappa {
         return json;
     }
 
+    /**
+     * ritorna il link a cui l' immagine del piano è salvato sul server
+     * @param stringa identificativa del piano
+     * @return  stringa link
+     */
 
     public static String selectMappaByPiano(String piano) {
         Connection conn = Database.getConn();
@@ -69,6 +79,12 @@ public class DAOMappa {
         return link;
     }
 
+    /**
+     * Inserimento di un'aula nel database
+     * @param id identificativo del beacon
+     * @throws SQLException
+     */
+
     public static void insertMappaPiano(String piano) throws SQLException {
         Connection conn = Database.getConn();
         String link = "/Mappe/q" + piano + ".jpg";
@@ -79,6 +95,11 @@ public class DAOMappa {
 
         stm.close();
     }
+
+    /**
+     * seleziona la mappa per ottenimento dati offline
+     * @return stringa JSON
+     */
 
     public static String getBase64Mappe() {
         String json = "\"MAPPA\":[";
