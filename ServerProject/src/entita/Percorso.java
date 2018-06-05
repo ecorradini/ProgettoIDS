@@ -68,7 +68,6 @@ public class Percorso extends Thread {
                 String edificioArrivo = DAOEdificio.selectNomeEdificio(beaconAula);
                 String pianoArrivo = DAOPiano.selectNomePiano(beaconAula);
                 GrafoTronchi.Nodo partenza = DAOTronco.selectNodoByBeacon(beacon, edificio, piano);
-                System.out.println(beaconAula+" "+edificioArrivo+" "+pianoArrivo);
                 GrafoTronchi.Nodo arrivo = DAOTronco.selectNodoByBeacon(beaconAula, edificioArrivo, pianoArrivo);
 
                 ArrayList<GrafoTronchi.Nodo> listaNodi = calcoloPercorso(partenza, arrivo);
