@@ -17,13 +17,6 @@ public class ConsoleDiComando implements Runnable {
     public void run() {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         while(true) {
-            try {
-                TimeUnit.MILLISECONDS.sleep(50);
-
-            }catch (InterruptedException e){
-                System.out.println(e);
-            }
-            System.out.print(">");
             try{
                 String command = br.readLine();
                 if(command.length()>0) {

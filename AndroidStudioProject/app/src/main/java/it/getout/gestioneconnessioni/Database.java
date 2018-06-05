@@ -297,7 +297,7 @@ public class Database extends GestoreDati {
 
     public ArrayList<Tronco> richiediTronchiUscita(String beacon) {
         SQLiteDatabase db = connessione.getReadableDatabase();
-        ArrayList<Tronco> tronchiDaAttraversare = new ArrayList<>();
+        ArrayList<Tronco> tronchiUscita = new ArrayList<>();
 
         String query = "SELECT BEACONPIANO."+DBStrings.COL_TRONCO+" AS "+DBStrings.COL_TRONCO+
                 " FROM "+
@@ -325,12 +325,12 @@ public class Database extends GestoreDati {
         }
 
         while(res.moveToNext()){
-            tronchiDaAttraversare.add(tronchiPiano.get(res.getColumnIndex(DBStrings.COL_TRONCO)));
+            tronchiUscita.add(tronchiPiano.get(res.getInt(res.getColumnIndex(DBStrings.COL_TRONCO))));
         }
 
         res.close();
 
-        return tronchiDaAttraversare;
+        return tronchiUscita;
     }
 
     public int richiediTroncoByBeacon(String idBeacon){
@@ -341,7 +341,7 @@ public class Database extends GestoreDati {
                 " WHERE BEACON.ID = \'"+idBeacon+"\'";
 
         Cursor res = db.rawQuery(sql,null);
-        //res.moveToFirst();
+        res.moveToFirst();
         int tronco = res.getInt(res.getColumnIndex(DBStrings.COL_TRONCO));
         res.close();
 

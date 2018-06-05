@@ -35,8 +35,6 @@ public class Percorso extends Thread {
 
         partenza = grafi.get(Posizione.getPianoAttuale().toString());
 
-        Log.e("PARTENZA",partenza==null ? "NULL" : "NOT NULL");
-
         ArrayList<Tronco> uscite = reader.richiediTronchiUscita(beacon);
 
         ArrayList<GrafoTronchi.Nodo> listaNodi = calcoloPercorso(partenza.getRadice(),uscite);
@@ -65,12 +63,16 @@ public class Percorso extends Thread {
 
             private ArrayList<GrafoTronchi.Nodo> percorso;    //deve partire con una lista vuota
             private float costo;
-            private ArrayList<Tronco> tronchiUscita;
+            private ArrayList<Integer> tronchiUscita;
 
             private PercorsoConCosto(ArrayList<Tronco> tronchiUscita) {
                 percorso = new ArrayList<>();
                 costo = 0;
-                this.tronchiUscita = tronchiUscita;
+                this.tronchiUscita = new ArrayList<>();
+                for(int i=0; i<tronchiUscita.size(); i++) {
+                    Log.e("ID",tronchiUscita.get(i).getId()+"");
+                    this.tronchiUscita.add(tronchiUscita.get(i).getId());
+                }
             }
 
             private ArrayList<GrafoTronchi.Nodo> getPercorso () {return percorso;}
@@ -91,7 +93,7 @@ public class Percorso extends Thread {
 
             private boolean finito() {
                 boolean finito = false;
-                if(tronchiUscita.contains(percorso.get(percorso.size()-1).getTronco())) {
+                if(tronchiUscita.contains(percorso.get(percorso.size()-1).getTronco().getId())) {
                     finito=true;
                 }
                 return finito;
@@ -101,6 +103,7 @@ public class Percorso extends Thread {
                 percorso.addAll(padre.getPercorso());
                 costo += padre.getCosto();
             }
+
         }
 
         PercorsoConCosto finale = null;
