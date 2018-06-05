@@ -23,6 +23,8 @@ public class FragmentOrdinaria extends Fragment {
 
     public View view;
     private FloatingActionButton button_ordinaria;
+    private ArrayList<Tronco> percorso = null;
+    private String aula;
 
     public static FragmentOrdinaria newInstance() {
         return new FragmentOrdinaria();
@@ -77,12 +79,53 @@ public class FragmentOrdinaria extends Fragment {
                         }
                     });
 
+                    while (true) {
+
+                        String beaconA = Posizione.getIDBeaconAttuale();
+                        try {
+                            Thread.sleep(300);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        if (!beaconA.equals(Posizione.getIDBeaconAttuale())) {
+                            final ArrayList<Tronco> percorso = gestoreEntita.scaricaPercorso(aula);
+                            ((Client) getActivity()).runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ((Client) getActivity()).getMappaFragment().disegnaPercorso(percorso);
+                                }
+                            });
+                        }
+                    }
                 }
             }.start();
 
         }
         return view;
     }
+
+    public void setPercorso(ArrayList<Tronco> percorso) {
+        this.percorso = percorso;
+        /*((Client) getActivity()).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {*/
+                ((Client) getActivity()).getMappaFragment().disegnaPercorso(percorso);
+            /*}
+        });*/
+    }
+
+    public void setAula(String aula) {
+        this.aula = aula;
+        /*((Client) getActivity()).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {*/
+        GestoreEntita gestoreEntita = ((Client) getActivity()).getGestore();
+        final ArrayList<Tronco> percorso = gestoreEntita.scaricaPercorso(aula);
+        ((Client) getActivity()).getMappaFragment().disegnaPercorso(percorso);
+            /*}
+        });*/
+    }
+
 
     public void setButton(boolean visibile) {
         if(visibile) button_ordinaria.setVisibility(View.VISIBLE);
