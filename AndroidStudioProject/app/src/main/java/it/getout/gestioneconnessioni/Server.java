@@ -545,7 +545,7 @@ public class Server extends GestoreDati
                         JSONArray aule = response.getJSONArray("AULE");
                         JSONArray beacon = response.getJSONArray("BEACON");
                         JSONArray mappe = response.getJSONArray("MAPPA");
-
+                        JSONArray parametri = response.getJSONArray("PARAMETRI");
                         JSONArray tronchi = response.getJSONArray("TRONCHI");
 
 
@@ -631,6 +631,20 @@ public class Server extends GestoreDati
                             tronchiDaAggiungere.put("PIANO", piano);
                             tronchiDaAggiungere.put("LUNGHEZZA", lunghezza);
                             hashMap.put("TRONCO,"+t,tronchiDaAggiungere);
+                        }
+
+                        for(int par=0; par<parametri.length(); par++) {
+                            ContentValues parametriDaAggiungere = new ContentValues();
+                            JSONObject corrente = parametri.getJSONObject(par);
+                            int tronco = Integer.parseInt(corrente.getString("TRONCO"));
+                            float vuln = Float.parseFloat(corrente.getString("VULN"));
+                            float rv = Float.parseFloat(corrente.getString("RV"));
+                            float pf = Float.parseFloat(corrente.getString("PF"));
+                            parametriDaAggiungere.put("TRONCO",tronco);
+                            parametriDaAggiungere.put("VULN",vuln);
+                            parametriDaAggiungere.put("RV",rv);
+                            parametriDaAggiungere.put("PF",pf);
+                            hashMap.put("PARAMETRI,"+par,parametriDaAggiungere);
                         }
 
                         Database db = new Database(context);

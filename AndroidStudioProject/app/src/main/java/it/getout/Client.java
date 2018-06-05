@@ -61,8 +61,6 @@ public class Client extends AppCompatActivity {
             editor.apply();
         }
 
-        mappaFragment = MappaFragment.newInstance();
-
         loading = findViewById(R.id.cv_loading);
         loadingPhase2 = findViewById(R.id.cv_loading_phase2);
 
@@ -82,12 +80,22 @@ public class Client extends AppCompatActivity {
             gestore.coordinaPopolamentoDati();
         }
 
+        mappaFragment = MappaFragment.newInstance();
+
 
         //NOTIFICA
         startService(new Intent(Client.this, Notifica.class));
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(!gestore.checkInternet()) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("Emergenza",false);
+            editor.apply();
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

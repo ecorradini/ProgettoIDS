@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class ConnessioneDatabase extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION=8;
+    private static final int DATABASE_VERSION=9;
 
     //nome del database
     private static final String DATABASE_NAME= "locale";
@@ -30,6 +30,7 @@ public class ConnessioneDatabase extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+DBStrings.TABLE_TRONCO);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+DBStrings.TABLE_AULA);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+DBStrings.TABLE_PIANO);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+DBStrings.TABLE_PARAMETRI);
 
         String create_edificio = "CREATE TABLE IF NOT EXISTS "+DBStrings.TABLE_EDIFICIO+"("+
                 DBStrings.COL_NOME+" TEXT PRIMARY KEY"+")";
@@ -61,6 +62,11 @@ public class ConnessioneDatabase extends SQLiteOpenHelper {
         String create_mappa="CREATE TABLE IF NOT EXISTS "+DBStrings.TABLE_MAPPA+"("+
                 DBStrings.COL_PIANO+" TEXT PRIMARY KEY," +
                 DBStrings.COL_IMMAGINE+" TEXT NOT NULL"+")";
+        String create_parametri="CREATE TABLE IF NOT EXISTS "+DBStrings.TABLE_PARAMETRI+"("+
+                DBStrings.COL_TRONCO+" INTEGER PRIMARY KEY,"+
+                DBStrings.COL_VULN+" REAL NOT NULL,"+
+                DBStrings.COL_RV+" REAL NOT NULL,"+
+                DBStrings.COL_PF+" REAL NOT NULL"+")";
 
         sqLiteDatabase.execSQL(create_edificio);
         sqLiteDatabase.execSQL(create_piano);
@@ -68,6 +74,7 @@ public class ConnessioneDatabase extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(create_tronco);
         sqLiteDatabase.execSQL(create_beacon);
         sqLiteDatabase.execSQL(create_mappa);
+        sqLiteDatabase.execSQL(create_parametri);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){

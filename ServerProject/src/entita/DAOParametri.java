@@ -12,6 +12,31 @@ public class DAOParametri {
     static final String PRESENZAFUMO = "PF"; // parametro di tipo boolean
     static final String TABLE_PARAMETRI = "PARAMETRI";
 
+    //scaricamento di tutti gli edifici per ottenimento dati offline EDO
+    public static String downloadParametri(){
+        String json="\"PARAMETRI\":[";
+        try {
+            Connection con = Database.getConn();
+            Statement stm = con.createStatement();
+            ResultSet rs = stm.executeQuery("SELECT * FROM PARAMETRI");
+            while (rs.next()){
+                json = json + "{\"TRONCO\":\""+ rs.getInt(TRONCO) +"\",\"VULN\":\"" + rs.getFloat(VULNERABILITA)+"\",\"RV\":\"" + rs.getFloat(RISCHIOVITA) +"\",\"PF\":\"" + rs.getFloat(PRESENZAFUMO) +"\"},";
+            }
+            rs.close();
+            stm.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        finally {
+            if (json.substring(json.length() - 1, json.length()).equals(",")) {
+                json = json.substring(0, json.length() - 1);
+            }
+            json = json + "]";
+        }
+        return json;
+    }
+
     public static ArrayList<Float> selectParametri(int tronco){
         Connection conn = Database.getConn();
 

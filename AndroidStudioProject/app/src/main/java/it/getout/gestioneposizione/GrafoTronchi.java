@@ -15,27 +15,10 @@ public class GrafoTronchi {
         Tronco dato;
         ArrayList<Nodo> adiacenti;
         float peso;
-        private final float[] weight={0.2f,0.2f,0.2f,0.2f,0.2f};
 
-        public Nodo(Tronco t, Database reader) {
+        public Nodo(Tronco t) {
             dato = t;
-
-            ArrayList<Float> parametri;  //0.VULNERABILITA  1.RISCHIOVITA  2.PRESENZAFUMO
-            parametri = reader.richiediParametri(t.getId());
-
-            //calcolo peso con parametri 1, 2 e 3.
-            for(int i=0; i<parametri.size(); i++){
-                if(i==1)
-                    peso += parametri.get(i)*100*weight[i];
-                else {
-                    peso += parametri.get(i) * weight[i];
-                }
-            }
-
-            int numeroPersone = reader.richiediNumeroPersoneInTronco(t.getId());
-
-            // aggiunta al peso le componenti di lunghezza e los (C'È DA NORMALIZZARE: PORTARE TUTTE LE VARIE COMPONENTI A VALORI COMPRESI TRA 0 E 1)
-            peso  += t.getLunghezza()*weight[3]+(numeroPersone/(t.getLunghezza()*t.getLarghezza()))*weight[4];
+            adiacenti=new ArrayList<>();
         }
 
         public void addAdiacente(Nodo n) {
@@ -77,7 +60,7 @@ public class GrafoTronchi {
         }
 
         if(rad!=null) {
-            radice = new Nodo(rad,reader);
+            radice = new Nodo(rad);
             bfs.add(radice);
             fatti.put(radice.getTronco(),radice);
         }
@@ -88,8 +71,8 @@ public class GrafoTronchi {
             for(int i=0; i<adiacentiID.size(); i++) {
                 Tronco corrente = null;
                 for(int j=0; j<Posizione.getPianoAttuale().getTronchi().size() && corrente==null; j++) {
-                    if(adiacentiID.get(i)==Posizione.getPianoAttuale().getTronchi().get(i).getId()) {
-                        corrente = Posizione.getPianoAttuale().getTronchi().get(i);
+                    if(adiacentiID.get(i)==Posizione.getPianoAttuale().getTronchi().get(j).getId()) {
+                        corrente = Posizione.getPianoAttuale().getTronchi().get(j);
                     }
                 }
                 if(corrente==null) {
@@ -113,7 +96,7 @@ public class GrafoTronchi {
                     if(fatti.containsKey(adiacenti.get(i))) {
                         attuale = fatti.get(adiacenti.get(i));
                     }
-                    else attuale = new Nodo(adiacenti.get(i),reader);
+                    else attuale = new Nodo(adiacenti.get(i));
                     bfs.get(0).addAdiacente(attuale);
                     nodiAdiacenti.add(attuale);
                 }

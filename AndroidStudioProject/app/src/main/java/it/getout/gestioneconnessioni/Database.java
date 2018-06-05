@@ -49,7 +49,7 @@ public class Database extends GestoreDati {
             Map.Entry entry = (Map.Entry)iterator.next();
             String chiave = (String)entry.getKey();
             String nomeTabella = chiave.split(",")[0];
-            db.insert(nomeTabella,null,(ContentValues)entry.getValue());
+            db.insert(nomeTabella, null, (ContentValues) entry.getValue());
         }
     }
 
@@ -155,7 +155,6 @@ public class Database extends GestoreDati {
                     res.getFloat(res.getColumnIndex(DBStrings.COL_LUNGHEZZA))));
         }
         res.close();
-
         return listaTronchi;
 
     }
@@ -164,7 +163,7 @@ public class Database extends GestoreDati {
         SQLiteDatabase db = connessione.getReadableDatabase();
         ArrayList<Integer> risultato = new ArrayList<>();
 
-        String query = "SELECT TRONCO.ID" +
+        String query = "SELECT TRONCO.ID AS ID" +
                 " FROM TRONCO," +
                 "( SELECT TRONCO.ID as IDINIZIO," +
                 " TRONCO.X  as XINIZIO," +
@@ -187,7 +186,7 @@ public class Database extends GestoreDati {
                 " AND TRONCO.PIANO = TRONCOINIZIO.PIANOINIZIO";
 
         Cursor res = db.rawQuery(query,null);
-        res.moveToFirst();
+        //res.moveToFirst();
         while(res.moveToNext()) {
             risultato.add(res.getInt(res.getColumnIndex("ID")));
         }
@@ -209,7 +208,7 @@ public class Database extends GestoreDati {
                 " FROM PARAMETRI WHERE TRONCO="+tronco;
 
         Cursor res = db.rawQuery(query,null);
-        res.moveToFirst();
+        //res.moveToFirst();
         while(res.moveToNext()) {
             tronchi.add(res.getFloat(res.getColumnIndex("VULN")));
             tronchi.add(res.getFloat(res.getColumnIndex("RV")));
@@ -228,7 +227,7 @@ public class Database extends GestoreDati {
         String query = "SELECT SUM(UTENTI) AS UTENTI FROM BEACON WHERE TRONCO = "+tronco;
 
         Cursor res = db.rawQuery(query,null);
-        res.moveToFirst();
+        //res.moveToFirst();
 
         persone = res.getInt(res.getColumnIndex("UTENTI"));
 
@@ -248,7 +247,7 @@ public class Database extends GestoreDati {
 
         Cursor res = db.rawQuery(sql,null);
         ArrayList<Aula> listaAule = new ArrayList<>();
-        res.moveToFirst();
+        //res.moveToFirst();
         while(res.moveToNext()) {
             listaAule.add(new Aula(res.getString(res.getColumnIndex(DBStrings.COL_NOME)),res.getString(res.getColumnIndex(DBStrings.COL_ENTRATA))));
         }
@@ -266,7 +265,7 @@ public class Database extends GestoreDati {
 
         Cursor res = db.rawQuery(sql,null);
         ArrayList<Piano> listaPiani = new ArrayList<>();
-        res.moveToFirst();
+        //res.moveToFirst();
         while(res.moveToNext()) {
             listaPiani.add(new Piano(res.getString(res.getColumnIndex(DBStrings.COL_NOME))));
         }
@@ -342,7 +341,7 @@ public class Database extends GestoreDati {
                 " WHERE BEACON.ID = \'"+idBeacon+"\'";
 
         Cursor res = db.rawQuery(sql,null);
-        res.moveToFirst();
+        //res.moveToFirst();
         int tronco = res.getInt(res.getColumnIndex(DBStrings.COL_TRONCO));
         res.close();
 
@@ -358,6 +357,7 @@ public class Database extends GestoreDati {
                 " AND "+DBStrings.TABLE_TRONCO+"."+DBStrings.COL_PIANO+"="+DBStrings.TABLE_PIANO+"."+DBStrings.COL_NOME+
                 " AND "+DBStrings.TABLE_PIANO+"."+DBStrings.COL_EDIFICIO+"='"+edificio+"'"+
                 " AND "+DBStrings.COL_USCITA+"=1";
+
 
         Cursor res = db.rawQuery(query,null);
         ArrayList<String> usciteEdificio = new ArrayList<>();

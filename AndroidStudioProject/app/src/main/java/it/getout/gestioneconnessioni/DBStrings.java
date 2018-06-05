@@ -8,6 +8,7 @@ public class DBStrings {
     public static final String TABLE_TRONCO="TRONCO";
     public static final String TABLE_BEACON="BEACON";
     public static final String TABLE_MAPPA="MAPPA";
+    public static final String TABLE_PARAMETRI="PARAMETRI";
 
     //colonne tabelle
     public static final String COL_NOME="NOME";
@@ -25,5 +26,8 @@ public class DBStrings {
     public static final String COL_LUNGHEZZA="LUNGHEZZA";
     public static final String COL_USCITA="USCITA";
     public static final String COL_UTENTI="UTENTI";
+    public static final String COL_VULN="VULN";
+    public static final String COL_RV="RV";
+    public static final String COL_PF="PF";
 }
 
