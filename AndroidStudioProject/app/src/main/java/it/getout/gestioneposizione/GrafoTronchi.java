@@ -15,11 +15,27 @@ public class GrafoTronchi {
         Tronco dato;
         ArrayList<Nodo> adiacenti;
         float peso;
+        private final float[] weight={0.2f,0.2f,0.2f,0.2f,0.2f};
 
-        public Nodo(Tronco t) {
+        public Nodo(Tronco t, Database reader) {
             dato = t;
-            adiacenti=new ArrayList<>();
+
+            ArrayList<Float> parametri;  //0.VULNERABILITA  1.RISCHIOVITA  2.PRESENZAFUMO
+            parametri = reader.richiediParametri(t.getId());
+
+            //calcolo peso con parametri 1, 2 e 3.
+            for(int i=0; i<parametri.size(); i++){
+                if(i==1)
+                    peso += parametri.get(i)*100*weight[i];
+                else {
+                    peso += parametri.get(i) * weight[i];
+                }
+            }
+
+            // aggiunta al peso le componenti di lunghezza e los (C'È DA NORMALIZZARE: PORTARE TUTTE LE VARIE COMPONENTI A VALORI COMPRESI TRA 0 E 1)
+            peso  += t.getLunghezza()*weight[3];
         }
+
 
         public void addAdiacente(Nodo n) {
             if(adiacenti==null) adiacenti = new ArrayList<>();
@@ -60,7 +76,7 @@ public class GrafoTronchi {
         }
 
         if(rad!=null) {
-            radice = new Nodo(rad);
+            radice = new Nodo(rad,reader);
             bfs.add(radice);
             fatti.put(radice.getTronco(),radice);
         }
@@ -96,7 +112,7 @@ public class GrafoTronchi {
                     if(fatti.containsKey(adiacenti.get(i))) {
                         attuale = fatti.get(adiacenti.get(i));
                     }
-                    else attuale = new Nodo(adiacenti.get(i));
+                    else attuale = new Nodo(adiacenti.get(i),reader);
                     bfs.get(0).addAdiacente(attuale);
                     nodiAdiacenti.add(attuale);
                 }
