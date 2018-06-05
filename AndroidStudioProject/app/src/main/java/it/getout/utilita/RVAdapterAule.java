@@ -9,6 +9,7 @@ import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,25 +93,19 @@ public class RVAdapterAule extends RecyclerView.Adapter<RVAdapterAule.CViewHolde
                 aulaT.setText(aule.get(i).getNome());
                 aulaT.setTextSize(16);
                 aulaT.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                aulaT.setGravity(Gravity.CENTER_VERTICAL);
+                aulaT.setTextColor(cViewHolder.itemView.getContext().getResources().getColor(R.color.white));
+
+                LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                llp.setMargins(50, 10, 0, 0); // llp.setMargins(left, top, right, bottom);
+                aulaT.setLayoutParams(llp);
 
                 aulaT.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         parent.setAula(struttura.get(position).getAula(index).getNome());
-                        // android.app.Fragment currentFragment = ((Client) context).getFragmentManager().findFragmentById(R.layout.fragment_ordinaria);
                         parent.setButton(true);
                         ((Client)context).getSupportFragmentManager().popBackStackImmediate();
-                        /*new Thread() {
-                            public void run() {
-                                ((Client)context).runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-
-
-                                }
-                                });
-                            }
-                        }.start();*/
 
                     }
                 });

@@ -26,6 +26,7 @@ import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import it.getout.fragments.FragmentEmergenza;
+import it.getout.fragments.FragmentListaAule;
 import it.getout.fragments.FragmentOrdinaria;
 import it.getout.gestioneconnessioni.Notifica;
 import it.getout.gestioneconnessioni.Server;
@@ -45,8 +46,6 @@ public class Client extends AppCompatActivity {
     private SharedPreferences preferences;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,9 +54,9 @@ public class Client extends AppCompatActivity {
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         //store flag di inizio emergenza"
 
-        if(!preferences.contains("Emergenza")) {
+        if (!preferences.contains("Emergenza")) {
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean("Emergenza",false);
+            editor.putBoolean("Emergenza", false);
             editor.apply();
         }
 
@@ -69,14 +68,11 @@ public class Client extends AppCompatActivity {
         startLoading();
 
 
-
         if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMESSO_LOCATION);
-        }
-        else if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+        } else if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             gestore.coordinaPopolamentoDati();
-        }
-        else {
+        } else {
             gestore.coordinaPopolamentoDati();
         }
 
@@ -90,9 +86,9 @@ public class Client extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(!gestore.checkInternet()) {
+        if (!gestore.checkInternet()) {
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean("Emergenza",false);
+            editor.putBoolean("Emergenza", false);
             editor.apply();
         }
     }
@@ -143,7 +139,7 @@ public class Client extends AppCompatActivity {
         });
 
         boolean emergenza = preferences.getBoolean("Emergenza", false);
-        if(emergenza) switchButton.setChecked(true);
+        if (emergenza) switchButton.setChecked(true);
         else switchButton.setChecked(false);
 
         return true;
@@ -167,7 +163,7 @@ public class Client extends AppCompatActivity {
                             bar.setTitle("Modalità Emergenza");
 
                             FragmentEmergenza emergenza = FragmentEmergenza.newInstance();
-                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_main, emergenza).commit();
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_main, emergenza, "EMERGENZA").commit();
 
                             stopLoading();
                         } else {
@@ -178,7 +174,7 @@ public class Client extends AppCompatActivity {
                             bar.setTitle("Modalità Ordinaria");
 
                             FragmentOrdinaria ordinaria = FragmentOrdinaria.newInstance();
-                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_main, ordinaria).commit();
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_main, ordinaria, "ORDINARIA").commit();
 
                             stopLoading();
                         }
@@ -212,8 +208,7 @@ public class Client extends AppCompatActivity {
             mappaFragment = newInstance;
 
             return mappaFragment;
-        }
-        catch (Exception e) // InstantiationException, IllegalAccessException
+        } catch (Exception e) // InstantiationException, IllegalAccessException
         {
             throw new RuntimeException("Cannot reinstantiate fragment " + mappaFragment.getClass().getName(), e);
         }
@@ -234,8 +229,7 @@ public class Client extends AppCompatActivity {
             case PERMESSO_LOCATION: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     gestore.coordinaPopolamentoDati();
-                }
-                else {
+                } else {
                     Toast.makeText(Client.this, "Permessi negati. L'app ha bisogno del permesso, altrimenti morirai al prossimo incendio!", Toast.LENGTH_SHORT).show();
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMESSO_LOCATION);
                 }
@@ -245,8 +239,8 @@ public class Client extends AppCompatActivity {
     }
 
     public void startLoading() {
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 runOnUiThread(new Runnable() {
                     public void run() {
                         getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
@@ -259,8 +253,8 @@ public class Client extends AppCompatActivity {
     }
 
     public void stopLoading() {
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 runOnUiThread(new Runnable() {
                     public void run() {
                         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
@@ -270,7 +264,6 @@ public class Client extends AppCompatActivity {
             }
         }.start();
     }
-
 
     public GestoreEntita getGestore() {
         return gestore;
