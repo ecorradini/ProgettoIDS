@@ -17,9 +17,7 @@ import java.util.HashMap;
  */
 public class Server {
 
-    /**
-     * Grafi dei piani mantenuti in memoria
-     */
+    //Grafi dei piani mantenuti in memoria
     private static HashMap<String,HashMap<String,GrafoTronchi>> grafiPiani;
 
     /**

@@ -14,9 +14,7 @@ import java.util.logging.Logger;
  */
 public class DiscoveryIP implements Runnable{
 
-    /**
-     * Socket
-     */
+    //Socket
     DatagramSocket socket;
 
     /**
@@ -66,7 +64,7 @@ public class DiscoveryIP implements Runnable{
 
     /**
      * Restituisco l'istanza
-     * @return
+     * @return Istanza della classe
      */
     public static DiscoveryIP getInstance() {
         return DiscoveryIPHolder.INSTANCE;

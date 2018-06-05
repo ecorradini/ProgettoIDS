@@ -9,6 +9,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class DAOBeacon {
+
+    //Nomi delle colonne della tabella
     static final String ID = "ID";
     static final String X = "X";
     static final String Y = "Y";
@@ -17,8 +19,10 @@ public class DAOBeacon {
     static final String USCITA = "USCITA";
     static final String TABLE_BEACON = "BEACON";
 
-
-    //scaricamento di tutti i beacon per ottenimento dati offline EDO
+    /**
+     * Scaricamento di tutti i beacon per ottenimento dati offline
+     * @return stringa JSON
+     */
     public static String downloadBeacons(){
         String json="\"BEACON\":[";
         try {

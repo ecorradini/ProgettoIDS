@@ -14,10 +14,8 @@ import java.util.logging.Logger;
  * Classe per il download di tutti i dati iniziali
  */
 public class DownloadIniziale {
-    /**
-     * Risultato delle query
-     */
-        private String risultato;
+     //Risultato delle query
+     private String risultato;
 
     /**
      * Costruttore
@@ -34,7 +32,7 @@ public class DownloadIniziale {
 
     /**
      * Metodo per la restituzione del risultato
-     * @return
+     * @return stringa JSON
      */
     public String getRisultato(){
             return risultato;

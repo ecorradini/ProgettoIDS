@@ -12,13 +12,9 @@ import java.util.List;
  * Classe interfacciamento con database
  */
 public class Database {
-    /**
-     * variabile connessione
-     */
+    //variabile connessione
     private static Connection connection;
-    /**
-     * Url del database
-     */
+    //Url del database
     private static final String dbUrl="jdbc:jtds:sqlserver://den1.mssql5.gear.host/getoutdb";
     //private static final String dbUrl="jdbc:mysql://localhost/getoutdb";
 
@@ -54,7 +50,7 @@ public class Database {
 
     /**
      * Restituisce la connessione al database
-     * @return
+     * @return instanza della classe
      */
     public static Connection getConn() {
         return connection;

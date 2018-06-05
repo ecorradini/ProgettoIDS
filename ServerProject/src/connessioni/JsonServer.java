@@ -20,13 +20,9 @@ import java.util.HashMap;
  */
 public class JsonServer {
 
-    /**
-     * variabile server http
-     */
+    //variabile server http
     private HttpServer server;
-    /**
-     * Thread di lavoro in background per la ricezione di richieste
-     */
+    //Thread di lavoro in background per la ricezione di richieste
     private Thread worker;
 
     /**

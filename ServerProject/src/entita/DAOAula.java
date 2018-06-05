@@ -9,6 +9,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class DAOAula {
+
+    //Nomi delle colonne della tabella
     static final String NOME = "NOME";
     static final String X = "X";
     static final String Y = "Y";
@@ -17,13 +19,19 @@ public class DAOAula {
     static final String TABLE_AULA = "AULA";
 
 
-    //scaricamento di tutte le aule per ottenimento dati offline EDO
+    /**
+     * scaricamento di tutte le aule per ottenimento dati offline
+     * @return stringa JSON
+     */
     public static String downloadAule(){
         String json="\"AULE\":[";
         try {
+            //connessione al database
             Connection con = Database.getConn();
             Statement stm = con.createStatement();
+            //query
             ResultSet rs = stm.executeQuery("SELECT * FROM AULA");
+            //ciclo il risultato
             while (rs.next()){
                 json = json + "{\"NOME\":\"" + rs.getString(NOME)+ "\",\"X\":\""+ rs.getInt(X)+"\",\"Y\":\""+rs.getInt(Y)+"\",\"PIANO\":\""+rs.getString(PIANO)+"\",\"ENTRATA\":\""+rs.getString(ENTRATA)+"\"},";
             }
@@ -33,6 +41,7 @@ public class DAOAula {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        //Alla fine rimuovo l'ultima virgola
         finally {
             if(json.substring(json.length() - 1,json.length()).equals(",")) {
                 json = json.substring(0, json.length() - 1);
@@ -43,6 +52,11 @@ public class DAOAula {
     }
 
 
+    /**
+     * Leggo tutte le aule del piano
+     * @param piano piano di cui si vogliono conoscere le aule
+     * @return stringa JSON
+     */
     public static String selectAllAuleByPiano(String piano) {
         Connection conn = Database.getConn();
         String json="{\""+piano+"\":[";
@@ -75,6 +89,11 @@ public class DAOAula {
         return json;
     }
 
+    /**
+     * Leggere tutte le aule del piano
+     * @param piano piano di cui si vogliono conoscere le aule
+     * @return lista delle aule del piano
+     */
     public static ArrayList<String> selectListaAuleByPiano(String piano) {
         Connection conn = Database.getConn();
         ArrayList<String> aule = new ArrayList<String>();
@@ -96,31 +115,11 @@ public class DAOAula {
         return aule;
     }
 
-    public static ArrayList<String> selectBeaconAuleEdificio(String edificio) {
-        Connection conn = Database.getConn();
-        ArrayList<String> beacons = new ArrayList<String>();
-
-        String query =  "SELECT "+ENTRATA+
-                " FROM "+TABLE_AULA+","+DAOPiano.TABLE_PIANO+","+DAOEdificio.TABLE_EDIFICIO+
-                " WHERE "+TABLE_AULA+"."+PIANO+"="+DAOPiano.TABLE_PIANO+"."+NOME+
-                " AND "+DAOPiano.TABLE_PIANO+"."+DAOPiano.EDIFICIO+"="+DAOEdificio.TABLE_EDIFICIO+"."+NOME+
-                " AND "+DAOEdificio.NOME+"='"+edificio+"'";
-
-        try {
-            Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery(query);
-            while (rs.next()) {
-                beacons.add(rs.getString(ENTRATA));
-            }
-            rs.close();
-            stm.close();
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return beacons;
-    }
-
+    /**
+     * Restituire l'id del beacon posto all'entrata dell'aula
+     * @param aula di cui si vuole conoscere il beacon d'entrata
+     * @return id del beacon
+     */
     public static String selectBeaconEntrata(String aula) {
         Connection conn = Database.getConn();
         String beacon = "";
@@ -144,6 +143,15 @@ public class DAOAula {
         return beacon;
     }
 
+    /**
+     * Inserimento di un'aula nel database
+     * @param nome nome dell'aula
+     * @param piano piano dove si trova l'aula
+     * @param X coordinata X di entrata dell'aula
+     * @param Y coordinata Y di entrata dell'autla
+     * @param entrata id del beacon di entrata dell'aula
+     * @throws SQLException
+     */
     public static void insertAula(String nome,String piano, String X, String Y, String entrata) throws SQLException {
         Connection conn = Database.getConn();
 
