@@ -1,7 +1,9 @@
 Nella cartella di progetto abbiamo:
 
-- APK
-- Relazione_Finale
+- GetOut!.apk
+- Relazione_Finale.pdf
+- Server.tar.xz -> inserito per sicurezza nel caso in cui lo script
+		   per l' installazione del Server non funzionasse
 
 e 3 sottocartelle
 
@@ -11,3 +13,5 @@ e 3 sottocartelle
 	- Dialogue & Navigation: relativi a tutto il progetto
 	- User stories: con le varie user stories come cartelle numerate
 			e dentro le stesse tutto il materiale di ciascuna
+
+
