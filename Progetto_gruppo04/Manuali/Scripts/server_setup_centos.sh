@@ -1,14 +1,15 @@
 dbname="getoutdb";
 username="getoutdb"
-wget http://dev.mysql.com/get/mysql-apt-config_0.8.9-1_all.deb
-dpkg -i mysql-apt-config_0.8.9-1_all.deb
-rm mysql-apt-config_0.8.9-1_all.deb
-apt-get update
-apt-get -y install mysql-server
-service mysqld start
-mysql_secure_installation
+wget http://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm
+yum -y localinstall mysql57-community-release-el7-11.noarch.rpm
+rm mysql57-community-release-el7-11.noarch.rpm
+yum  -y install mysql-community-server
+sudo systemctl start mysqld
 mysqld --initialize
-echo "Inserisci la password del database (che hai inserito prima) e poi INVIO:"
+grep 'A temporary password is generated for root@localhost' /var/log/mysqld.log
+echo "Inserisci la password stampata qui sopra"
+mysql_secure_installation
+echo "Inserisci la nuova password del database che hai inserito prima"
 read rootpasswd
 echo "Creo il database..."
 mysql -uroot -p$rootpasswd -e "CREATE DATABASE $dbname;"
