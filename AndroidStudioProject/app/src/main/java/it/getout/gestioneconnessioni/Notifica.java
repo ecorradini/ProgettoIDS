@@ -24,14 +24,21 @@ import java.util.Timer;
 import it.getout.Client;
 import it.getout.R;
 
+/**
+ * La classe è un service che si occupa di restare in ascolto di comunicazioni dal server (inizio e rientro emergenza)
+ * e della creazione della relativa notifica push
+ */
 public class Notifica extends Service {
 
     private Timer timer = new Timer();
     private static final int NOTIFICATION_EX = 1;
 
     private Context context;
-    private DatagramSocket d;
+    private DatagramSocket d; //oggetto che si occupa della comunicazione col server
 
+    /**
+     * costruttore della classe
+     */
     public Notifica() {}
 
     @Override
@@ -53,6 +60,14 @@ public class Notifica extends Service {
         }
     }
 
+    /**
+     * la classe, che si attiva dopo l'evento specifico, si occupa di avviare un thread per l'apertura della porta 9601
+     * e quindi della ricezione delle comunicazione di inizio e rientro software
+     * @param intent
+     * @param flags
+     * @param startid
+     * @return
+     */
     @Override
     public int onStartCommand(Intent intent, int flags, int startid) {
 
