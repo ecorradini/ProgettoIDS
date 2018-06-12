@@ -1,6 +1,5 @@
 package entita;
 
-import com.mysql.jdbc.log.Log;
 import connessioni.Database;
 import connessioni.Server;
 
