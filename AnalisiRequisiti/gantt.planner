@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<project name="Progetto GetOut!" company="" manager="" phase="" project-start="20171218T000000Z" mrproject-version="2" calendar="2">
+  <properties/>
+  <phases/>
+  <calendars>
+    <day-types>
+      <day-type id="0" name="Feriale" description="Giorno feriale standard"/>
+      <day-type id="1" name="Festivo" description="Giorno festivo standard"/>
+      <day-type id="2" name="Utilizza giorno predefinito" description="Utilizza giorno da calendario base"/>
+    </day-types>
+    <calendar id="1" name="ProgettoIDS">
+      <default-week mon="0"/>
+      <overridden-day-types/>
+      <days/>
+    </calendar>
+    <calendar id="2" name="Predefinito">
+      <default-week mon="0" tue="0" wed="0" thu="0" fri="0" sat="1" sun="1"/>
+      <overridden-day-types>
+        <overridden-day-type id="0">
+          <interval start="0800" end="1200"/>
+          <interval start="1300" end="1700"/>
+        </overridden-day-type>
+      </overridden-day-types>
+      <days/>
+    </calendar>
+  </calendars>
+  <tasks>
+    <task id="1" name="Interviste e Analisi" note="" work="201600" start="20171218T000000Z" end="20171226T170000Z" work-start="20171218T080000Z" percent-complete="100" priority="0" type="normal" scheduling="fixed-work"/>
+    <task id="2" name="Pianificazione" note="" work="57600" start="20171226T170000Z" end="20171228T170000Z" work-start="20171227T080000Z" percent-complete="100" priority="100" type="normal" scheduling="fixed-work">
+      <predecessors>
+        <predecessor id="1" predecessor-id="1" type="FS"/>
+      </predecessors>
+    </task>
+    <task id="3" name="User Story 2" note="" work="720000" start="20171228T170000Z" end="20180201T170000Z" work-start="20171229T080000Z" percent-complete="100" priority="1" type="normal" scheduling="fixed-work">
+      <predecessors>
+        <predecessor id="1" predecessor-id="2" type="FS"/>
+      </predecessors>
+    </task>
+    <task id="4" name="Test e Revisione" note="" work="0" start="20180201T170000Z" end="20180201T170000Z" work-start="20180201T170000Z" percent-complete="100" priority="0" type="milestone" scheduling="fixed-work">
+      <predecessors>
+        <predecessor id="1" predecessor-id="3" type="FF"/>
+      </predecessors>
+    </task>
+    <task id="5" name="User Story 3" note="" work="576000" start="20180201T170000Z" end="20180301T170000Z" work-start="20180202T080000Z" percent-complete="100" priority="0" type="normal" scheduling="fixed-work">
+      <predecessors>
+        <predecessor id="1" predecessor-id="3" type="FS"/>
+      </predecessors>
+    </task>
+    <task id="6" name="Test e Revisione" note="" work="0" start="20180301T170000Z" end="20180301T170000Z" work-start="20180301T170000Z" percent-complete="100" priority="0" type="milestone" scheduling="fixed-work">
+      <predecessors>
+        <predecessor id="1" predecessor-id="5" type="FF"/>
+      </predecessors>
+    </task>
+    <task id="7" name="User Story 4" note="" work="1008000" start="20180301T170000Z" end="20180419T170000Z" work-start="20180302T080000Z" percent-complete="100" priority="0" type="normal" scheduling="fixed-work">
+      <predecessors>
+        <predecessor id="1" predecessor-id="5" type="FS"/>
+      </predecessors>
+    </task>
+    <task id="8" name="Test e Revisione" note="" work="0" start="20180419T170000Z" end="20180419T170000Z" work-start="20180419T170000Z" percent-complete="100" priority="0" type="milestone" scheduling="fixed-work">
+      <predecessors>
+        <predecessor id="1" predecessor-id="7" type="FF"/>
+      </predecessors>
+    </task>
+    <task id="9" name="User Story 1" note="" work="432000" start="20180419T170000Z" end="20180510T170000Z" work-start="20180420T080000Z" percent-complete="100" priority="0" type="normal" scheduling="fixed-work">
+      <predecessors>
+        <predecessor id="1" predecessor-id="7" type="FS"/>
+      </predecessors>
+    </task>
+    <task id="10" name="Test e Revisione" note="" work="0" start="20180510T170000Z" end="20180510T170000Z" work-start="20180510T170000Z" percent-complete="100" priority="0" type="milestone" scheduling="fixed-work">
+      <predecessors>
+        <predecessor id="1" predecessor-id="9" type="FF"/>
+      </predecessors>
+    </task>
+    <task id="11" name="User Story 5" note="" work="201600" start="20180510T170000Z" end="20180521T170000Z" work-start="20180511T080000Z" percent-complete="100" priority="0" type="normal" scheduling="fixed-work">
+      <predecessors>
+        <predecessor id="1" predecessor-id="9" type="FS"/>
+      </predecessors>
+    </task>
+    <task id="12" name="Test e Revisione" note="" work="0" start="20180521T170000Z" end="20180521T170000Z" work-start="20180521T170000Z" percent-complete="100" priority="0" type="milestone" scheduling="fixed-work">
+      <predecessors>
+        <predecessor id="1" predecessor-id="11" type="FF"/>
+      </predecessors>
+    </task>
+    <task id="13" name="User Story 6" note="" work="86400" start="20180521T170000Z" end="20180524T170000Z" work-start="20180522T080000Z" percent-complete="100" priority="0" type="normal" scheduling="fixed-work">
+      <predecessors>
+        <predecessor id="1" predecessor-id="11" type="FS"/>
+      </predecessors>
+    </task>
+    <task id="14" name="Test e Revisione" note="" work="0" start="20180524T170000Z" end="20180524T170000Z" work-start="20180524T170000Z" percent-complete="100" priority="0" type="milestone" scheduling="fixed-work">
+      <predecessors>
+        <predecessor id="1" predecessor-id="13" type="FF"/>
+      </predecessors>
+    </task>
+    <task id="15" name="Test Finali" note="" work="86400" start="20180524T170000Z" end="20180529T170000Z" work-start="20180525T080000Z" percent-complete="100" priority="0" type="normal" scheduling="fixed-work">
+      <predecessors>
+        <predecessor id="1" predecessor-id="13" type="FS"/>
+      </predecessors>
+    </task>
+    <task id="16" name="Relazione finale" note="" work="201600" start="20180529T170000Z" end="20180607T170000Z" work-start="20180530T080000Z" percent-complete="100" priority="0" type="normal" scheduling="fixed-work">
+      <predecessors>
+        <predecessor id="1" predecessor-id="15" type="FS"/>
+      </predecessors>
+    </task>
+    <task id="17" name="Consegna Progetto" note="" work="0" start="20180607T170000Z" end="20180607T170000Z" work-start="20180607T170000Z" percent-complete="0" priority="0" type="milestone" scheduling="fixed-work">
+      <predecessors>
+        <predecessor id="1" predecessor-id="16" type="FF"/>
+      </predecessors>
+    </task>
+  </tasks>
+  <resource-groups/>
+  <resources/>
+  <allocations/>
+</project>
