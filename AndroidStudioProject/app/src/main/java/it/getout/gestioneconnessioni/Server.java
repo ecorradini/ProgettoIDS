@@ -580,7 +580,9 @@ public class Server extends GestoreDati
         new DownLoadInizialeTask().execute();
     }
 
-    //AsyncTask che richiede la stringa json per il download iniziale di tutto
+    /**
+     * AsyncTask che richiede la stringa json per il download iniziale di tutto
+     */
     private class DownLoadInizialeTask extends AsyncTask<Void,Void,Boolean> {
 
         //private String json= "";
@@ -735,10 +737,9 @@ public class Server extends GestoreDati
         }
     }
 
-
-
-
-    //AsyncTask che richiede l'edificio in base all'idbeacon connesso dal Server
+    /**
+     * AsyncTask che richiede l'edificio in base all'idbeacon connesso dal Server
+     */
     private class RichiediEdificioTask extends AsyncTask<String,Void,Boolean> {
 
         private String idBeacon;
@@ -800,7 +801,9 @@ public class Server extends GestoreDati
         }
     }
 
-    //AsyncTask che richiede i piani in base all'edificio al Server
+    /**
+     * AsyncTask che richiede i piani in base all'edificio al Server
+     */
     private class RichiediPianiEdificioTask extends AsyncTask<String,Void,Boolean> {
 
         private String edificio;
@@ -870,7 +873,9 @@ public class Server extends GestoreDati
         }
     }
 
-    //AsyncTask che richiede i beacon in base al tronco dal Server
+    /**
+     * AsyncTask che richiede i beacon in base al tronco dal Server
+     */
     private class RichiediBeaconTroncoTask extends AsyncTask<Integer,Void,Boolean> {
 
         private int tronco;
@@ -941,7 +946,9 @@ public class Server extends GestoreDati
         }
     }
 
-    //AsyncTask che richiede il piano in base all'idbeacon connesso dal Server (PIANOATTUALE)
+    /**
+     * AsyncTask che richiede il piano in base all'idbeacon connesso dal Server (PIANOATTUALE)
+     */
     private class RichiediPianoTask extends AsyncTask<String,Void,Boolean> {
 
         private String idbeacon;
@@ -1004,7 +1011,9 @@ public class Server extends GestoreDati
         }
     }
 
-    //AsyncTask che richiede i beacon in base al tronco dal Server
+    /**
+     * AsyncTask che richiede i beacon in base al tronco dal Server
+     */
     private class RichiediAulePianoTask extends AsyncTask<String,Void,Boolean> {
 
         private String piano;
@@ -1075,7 +1084,9 @@ public class Server extends GestoreDati
         }
     }
 
-    //AsyncTask che richiede i beacon in base al tronco dal Server
+    /**
+     * AsyncTask che richiede i beacon in base al tronco dal Server
+     */
     private class RichiediTronchiPianoTask extends AsyncTask<String,Void,Boolean> {
 
         private String piano;
@@ -1146,7 +1157,9 @@ public class Server extends GestoreDati
         }
     }
 
-    //AsyncTask che richiede i beacon in base al tronco dal Server
+    /**
+     * AsyncTask che richiede i beacon in base al tronco dal Server
+     */
     private class RichiediMappaPianoTask extends AsyncTask<String,Void,Boolean> {
 
         private String piano;
@@ -1186,7 +1199,9 @@ public class Server extends GestoreDati
         }
     }
 
-    //AsyncTask che richiede il piano in base all'idbeacon connesso dal Server (PIANOATTUALE)
+    /**
+     * AsyncTask che richiede il piano in base all'idbeacon connesso dal Server (PIANOATTUALE)
+     */
     private class RichiediPosizioneTask extends AsyncTask<String,Void,Boolean> {
 
         private String idbeacon;
@@ -1251,6 +1266,9 @@ public class Server extends GestoreDati
         }
     }
 
+    /**
+     * AsyncTask che richiede lo scaricamento del percorso dal Server
+     */
     private class RichiediPercorsoTask extends AsyncTask<String,Void,Boolean> {
 
         private String idBeacon;
@@ -1323,6 +1341,9 @@ public class Server extends GestoreDati
         }
     }
 
+    /**
+     * AsyncTask che richiede le uscite dal Server
+     */
     private class RichiediUsciteTask extends AsyncTask<String,Void,Boolean> {
 
         private String edificio;
@@ -1373,6 +1394,10 @@ public class Server extends GestoreDati
             return true;
         }
 
+        /**
+         * metodo che restituisce i risultati ottenuti
+         * @return
+         */
         public ArrayList<String> getResult() {
             while(!downloaded) {
                 try {

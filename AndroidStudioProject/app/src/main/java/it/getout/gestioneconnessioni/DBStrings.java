@@ -1,5 +1,8 @@
 package it.getout.gestioneconnessioni;
 
+/**
+ * la classe contiene le definizioni delle costanti che serviranno per le query al dB
+ */
 public class DBStrings {
     //nomi delle tabelle
     public static final String TABLE_EDIFICIO="EDIFICIO";

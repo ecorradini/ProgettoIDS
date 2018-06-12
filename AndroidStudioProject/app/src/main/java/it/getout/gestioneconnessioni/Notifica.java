@@ -62,7 +62,7 @@ public class Notifica extends Service {
 
     /**
      * la classe, che si attiva dopo l'evento specifico, si occupa di avviare un thread per l'apertura della porta 9601
-     * e quindi della ricezione delle comunicazione di inizio e rientro software
+     * e quindi della ricezione delle comunicazione di inizio e rientro software.
      * @param intent
      * @param flags
      * @param startid
@@ -71,19 +71,19 @@ public class Notifica extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startid) {
 
-        Thread inizioNotifica = new Thread() {
+        Thread inizioNotifica = new Thread() { //definizione del thread
             public void run() {
                 Looper.prepare();
                 try {
-                    d = new DatagramSocket(9601, InetAddress.getByName("0.0.0.0"));
+                    d = new DatagramSocket(9601, InetAddress.getByName("0.0.0.0")); //apertura della porta 9601
                     //Wait for a response
                     byte[] recvBuf = new byte[15000];
-                    DatagramPacket receivePacket = new DatagramPacket(recvBuf, recvBuf.length);
-                    d.receive(receivePacket);
-                    //Check if the message is correct
-                    String message = new String(receivePacket.getData()).trim();
+                    DatagramPacket receivePacket = new DatagramPacket(recvBuf, recvBuf.length); //definizione del contenitore in cui verrà inserito il dato ricevuto
+                    d.receive(receivePacket); //ricezione del messaggio
 
-                    creaNotifica(message);
+                    String message = new String(receivePacket.getData()).trim(); //estrazione del messaggio dalla struttura di ricezione
+
+                    creaNotifica(message); //richiamo il metodo per la creazione della notifica push
                     //Close the port!
                     d.close();
 
@@ -97,13 +97,17 @@ public class Notifica extends Service {
         return START_STICKY;
     }
 
+    /**
+     * metodo che crea e visualizza la notifica push
+     * @param message può essere o di rientro o di inizio emergenza
+     */
     private void creaNotifica(String message) {
         createNotificationChannel();
 
-        Intent intent = new Intent(this,Client.class);
+        Intent intent = new Intent(this,Client.class); //ritorno del controllo all'activity principale
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,0);
-        NotificationCompat.Builder builder;
+        NotificationCompat.Builder builder; //instanzio classe builder
 
         //controllo sulla stringa di arrivo per creare il messaggio sulla notifica
         if (message.substring(0,1).equals("E")) {
@@ -143,9 +147,12 @@ public class Notifica extends Service {
                     .setPriority(NotificationCompat.PRIORITY_MAX);
         }
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(NOTIFICATION_EX, builder.build());
+        notificationManager.notify(NOTIFICATION_EX, builder.build()); //visualizzazione della notifica
     }
 
+    /**
+     * creazione del canale per la visualizzazione della notifica su schermo
+     */
     private void createNotificationChannel() {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "GetOut";
