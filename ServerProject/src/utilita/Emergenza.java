@@ -21,27 +21,24 @@ public class Emergenza {
                     //2. SE DAOParametri.controllaEmergenza==true allora invia notifica
 
                     if(DAOParametri.controllaEmergenza() && notifica==null) {
-                        System.out.println("inizioemergenza");
                         emergenza = true;
                         notifica = new NotificaServer(emergenza);
                         notifica.start();
 
                     }
                     else if(!DAOParametri.controllaEmergenza() && emergenza == true) {
-                        System.out.println("fineemergenza");
                         emergenza = false;
                         notifica = new NotificaServer(emergenza);
                         notifica.start();
 
                     }else if(!DAOParametri.controllaEmergenza() && emergenza == false ){
-                        //System.out.println("birillo");
                         notifica = null;
                     }
 
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+
                     }
                 }
             }

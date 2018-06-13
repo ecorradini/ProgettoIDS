@@ -2,7 +2,9 @@ package connessioni;
 
 import entita.DAOUtente;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -40,6 +42,12 @@ public class DiscoveryIP implements Runnable{
                     byte[] sendData = "GETOUT_R".getBytes();
                     //Invia un pacchetto in risposta
                     DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, packet.getAddress(), packet.getPort());
+                    try {
+                        Process sendOutput = Runtime.getRuntime().exec("iptables -A OUTPUT -p udp --dport "+ packet.getPort() + " -j ACCEPT");
+                        sendOutput.waitFor();
+                    } catch(InterruptedException e) {
+                    }
+                    System.out.println(packet.getPort());
                     socket.send(sendPacket);
 
                     //Inserisco l'IP del mittente nella tabella degli utenti
@@ -47,12 +55,22 @@ public class DiscoveryIP implements Runnable{
 
                     //Aggiungo l'eccezione ad iptables per il client appena registratosi
                     try {
-                        Process ipTablesInput = Runtime.getRuntime().exec("iptables -A INPUT -s " + sendPacket.getAddress().getHostAddress() + " -j ACCEPT");
-                        ipTablesInput.waitFor();
-                        Process ipTablesOutput = Runtime.getRuntime().exec("iptables -A OUTPUT -s " + sendPacket.getAddress().getHostAddress() + " -j ACCEPT");
-                        ipTablesOutput.waitFor();
+                        Process sendOutput = Runtime.getRuntime().exec("iptables -D OUTPUT -p udp --dport "+ packet.getPort() + " -j ACCEPT");
+                        sendOutput.waitFor();
+
+                        //Process checkRule = Runtime.getRuntime().exec("iptables -C INPUT -s " + sendPacket.getAddress().getHostAddress() + " -j ACCEPT");
+                        Process checkRule = Runtime.getRuntime().exec("iptables -L | grep " + sendPacket.getAddress().getHostAddress());
+                        checkRule.waitFor();
+                        BufferedReader stdInput = new BufferedReader(new InputStreamReader(checkRule.getInputStream()));
+                        String result = stdInput.readLine();
+                        System.out.println(result == null ? "NULL" : result);
+                        if(result == null) {
+                            Process ipTablesInput = Runtime.getRuntime().exec("iptables -A INPUT -s " + sendPacket.getAddress().getHostAddress() + " -j ACCEPT");
+                            ipTablesInput.waitFor();
+                            Process ipTablesOutput = Runtime.getRuntime().exec("iptables -A OUTPUT -s " + sendPacket.getAddress().getHostAddress() + " -j ACCEPT");
+                            ipTablesOutput.waitFor();
+                        }
                     } catch(InterruptedException e) {
-                        e.printStackTrace();
                     }
 
                 }

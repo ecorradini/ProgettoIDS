@@ -47,7 +47,6 @@ public class Percorso extends Thread {
                     json += "\"" + partenza.getTronco().getID() + "\"";
                     json += "]}";
                     percorso = json;
-                    System.out.println(percorso);
                 } else {
 
                     ArrayList<GrafoTronchi.Nodo> listaNodi = calcoloPercorso(partenza, uscite);
@@ -62,7 +61,6 @@ public class Percorso extends Thread {
                     json = json + "]}";
 
                     percorso = json;
-                    System.out.println(percorso);
                 }
             }
             else {
@@ -88,7 +86,6 @@ public class Percorso extends Thread {
                 json = json + "]}";
 
                 percorso = json;
-                System.out.println(percorso);
             }
 
         }
@@ -107,7 +104,7 @@ public class Percorso extends Thread {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+
             }
         }
         return percorso;

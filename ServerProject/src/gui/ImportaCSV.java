@@ -59,7 +59,7 @@ public class ImportaCSV extends JFrame {
                             DAOParametri.insertParametri(String.valueOf(id));
                         }
                     } catch(Exception e) {
-                        e.printStackTrace();
+
                     }
                 }
             } catch (IOException e2) {

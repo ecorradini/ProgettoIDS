@@ -35,7 +35,7 @@ public class Server {
 
         } catch (ClassNotFoundException e) {
             System.out.println("Eccezione Class not found");
-            e.printStackTrace();
+
         }
 
 
@@ -90,7 +90,7 @@ public class Server {
         try {
             popolamento.join();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+
         }
     }
 

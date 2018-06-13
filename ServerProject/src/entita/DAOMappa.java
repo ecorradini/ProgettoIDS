@@ -38,7 +38,7 @@ public class DAOMappa {
             stm.close();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+
         } finally {
             if (json.substring(json.length() - 1, json.length()).equals(",")) {
                 json = json.substring(0, json.length() - 1);
@@ -74,7 +74,7 @@ public class DAOMappa {
             stm.close();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+
         }
         return link;
     }
@@ -89,7 +89,7 @@ public class DAOMappa {
         Connection conn = Database.getConn();
         String link = "/Mappe/q" + piano + ".jpg";
 
-        String query = "INSERT INTO " + TABLE_MAPPA + " VALUES('" + piano + "','" + link + "')";
+        String query = "INSERT INTO " + TABLE_MAPPA + " VALUES('" + link + "','" + piano + "')";
         Statement stm = conn.createStatement();
         stm.executeUpdate(query);
 
@@ -128,10 +128,10 @@ public class DAOMappa {
 
                 } catch (FileNotFoundException e) {
                     // TODO Auto-generated catch block
-                    e.printStackTrace();
+
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
-                    e.printStackTrace();
+
                 }
 
             }
@@ -140,7 +140,7 @@ public class DAOMappa {
             stm.close();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+
         } finally {
             if(json.substring(json.length() - 1,json.length()).equals(",")) {
                 json = json.substring(0, json.length() - 1);

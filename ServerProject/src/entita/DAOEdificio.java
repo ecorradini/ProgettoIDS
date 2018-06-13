@@ -37,7 +37,7 @@ public class DAOEdificio {
             stm.close();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+
         }
         finally {
             if(json.substring(json.length() - 1,json.length()).equals(",")) {
@@ -77,7 +77,7 @@ public class DAOEdificio {
             stm.close();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+
         }
 
         String json = "{"+"\"EDIFICIO_ATTUALE\":\""+nomeEdificio+"\""+"}";
@@ -115,7 +115,7 @@ public class DAOEdificio {
             stm.close();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+
         }
 
 
@@ -144,7 +144,7 @@ public class DAOEdificio {
             rs.close();
             stm.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+
         }
 
         return edifici;
@@ -172,7 +172,7 @@ public class DAOEdificio {
             rs.close();
             stm.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+
         }
 
         return nEdifici;

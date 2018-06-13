@@ -1,12 +1,7 @@
 package connessioni;
 
 import java.io.Console;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.Socket;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Classe interfacciamento con database
@@ -41,7 +36,6 @@ public class Database {
             connection = DriverManager.getConnection(dbUrl, "getoutdb", password);
             System.out.println("Connesso al DB");
         } catch(SQLException e) {
-            System.out.println(e.getMessage());
             init();
         }
 

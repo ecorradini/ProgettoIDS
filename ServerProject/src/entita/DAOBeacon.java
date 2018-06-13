@@ -40,7 +40,7 @@ public class DAOBeacon {
             stm.close();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+
         }
         finally {
             if(json.substring(json.length() - 1,json.length()).equals(",")) {
@@ -74,7 +74,7 @@ public class DAOBeacon {
             rs.close();
             stm.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+
         }
 
         return json;
@@ -106,7 +106,7 @@ public class DAOBeacon {
             stm.close();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+
         }
         finally {
             //Eliminare la virgola finale
@@ -140,7 +140,7 @@ public class DAOBeacon {
             stm.close();
         }
         catch (SQLException e) {
-            e.printStackTrace();
+
         }
         return beacons;
     }
@@ -162,7 +162,7 @@ public class DAOBeacon {
             return true;
 
         } catch(SQLException e) {
-            e.printStackTrace();
+
             return false;
         }
     }
@@ -184,7 +184,7 @@ public class DAOBeacon {
             return true;
 
         } catch(SQLException e) {
-            e.printStackTrace();
+
             return false;
         }
     }
@@ -208,7 +208,7 @@ public class DAOBeacon {
 
         }
         catch (SQLException e){
-            e.printStackTrace();
+
         }
 
         return persone;

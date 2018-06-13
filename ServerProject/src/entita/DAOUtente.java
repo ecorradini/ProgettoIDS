@@ -52,7 +52,7 @@ public class DAOUtente {
             stm.close();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+
         }
 
         return utenti;

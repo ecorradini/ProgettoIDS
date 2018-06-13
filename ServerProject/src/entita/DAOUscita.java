@@ -57,7 +57,7 @@ public class DAOUscita {
 
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+
         }
 
         return tronchiDaAttraversare;
@@ -93,7 +93,7 @@ public class DAOUscita {
 
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+
         }
 
         String json = "{USCITE:[";

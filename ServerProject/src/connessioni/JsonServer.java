@@ -48,7 +48,6 @@ public class JsonServer {
                             Files.copy(file.toPath(), outputStream);
                             outputStream.close();
                         } catch (IOException e) {
-                            System.out.println(e.getMessage());
                         }
                     }
                 }.start();
@@ -69,7 +68,6 @@ public class JsonServer {
                             Files.copy(file.toPath(), outputStream);
                             outputStream.close();
                         } catch (IOException e) {
-                            System.out.println(e.getMessage());
                         }
                     }
                 }.start();
@@ -88,7 +86,6 @@ public class JsonServer {
                             os.write(response.getBytes());
                             os.close();
                         } catch (IOException e) {
-                            System.out.println(e.getMessage());
                         }
                     }
                 }.start();
@@ -107,7 +104,6 @@ public class JsonServer {
                             os.write(response.getBytes());
                             os.close();
                         } catch (IOException e) {
-                            System.out.println(e.getMessage());
                         }
                     }
                 }.start();
@@ -127,7 +123,6 @@ public class JsonServer {
                             os.write(response.getBytes());
                             os.close();
                         } catch (IOException e) {
-                            System.out.println(e.getMessage());
                         }
                     }
                 }.start();
@@ -147,7 +142,6 @@ public class JsonServer {
                             os.write(response.getBytes());
                             os.close();
                         } catch (IOException e) {
-                            System.out.println(e.getMessage());
                         }
                     }
                 }.start();
@@ -167,7 +161,6 @@ public class JsonServer {
                             os.write(response.getBytes());
                             os.close();
                         } catch (IOException e) {
-                            System.out.println(e.getMessage());
                         }
                     }
                 }.start();
@@ -186,7 +179,6 @@ public class JsonServer {
                             os.write(response.getBytes());
                             os.close();
                         } catch (IOException e) {
-                            System.out.println(e.getMessage());
                         }
                     }
                 }.start();
@@ -205,7 +197,6 @@ public class JsonServer {
                             os.write(response.getBytes());
                             os.close();
                         } catch (IOException e) {
-                            System.out.println(e.getMessage());
                         }
                     }
                 }.start();
@@ -227,7 +218,6 @@ public class JsonServer {
                             Files.copy(file.toPath(), outputStream);
                             outputStream.close();
                         } catch (IOException e) {
-                            System.out.println(e.getMessage());
                         }
                     }
                 }.start();
@@ -246,7 +236,6 @@ public class JsonServer {
                             os.write(response.getBytes());
                             os.close();
                         } catch (IOException e) {
-                            System.out.println(e.getMessage());
                         }
                     }
                 }.start();
@@ -266,7 +255,6 @@ public class JsonServer {
                             os.write((res ? "{OK}":"{ERROR}").getBytes());
                             os.close();
                         } catch (IOException e) {
-                            System.out.println(e.getMessage());
                         }
                     }
                 }.start();
@@ -297,7 +285,6 @@ public class JsonServer {
                             os.write(response.getBytes());
                             os.close();
                         } catch (IOException e) {
-                            System.out.println(e.getMessage());
                         }
                     }
                 }.start();
@@ -317,7 +304,6 @@ public class JsonServer {
                             os.write(response.getBytes());
                             os.close();
                         } catch (IOException e) {
-                            System.out.println(e.getMessage());
                         }
                     }
                 }.start();
@@ -336,7 +322,6 @@ public class JsonServer {
                             os.write(response.getBytes());
                             os.close();
                         } catch (IOException e) {
-                            System.out.println(e.getMessage());
                         }
                     }
                 }.start();

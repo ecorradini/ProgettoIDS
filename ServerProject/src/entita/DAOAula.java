@@ -43,7 +43,7 @@ public class DAOAula {
             stm.close();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+
         }
         //Alla fine rimuovo l'ultima virgola
         finally {
@@ -80,7 +80,7 @@ public class DAOAula {
             stm.close();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+
         }
         finally {
             //Eliminare la virgola finale
@@ -114,7 +114,7 @@ public class DAOAula {
             stm.close();
         }
         catch (SQLException e) {
-            e.printStackTrace();
+
         }
         return aule;
     }
@@ -142,7 +142,7 @@ public class DAOAula {
             stm.close();
         }
         catch (SQLException e) {
-            e.printStackTrace();
+
         }
         return beacon;
     }

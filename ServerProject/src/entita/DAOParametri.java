@@ -34,7 +34,7 @@ public class DAOParametri {
             stm.close();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+
         }
         finally {
             if (json.substring(json.length() - 1, json.length()).equals(",")) {
@@ -76,7 +76,7 @@ public class DAOParametri {
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             tronchi=null;
-            e.printStackTrace();
+
         }
 
         return tronchi;
@@ -122,7 +122,7 @@ public class DAOParametri {
             stm.close();
         } catch (SQLException e) {
             parametriTronchi=null;
-            e.printStackTrace();
+
         }
 
         return parametriTronchi;
@@ -146,7 +146,7 @@ public class DAOParametri {
 
             stm.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+
         }
     }
 
@@ -176,7 +176,7 @@ public class DAOParametri {
             stm.close();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+
         }
 
         return emergenza;
@@ -210,7 +210,7 @@ public class DAOParametri {
             stm.close();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+
         }
         return edificio;
 

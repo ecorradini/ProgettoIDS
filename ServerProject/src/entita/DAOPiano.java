@@ -32,7 +32,7 @@ public class DAOPiano {
             stm.close();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+
         }
         finally {
             if (json.substring(json.length() - 1, json.length()).equals(",")) {
@@ -71,7 +71,7 @@ public class DAOPiano {
             stm.close();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+
         }
 
         String json = "{"+"\"PIANO_ATTUALE\":\""+nomePiano+"\""+"}";
@@ -104,7 +104,7 @@ public class DAOPiano {
             rs.close();
             stm.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+
         }
 
         return nomePiano;
@@ -132,7 +132,7 @@ public class DAOPiano {
             stm.close();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+
         }
         finally {
             //Eliminare la virgola finale
@@ -166,7 +166,7 @@ public class DAOPiano {
             rs.close();
             stm.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+
         }
 
         return piani;
@@ -194,7 +194,7 @@ public class DAOPiano {
             rs.close();
             stm.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+
         }
 
         return nPiani;

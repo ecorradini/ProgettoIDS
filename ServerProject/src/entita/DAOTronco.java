@@ -38,7 +38,7 @@ public class DAOTronco {
             stm.close();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+
         }
         finally {
             if(json.substring(json.length() - 1,json.length()).equals(",")) {
@@ -74,7 +74,7 @@ public class DAOTronco {
             stm.close();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+
         }
         finally {
             //Eliminare la virgola finale
@@ -112,7 +112,7 @@ public class DAOTronco {
             stm.close();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+
         }
 
         return risultato;
@@ -143,7 +143,7 @@ public class DAOTronco {
             rs.close();
             stm.close();
         } catch(SQLException e) {
-            e.printStackTrace();
+
         }
 
         return result;
@@ -191,7 +191,7 @@ public class DAOTronco {
             stm.close();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+
         }
 
         if(risultato.size()>0) {
@@ -228,12 +228,11 @@ public class DAOTronco {
             stm.close();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+
         }
 
         ArrayList<GrafoTronchi.Nodo> visitati = new ArrayList<>();
         ArrayList<GrafoTronchi.Nodo> daVisitare = new ArrayList<>();
-        System.out.println(piano);
         daVisitare.add(Server.getGrafiPiani().get(edificio).get(piano).getRadice());
 
         GrafoTronchi.Nodo risultato = null;

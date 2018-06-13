@@ -36,13 +36,13 @@ public class GUIParametri extends JFrame {
                 }
             }
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+
         } catch (InstantiationException e) {
-            e.printStackTrace();
+
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+
         } catch (UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
+
         }
         setMinimumSize(new Dimension(MIN_FRAME_WIDTH, MIN_FRAME_HEIGHT));
         Toolkit toolkit = Toolkit.getDefaultToolkit();
