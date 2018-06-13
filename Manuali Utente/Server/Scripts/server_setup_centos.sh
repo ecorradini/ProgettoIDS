@@ -27,9 +27,6 @@ rm getout_dump.sql
 wget https://www.dropbox.com/s/shquf455ttlzibj/Server.tar.xz
 tar xf Server.tar.xz
 rm Server.tar.xz
-wget https://www.dropbox.com/s/e15rqfcpujan3j0/firewall.sh
-sh firewall.sh
-rm firewall.sh
 sudo java -jar ServerProject.jar
 echo "FATTO."
 exit
