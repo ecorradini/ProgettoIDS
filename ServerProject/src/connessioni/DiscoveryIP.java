@@ -49,6 +49,7 @@ public class DiscoveryIP implements Runnable{
                     }
                     System.out.println(packet.getPort());
                     socket.send(sendPacket);
+                    System.out.println(sendPacket.getAddress()+" "+sendPacket.getPort());
 
                     //Inserisco l'IP del mittente nella tabella degli utenti
                     DAOUtente.insertUtente(sendPacket.getAddress().getHostAddress());
@@ -57,19 +58,10 @@ public class DiscoveryIP implements Runnable{
                     try {
                         Process sendOutput = Runtime.getRuntime().exec("iptables -D OUTPUT -p udp --dport "+ packet.getPort() + " -j ACCEPT");
                         sendOutput.waitFor();
-
-                        //Process checkRule = Runtime.getRuntime().exec("iptables -C INPUT -s " + sendPacket.getAddress().getHostAddress() + " -j ACCEPT");
-                        Process checkRule = Runtime.getRuntime().exec("iptables -L | grep " + sendPacket.getAddress().getHostAddress());
-                        checkRule.waitFor();
-                        BufferedReader stdInput = new BufferedReader(new InputStreamReader(checkRule.getInputStream()));
-                        String result = stdInput.readLine();
-                        System.out.println(result == null ? "NULL" : result);
-                        if(result == null) {
-                            Process ipTablesInput = Runtime.getRuntime().exec("iptables -A INPUT -s " + sendPacket.getAddress().getHostAddress() + " -j ACCEPT");
-                            ipTablesInput.waitFor();
-                            Process ipTablesOutput = Runtime.getRuntime().exec("iptables -A OUTPUT -s " + sendPacket.getAddress().getHostAddress() + " -j ACCEPT");
-                            ipTablesOutput.waitFor();
-                        }
+                        Process ipTablesInput = Runtime.getRuntime().exec("iptables -A INPUT -s " + sendPacket.getAddress().getHostAddress() + " -j ACCEPT");
+                        ipTablesInput.waitFor();
+                        Process ipTablesOutput = Runtime.getRuntime().exec("iptables -A OUTPUT -s " + sendPacket.getAddress().getHostAddress() + " -j ACCEPT");
+                        ipTablesOutput.waitFor();
                     } catch(InterruptedException e) {
                     }
 
