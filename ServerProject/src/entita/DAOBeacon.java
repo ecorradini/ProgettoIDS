@@ -223,7 +223,7 @@ public class DAOBeacon {
      * @param uscita specifica sel beacon è un beacon di uscita o meno
      * @throws SQLException
      */
-    public static void insertBeacon(String id,String tronco, String X, String Y, String uscita) throws SQLException {
+    public static void insertBeacon(String id, String X, String Y, String tronco, String uscita) throws SQLException {
         Connection conn = Database.getConn();
 
         String query = "INSERT INTO " + TABLE_BEACON + " VALUES('" + id + "','"+ X + "','" + Y +"','" + tronco + "','" + "0" +"','" + uscita + "')";

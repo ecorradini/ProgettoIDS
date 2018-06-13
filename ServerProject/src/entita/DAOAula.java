@@ -156,7 +156,7 @@ public class DAOAula {
      * @param entrata id del beacon di entrata dell'aula
      * @throws SQLException
      */
-    public static void insertAula(String nome,String piano, String X, String Y, String entrata) throws SQLException {
+    public static void insertAula(String nome, String X, String Y, String piano, String entrata) throws SQLException {
         Connection conn = Database.getConn();
 
         String query="";
