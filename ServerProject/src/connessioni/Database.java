@@ -33,10 +33,11 @@ public class Database {
             String password = new String(passwordArray);
 
             //Instanzio la connessione al databse
-            Class.forName("com.mysql.jdbc.Driver");
+            //Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(dbUrl, "getoutdb", password);
             System.out.println("Connesso al DB");
         } catch(SQLException e) {
+            e.printStackTrace();
             init();
         }
 
