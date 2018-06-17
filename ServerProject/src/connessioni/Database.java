@@ -10,7 +10,8 @@ public class Database {
     //variabile connessione
     private static Connection connection;
     //Url del database
-    private static final String dbUrl="jdbc:mysql://localhost/getoutdb";
+    private static final String dbUrl="jdbc:jtds:sqlserver://den1.mssql5.gear.host/getoutdb";
+    //private static final String dbUrl="jdbc:mysql://localhost/getoutdb";
 
 
     /**
