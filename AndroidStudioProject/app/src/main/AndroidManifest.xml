@@ -20,7 +20,8 @@
             android:label="NotificaService">
         </service>
 
-        <activity android:name=".Client">
+        <activity android:name=".Client"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

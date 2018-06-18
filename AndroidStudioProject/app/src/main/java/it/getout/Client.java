@@ -138,10 +138,6 @@ public class Client extends AppCompatActivity {
             }
         });
 
-        boolean emergenza = preferences.getBoolean("Emergenza", false);
-        if (emergenza) switchButton.setChecked(true);
-        else switchButton.setChecked(false);
-
         return true;
     }
 
@@ -156,25 +152,27 @@ public class Client extends AppCompatActivity {
 
                         boolean name = preferences.getBoolean("Emergenza", false);
                         if (name) {
+                            FragmentEmergenza emergenza = FragmentEmergenza.newInstance();
+                            getSupportFragmentManager().beginTransaction()
+                                    .setCustomAnimations(R.anim.enter, R.anim.exit)
+                                    .replace(R.id.fragment_container_main, emergenza)
+                                    .commit();
                             window.setStatusBarColor(ContextCompat.getColor(Client.this, R.color.colorPrimaryDarkEmergenza));
-
                             ActionBar bar = getSupportActionBar();
                             bar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryEmergenza)));
                             bar.setTitle("Modalità Emergenza");
 
-                            FragmentEmergenza emergenza = FragmentEmergenza.newInstance();
-                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_main, emergenza, "EMERGENZA").commit();
-
                             stopLoading();
                         } else {
-                            window.setStatusBarColor(ContextCompat.getColor(Client.this, R.color.colorPrimaryDarkOrdinaria));
+                            FragmentOrdinaria ordinaria = FragmentOrdinaria.newInstance();
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.fragment_container_main, ordinaria)
+                                    .commit();
 
+                            window.setStatusBarColor(ContextCompat.getColor(Client.this, R.color.colorPrimaryDarkOrdinaria));
                             ActionBar bar = getSupportActionBar();
                             bar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryOrdinaria)));
                             bar.setTitle("Modalità Ordinaria");
-
-                            FragmentOrdinaria ordinaria = FragmentOrdinaria.newInstance();
-                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_main, ordinaria, "ORDINARIA").commit();
 
                             stopLoading();
                         }
@@ -187,7 +185,9 @@ public class Client extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                loadingPhase2.setVisibility(View.VISIBLE);
+                if(loadingPhase2!=null) {
+                    loadingPhase2.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -218,7 +218,9 @@ public class Client extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                loadingPhase2.setVisibility(View.GONE);
+                if(loadingPhase2!=null) {
+                    loadingPhase2.setVisibility(View.GONE);
+                }
             }
         });
     }

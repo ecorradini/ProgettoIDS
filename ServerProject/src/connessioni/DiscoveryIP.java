@@ -42,18 +42,20 @@ public class DiscoveryIP implements Runnable{
                     byte[] sendData = "GETOUT_R".getBytes();
                     //Invia un pacchetto in risposta
                     DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, packet.getAddress(), packet.getPort());
+                    /*
                     try {
                         Process sendOutput = Runtime.getRuntime().exec("iptables -A OUTPUT -p udp --dport "+ packet.getPort() + " -j ACCEPT");
                         sendOutput.waitFor();
                     } catch(InterruptedException e) {
                     }
                     System.out.println(packet.getPort());
-                    socket.send(sendPacket);
                     System.out.println(sendPacket.getAddress()+" "+sendPacket.getPort());
+                    */
+                    socket.send(sendPacket);
 
                     //Inserisco l'IP del mittente nella tabella degli utenti
                     DAOUtente.insertUtente(sendPacket.getAddress().getHostAddress());
-
+/*
                     //Aggiungo l'eccezione ad iptables per il client appena registratosi
                     try {
                         Process sendOutput = Runtime.getRuntime().exec("iptables -D OUTPUT -p udp --dport "+ packet.getPort() + " -j ACCEPT");
@@ -64,7 +66,7 @@ public class DiscoveryIP implements Runnable{
                         ipTablesOutput.waitFor();
                     } catch(InterruptedException e) {
                     }
-
+*/
                 }
             }
         } catch (IOException ex) {
